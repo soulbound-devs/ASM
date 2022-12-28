@@ -4,6 +4,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
@@ -13,10 +14,15 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.vakror.soulbound.SoulBoundMod;
+import net.vakror.soulbound.items.ModItems;
+import net.vakror.soulbound.items.custom.WandItem;
 import net.vakror.soulbound.networking.ModPackets;
 import net.vakror.soulbound.networking.SyncSoulS2CPacket;
 import net.vakror.soulbound.soul.PlayerSoul;
 import net.vakror.soulbound.soul.PlayerSoulProvider;
+import net.vakror.soulbound.util.InventoryUtil;
+
+import java.util.List;
 
 public class ModEvents {
     @Mod.EventBusSubscriber(modid = SoulBoundMod.MOD_ID)
@@ -63,6 +69,14 @@ public class ModEvents {
         public static void onPlayerJoinWorld(EntityJoinWorldEvent event) {
             if (!event.getWorld().isClientSide) {
                 if (event.getEntity() instanceof ServerPlayer player) {
+                    if (InventoryUtil.hasPlayerStackInInventory(player, ModItems.WAND.get())) {
+                        List<Integer> inventoryIndexes = InventoryUtil.getAllInventoryIndexes(player, ModItems.WAND.get());
+                        for (int index: inventoryIndexes) {
+                            WandItem wand = (WandItem) player.getInventory().getItem(index).getItem();
+                            ItemStack wandStack = player.getInventory().getItem(index);
+                            wand.loadData(wandStack);
+                        }
+                    }
                     player.getCapability(PlayerSoulProvider.PLAYER_SOUL).ifPresent(soul -> {
                         ModPackets.sendToClient(new SyncSoulS2CPacket(soul.getSoul(), soul.getMaxSoul(), soul.getDarkSoul(), soul.getMaxDarkSoul()), player);
                     });

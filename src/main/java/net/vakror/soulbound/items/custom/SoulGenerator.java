@@ -1,4 +1,4 @@
-package net.vakror.soulbound.items;
+package net.vakror.soulbound.items.custom;
 
 import net.minecraft.world.item.Item;
 

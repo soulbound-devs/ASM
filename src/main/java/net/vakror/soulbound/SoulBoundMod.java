@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
@@ -12,7 +13,9 @@ import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.vakror.soulbound.items.ModItems;
 import net.vakror.soulbound.networking.ModPackets;
+import net.vakror.soulbound.seal.SealRegistry;
 import org.slf4j.Logger;
 import top.theillusivec4.curios.api.SlotTypeMessage;
 
@@ -26,6 +29,10 @@ public class SoulBoundMod {
 
     public SoulBoundMod() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
+
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        ModItems.register(modEventBus);
+        SealRegistry.registerSeals();
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
