@@ -1,4 +1,4 @@
-package net.vakror.unmm.items;
+package net.vakror.soulbound.items;
 
 import net.minecraft.world.item.Item;
 

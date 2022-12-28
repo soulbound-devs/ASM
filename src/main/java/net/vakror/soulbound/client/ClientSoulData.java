@@ -1,4 +1,4 @@
-package net.vakror.unmm.client;
+package net.vakror.soulbound.client;
 
 public class ClientSoulData {
     private static int playerSoul;

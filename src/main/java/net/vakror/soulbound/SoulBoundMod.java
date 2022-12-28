@@ -1,7 +1,6 @@
-package net.vakror.unmm;
+package net.vakror.soulbound;
 
 import com.mojang.logging.LogUtils;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
@@ -13,22 +12,19 @@ import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.vakror.unmm.networking.ModPackets;
+import net.vakror.soulbound.networking.ModPackets;
 import org.slf4j.Logger;
-import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotTypeMessage;
 
-import java.util.stream.Collectors;
-
-import static net.vakror.unmm.UnmmMod.MOD_ID;
+import static net.vakror.soulbound.SoulBoundMod.MOD_ID;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(MOD_ID)
-public class UnmmMod {
+public class SoulBoundMod {
     private static final Logger LOGGER = LogUtils.getLogger();
-    public static final String MOD_ID = "unmm";
+    public static final String MOD_ID = "soulbound";
 
-    public UnmmMod() {
+    public SoulBoundMod() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);

@@ -1,4 +1,4 @@
-package net.vakror.unmm.soul;
+package net.vakror.soulbound.soul;
 
 import net.minecraft.nbt.CompoundTag;
 

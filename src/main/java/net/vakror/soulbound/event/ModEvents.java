@@ -1,4 +1,4 @@
-package net.vakror.unmm.event;
+package net.vakror.soulbound.event;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -12,20 +12,20 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
-import net.vakror.unmm.UnmmMod;
-import net.vakror.unmm.networking.ModPackets;
-import net.vakror.unmm.networking.SyncSoulS2CPacket;
-import net.vakror.unmm.soul.PlayerSoul;
-import net.vakror.unmm.soul.PlayerSoulProvider;
+import net.vakror.soulbound.SoulBoundMod;
+import net.vakror.soulbound.networking.ModPackets;
+import net.vakror.soulbound.networking.SyncSoulS2CPacket;
+import net.vakror.soulbound.soul.PlayerSoul;
+import net.vakror.soulbound.soul.PlayerSoulProvider;
 
 public class ModEvents {
-    @Mod.EventBusSubscriber(modid = UnmmMod.MOD_ID)
+    @Mod.EventBusSubscriber(modid = SoulBoundMod.MOD_ID)
     public static class ForgeEvents {
         @SubscribeEvent
         public static void onAttachCapabilitiesPlayer(AttachCapabilitiesEvent<Entity> event) {
             if (event.getObject() instanceof Player) {
                 if (!event.getObject().getCapability(PlayerSoulProvider.PLAYER_SOUL).isPresent()) {
-                    event.addCapability(new ResourceLocation(UnmmMod.MOD_ID, "soul_provider"), new PlayerSoulProvider());
+                    event.addCapability(new ResourceLocation(SoulBoundMod.MOD_ID, "soul_provider"), new PlayerSoulProvider());
                 }
             }
         }

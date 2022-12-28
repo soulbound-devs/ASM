@@ -1,8 +1,8 @@
 {
   "required": true,
-  "package": "net.vakror.unmm.mixin",
+  "package": "net.vakror.soulbound.mixin",
   "compatibilityLevel": "JAVA_17",
-  "refmap": "unmm.refmap.json",
+  "refmap": "soulbound.refmap.json",
   "mixins": [
 
   ],

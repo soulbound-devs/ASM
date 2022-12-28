@@ -1,16 +1,10 @@
-package net.vakror.unmm.networking;
+package net.vakror.soulbound.networking;
 
-import java.util.UUID;
 import java.util.function.Supplier;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.util.datafix.fixes.PlayerUUIDFix;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.NetworkEvent;
-import net.vakror.unmm.client.ClientSoulData;
-import net.vakror.unmm.soul.PlayerSoulProvider;
+import net.vakror.soulbound.client.ClientSoulData;
 
 public class SyncSoulS2CPacket {
     int currentSoulAmount;

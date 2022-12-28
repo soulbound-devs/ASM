@@ -21,14 +21,14 @@ apply plugin: 'org.parchmentmc.librarian.forgegradle'
 apply plugin: 'org.spongepowered.mixin'
 
 mixin {
-    add sourceSets.main, "unmm.refmap.json"
+    add sourceSets.main, "soulbound.refmap.json"
 
-    config "unmm.mixins.json"
+    config "soulbound.mixins.json"
 }
 
 version = '1.0'
-group = 'com.yourname.unmm' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'unmm'
+group = 'com.yourname.' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = 'soulbound'
 
 // Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
@@ -42,9 +42,9 @@ minecraft {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-            property 'forge.enabledGameTestNamespaces', 'unmm'
+            property 'forge.enabledGameTestNamespaces', 'soulbound'
             mods {
-                unmm {
+                soulbound {
                     source sourceSets.main
                 }
             }
@@ -58,10 +58,10 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
-            property 'forge.enabledGameTestNamespaces', 'unmm'
+            property 'forge.enabledGameTestNamespaces', 'soulbound'
 
             mods {
-                unmm {
+                soulbound {
                     source sourceSets.main
                 }
             }
@@ -86,10 +86,10 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
-            property 'forge.enabledGameTestNamespaces', 'unmm'
+            property 'forge.enabledGameTestNamespaces', 'soulbound'
 
             mods {
-                unmm {
+                soulbound {
                     source sourceSets.main
                 }
             }
@@ -102,11 +102,11 @@ minecraft {
 
             property 'forge.logging.console.level', 'debug'
 
-            // Specify the unmm for data generation, where to output the resulting resource, and where to look for existing resources.
-            args '--mod', 'unmm', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            // Specify the soulbound for data generation, where to output the resulting resource, and where to look for existing resources.
+            args '--mod', 'soulbound', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
-                unmm {
+                soulbound {
                     source sourceSets.main
                 }
             }
@@ -136,12 +136,12 @@ dependencies {
 jar {
     manifest {
         attributes([
-                "Specification-Title"     : "unmm",
-                "Specification-Vendor"    : "unmmsareus",
+                "Specification-Title"     : "soulbound",
+                "Specification-Vendor"    : "soulboundsareus",
                 "Specification-Version"   : "1", // We are version 1 of ourselves
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
-                "Implementation-Vendor"   : "unmmsareus",
+                "Implementation-Vendor"   : "soulboundsareus",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }

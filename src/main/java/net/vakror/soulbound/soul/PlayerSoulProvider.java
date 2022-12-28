@@ -1,4 +1,4 @@
-package net.vakror.unmm.soul;
+package net.vakror.soulbound.soul;
 
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -10,8 +10,6 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Optional;
 
 public class PlayerSoulProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
     public static Capability<PlayerSoul> PLAYER_SOUL = CapabilityManager.get(new CapabilityToken<PlayerSoul>() { });
