@@ -5,14 +5,14 @@ import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.gui.IIngameOverlay;
-import net.vakror.soulbound.SoulBoundMod;
+import net.vakror.soulbound.SoulboundMod;
 
 public class SoulHudOverlay {
-    private static final ResourceLocation SOUL_BAR = new ResourceLocation(SoulBoundMod.MOD_ID,
+    private static final ResourceLocation SOUL_BAR = new ResourceLocation(SoulboundMod.MOD_ID,
             "textures/gui/soul.png");
-    private static final ResourceLocation SOUL_OVERLAY = new ResourceLocation(SoulBoundMod.MOD_ID,
+    private static final ResourceLocation SOUL_OVERLAY = new ResourceLocation(SoulboundMod.MOD_ID,
             "textures/gui/soul_overlay.png");
-    private static final ResourceLocation DARK_SOUL_BAR = new ResourceLocation(SoulBoundMod.MOD_ID,
+    private static final ResourceLocation DARK_SOUL_BAR = new ResourceLocation(SoulboundMod.MOD_ID,
             "textures/gui/dark_soul.png");
 
     public static final IIngameOverlay HUD_SOUL = ((gui, poseStack, partialTick, width, height) -> {

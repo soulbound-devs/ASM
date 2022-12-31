@@ -13,25 +13,31 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
-import net.vakror.soulbound.SoulBoundMod;
-import net.vakror.soulbound.items.ModItems;
+import net.vakror.soulbound.SoulboundMod;
 import net.vakror.soulbound.items.custom.WandItem;
 import net.vakror.soulbound.networking.ModPackets;
 import net.vakror.soulbound.networking.SyncSoulS2CPacket;
 import net.vakror.soulbound.soul.PlayerSoul;
 import net.vakror.soulbound.soul.PlayerSoulProvider;
-import net.vakror.soulbound.util.InventoryUtil;
-
-import java.util.List;
+import net.vakror.soulbound.wand.Wand;
+import net.vakror.soulbound.wand.ItemWandProvider;
 
 public class ModEvents {
-    @Mod.EventBusSubscriber(modid = SoulBoundMod.MOD_ID)
+    @Mod.EventBusSubscriber(modid = SoulboundMod.MOD_ID)
     public static class ForgeEvents {
         @SubscribeEvent
         public static void onAttachCapabilitiesPlayer(AttachCapabilitiesEvent<Entity> event) {
             if (event.getObject() instanceof Player) {
                 if (!event.getObject().getCapability(PlayerSoulProvider.PLAYER_SOUL).isPresent()) {
-                    event.addCapability(new ResourceLocation(SoulBoundMod.MOD_ID, "soul_provider"), new PlayerSoulProvider());
+                    event.addCapability(new ResourceLocation(SoulboundMod.MOD_ID, "soul_provider"), new PlayerSoulProvider());
+                }
+            }
+        }
+        @SubscribeEvent
+        public static void onAttachCapabilitiesItem(AttachCapabilitiesEvent<ItemStack> event) {
+            if (event.getObject().getItem() instanceof WandItem) {
+                if (!event.getObject().getCapability(ItemWandProvider.WAND).isPresent()) {
+                    event.addCapability(new ResourceLocation(SoulboundMod.MOD_ID, "seals"), new ItemWandProvider());
                 }
             }
         }
@@ -50,6 +56,7 @@ public class ModEvents {
         @SubscribeEvent
         public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
             event.register(PlayerSoul.class);
+            event.register(Wand.class);
         }
 
         @SubscribeEvent
@@ -69,14 +76,6 @@ public class ModEvents {
         public static void onPlayerJoinWorld(EntityJoinWorldEvent event) {
             if (!event.getWorld().isClientSide) {
                 if (event.getEntity() instanceof ServerPlayer player) {
-                    if (InventoryUtil.hasPlayerStackInInventory(player, ModItems.WAND.get())) {
-                        List<Integer> inventoryIndexes = InventoryUtil.getAllInventoryIndexes(player, ModItems.WAND.get());
-                        for (int index: inventoryIndexes) {
-                            WandItem wand = (WandItem) player.getInventory().getItem(index).getItem();
-                            ItemStack wandStack = player.getInventory().getItem(index);
-                            wand.loadData(wandStack);
-                        }
-                    }
                     player.getCapability(PlayerSoulProvider.PLAYER_SOUL).ifPresent(soul -> {
                         ModPackets.sendToClient(new SyncSoulS2CPacket(soul.getSoul(), soul.getMaxSoul(), soul.getDarkSoul(), soul.getMaxDarkSoul()), player);
                     });

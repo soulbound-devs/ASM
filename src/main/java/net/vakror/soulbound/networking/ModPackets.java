@@ -6,7 +6,7 @@ import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
-import net.vakror.soulbound.SoulBoundMod;
+import net.vakror.soulbound.SoulboundMod;
 
 public class ModPackets {
     private static SimpleChannel INSTANCE;
@@ -18,7 +18,7 @@ public class ModPackets {
 
     public static void register() {
         SimpleChannel net = NetworkRegistry.ChannelBuilder
-                .named(new ResourceLocation(SoulBoundMod.MOD_ID, "messages"))
+                .named(new ResourceLocation(SoulboundMod.MOD_ID, "messages"))
                 .networkProtocolVersion(() -> "1.0")
                 .clientAcceptedVersions(s -> true)
                 .serverAcceptedVersions(s -> true)

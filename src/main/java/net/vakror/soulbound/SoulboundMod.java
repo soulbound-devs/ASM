@@ -8,31 +8,40 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.vakror.soulbound.blocks.entity.ModBlockEntities;
+import net.vakror.soulbound.client.SoulBoundClient;
 import net.vakror.soulbound.items.ModItems;
+import net.vakror.soulbound.blocks.ModBlocks;
 import net.vakror.soulbound.networking.ModPackets;
+import net.vakror.soulbound.screen.ModMenuTypes;
 import net.vakror.soulbound.seal.SealRegistry;
 import org.slf4j.Logger;
 import top.theillusivec4.curios.api.SlotTypeMessage;
 
-import static net.vakror.soulbound.SoulBoundMod.MOD_ID;
+import static net.vakror.soulbound.SoulboundMod.MOD_ID;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(MOD_ID)
-public class SoulBoundMod {
+public class SoulboundMod {
     private static final Logger LOGGER = LogUtils.getLogger();
     public static final String MOD_ID = "soulbound";
 
-    public SoulBoundMod() {
+    public SoulboundMod() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        ModItems.register(modEventBus);
         SealRegistry.registerSeals();
+        ModItems.register(modEventBus);
+        ModBlocks.register(modEventBus);
+        ModBlockEntities.register(modEventBus);
+        ModMenuTypes.register(modEventBus);
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
@@ -41,6 +50,10 @@ public class SoulBoundMod {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(ModPackets::register);
+    }
+
+    private void clientSetup(final FMLClientSetupEvent event) {
+        SoulBoundClient.doClientRegister(event);
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
