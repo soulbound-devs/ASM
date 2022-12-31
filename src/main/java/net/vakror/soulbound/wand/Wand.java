@@ -31,15 +31,19 @@ public class Wand {
     }
 
     public void saveNBTData(CompoundTag nbt) {
-        for (String sealId: SealRegistry.seals.keySet()) {
-            nbt.putBoolean(sealId, seals.contains(SealRegistry.seals.get(sealId)));
+        if (this.seals != null) {
+            for (String sealId : SealRegistry.seals.keySet()) {
+                nbt.putBoolean(sealId, seals.contains(SealRegistry.seals.get(sealId)));
+            }
         }
     }
 
     public void loadNBTData(CompoundTag nbt) {
-        for (String sealId: SealRegistry.seals.keySet()) {
-            if (nbt.getBoolean(sealId)) {
-                seals.add(SealRegistry.seals.get(sealId));
+        if (this.seals != null) {
+            for (String sealId : SealRegistry.seals.keySet()) {
+                if (nbt.getBoolean(sealId)) {
+                    seals.add(SealRegistry.seals.get(sealId));
+                }
             }
         }
     }

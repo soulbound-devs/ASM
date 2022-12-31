@@ -36,9 +36,7 @@ public class ModEvents {
         @SubscribeEvent
         public static void onAttachCapabilitiesItem(AttachCapabilitiesEvent<ItemStack> event) {
             if (event.getObject().getItem() instanceof WandItem) {
-                if (!event.getObject().getCapability(ItemWandProvider.WAND).isPresent()) {
-                    event.addCapability(new ResourceLocation(SoulboundMod.MOD_ID, "seals"), new ItemWandProvider());
-                }
+                event.addCapability(new ResourceLocation(SoulboundMod.MOD_ID, "seals"), new ItemWandProvider());
             }
         }
 
