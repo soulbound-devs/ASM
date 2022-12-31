@@ -26,6 +26,7 @@ import net.vakror.soulbound.items.ModItems;
 import net.vakror.soulbound.items.custom.WandItem;
 import net.vakror.soulbound.items.custom.seals.SealItem;
 import net.vakror.soulbound.screen.WandImbuingMenu;
+import net.vakror.soulbound.seal.SealRegistry;
 import net.vakror.soulbound.wand.ItemWandProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -165,7 +166,10 @@ public class WandImbuingTableBlockEntity extends BlockEntity implements MenuProv
 
         entity.itemHandler.setStackInSlot(3, entity.itemHandler.getStackInSlot(1));
         entity.itemHandler.getStackInSlot(3).getCapability(ItemWandProvider.WAND).ifPresent(wand -> {
-            entity.itemHandler.getStackInSlot(1).getCapability(ItemWandProvider.WAND).ifPresent(wand::copyFrom);
+            entity.itemHandler.getStackInSlot(1).getCapability(ItemWandProvider.WAND).ifPresent(oldWand -> {
+                wand.copyFrom(oldWand);
+                wand.addSeal(((SealItem) entity.itemHandler.getStackInSlot(2).getItem()).getId());
+            });
         });
         entity.itemHandler.extractItem(1, 1, false);
         entity.itemHandler.extractItem(2, 1, false);
