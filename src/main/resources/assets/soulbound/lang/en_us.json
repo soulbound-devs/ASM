@@ -2,6 +2,11 @@
   "item.soulbound.axing_seal": "Axing Seal",
   "item.soulbound.pickaxing_seal": "Pickaxing Seal",
   "item.soulbound.hoeing_seal": "Seal of Farming",
+  "item.soulbound.soul": "Soul",
+  "item.soulbound.wand": "Ancient Oak Wand",
+
+
+  "block.soulbound.wand_imbuing_table": "Wand Imbuing Table",
 
   "itemGroup.soulbound": "Soulbound Tab"
 }
