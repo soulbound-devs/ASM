@@ -4,8 +4,15 @@ import net.minecraft.world.item.Item;
 import net.vakror.soulbound.seal.seals.MiningSeal;
 
 public class SealItem extends Item {
-    public SealItem(Properties pProperties) {
+    private final String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public SealItem(Properties pProperties, String id) {
         super(pProperties);
+        this.id = id;
     }
 
 }

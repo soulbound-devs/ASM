@@ -14,16 +14,16 @@ public class ModItems {
             DeferredRegister.create(ForgeRegistries.ITEMS, SoulboundMod.MOD_ID);
 
     public static final RegistryObject<Item> AXING_SEAL = ITEMS.register("axing_seal",
-            () -> new SealItem(new Item.Properties().tab(ModCreativeModeTab.SOULBOUND)));
+            () -> new SealItem(new Item.Properties().tab(ModCreativeModeTab.SOULBOUND), "axing"));
 
     public static final RegistryObject<Item> WAND = ITEMS.register("wand",
             () -> new WandItem(new Item.Properties().tab(ModCreativeModeTab.SOULBOUND)));
 
     public static final RegistryObject<Item> PICKAXING_SEAL = ITEMS.register("pickaxing_seal",
-            () -> new SealItem(new Item.Properties().tab(ModCreativeModeTab.SOULBOUND)));
+            () -> new SealItem(new Item.Properties().tab(ModCreativeModeTab.SOULBOUND), "pickaxing"));
 
     public static final RegistryObject<Item> HOEING_SEAL = ITEMS.register("hoeing_seal",
-            () -> new SealItem(new Item.Properties().tab(ModCreativeModeTab.SOULBOUND)));
+            () -> new SealItem(new Item.Properties().tab(ModCreativeModeTab.SOULBOUND), "hoeing"));
 
     public static final RegistryObject<Item> SOUL = ITEMS.register("soul",
             () -> new Item(new Item.Properties().tab(ModCreativeModeTab.SOULBOUND)));
