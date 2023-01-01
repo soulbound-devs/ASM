@@ -4,11 +4,12 @@ import net.minecraft.nbt.CompoundTag;
 import net.vakror.soulbound.seal.ISeal;
 import net.vakror.soulbound.seal.SealRegistry;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Wand {
 
-    private List<ISeal> seals;
+    private List<ISeal> seals = new ArrayList<>();
 
     public List<ISeal> getSeals() {
         return seals;
