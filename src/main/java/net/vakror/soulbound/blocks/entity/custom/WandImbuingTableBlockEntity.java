@@ -143,7 +143,7 @@ public class WandImbuingTableBlockEntity extends BlockEntity implements MenuProv
             pBlockEntity.resetProgress();
             setChanged(pLevel, pPos, pState);
         }
-        if (pBlockEntity.itemHandler.getStackInSlot(0).getItem().equals(ModItems.SOUL.get()) && pBlockEntity.burningTime <= 0) {
+        if (pBlockEntity.itemHandler.getStackInSlot(0).getItem().equals(ModItems.SOUL.get()) && pBlockEntity.burningTime <= 0 && hasRecipe(pBlockEntity)) {
             pBlockEntity.itemHandler.getStackInSlot(0).shrink(1);
             pBlockEntity.burningTime = 200;
             setChanged(pLevel, pPos, pState);
@@ -177,7 +177,7 @@ public class WandImbuingTableBlockEntity extends BlockEntity implements MenuProv
     }
 
     private static boolean hasRecipe(WandImbuingTableBlockEntity entity) {
-        return entity.itemHandler.getStackInSlot(1).getItem() instanceof WandItem && entity.itemHandler.getStackInSlot(1).getItem() instanceof SealItem;
+        return entity.itemHandler.getStackInSlot(1).getItem() instanceof WandItem && entity.itemHandler.getStackInSlot(2).getItem() instanceof SealItem;
     }
 
     private static boolean hasNotReachedStackLimit(WandImbuingTableBlockEntity pBlockEntity) {
