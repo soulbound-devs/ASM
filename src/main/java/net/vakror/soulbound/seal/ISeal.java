@@ -5,5 +5,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public interface ISeal {
-    public void activateSeal(ItemStack stack, Entity entity, Level world, int slotNumber);
+
+    public default String getId() {
+        return "null";
+    }
 }

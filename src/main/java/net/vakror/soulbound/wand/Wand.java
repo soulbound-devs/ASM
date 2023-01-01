@@ -9,17 +9,26 @@ import java.util.List;
 
 public class Wand {
 
-    private List<ISeal> seals = new ArrayList<>();
+    private List<ISeal> seals = null;
 
     public List<ISeal> getSeals() {
+        createIfNull();
         return seals;
     }
 
     public void addSeal(String id) {
+        createIfNull();
         seals.add(SealRegistry.seals.get(id));
     }
 
+    public void createIfNull() {
+        if (this.seals == null) {
+            seals = new ArrayList<>();
+        }
+    }
+
     public void removeSeal(String id) {
+        createIfNull();
         seals.remove(SealRegistry.seals.get(id));
     }
 
@@ -40,6 +49,7 @@ public class Wand {
     }
 
     public void loadNBTData(CompoundTag nbt) {
+        createIfNull();
         if (this.seals != null) {
             for (String sealId : SealRegistry.seals.keySet()) {
                 if (nbt.getBoolean(sealId)) {

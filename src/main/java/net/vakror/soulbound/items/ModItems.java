@@ -8,6 +8,7 @@ import net.minecraftforge.registries.RegistryObject;
 import net.vakror.soulbound.SoulboundMod;
 import net.vakror.soulbound.items.custom.WandItem;
 import net.vakror.soulbound.items.custom.seals.SealItem;
+import net.vakror.soulbound.seal.seals.Seal;
 
 public class ModItems {
     public static final DeferredRegister<Item> ITEMS =
