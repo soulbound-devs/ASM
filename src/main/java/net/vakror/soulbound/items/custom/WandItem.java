@@ -1,12 +1,20 @@
 package net.vakror.soulbound.items.custom;
 
+import com.mojang.datafixers.util.Pair;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.vakror.soulbound.SoulboundMod;
@@ -14,7 +22,12 @@ import net.vakror.soulbound.seal.SealRegistry;
 import net.vakror.soulbound.wand.ItemWandProvider;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+
+import static net.minecraft.world.item.HoeItem.changeIntoState;
 
 public class WandItem extends DiggerItem {
 
@@ -50,77 +63,77 @@ public class WandItem extends DiggerItem {
     @Override
     @SuppressWarnings("all")
     public InteractionResult useOn(UseOnContext pContext) {
-//        if (!pContext.getLevel().isClientSide()) {
-//            if (hasSeal("hoeing", pContext.getItemInHand())) {
-//                int hook = net.minecraftforge.event.ForgeEventFactory.onHoeUse(pContext);
-//                if (hook != 0) return hook > 0 ? InteractionResult.SUCCESS : InteractionResult.FAIL;
-//                Level level = pContext.getLevel();
-//                BlockPos blockpos = pContext.getClickedPos();
-//                BlockState toolModifiedState = level.getBlockState(blockpos).getToolModifiedState(pContext, net.minecraftforge.common.ToolActions.HOE_TILL, false);
-//                Pair<Predicate<UseOnContext>, Consumer<UseOnContext>> pair = toolModifiedState == null ? null : Pair.of(ctx -> true, changeIntoState(toolModifiedState));
-//                if (pair == null) {
-//                    return InteractionResult.PASS;
-//                } else {
-//                    Predicate<UseOnContext> predicate = pair.getFirst();
-//                    Consumer<UseOnContext> consumer = pair.getSecond();
-//                    if (predicate.test(pContext)) {
-//                        Player player = pContext.getPlayer();
-//                        level.playSound(player, blockpos, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0F, 1.0F);
-//                        if (!level.isClientSide) {
-//                            consumer.accept(pContext);
-//                            if (player != null) {
-//                                pContext.getItemInHand().hurtAndBreak(1, player, (p_150845_) -> {
-//                                    p_150845_.broadcastBreakEvent(pContext.getHand());
-//                                });
-//                            }
-//                        }
-//
-//                        return InteractionResult.sidedSuccess(level.isClientSide);
-//                    } else {
-//                        return InteractionResult.PASS;
-//                    }
-//                }
-//            } else if (hasSeal("axing", pContext.getItemInHand())) {
-//                Level level = pContext.getLevel();
-//                BlockPos blockpos = pContext.getClickedPos();
-//                Player player = pContext.getPlayer();
-//                BlockState blockstate = level.getBlockState(blockpos);
-//                Optional<BlockState> optional = Optional.ofNullable(blockstate.getToolModifiedState(pContext, net.minecraftforge.common.ToolActions.AXE_STRIP, false));
-//                Optional<BlockState> optional1 = optional.isPresent() ? Optional.empty() : Optional.ofNullable(blockstate.getToolModifiedState(pContext, net.minecraftforge.common.ToolActions.AXE_SCRAPE, false));
-//                Optional<BlockState> optional2 = optional.isPresent() || optional1.isPresent() ? Optional.empty() : Optional.ofNullable(blockstate.getToolModifiedState(pContext, net.minecraftforge.common.ToolActions.AXE_WAX_OFF, false));
-//                ItemStack itemstack = pContext.getItemInHand();
-//                Optional<BlockState> optional3 = Optional.empty();
-//                if (optional.isPresent()) {
-//                    level.playSound(player, blockpos, SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0F, 1.0F);
-//                    optional3 = optional;
-//                } else if (optional1.isPresent()) {
-//                    level.playSound(player, blockpos, SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1.0F, 1.0F);
-//                    level.levelEvent(player, 3005, blockpos, 0);
-//                    optional3 = optional1;
-//                } else if (optional2.isPresent()) {
-//                    level.playSound(player, blockpos, SoundEvents.AXE_WAX_OFF, SoundSource.BLOCKS, 1.0F, 1.0F);
-//                    level.levelEvent(player, 3004, blockpos, 0);
-//                    optional3 = optional2;
-//                }
-//
-//                if (optional3.isPresent()) {
-//                    if (player instanceof ServerPlayer) {
-//                        CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger((ServerPlayer) player, blockpos, itemstack);
-//                    }
-//
-//                    level.setBlock(blockpos, optional3.get(), 11);
-//                    if (player != null) {
-//                        itemstack.hurtAndBreak(1, player, (p_150686_) -> {
-//                            p_150686_.broadcastBreakEvent(pContext.getHand());
-//                        });
-//                    }
-//
-//                    return InteractionResult.sidedSuccess(level.isClientSide);
-//                } else {
-//                    return InteractionResult.PASS;
-//                }
-//            }
-//        }
+        if (!pContext.getLevel().isClientSide()) {
+            if (hasSeal("hoeing", pContext.getItemInHand())) {
+                int hook = net.minecraftforge.event.ForgeEventFactory.onHoeUse(pContext);
+                if (hook != 0) return hook > 0 ? InteractionResult.SUCCESS : InteractionResult.FAIL;
+                Level level = pContext.getLevel();
+                BlockPos blockpos = pContext.getClickedPos();
+                BlockState toolModifiedState = level.getBlockState(blockpos).getToolModifiedState(pContext, net.minecraftforge.common.ToolActions.HOE_TILL, false);
+                Pair<Predicate<UseOnContext>, Consumer<UseOnContext>> pair = toolModifiedState == null ? null : Pair.of(ctx -> true, changeIntoState(toolModifiedState));
+                if (pair == null) {
+                    return InteractionResult.PASS;
+                } else {
+                    Predicate<UseOnContext> predicate = pair.getFirst();
+                    Consumer<UseOnContext> consumer = pair.getSecond();
+                    if (predicate.test(pContext)) {
+                        Player player = pContext.getPlayer();
+                        level.playSound(player, blockpos, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0F, 1.0F);
+                        if (!level.isClientSide) {
+                            consumer.accept(pContext);
+                            if (player != null) {
+                                pContext.getItemInHand().hurtAndBreak(1, player, (p_150845_) -> {
+                                    p_150845_.broadcastBreakEvent(pContext.getHand());
+                                });
+                            }
+                        }
+
+                        return InteractionResult.sidedSuccess(level.isClientSide);
+                    } else {
+                        return InteractionResult.PASS;
+                    }
+                }
+            } else if (hasSeal("axing", pContext.getItemInHand())) {
+                Level level = pContext.getLevel();
+                BlockPos blockpos = pContext.getClickedPos();
+                Player player = pContext.getPlayer();
+                BlockState blockstate = level.getBlockState(blockpos);
+                Optional<BlockState> optional = Optional.ofNullable(blockstate.getToolModifiedState(pContext, net.minecraftforge.common.ToolActions.AXE_STRIP, false));
+                Optional<BlockState> optional1 = optional.isPresent() ? Optional.empty() : Optional.ofNullable(blockstate.getToolModifiedState(pContext, net.minecraftforge.common.ToolActions.AXE_SCRAPE, false));
+                Optional<BlockState> optional2 = optional.isPresent() || optional1.isPresent() ? Optional.empty() : Optional.ofNullable(blockstate.getToolModifiedState(pContext, net.minecraftforge.common.ToolActions.AXE_WAX_OFF, false));
+                ItemStack itemstack = pContext.getItemInHand();
+                Optional<BlockState> optional3 = Optional.empty();
+                if (optional.isPresent()) {
+                    level.playSound(player, blockpos, SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0F, 1.0F);
+                    optional3 = optional;
+                } else if (optional1.isPresent()) {
+                    level.playSound(player, blockpos, SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1.0F, 1.0F);
+                    level.levelEvent(player, 3005, blockpos, 0);
+                    optional3 = optional1;
+                } else if (optional2.isPresent()) {
+                    level.playSound(player, blockpos, SoundEvents.AXE_WAX_OFF, SoundSource.BLOCKS, 1.0F, 1.0F);
+                    level.levelEvent(player, 3004, blockpos, 0);
+                    optional3 = optional2;
+                }
+
+                if (optional3.isPresent()) {
+                    if (player instanceof ServerPlayer) {
+                        CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger((ServerPlayer) player, blockpos, itemstack);
+                    }
+
+                    level.setBlock(blockpos, optional3.get(), 11);
+                    if (player != null) {
+                        itemstack.hurtAndBreak(1, player, (p_150686_) -> {
+                            p_150686_.broadcastBreakEvent(pContext.getHand());
+                        });
+                    }
+
+                    return InteractionResult.sidedSuccess(level.isClientSide);
+                } else {
+                    return InteractionResult.PASS;
+                }
+            }
+        }
         return super.useOn(pContext);
     }
 
