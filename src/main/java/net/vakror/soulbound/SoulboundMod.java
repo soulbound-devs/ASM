@@ -15,7 +15,7 @@ import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.vakror.soulbound.blocks.entity.ModBlockEntities;
-import net.vakror.soulbound.client.SoulBoundClient;
+import net.vakror.soulbound.client.SoulboundClient;
 import net.vakror.soulbound.items.ModItems;
 import net.vakror.soulbound.blocks.ModBlocks;
 import net.vakror.soulbound.networking.ModPackets;
@@ -53,7 +53,7 @@ public class SoulboundMod {
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {
-        SoulBoundClient.doClientRegister(event);
+        SoulboundClient.doClientRegister(event);
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
