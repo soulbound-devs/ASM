@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "soulbound:item/seals/blank_passive_seal"
+  }
+}
