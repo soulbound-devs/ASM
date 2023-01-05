@@ -17,7 +17,7 @@ import net.vakror.soulbound.screen.slot.ModWandSlot;
 import org.jetbrains.annotations.Nullable;
 
 public class WandImbuingMenu extends AbstractContainerMenu {
-    private final WandImbuingTableBlockEntity blockEntity;
+    public final WandImbuingTableBlockEntity blockEntity;
     private final Level level;
     private final ContainerData data;
 

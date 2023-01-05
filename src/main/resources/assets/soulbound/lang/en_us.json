@@ -3,10 +3,17 @@
   "item.soulbound.pickaxing_seal": "Pickaxing Seal",
   "item.soulbound.hoeing_seal": "Seal of Farming",
   "item.soulbound.soul": "Soul",
+  "item.soulbound.dark_soul": "Dark Soul",
+  "item.soulbound.mining_speed_seal": "Haste Seal",
   "item.soulbound.wand": "Ancient Oak Wand",
+  "item.soulbound.blank_passive_seal": "Blank Passive Seal",
+  "item.soulbound.blank_attack_seal": "Blank Attack/Defense Seal",
+  "item.soulbound.blank_amplifying_seal": "Blank Amplifying Seal",
 
 
   "block.soulbound.wand_imbuing_table": "Wand Imbuing Table",
+  "block.soulbound.ancient_oak_log": "Ancient Oak Log",
+  "block.soulbound.ancient_oak_planks": "Ancient Oak Planks",
 
   "itemGroup.soulbound": "Soulbound Tab"
 }

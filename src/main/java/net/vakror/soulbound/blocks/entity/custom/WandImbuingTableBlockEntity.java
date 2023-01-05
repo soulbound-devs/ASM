@@ -12,6 +12,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -137,6 +138,7 @@ public class WandImbuingTableBlockEntity extends BlockEntity implements MenuProv
             setChanged(pLevel, pPos, pState);
             if (pBlockEntity.progress >= pBlockEntity.maxProgress) {
                 craftItem(pBlockEntity);
+                setChanged(pLevel, pPos, pState);
             }
         }
         else {
@@ -167,7 +169,15 @@ public class WandImbuingTableBlockEntity extends BlockEntity implements MenuProv
         entity.itemHandler.setStackInSlot(3, entity.itemHandler.getStackInSlot(1));
         entity.itemHandler.getStackInSlot(3).getCapability(ItemWandProvider.WAND).ifPresent(wand -> entity.itemHandler.getStackInSlot(1).getCapability(ItemWandProvider.WAND).ifPresent(oldWand -> {
             wand.copyFrom(oldWand);
-            wand.addSeal(((SealItem) entity.itemHandler.getStackInSlot(2).getItem()).getId());
+            if (SealRegistry.passiveSeals.containsKey(((SealItem) entity.itemHandler.getStackInSlot(2).getItem()).getId())) {
+                wand.addPassiveSeal(((SealItem) entity.itemHandler.getStackInSlot(2).getItem()).getId());
+            }
+            if (SealRegistry.attackSeals.containsKey(((SealItem) entity.itemHandler.getStackInSlot(2).getItem()).getId())) {
+                wand.addAttackSeal(((SealItem) entity.itemHandler.getStackInSlot(2).getItem()).getId());
+            }
+            if (SealRegistry.amplifyingSeals.containsKey(((SealItem) entity.itemHandler.getStackInSlot(2).getItem()).getId())) {
+                wand.addAmplifyingSeal(((SealItem) entity.itemHandler.getStackInSlot(2).getItem()).getId());
+            }
         }));
         entity.itemHandler.extractItem(1, 1, false);
         entity.itemHandler.extractItem(2, 1, false);
@@ -175,8 +185,19 @@ public class WandImbuingTableBlockEntity extends BlockEntity implements MenuProv
     }
 
     private static boolean hasRecipe(WandImbuingTableBlockEntity entity) {
-        return entity.itemHandler.getStackInSlot(1).getItem() instanceof WandItem && entity.itemHandler.getStackInSlot(2).getItem() instanceof SealItem;
+        ItemStack wandStack = entity.itemHandler.getStackInSlot(1);
+        ItemStack sealStack = entity.itemHandler.getStackInSlot(2);
+        if (wandStack.isEmpty() || sealStack.isEmpty()) {
+            return false;
+        }
+        Item wandItem = wandStack.getItem();
+        if (!(wandItem instanceof WandItem)) {
+            return false;
+        }
+        int sealType = ((SealItem) sealStack.getItem()).getType();
+        return ((WandItem) wandItem).canAddSeal(wandStack, sealType);
     }
+
 
     private static boolean hasNotReachedStackLimit(WandImbuingTableBlockEntity pBlockEntity) {
         return pBlockEntity.itemHandler.getStackInSlot(3).getCount() < pBlockEntity.itemHandler.getStackInSlot(3).getMaxStackSize();

@@ -1,26 +1,39 @@
 package net.vakror.soulbound.event;
 
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.core.Holder;
+import net.minecraft.data.worldgen.placement.MiscOverworldPlacements;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.vakror.soulbound.SoulboundMod;
 import net.vakror.soulbound.items.custom.WandItem;
+import net.vakror.soulbound.model.WandModel;
 import net.vakror.soulbound.networking.ModPackets;
 import net.vakror.soulbound.networking.SyncSoulS2CPacket;
 import net.vakror.soulbound.soul.PlayerSoul;
 import net.vakror.soulbound.soul.PlayerSoulProvider;
-import net.vakror.soulbound.wand.Wand;
+import net.vakror.soulbound.wand.ItemWand;
 import net.vakror.soulbound.wand.ItemWandProvider;
+import net.vakror.soulbound.world.feature.ModPlacedFeatures;
+
+import java.util.List;
 
 public class ModEvents {
     @Mod.EventBusSubscriber(modid = SoulboundMod.MOD_ID)
@@ -41,6 +54,15 @@ public class ModEvents {
         }
 
         @SubscribeEvent
+        public static void onLoadBiomes(BiomeLoadingEvent event) {
+            if (event.getName().equals(new ResourceLocation(SoulboundMod.MOD_ID, "dead_forest"))) {
+                List<Holder<PlacedFeature>> base = event.getGeneration().getFeatures(GenerationStep.Decoration.VEGETAL_DECORATION);
+                base.add(MiscOverworldPlacements.FOREST_ROCK);
+                base.add(ModPlacedFeatures.ANCIENT_OAK_PLACED);
+            }
+        }
+
+        @SubscribeEvent
         public static void onPlayerCloned(PlayerEvent.Clone event) {
             if (event.isWasDeath()) {
                 event.getOriginal().getCapability(PlayerSoulProvider.PLAYER_SOUL).ifPresent(oldStore -> {
@@ -54,7 +76,7 @@ public class ModEvents {
         @SubscribeEvent
         public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
             event.register(PlayerSoul.class);
-            event.register(Wand.class);
+            event.register(ItemWand.class);
         }
 
         @SubscribeEvent

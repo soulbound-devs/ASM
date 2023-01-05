@@ -35,7 +35,7 @@ public class SoulHudOverlay {
 
         RenderSystem.setShaderTexture(0, DARK_SOUL_BAR);
 
-        GuiComponent.blit(poseStack, x - 175, y - 55,0, 0, Long.valueOf(Math.round((darkSoul/maxDarkSoul) * 73)).intValue(), 11,
+        GuiComponent.blit(poseStack, x - 175, y - 40,0, 0, Long.valueOf(Math.round((darkSoul/maxDarkSoul) * 73)).intValue(), 11,
                 73, 11);
 
         RenderSystem.setShaderTexture(0, SOUL_OVERLAY);

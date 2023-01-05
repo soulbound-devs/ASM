@@ -1,18 +1,17 @@
 package net.vakror.soulbound.items.custom;
 
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.client.Minecraft;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
@@ -20,16 +19,14 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.TierSortingRegistry;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.vakror.soulbound.SoulboundMod;
 import net.vakror.soulbound.seal.ISeal;
 import net.vakror.soulbound.seal.SealRegistry;
-import net.vakror.soulbound.seal.seals.Seal;
+import net.vakror.soulbound.wand.IWandTier;
 import net.vakror.soulbound.wand.ItemWandProvider;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -38,85 +35,77 @@ import static net.minecraft.world.item.HoeItem.changeIntoState;
 
 public class WandItem extends DiggerItem {
 
-    public WandItem(Properties properties) {
-        super(3, -3, Tiers.DIAMOND, BlockTags.create(new ResourceLocation(SoulboundMod.MOD_ID, "none")), properties);
-    }
+    private final IWandTier tier;
+    private ItemStack stack = null;
 
-//    @Nullable
-//    @Override
-//    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-//        return new ItemWandProvider();
-//    }
+    public WandItem(Properties properties, IWandTier tier) {
+        super(3, -3, Tiers.DIAMOND, BlockTags.create(new ResourceLocation(SoulboundMod.MOD_ID, "none")), properties);
+        this.tier = tier;
+    }
 
     @Override
     public boolean isCorrectToolForDrops(ItemStack stack, BlockState state) {
-        assert Minecraft.getInstance().player != null;
         if (TierSortingRegistry.isCorrectTierForDrops(getTier(), state)) {
-            if (!Minecraft.getInstance().player.level.isClientSide()) {
-                boolean hasAxing = hasSeal("axing", stack);
-                boolean hasPickaxing = hasSeal("pickaxing", stack);
-                boolean hasHoeing = hasSeal("hoeing", stack);
+            boolean hasAxing = hasSeal("axing", stack);
+            boolean hasPickaxing = hasSeal("pickaxing", stack);
+            boolean hasHoeing = hasSeal("hoeing", stack);
 
-                if (hasAxing && state.is(BlockTags.MINEABLE_WITH_AXE)) {
-                    System.out.println("Can mine with axe");
-                    return true;
-                }
-                if (hasPickaxing && state.is(BlockTags.MINEABLE_WITH_PICKAXE)) {
-                    System.out.println("Can mine with pickaxe");
-                    return true;
-                }
-                if (hasHoeing && state.is(BlockTags.MINEABLE_WITH_HOE)) {
-                    System.out.println("Can mine with hoe");
-                    return true;
-                }
+            if (hasAxing && state.is(BlockTags.MINEABLE_WITH_AXE)) {
+                System.out.println("Can mine with axe");
+                return true;
+            }
+            if (hasPickaxing && state.is(BlockTags.MINEABLE_WITH_PICKAXE)) {
+                System.out.println("Can mine with pickaxe");
+                return true;
+            }
+            if (hasHoeing && state.is(BlockTags.MINEABLE_WITH_HOE)) {
+                System.out.println("Can mine with hoe");
+                return true;
             }
         }
         return false;
     }
 
     @Override
+    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
+        if (hasSeal("axing", pPlayer.getItemInHand(pUsedHand))) {
+            pPlayer.getItemInHand(pUsedHand).getCapability(ItemWandProvider.WAND).ifPresent(wand -> {
+                wand.setActiveSeal(SealRegistry.allSeals.get("axing"));
+            });
+        }
+        return super.use(pLevel, pPlayer, pUsedHand);
+    }
+
+    @Override
     @SuppressWarnings("all")
     public InteractionResult useOn(UseOnContext pContext) {
-        if (!pContext.getLevel().isClientSide()) {
-            if (hasSeal("hoeing", pContext.getItemInHand())) {
-                int hook = net.minecraftforge.event.ForgeEventFactory.onHoeUse(pContext);
-                if (hook != 0) return hook > 0 ? InteractionResult.SUCCESS : InteractionResult.FAIL;
-                Level level = pContext.getLevel();
-                BlockPos blockpos = pContext.getClickedPos();
-                BlockState toolModifiedState = level.getBlockState(blockpos).getToolModifiedState(pContext, net.minecraftforge.common.ToolActions.HOE_TILL, false);
-                Pair<Predicate<UseOnContext>, Consumer<UseOnContext>> pair = toolModifiedState == null ? null : Pair.of(ctx -> true, changeIntoState(toolModifiedState));
-                if (pair == null) {
-                    return InteractionResult.PASS;
-                } else {
-                    Predicate<UseOnContext> predicate = pair.getFirst();
-                    Consumer<UseOnContext> consumer = pair.getSecond();
-                    if (predicate.test(pContext)) {
-                        Player player = pContext.getPlayer();
-                        level.playSound(player, blockpos, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0F, 1.0F);
-                        if (!level.isClientSide) {
-                            consumer.accept(pContext);
-                            if (player != null) {
-                                pContext.getItemInHand().hurtAndBreak(1, player, (p_150845_) -> {
-                                    p_150845_.broadcastBreakEvent(pContext.getHand());
-                                });
-                            }
-                        }
-
-                        return InteractionResult.sidedSuccess(level.isClientSide);
-                    } else {
-                        return InteractionResult.PASS;
-                    }
-                }
-            } else if (hasSeal("axing", pContext.getItemInHand())) {
-            }
+        if (hasSeal("hoeing", pContext.getItemInHand())) {
+            Items.DIAMOND_HOE.useOn(pContext);
+        }
+        if (hasSeal("axing", pContext.getItemInHand())) {
+            Items.DIAMOND_AXE.useOn(pContext);
         }
         return super.useOn(pContext);
+    }
+
+    @Override
+    public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected) {
+        this.stack = pStack;
+        super.inventoryTick(pStack, pLevel, pEntity, pSlotId, pIsSelected);
+    }
+
+    @Override
+    public float getDestroySpeed(ItemStack pStack, BlockState pState) {
+        if (isCorrectToolForDrops(pStack, pState)) {
+            return hasSeal("mining_speed", pStack) ? this.speed * 2: this.speed;
+        }
+        return 1.0f;
     }
 
     public boolean hasSeal(String sealID, ItemStack stack) {
         AtomicBoolean toReturn = new AtomicBoolean(false);
         stack.getCapability(ItemWandProvider.WAND).ifPresent(wand -> {
-            if (wand.getSeals().contains(SealRegistry.seals.get(sealID))) {
+            if (wand.getAttackSeals().contains(SealRegistry.allSeals.get(sealID)) || wand.getPassiveSeals().contains(SealRegistry.allSeals.get(sealID)) || wand.getAmplifyingSeals().contains(SealRegistry.allSeals.get(sealID))) {
                 toReturn.set(true);
             }
         });
@@ -124,12 +113,74 @@ public class WandItem extends DiggerItem {
     }
 
     @Override
+    public float getAttackDamage() {
+        if (stack != null) {
+            if (hasSeal("swording", stack)) {
+                return attackDamageBaseline * 2;
+            }
+        }
+        return super.getAttackDamage();
+    }
+
+    public boolean canAddSeal(ItemStack stack, int type) {
+        AtomicBoolean toReturn = new AtomicBoolean(false);
+        if (type == 0) {
+            int passiveSealSlots = tier.getPassiveSlots();
+            stack.getCapability(ItemWandProvider.WAND).ifPresent(wand -> {
+                toReturn.set(wand.getPassiveSeals().size() < passiveSealSlots);
+            });
+        }
+        else if (type == 1) {
+            int attackSealSlots = tier.getAttackSlots();
+            stack.getCapability(ItemWandProvider.WAND).ifPresent(wand -> {
+                toReturn.set(wand.getAttackSeals().size() < attackSealSlots);
+            });
+        }
+        else if (type == 2) {
+            int amplifyingSealSlots = tier.getAmplificationSlots();
+            stack.getCapability(ItemWandProvider.WAND).ifPresent(wand -> {
+                toReturn.set(wand.getAmplifyingSeals().size() < amplifyingSealSlots);
+            });
+        }
+        return toReturn.get();
+    }
+
+    @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, tooltip, pIsAdvanced);
-        tooltip.add(new TextComponent("Seals:"));
+        tooltip.add(new TextComponent("Passive Seals:"));
         pStack.getCapability(ItemWandProvider.WAND).ifPresent(itemWand -> {
-            for (ISeal seal: itemWand.getSeals()) {
-                tooltip.add(new TextComponent("    " + capitalizeString(seal.getId())));
+            int a = 0;
+            for (ISeal seal: itemWand.getPassiveSeals()) {
+                tooltip.add(new TextComponent("    " + capitalizeString(seal.getId())).withStyle(ChatFormatting.AQUA));
+                a++;
+            }
+            if (a <= tier.getPassiveSlots()) {
+                for (int i = a; i < tier.getPassiveSlots(); i++) {
+                    tooltip.add(new TextComponent("    Slot " + (i + 1) + " is empty").withStyle(ChatFormatting.DARK_GREEN));
+                }
+            }
+            tooltip.add(new TextComponent("Offensive/Defensive Seals:"));
+            int b = 0;
+            for (ISeal seal: itemWand.getAttackSeals()) {
+                tooltip.add(new TextComponent("    " + capitalizeString(seal.getId())).withStyle(ChatFormatting.RED));
+                b++;
+            }
+            if (b <= tier.getAttackSlots()) {
+                for (int i = b; i < tier.getAttackSlots(); i++) {
+                    tooltip.add(new TextComponent("    Slot " + (i + 1) + " is empty").withStyle(ChatFormatting.DARK_GREEN));
+                }
+            }
+            tooltip.add(new TextComponent("Amplifying Seals:"));
+            int c = 0;
+            for (ISeal seal: itemWand.getAmplifyingSeals()) {
+                tooltip.add(new TextComponent("    " + capitalizeString(seal.getId())).withStyle(ChatFormatting.GOLD));
+                c++;
+            }
+            if (c <= tier.getAmplificationSlots()) {
+                for (int i = c; i < tier.getAmplificationSlots(); i++) {
+                    tooltip.add(new TextComponent("    Slot " + (i + 1) + " is empty").withStyle(ChatFormatting.DARK_GREEN));
+                }
             }
         });
     }
@@ -138,7 +189,9 @@ public class WandItem extends DiggerItem {
         char[] chars = string.toLowerCase().toCharArray();
         boolean found = false;
         for (int i = 0; i < chars.length; i++) {
-            if (!found && Character.isLetter(chars[i])) {
+            if ('_' == chars[i]) {
+                chars[i] = ' ';
+            } else if (!found && Character.isLetter(chars[i])) {
                 chars[i] = Character.toUpperCase(chars[i]);
                 found = true;
             } else if (Character.isWhitespace(chars[i]) || chars[i]=='.') { // You can add other chars here

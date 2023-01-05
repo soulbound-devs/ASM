@@ -1,17 +1,23 @@
 package net.vakror.soulbound.blocks;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.*;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.vakror.soulbound.SoulboundMod;
+import net.vakror.soulbound.blocks.custom.ModFlammableRotatedPillarBlock;
 import net.vakror.soulbound.blocks.custom.WandImbuingTableBlock;
 import net.vakror.soulbound.items.ModCreativeModeTab;
 import net.vakror.soulbound.items.ModItems;
@@ -25,10 +31,28 @@ public class ModBlocks {
             DeferredRegister.create(ForgeRegistries.BLOCKS, SoulboundMod.MOD_ID);
 
     public static final RegistryObject<Block> WAND_IMBUING_TABLE = registerBlock("wand_imbuing_table",
-            () -> new WandImbuingTableBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(5).requiresCorrectToolForDrops()), ModCreativeModeTab.SOULBOUND);
+            () -> new WandImbuingTableBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(5).requiresCorrectToolForDrops().noOcclusion()), ModCreativeModeTab.SOULBOUND);
 
+    public static final RegistryObject<Block> ANCIENT_OAK_LOG = registerBlock("ancient_oak_log",
+            () -> new ModFlammableRotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LOG)), ModCreativeModeTab.SOULBOUND);
 
+    public static final RegistryObject<Block> ANCIENT_OAK_PLANKS = registerBlock("ancient_oak_planks",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)) {
+                @Override
+                public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+                    return true;
+                }
 
+                @Override
+                public int getFlammability(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+                    return 20;
+                }
+
+                @Override
+                public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+                    return 5;
+                }
+            }, ModCreativeModeTab.SOULBOUND);
 
 
     private static <T extends Block> RegistryObject<T> registerBlockWithoutBlockItem(String name, Supplier<T> block) {

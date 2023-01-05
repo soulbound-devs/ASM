@@ -8,17 +8,17 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class ItemWandProvider implements ICapabilitySerializable<CompoundTag> {
-    public static Capability<Wand> WAND = CapabilityManager.get(new CapabilityToken<Wand>() { });
+    public static Capability<ItemWand> WAND = CapabilityManager.get(new CapabilityToken<ItemWand>() { });
 
-    private Wand wand = null;
-    private final LazyOptional<Wand> optional = LazyOptional.of(this::createWand);
+    private ItemWand itemWand = null;
+    private final LazyOptional<ItemWand> optional = LazyOptional.of(this::createWand);
 
-    private @NotNull Wand createWand() {
-        if (this.wand == null) {
-            this.wand = new Wand();
+    private @NotNull ItemWand createWand() {
+        if (this.itemWand == null) {
+            this.itemWand = new ItemWand();
         }
 
-        return this.wand;
+        return this.itemWand;
     }
 
     @NotNull

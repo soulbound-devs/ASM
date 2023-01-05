@@ -12,6 +12,6 @@ public class SoulboundClient {
     public static void doClientRegister(final FMLClientSetupEvent event) {
         MenuScreens.register(ModMenuTypes.WAND_IMBUING_MENU.get(), WandImbuingScreen::new);
 
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.WAND_IMBUING_TABLE.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.WAND_IMBUING_TABLE.get(), RenderType.translucent());
     }
 }
