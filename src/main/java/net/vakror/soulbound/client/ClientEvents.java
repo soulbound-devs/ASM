@@ -1,4 +1,4 @@
-package net.vakror.soulbound.event;
+package net.vakror.soulbound.client;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.gui.OverlayRegistry;
