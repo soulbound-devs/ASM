@@ -11,6 +11,25 @@ public class ItemWand {
     private List<ISeal> passiveSeals = null;
     private List<ISeal> attackSeals = null;
     private List<ISeal> amplifyingSeals = null;
+    private int selectedSealSlot = 1;
+    private boolean selectedIsAttack = false;
+
+    public boolean isSelectedIsAttack() {
+        return selectedIsAttack;
+    }
+
+    public void setSelectedIsAttack(boolean selectedIsAttack) {
+        this.selectedIsAttack = selectedIsAttack;
+    }
+
+    public int getSelectedSealSlot() {
+        return selectedSealSlot;
+    }
+
+    public void setSelectedSealSlot(int selectedSealSlot) {
+        this.selectedSealSlot = selectedSealSlot;
+    }
+
 
     private ISeal activeSeal = null;
 
@@ -25,6 +44,13 @@ public class ItemWand {
 
     public void setActiveSeal(ISeal seal) {
         activeSeal = seal;
+    }
+
+    public List<ISeal> getAllActivatableSeals() {
+        List<ISeal> seals = new ArrayList<ISeal>();
+        seals.addAll(passiveSeals);
+        seals.addAll(attackSeals);
+        return seals;
     }
 
     public List<ISeal> getAttackSeals() {
@@ -97,6 +123,8 @@ public class ItemWand {
             if (activeSeal != null) {
                 nbt.putString("active_seal", activeSeal.getId());
             }
+            nbt.putInt("active_slot", selectedSealSlot);
+            nbt.putBoolean("active_slot_attack", selectedIsAttack);
         }
     }
 
@@ -118,5 +146,7 @@ public class ItemWand {
             }
         }
         activeSeal = SealRegistry.allSeals.get(nbt.getString("active_seal"));
+        selectedSealSlot = nbt.getInt("active_slot");
+        selectedIsAttack = nbt.getBoolean("active_slot_attack");
     }
 }
