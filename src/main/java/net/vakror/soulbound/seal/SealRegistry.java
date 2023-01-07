@@ -13,11 +13,11 @@ public class SealRegistry {
     public static Map<String, ISeal> amplifyingSeals = new HashMap<>();
 
     public static void registerSeals() {
-        addAttackSeal("axing", new Seal("axing"));
-        addPassiveSeal("pickaxing", new Seal("pickaxing"));
-        addPassiveSeal("hoeing", new Seal("hoeing"));
+        addAttackSeal("axing", new Seal("axing", true));
+        addPassiveSeal("pickaxing", new Seal("pickaxing", true));
+        addPassiveSeal("hoeing", new Seal("hoeing", true));
         addAmplifyingSealSeal("mining_speed", new Seal("mining_speed"));
-        addAttackSeal("swording", new Seal("swording"));
+        addAttackSeal("swording", new Seal("swording", true));
     }
 
     public static void addPassiveSeal(String name, ISeal seal) {

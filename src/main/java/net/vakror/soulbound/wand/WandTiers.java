@@ -12,6 +12,12 @@ public enum WandTiers implements IWandTier{
         this.attackSlots = attackSlots;
         this.amplificationSlots = amplificationSlots;
     }
+
+    @Override
+    public int getActivatableSlots() {
+        return passiveSlots + attackSlots;
+    }
+
     @Override
     public int getPassiveSlots() {
         return passiveSlots;
