@@ -26,6 +26,7 @@ import net.vakror.soulbound.items.custom.seals.SealItem;
 import net.vakror.soulbound.networking.ModPackets;
 import net.vakror.soulbound.seal.ISeal;
 import net.vakror.soulbound.seal.SealRegistry;
+import net.vakror.soulbound.seal.seals.Seal;
 import net.vakror.soulbound.wand.IWandTier;
 import net.vakror.soulbound.wand.ItemWandProvider;
 import org.jetbrains.annotations.Nullable;
@@ -199,9 +200,14 @@ public class WandItem extends DiggerItem {
         super.appendHoverText(pStack, pLevel, tooltip, pIsAdvanced);
         tooltip.add(new TextComponent("Passive Seals:"));
         pStack.getCapability(ItemWandProvider.WAND).ifPresent(itemWand -> {
+            ISeal activeSeal = itemWand.getActiveSeal();
             int a = 0;
             for (ISeal seal: itemWand.getPassiveSeals()) {
-                tooltip.add(new TextComponent("    " + capitalizeString(seal.getId())).withStyle(ChatFormatting.AQUA));
+                String active = "";
+                if (activeSeal != null) {
+                       active = (activeSeal.getId().equals(seal.getId())) ? "\uE001": "";
+                }
+                tooltip.add(new TextComponent("    " + active + " " + capitalizeString(seal.getId())).withStyle(ChatFormatting.AQUA));
                 a++;
             }
             if (a <= tier.getPassiveSlots()) {
@@ -212,7 +218,11 @@ public class WandItem extends DiggerItem {
             tooltip.add(new TextComponent("Offensive/Defensive Seals:"));
             int b = 0;
             for (ISeal seal: itemWand.getAttackSeals()) {
-                tooltip.add(new TextComponent("    " + capitalizeString(seal.getId())).withStyle(ChatFormatting.RED));
+                String active = "";
+                if (activeSeal != null) {
+                       active = (activeSeal.getId().equals(seal.getId())) ? "\uE001": "";
+                }
+                tooltip.add(new TextComponent("    " + active + " " + capitalizeString(seal.getId())).withStyle(ChatFormatting.RED));
                 b++;
             }
             if (b <= tier.getAttackSlots()) {
@@ -223,7 +233,11 @@ public class WandItem extends DiggerItem {
             tooltip.add(new TextComponent("Amplifying Seals:"));
             int c = 0;
             for (ISeal seal: itemWand.getAmplifyingSeals()) {
-                tooltip.add(new TextComponent("    " + capitalizeString(seal.getId())).withStyle(ChatFormatting.GOLD));
+                String active = "";
+                if (activeSeal != null) {
+                       active = (activeSeal.getId().equals(seal.getId())) ? "\uE001": "";
+                }
+                tooltip.add(new TextComponent("    " + active + " " + capitalizeString(seal.getId())).withStyle(ChatFormatting.GOLD));
                 c++;
             }
             if (c <= tier.getAmplificationSlots()) {
