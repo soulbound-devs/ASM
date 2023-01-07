@@ -195,7 +195,7 @@ public class WandImbuingTableBlockEntity extends BlockEntity implements MenuProv
             return false;
         }
         int sealType = ((SealItem) sealStack.getItem()).getType();
-        return ((WandItem) wandItem).canAddSeal(wandStack, sealType);
+        return ((WandItem) wandItem).canAddSeal(wandStack, sealType, sealStack);
     }
 
 

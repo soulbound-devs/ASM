@@ -22,6 +22,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.TierSortingRegistry;
 import net.vakror.soulbound.SoulboundMod;
+import net.vakror.soulbound.items.custom.seals.SealItem;
 import net.vakror.soulbound.networking.ModPackets;
 import net.vakror.soulbound.seal.ISeal;
 import net.vakror.soulbound.seal.SealRegistry;
@@ -161,24 +162,33 @@ public class WandItem extends DiggerItem {
         return super.getAttackDamage();
     }
 
-    public boolean canAddSeal(ItemStack stack, int type) {
+    public boolean canAddSeal(ItemStack stack, int type, ItemStack sealStack) {
         AtomicBoolean toReturn = new AtomicBoolean(false);
         if (type == 0) {
             int passiveSealSlots = tier.getPassiveSlots();
             stack.getCapability(ItemWandProvider.WAND).ifPresent(wand -> {
-                toReturn.set(wand.getPassiveSeals().size() < passiveSealSlots);
+                String id = ((SealItem) sealStack.getItem()).getId();
+                if (!wand.getPassiveSeals().contains(SealRegistry.passiveSeals.get(id))) {
+                    toReturn.set(wand.getPassiveSeals().size() < passiveSealSlots);
+                }
             });
         }
         else if (type == 1) {
             int attackSealSlots = tier.getAttackSlots();
             stack.getCapability(ItemWandProvider.WAND).ifPresent(wand -> {
-                toReturn.set(wand.getAttackSeals().size() < attackSealSlots);
+                String id = ((SealItem) sealStack.getItem()).getId();
+                if (!wand.getAttackSeals().contains(SealRegistry.attackSeals.get(id))) {
+                    toReturn.set(wand.getPassiveSeals().size() < attackSealSlots);
+                }
             });
         }
         else if (type == 2) {
             int amplifyingSealSlots = tier.getAmplificationSlots();
             stack.getCapability(ItemWandProvider.WAND).ifPresent(wand -> {
-                toReturn.set(wand.getAmplifyingSeals().size() < amplifyingSealSlots);
+                String id = ((SealItem) sealStack.getItem()).getId();
+                if (!wand.getAmplifyingSeals().contains(SealRegistry.amplifyingSeals.get(id))) {
+                    toReturn.set(wand.getAmplifyingSeals().size() < amplifyingSealSlots);
+                }
             });
         }
         return toReturn.get();
