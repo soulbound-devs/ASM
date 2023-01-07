@@ -205,7 +205,7 @@ public class WandItem extends DiggerItem {
             for (ISeal seal: itemWand.getPassiveSeals()) {
                 String active = "";
                 if (activeSeal != null) {
-                       active = (activeSeal.getId().equals(seal.getId())) ? "\uE001": "";
+                       active = (activeSeal.getId().equals(seal.getId())) ? "\uEff1": "";
                 }
                 tooltip.add(new TextComponent("    " + active + " " + capitalizeString(seal.getId())).withStyle(ChatFormatting.AQUA));
                 a++;
@@ -220,7 +220,7 @@ public class WandItem extends DiggerItem {
             for (ISeal seal: itemWand.getAttackSeals()) {
                 String active = "";
                 if (activeSeal != null) {
-                       active = (activeSeal.getId().equals(seal.getId())) ? "\uE001": "";
+                       active = (activeSeal.getId().equals(seal.getId())) ? "\uEff1": "";
                 }
                 tooltip.add(new TextComponent("    " + active + " " + capitalizeString(seal.getId())).withStyle(ChatFormatting.RED));
                 b++;
@@ -235,7 +235,7 @@ public class WandItem extends DiggerItem {
             for (ISeal seal: itemWand.getAmplifyingSeals()) {
                 String active = "";
                 if (activeSeal != null) {
-                       active = (activeSeal.getId().equals(seal.getId())) ? "\uE001": "";
+                       active = (activeSeal.getId().equals(seal.getId())) ? "\uEff1": "";
                 }
                 tooltip.add(new TextComponent("    " + active + " " + capitalizeString(seal.getId())).withStyle(ChatFormatting.GOLD));
                 c++;
