@@ -6,19 +6,14 @@
   },
   "wand": {
     "wand": "soulbound:item/wands/wand",
-
-    "seals": [{
-      "type": "passive",
-      "textures": {
+    "seals": [
+      {
         "pickaxing": "soulbound:item/wands/activated/pickaxing",
-        "shoveling": "soulbound:item/wands/activated/axing"
-      }
-    }, {
-      "type": "offensive",
-      "textures": {
+        "hoeing": "soulbound:item/wands/activated/axing",
+        "shoveling": "soulbound:item/wands/activated/axing",
         "axing": "soulbound:item/wands/activated/axing",
         "scythe": "soulbound:item/wands/activated/scythe"
       }
-    }]
+    ]
   }
 }

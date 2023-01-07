@@ -61,15 +61,12 @@ public enum MealModelLoader implements IModelLoader<MealModel>{
 	}
 	
 	public static class TypedTextures{
-		private final String type;
 		private final ImmutableMap<String, ResourceLocation> textures;
 		
 		private TypedTextures(JsonObject elementIn){
-			this.type = elementIn.get("type").getAsString();
-			
+
 			Map<String, ResourceLocation> map = new HashMap<>();
-			JsonObject jsonObject = elementIn.get("textures").getAsJsonObject();
-			for(Entry<String, JsonElement> entry : jsonObject.entrySet()){
+			for(Entry<String, JsonElement> entry : elementIn.entrySet()){
 				ResourceLocation location = new ResourceLocation(entry.getValue().getAsString());
 				map.put(entry.getKey(), location);
 			}
@@ -77,14 +74,10 @@ public enum MealModelLoader implements IModelLoader<MealModel>{
 			this.textures = ImmutableMap.copyOf(map);
 		}
 
-		public String getType(){
-			return type;
-		}
-
 		public ImmutableMap<String, ResourceLocation> getTextures(){
 			return textures;
 		}
-		
+
 		@Nullable
 		public TextureAtlasSprite getSprite(String name, Function<Material, TextureAtlasSprite> spriteGetter){
 			ResourceLocation location = this.textures.get(name);
