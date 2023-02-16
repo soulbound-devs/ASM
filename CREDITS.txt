@@ -3,4 +3,4 @@ Textures By Stormy:
 
 Development:
   James AKA Vakror Alor AKA Viktor Aylor:
-    github.com/vaylor27
+    https://www.github.com/vaylor27/
