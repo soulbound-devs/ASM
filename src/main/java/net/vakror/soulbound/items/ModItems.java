@@ -1,6 +1,8 @@
 package net.vakror.soulbound.items;
 
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -9,6 +11,7 @@ import net.vakror.soulbound.SoulboundMod;
 import net.vakror.soulbound.items.custom.WandItem;
 import net.vakror.soulbound.items.custom.seals.SealItem;
 import net.vakror.soulbound.seal.seals.Seal;
+import net.vakror.soulbound.soul.ModSoul;
 import net.vakror.soulbound.wand.WandTiers;
 
 public class ModItems {
@@ -31,7 +34,7 @@ public class ModItems {
             () -> new SealItem(new Item.Properties().tab(ModCreativeModeTab.SOULBOUND), "mining_speed", 2));
 
     public static final RegistryObject<Item> SWORDING_SEAL = ITEMS.register("swording_seal",
-            () -> new SealItem(new Item.Properties().tab(ModCreativeModeTab.SOULBOUND), "swording_seal", 1));
+            () -> new SealItem(new Item.Properties().tab(ModCreativeModeTab.SOULBOUND), "swording", 1));
 
     public static final RegistryObject<Item> SOUL = ITEMS.register("soul",
             () -> new Item(new Item.Properties().tab(ModCreativeModeTab.SOULBOUND)));
@@ -47,6 +50,12 @@ public class ModItems {
 
     public static final RegistryObject<Item> BLANK_AMPLIFYING_SEAL = ITEMS.register("blank_amplifying_seal",
             () -> new Item(new Item.Properties().tab(ModCreativeModeTab.SOULBOUND)));
+
+    public static final RegistryObject<Item> SOUL_BUCKET = ITEMS.register("soul_bucket",
+            () -> new BucketItem(ModSoul.SOURCE_SOUL, new Item.Properties().tab(ModCreativeModeTab.SOULBOUND).stacksTo(1).craftRemainder(Items.BUCKET)));
+
+    public static final RegistryObject<Item> DARK_SOUL_BUCKET = ITEMS.register("dark_soul_bucket",
+            () -> new BucketItem(ModSoul.SOURCE_DARK_SOUL, new Item.Properties().tab(ModCreativeModeTab.SOULBOUND).stacksTo(1).craftRemainder(Items.BUCKET)));
 
 
     public static void register(IEventBus eventBus) {
