@@ -1,16 +1,23 @@
 package net.vakror.soulbound.wand;
 
-public enum WandTiers implements IWandTier{
-    ANCIENT_OAK(1, 1, 2);
+public enum WandTiers implements IWandTier {
+    ANCIENT_OAK(0, 1, 1, 2);
 
     private final int passiveSlots;
     private final int attackSlots;
     private final int amplificationSlots;
+    private final int tier;
 
-    WandTiers(int passiveSlots, int attackSlots, int amplificationSlots) {
+    WandTiers(int tier, int passiveSlots, int attackSlots, int amplificationSlots) {
+        this.tier = tier;
         this.passiveSlots = passiveSlots;
         this.attackSlots = attackSlots;
         this.amplificationSlots = amplificationSlots;
+    }
+
+    @Override
+    public int getTier() {
+        return tier;
     }
 
     @Override
