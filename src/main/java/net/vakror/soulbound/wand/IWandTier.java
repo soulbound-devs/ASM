@@ -5,4 +5,5 @@ public interface IWandTier {
     int getAttackSlots();
     int getAmplificationSlots();
     int getActivatableSlots();
+    int getTier();
 }
