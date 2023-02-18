@@ -4,7 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.client.gui.IIngameOverlay;
+import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import net.vakror.soulbound.SoulboundMod;
 
 public class SoulHudOverlay {
@@ -15,7 +15,7 @@ public class SoulHudOverlay {
     private static final ResourceLocation DARK_SOUL_BAR = new ResourceLocation(SoulboundMod.MOD_ID,
             "textures/gui/dark_soul.png");
 
-    public static final IIngameOverlay HUD_SOUL = ((gui, poseStack, partialTick, width, height) -> {
+    public static final IGuiOverlay HUD_SOUL = ((gui, poseStack, partialTick, width, height) -> {
         int x = width / 2;
         int y = height;
 
