@@ -9,11 +9,17 @@
   "item.soulbound.blank_passive_seal": "Blank Passive Seal",
   "item.soulbound.blank_attack_seal": "Blank Attack/Defense Seal",
   "item.soulbound.blank_amplifying_seal": "Blank Amplifying Seal",
+  "item.soulbound.swording_seal": "Swording Seal",
+  "item.soulbound.soul_bucket": "Bucket of Soul",
+  "item.soulbound.dark_soul_bucket": "Bucket of Dark Soul",
 
 
   "block.soulbound.wand_imbuing_table": "Wand Imbuing Table",
   "block.soulbound.ancient_oak_log": "Ancient Oak Log",
   "block.soulbound.ancient_oak_planks": "Ancient Oak Planks",
+  "block.soulbound.corrupted_log": "Corrupted Log",
+  "block.soulbound.corrupted_planks": "Corrupted Planks",
+  "block.soulbound.corrupted_leaves": "Corrupted Leaves",
 
   "itemGroup.soulbound": "Soulbound Tab"
 }

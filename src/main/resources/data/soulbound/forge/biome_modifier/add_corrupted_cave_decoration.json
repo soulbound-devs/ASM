@@ -1,0 +1,11 @@
+{
+  "type": "forge:add_features",
+  "biomes": "soulbound:corrupted_cave",
+  "features": [
+    "soulbound:corrupted_tree_placed",
+    "minecraft:sculk_patch_deep_dark",
+    "minecraft:sculk_patch_ancient_city",
+    "minecraft:sculk_vein"
+  ],
+  "step": "vegetal_decoration"
+}
