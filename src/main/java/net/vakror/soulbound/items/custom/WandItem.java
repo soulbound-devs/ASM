@@ -1,17 +1,12 @@
 package net.vakror.soulbound.items.custom;
 
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.protocol.game.ClientboundSetActionBarTextPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -25,25 +20,18 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.TierSortingRegistry;
 import net.vakror.soulbound.SoulboundMod;
 import net.vakror.soulbound.items.custom.seals.SealItem;
-import net.vakror.soulbound.networking.ModPackets;
 import net.vakror.soulbound.seal.ISeal;
 import net.vakror.soulbound.seal.SealRegistry;
-import net.vakror.soulbound.seal.seals.Seal;
 import net.vakror.soulbound.wand.IWandTier;
 import net.vakror.soulbound.wand.ItemWandProvider;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-
-import static net.minecraft.world.item.HoeItem.changeIntoState;
 
 public class WandItem extends DiggerItem {
 
     private final IWandTier tier;
-    private ItemStack stack = null;
 
     public WandItem(Properties properties, IWandTier tier) {
         super(3, -3, Tiers.DIAMOND, BlockTags.create(new ResourceLocation(SoulboundMod.MOD_ID, "none")), properties);
@@ -73,7 +61,6 @@ public class WandItem extends DiggerItem {
         return false;
     }
 
-
     @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         if (!pLevel.isClientSide) {
@@ -92,7 +79,7 @@ public class WandItem extends DiggerItem {
                     String selectedSealName = "";
                     if (itemWand.getAllActivatableSeals().size() > itemWand.getSelectedSealSlot() - 1) {
                         selectedSealName = capitalizeString(itemWand.getAllActivatableSeals().get(itemWand.getSelectedSealSlot() - 1).getId());
-                        ((ServerPlayer) pPlayer).connection.send(new ClientboundSetActionBarTextPacket(new TextComponent("Selected " + mode + " Slot: " + readableSlot + " (" + selectedSealName + ")")));
+                        ((ServerPlayer) pPlayer).connection.send(new ClientboundSetActionBarTextPacket(Component.literal("Selected " + mode + " Slot: " + readableSlot + " (" + selectedSealName + ")")));
                     }
                 });
             }
@@ -110,7 +97,7 @@ public class WandItem extends DiggerItem {
                         }
                     }
                     else if (wand.getActiveSeal() == null && !wand.isSelectedIsAttack()){
-                        if (wand.getPassiveSeals().get(wand.getSelectedSealSlot() - 1) != null) {
+                        if (wand.getPassiveSeals().size() != 0 && wand.getPassiveSeals().get(wand.getSelectedSealSlot() - 1) != null) {
                             wand.setActiveSeal(wand.getPassiveSeals().get(wand.getSelectedSealSlot() - 1));
                         }
                     }
@@ -135,7 +122,13 @@ public class WandItem extends DiggerItem {
 
     @Override
     public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected) {
-        this.stack = pStack;
+        pStack.getCapability(ItemWandProvider.WAND).ifPresent(wand -> {
+            if (wand.getActiveSeal() != null) {
+                attackDamageBaseline *= wand.getActiveSeal().equals(SealRegistry.attackSeals.get("swording")) ? 2 : 1;
+                attackDamageBaseline *= wand.getActiveSeal().equals(SealRegistry.attackSeals.get("axing")) ? 2.6 : 1;
+                attackDamageBaseline *= wand.getActiveSeal().equals(SealRegistry.attackSeals.get("scythe")) ? 3.2 : 1;
+            }
+        });
         super.inventoryTick(pStack, pLevel, pEntity, pSlotId, pIsSelected);
     }
 
@@ -158,13 +151,8 @@ public class WandItem extends DiggerItem {
     }
 
     @Override
-    public float getAttackDamage() {
-        if (stack != null) {
-            if (hasSeal("swording", stack)) {
-                return attackDamageBaseline * 2;
-            }
-        }
-        return super.getAttackDamage();
+    public int getDamage(ItemStack stack) {
+        return super.getDamage(stack);
     }
 
     public boolean canAddSeal(ItemStack stack, int type, ItemStack sealStack) {
@@ -202,7 +190,7 @@ public class WandItem extends DiggerItem {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, tooltip, pIsAdvanced);
-        tooltip.add(new TextComponent("Passive Seals:"));
+        tooltip.add(Component.literal("Passive Seals:"));
         pStack.getCapability(ItemWandProvider.WAND).ifPresent(itemWand -> {
             ISeal activeSeal = itemWand.getActiveSeal();
             int a = 0;
@@ -211,38 +199,38 @@ public class WandItem extends DiggerItem {
                 if (activeSeal != null) {
                     active = (activeSeal.getId().equals(seal.getId())) ? "\uEff1": "";
                 }
-                tooltip.add(new TextComponent("    " + active + " " + capitalizeString(seal.getId())).withStyle(new Style(TextColor.fromLegacyFormat(ChatFormatting.AQUA), false, false, false, false, false, null, null, null, new ResourceLocation(SoulboundMod.MOD_ID, "wand"))));
+                tooltip.add(Component.literal("    " + active + " " + capitalizeString(seal.getId())).withStyle(new Style(TextColor.fromLegacyFormat(ChatFormatting.AQUA), false, false, false, false, false, null, null, null, new ResourceLocation(SoulboundMod.MOD_ID, "wand"))));
                 a++;
             }
             if (a <= tier.getPassiveSlots()) {
                 for (int i = a; i < tier.getPassiveSlots(); i++) {
-                    tooltip.add(new TextComponent("    Slot " + (i + 1) + " is empty").withStyle(ChatFormatting.DARK_GREEN));
+                    tooltip.add(Component.literal("    Slot " + (i + 1) + " is empty").withStyle(ChatFormatting.DARK_GREEN));
                 }
             }
-            tooltip.add(new TextComponent("Offensive/Defensive Seals:"));
+            tooltip.add(Component.literal("Offensive/Defensive Seals:"));
             int b = 0;
             for (ISeal seal: itemWand.getAttackSeals()) {
                 String active = "";
                 if (activeSeal != null) {
                     active = (activeSeal.getId().equals(seal.getId())) ? "\uEff1": "";
                 }
-                tooltip.add(new TextComponent("    " + active + " " + capitalizeString(seal.getId())).withStyle(new Style(TextColor.fromLegacyFormat(ChatFormatting.RED), false, false, false, false, false, null, null, null, new ResourceLocation(SoulboundMod.MOD_ID, "wand"))));
+                tooltip.add(Component.literal("    " + active + " " + capitalizeString(seal.getId())).withStyle(new Style(TextColor.fromLegacyFormat(ChatFormatting.RED), false, false, false, false, false, null, null, null, new ResourceLocation(SoulboundMod.MOD_ID, "wand"))));
                 b++;
             }
             if (b <= tier.getAttackSlots()) {
                 for (int i = b; i < tier.getAttackSlots(); i++) {
-                    tooltip.add(new TextComponent("    Slot " + (i + 1) + " is empty").withStyle(ChatFormatting.DARK_GREEN));
+                    tooltip.add(Component.literal("    Slot " + (i + 1) + " is empty").withStyle(ChatFormatting.DARK_GREEN));
                 }
             }
-            tooltip.add(new TextComponent("Amplifying Seals:"));
+            tooltip.add(Component.literal("Amplifying Seals:"));
             int c = 0;
             for (ISeal seal: itemWand.getAmplifyingSeals()) {
-                tooltip.add(new TextComponent("    " + capitalizeString(seal.getId())).withStyle(ChatFormatting.GOLD));
+                tooltip.add(Component.literal("    " + capitalizeString(seal.getId())).withStyle(ChatFormatting.GOLD));
                 c++;
             }
             if (c <= tier.getAmplificationSlots()) {
                 for (int i = c; i < tier.getAmplificationSlots(); i++) {
-                    tooltip.add(new TextComponent("    Slot " + (i + 1) + " is empty").withStyle(ChatFormatting.DARK_GREEN));
+                    tooltip.add(Component.literal("    Slot " + (i + 1) + " is empty").withStyle(ChatFormatting.DARK_GREEN));
                 }
             }
         });
