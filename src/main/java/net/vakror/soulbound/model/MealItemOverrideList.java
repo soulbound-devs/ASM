@@ -1,13 +1,7 @@
-package net.vakror.soulbound.model.test;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Function;
+package net.vakror.soulbound.model;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -17,6 +11,11 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.vakror.soulbound.items.custom.WandItem;
 import net.vakror.soulbound.wand.ItemWandProvider;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 
 public class MealItemOverrideList extends ItemOverrides {
 	private ImmutableList<MealModelLoader.TypedTextures> materials;

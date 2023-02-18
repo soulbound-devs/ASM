@@ -1,13 +1,4 @@
-package net.vakror.soulbound.model.test;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.function.Function;
-
-import javax.annotation.Nullable;
+package net.vakror.soulbound.model;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -15,29 +6,30 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
-import net.minecraft.client.renderer.texture.AtlasSet;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraftforge.client.model.IModelLoader;
+import net.minecraftforge.client.model.geometry.IGeometryLoader;
+
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.function.Function;
 
 /* Used in read json of meals */
-public enum MealModelLoader implements IModelLoader<MealModel>{
+public enum MealModelLoader implements IGeometryLoader<MealModel> {
 	INSTANCE;
 
 	public static final List<ResourceLocation> textures = new ArrayList<ResourceLocation>();
 
-	@Override
-	public void onResourceManagerReload(ResourceManager manager){
-			
-	}
 
 	@Override
-	public MealModel read(JsonDeserializationContext deserializationContext, JsonObject modelContents){
+	public MealModel read(JsonObject modelContents, JsonDeserializationContext deserializationContext){
 		List<TypedTextures> typedTexturesList = new ArrayList<>();
 		ResourceLocation wandLocation = new ResourceLocation("");
 		
