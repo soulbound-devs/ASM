@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "soulbound:corrupted_cave",
+      "required": false
+    }
+  ]
+}
