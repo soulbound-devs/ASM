@@ -3,12 +3,9 @@ package net.vakror.soulbound;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.Block;
-import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
@@ -23,16 +20,17 @@ import net.vakror.soulbound.blocks.entity.ModBlockEntities;
 import net.vakror.soulbound.client.SoulboundClient;
 import net.vakror.soulbound.items.ModItems;
 import net.vakror.soulbound.blocks.ModBlocks;
-import net.vakror.soulbound.model.WandModel;
-import net.vakror.soulbound.model.test.MealModelLoader;
+import net.vakror.soulbound.model.WandModelLoader;
 import net.vakror.soulbound.networking.ModPackets;
 import net.vakror.soulbound.screen.ModMenuTypes;
 import net.vakror.soulbound.seal.SealRegistry;
+import net.vakror.soulbound.soul.ModSoul;
+import net.vakror.soulbound.soul.ModSoulTypes;
 import net.vakror.soulbound.world.biome.ModBiomes;
 import net.vakror.soulbound.world.biome.SoulboundRegion;
 import net.vakror.soulbound.world.feature.ModConfiguredFeatures;
+import net.vakror.soulbound.world.feature.ModPlacedFeatures;
 import org.slf4j.Logger;
-import terrablender.api.RegionType;
 import terrablender.api.Regions;
 import top.theillusivec4.curios.api.SlotTypeMessage;
 
@@ -45,6 +43,7 @@ public class SoulboundMod {
     public static final String MOD_ID = "soulbound";
 
     public SoulboundMod() {
+
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
 
@@ -55,14 +54,22 @@ public class SoulboundMod {
         ModBlockEntities.register(modEventBus);
         ModMenuTypes.register(modEventBus);
         ModBiomes.register(modEventBus);
-        Regions.register(new SoulboundRegion(new ResourceLocation(MOD_ID, "soulbound_region"), RegionType.OVERWORLD, 1));
+        ModConfiguredFeatures.register(modEventBus);
+        ModPlacedFeatures.register(modEventBus);
+
+        ModSoul.register(modEventBus);
+        ModSoulTypes.register(modEventBus);
+//        Regions.register(new SoulboundNetherRegion(new ResourceLocation(MOD_ID, "soulbound_nether_region"), 1));
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
         MinecraftForge.EVENT_BUS.register(this);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
-        event.enqueueWork(ModPackets::register);
+        event.enqueueWork(() -> {
+            ModPackets.register();
+            Regions.register(new SoulboundRegion(new ResourceLocation(MOD_ID, "soulbound_region"), 1));
+        });
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {
@@ -89,8 +96,8 @@ public class SoulboundMod {
     @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ModelRegistryEvents {
         @SubscribeEvent
-        public static void onModelsRegistered(ModelRegistryEvent event) {
-            ModelLoaderRegistry.registerLoader(new ResourceLocation(SoulboundMod.MOD_ID, "wand"), MealModelLoader.INSTANCE);
+        public static void onModelsRegistered(ModelEvent.RegisterGeometryLoaders event) {
+            event.register("wand", WandModelLoader.INSTANCE);
         }
         @SubscribeEvent
         public static void onTextureStitch(TextureStitchEvent.Pre event) {
@@ -100,22 +107,6 @@ public class SoulboundMod {
                 event.addSprite(new ResourceLocation(SoulboundMod.MOD_ID, "item/wands/activated/pickaxing"));
                 event.addSprite(new ResourceLocation(SoulboundMod.MOD_ID, "item/wands/activated/scythe"));
             }
-        }
-    }
-
-    @SubscribeEvent
-    public static void onModelsRegistered(ModelRegistryEvent event) {
-        ModelLoaderRegistry.registerLoader(new ResourceLocation(SoulboundMod.MOD_ID, "wand"), WandModel.WandModelLoader.INSTANCE);
-    }
-
-    // You can use EventBusSubscriber to automatically subscribe events on the contained class (this is subscribing to the MOD
-    // Event bus for receiving Registry Events)
-    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
-    public static class RegistryEvents {
-        @SubscribeEvent
-        public static void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent) {
-            // Register a new block here
-            LOGGER.info("HELLO from Register Block");
         }
     }
 }
