@@ -29,7 +29,7 @@ public class ModPackets {
         net.messageBuilder(SyncSoulS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
                 .decoder(SyncSoulS2CPacket::new)
                 .encoder(SyncSoulS2CPacket::encode)
-                .consumer(SyncSoulS2CPacket::handle)
+                .consumerNetworkThread(SyncSoulS2CPacket::handle)
                 .add();
     }
 
