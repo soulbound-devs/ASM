@@ -11,7 +11,7 @@ import net.minecraftforge.registries.RegistryObject;
 import net.vakror.soulbound.SoulboundMod;
 
 public class ModMenuTypes {
-    public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(ForgeRegistries.CONTAINERS, SoulboundMod.MOD_ID);
+    public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, SoulboundMod.MOD_ID);
 
     public static final RegistryObject<MenuType<WandImbuingMenu>> WAND_IMBUING_MENU = registerMenuType(WandImbuingMenu::new, "wand_imbuing_station_menu");
 
