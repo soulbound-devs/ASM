@@ -17,12 +17,12 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
-public class MealItemOverrideList extends ItemOverrides {
-	private ImmutableList<MealModelLoader.TypedTextures> materials;
+public class WandItemOverrideList extends ItemOverrides {
+	private ImmutableList<WandModelLoader.TypedTextures> materials;
 	private Function<Material, TextureAtlasSprite> spriteGetter;
 
-	public MealItemOverrideList(
-			ImmutableList<MealModelLoader.TypedTextures> materialsIn
+	public WandItemOverrideList(
+			ImmutableList<WandModelLoader.TypedTextures> materialsIn
 			, Function<Material, TextureAtlasSprite> spriteGetterIn) {
 
 		this.materials = materialsIn;
@@ -36,8 +36,8 @@ public class MealItemOverrideList extends ItemOverrides {
 			AtomicReference<WandBakedModel> finalMealModel = new AtomicReference<>(mealModel);
 			List<TextureAtlasSprite> sprites = new ArrayList<TextureAtlasSprite>();
 
-			List<MealModelLoader.TypedTextures> mutableTypedTextures = Lists.newArrayList(this.materials);
-			for (MealModelLoader.TypedTextures typedTextures : mutableTypedTextures) {
+			List<WandModelLoader.TypedTextures> mutableTypedTextures = Lists.newArrayList(this.materials);
+			for (WandModelLoader.TypedTextures typedTextures : mutableTypedTextures) {
 				TextureAtlasSprite sprite = typedTextures.getSprite("wand", this.spriteGetter);
 				mutableTypedTextures.remove(typedTextures);
 				sprites.add(sprite);
@@ -45,9 +45,9 @@ public class MealItemOverrideList extends ItemOverrides {
 				break;
 			}
 			stack.getCapability(ItemWandProvider.WAND).ifPresent(wand -> {
-				List<MealModelLoader.TypedTextures> mutableTypedTextures1 = Lists.newArrayList(this.materials);
+				List<WandModelLoader.TypedTextures> mutableTypedTextures1 = Lists.newArrayList(this.materials);
 				if (wand.getActiveSeal() != null) {
-					for (MealModelLoader.TypedTextures typedTextures : mutableTypedTextures1) {
+					for (WandModelLoader.TypedTextures typedTextures : mutableTypedTextures1) {
 						TextureAtlasSprite sprite = typedTextures.getSprite(wand.getActiveSeal().getId(), this.spriteGetter);
 						if (sprite != null) {
 							mutableTypedTextures1.remove(typedTextures);

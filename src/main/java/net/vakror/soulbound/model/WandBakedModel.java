@@ -2,10 +2,8 @@ package net.vakror.soulbound.model;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.blaze3d.vertex.VertexFormatElement;
 import com.mojang.math.Transformation;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemTransform;
@@ -27,7 +25,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 /* Do not use this baked model directly, it'll display nothing, use MealBakedModel#getNewBakedItemModel */
@@ -48,11 +45,11 @@ public class WandBakedModel extends BakedItemModel {
 
 	public WandBakedModel(
 			ResourceLocation baseMateriallocaiton
-			, ImmutableList<MealModelLoader.TypedTextures> materials
+			, ImmutableList<WandModelLoader.TypedTextures> materials
 			, Function<Material, TextureAtlasSprite> spriteGetter, TextureAtlasSprite particle
 			, ImmutableMap<ItemTransforms.TransformType, ItemTransform> transformMap
 			, Transformation transformIn, boolean isSideLit) {
-		super(ImmutableList.of(), particle, transformMap, new MealItemOverrideList(materials, spriteGetter), transformIn.isIdentity(), isSideLit);
+		super(ImmutableList.of(), particle, transformMap, new WandItemOverrideList(materials, spriteGetter), transformIn.isIdentity(), isSideLit);
 
 		this.transform = transformIn;
 

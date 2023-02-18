@@ -22,21 +22,21 @@ import java.util.Map.Entry;
 import java.util.function.Function;
 
 /* Used in read json of meals */
-public enum MealModelLoader implements IGeometryLoader<MealModel> {
+public enum WandModelLoader implements IGeometryLoader<WandModel> {
 	INSTANCE;
 
 	public static final List<ResourceLocation> textures = new ArrayList<ResourceLocation>();
 
 
 	@Override
-	public MealModel read(JsonObject modelContents, JsonDeserializationContext deserializationContext){
+	public WandModel read(JsonObject modelContents, JsonDeserializationContext deserializationContext){
 		List<TypedTextures> typedTexturesList = new ArrayList<>();
 		ResourceLocation wandLocation = new ResourceLocation("");
 		
 		if(modelContents.has("wand")){
 			JsonObject wandJsonObject = modelContents.getAsJsonObject("wand");
 			wandLocation = new ResourceLocation(wandJsonObject.get("wand").getAsString());
-			MealModelLoader.textures.add(wandLocation);
+			WandModelLoader.textures.add(wandLocation);
 			
 			JsonArray parts = wandJsonObject.get("seals").getAsJsonArray();
 			for(JsonElement element : parts){
@@ -44,12 +44,12 @@ public enum MealModelLoader implements IGeometryLoader<MealModel> {
 				typedTexturesList.add(typedTextures);
 				
 				for(Entry<String, ResourceLocation> entry : typedTextures.getTextures().entrySet()){
-					MealModelLoader.textures.add(entry.getValue());
+					WandModelLoader.textures.add(entry.getValue());
 				}
 			}
 		}
 		
-		return new MealModel(wandLocation, ImmutableList.copyOf(typedTexturesList));
+		return new WandModel(wandLocation, ImmutableList.copyOf(typedTexturesList));
 	}
 	
 	public static class TypedTextures{
