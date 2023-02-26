@@ -57,6 +57,9 @@ public class ModItems {
     public static final RegistryObject<Item> DARK_SOUL_BUCKET = ITEMS.register("dark_soul_bucket",
             () -> new BucketItem(ModSoul.SOURCE_DARK_SOUL, new Item.Properties().tab(ModCreativeModeTab.SOULBOUND).stacksTo(1).craftRemainder(Items.BUCKET)));
 
+    public static final RegistryObject<Item> TUNGSTEN_INGOT = ITEMS.register("dark_soul_bucket",
+            () -> new BucketItem(ModSoul.SOURCE_DARK_SOUL, new Item.Properties().tab(ModCreativeModeTab.SOULBOUND).stacksTo(1).craftRemainder(Items.BUCKET)));
+
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
