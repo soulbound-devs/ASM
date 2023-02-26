@@ -1,20 +1,15 @@
 package net.vakror.soulbound.event;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.Holder;
 import net.minecraft.core.Vec3i;
-import net.minecraft.data.worldgen.placement.MiscOverworldPlacements;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -27,13 +22,12 @@ import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.vakror.soulbound.SoulboundMod;
 import net.vakror.soulbound.items.custom.WandItem;
-import net.vakror.soulbound.networking.ModPackets;
-import net.vakror.soulbound.networking.SyncSoulS2CPacket;
+import net.vakror.soulbound.packets.ModPackets;
+import net.vakror.soulbound.packets.SyncSoulS2CPacket;
 import net.vakror.soulbound.soul.PlayerSoul;
 import net.vakror.soulbound.soul.PlayerSoulProvider;
 import net.vakror.soulbound.wand.ItemWand;
 import net.vakror.soulbound.wand.ItemWandProvider;
-import net.vakror.soulbound.world.feature.ModPlacedFeatures;
 
 import java.util.List;
 
