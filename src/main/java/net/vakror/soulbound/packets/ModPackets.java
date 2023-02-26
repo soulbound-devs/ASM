@@ -1,4 +1,4 @@
-package net.vakror.soulbound.networking;
+package net.vakror.soulbound.packets;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;

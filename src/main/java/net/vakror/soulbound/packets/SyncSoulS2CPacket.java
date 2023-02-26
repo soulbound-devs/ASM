@@ -1,4 +1,4 @@
-package net.vakror.soulbound.networking;
+package net.vakror.soulbound.packets;
 
 import java.util.function.Supplier;
 
