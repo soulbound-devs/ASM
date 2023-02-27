@@ -13,6 +13,8 @@
   "item.soulbound.soul_bucket": "Bucket of Soul",
   "item.soulbound.dark_soul_bucket": "Bucket of Dark Soul",
 
+  "soulbound.tooltip.fluid.amount_with_capacity": "%s / %s mB",
+  "soulbound.tooltip.fluid.amount": "%s mB",
 
   "block.soulbound.wand_imbuing_table": "Wand Imbuing Table",
   "block.soulbound.ancient_oak_log": "Ancient Oak Log",
