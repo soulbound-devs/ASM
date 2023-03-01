@@ -31,6 +31,12 @@ public class ModPackets {
                 .encoder(SyncSoulS2CPacket::encode)
                 .consumerNetworkThread(SyncSoulS2CPacket::handle)
                 .add();
+
+        net.messageBuilder(SoulFluidSyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(SoulFluidSyncS2CPacket::new)
+                .encoder(SoulFluidSyncS2CPacket::encode)
+                .consumerNetworkThread(SoulFluidSyncS2CPacket::handle)
+                .add();
     }
 
     public static <MSG> void sendToServer(MSG packet) {
@@ -41,4 +47,7 @@ public class ModPackets {
         INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), packet);
     }
 
+    public static <MSG> void sendToClients(MSG message) {
+        INSTANCE.send(PacketDistributor.ALL.noArg(), message);
+    }
 }

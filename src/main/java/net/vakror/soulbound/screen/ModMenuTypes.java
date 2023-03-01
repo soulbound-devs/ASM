@@ -15,6 +15,8 @@ public class ModMenuTypes {
 
     public static final RegistryObject<MenuType<WandImbuingMenu>> WAND_IMBUING_MENU = registerMenuType(WandImbuingMenu::new, "wand_imbuing_station_menu");
 
+    public static final RegistryObject<MenuType<SoulSolidifierMenu>> SOUL_SOLIDIFIER_MENU = registerMenuType(SoulSolidifierMenu::new, "soul_solidifier_menu");
+
     private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> registerMenuType(IContainerFactory<T> factory, String name) {
         return MENUS.register(name, () -> IForgeMenuType.create(factory));
     }

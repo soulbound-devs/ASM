@@ -1,0 +1,101 @@
+package net.vakror.soulbound.screen;
+
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.TooltipFlag;
+import net.vakror.soulbound.SoulboundMod;
+import net.vakror.soulbound.client.FluidTankRenderer;
+
+import java.util.Optional;
+
+public class SoulSolidifierScreen extends AbstractContainerScreen<SoulSolidifierMenu> {
+    private static final ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation(SoulboundMod.MOD_ID, "textures/gui/imbuer_gui.png");
+    private FluidTankRenderer renderer;
+
+    public SoulSolidifierScreen(SoulSolidifierMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
+        super(pMenu, pPlayerInventory, pTitle);
+    }
+
+    @Override
+    protected void init() {
+        super.init();
+        assignFluidRenderer();
+    }
+
+    private void assignFluidRenderer() {
+        renderer = new FluidTankRenderer(32000, true, 16, 46);
+    }
+
+    @Override
+    protected void renderBg(PoseStack pPoseStack, float pPartialTick, int pMouseX, int pMouseY) {
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
+        int x = (width - imageWidth) / 2;
+        int y = (height - imageHeight) / 2;
+
+        this.blit(pPoseStack, x, y, 0, 0, imageWidth, imageHeight);
+
+        if (menu.isCrafting()) {
+            blit(pPoseStack, x + 118, y + 37, 177, 38, menu.getScaledProgress(), 8);
+        }
+        renderer.render(pPoseStack, x + 50, y + 8, menu.getStack());
+    }
+
+    @Override
+    public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
+        renderBackground(pPoseStack);
+        super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
+        renderTooltip(pPoseStack, pMouseX, pMouseY);
+    }
+
+    @Override
+    protected void renderLabels(PoseStack pPoseStack, int pMouseX, int pMouseY) {
+        int x = (width - imageWidth) / 2;
+        int y = (height - imageHeight) / 2;
+
+        renderFluidTooltips(pPoseStack, pMouseX, pMouseY, x, y);
+    }
+
+    private void renderFluidTooltips(PoseStack pPoseStack, int pMouseX, int pMouseY, int x, int y) {
+        if (isMouseAboveArea(pMouseX, pMouseY, x, y, 50, 8)) {
+            renderTooltip(pPoseStack, renderer.getTooltip(menu.getStack(), TooltipFlag.Default.NORMAL),
+                    Optional.empty(), pMouseX - x, pMouseY - y);
+        }
+    }
+
+    private boolean isMouseAboveArea(int pMouseX, int pMouseY, int x, int y, int offsetX, int offsetY) {
+        return isMouseOver(pMouseX, pMouseY, x + offsetX, y + offsetY, renderer.getWidth(), renderer.getHeight());
+    }
+
+    public static boolean isMouseOver(double mouseX, double mouseY, int x, int y, int sizeX, int sizeY) {
+        return (mouseX >= x && mouseX <= x + sizeX) && (mouseY >= y && mouseY <= y + sizeY);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
