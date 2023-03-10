@@ -60,8 +60,6 @@ public class SoulboundMod {
         ModSoul.register(modEventBus);
         ModSoulTypes.register(modEventBus);
 
-        ModBlockEntities.register(modEventBus);
-        ModMenuTypes.register(modEventBus);
 //        Regions.register(new SoulboundNetherRegion(new ResourceLocation(MOD_ID, "soulbound_nether_region"), 1));
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
