@@ -61,8 +61,8 @@ public class SoulSolidifierMenu extends AbstractContainerMenu {
         return blockEntity;
     }
 
-    public void setFluid(FluidStack stack) {
-        this.stack = stack;
+    public void setFluid(FluidStack fluidStack) {
+        this.stack = fluidStack;
     }
 
     public FluidStack getStack() {
