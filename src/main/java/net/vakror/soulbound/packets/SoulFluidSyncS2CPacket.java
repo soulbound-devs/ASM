@@ -25,7 +25,8 @@ public class SoulFluidSyncS2CPacket {
     }
 
     public void encode(FriendlyByteBuf buf) {
-
+        buf.writeFluidStack(stack);
+        buf.writeBlockPos(pos);
     }
 
     public boolean handle(Supplier<NetworkEvent.Context> sup) {
