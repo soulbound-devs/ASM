@@ -21,7 +21,7 @@ public class SoulSolidifierMenu extends AbstractContainerMenu {
     private FluidStack stack;
 
     public SoulSolidifierMenu(int pContainerId, Inventory inv, FriendlyByteBuf data) {
-        this(pContainerId, inv, inv.player.level.getBlockEntity(data.readBlockPos()), new SimpleContainerData(3));
+        this(pContainerId, inv, inv.player.level.getBlockEntity(data.readBlockPos()), new SimpleContainerData(4));
     }
 
     public SoulSolidifierMenu(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
