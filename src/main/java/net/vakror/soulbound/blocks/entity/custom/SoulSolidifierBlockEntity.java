@@ -25,21 +25,19 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import net.vakror.soulbound.blocks.custom.SoulSolidifierBlock;
 import net.vakror.soulbound.blocks.entity.ModBlockEntities;
 import net.vakror.soulbound.items.ModItems;
-import net.vakror.soulbound.items.custom.WandItem;
-import net.vakror.soulbound.items.custom.seals.SealItem;
 import net.vakror.soulbound.packets.ModPackets;
 import net.vakror.soulbound.packets.SoulFluidSyncS2CPacket;
 import net.vakror.soulbound.screen.SoulSolidifierMenu;
 import net.vakror.soulbound.seal.SealRegistry;
 import net.vakror.soulbound.soul.ModSoul;
-import net.vakror.soulbound.wand.ItemWandProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class SoulSolidifierBlockEntity extends BlockEntity implements MenuProvider {
-    private final ItemStackHandler itemHandler = new ItemStackHandler(2) {
+    private final ItemStackHandler itemHandler = new ItemStackHandler(4) {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
@@ -59,16 +57,16 @@ public class SoulSolidifierBlockEntity extends BlockEntity implements MenuProvid
     private int progress = 0;
     private int maxProgress = 61;
     // For upgrades that will be added in the future
-    private int amountOfFluidToExtractForSoul = 500;
+    private final int amountOfFluidToExtractForSoul = 100;
 
 
-    private final FluidTank FLUID_TANK = new FluidTank(32000) {
+    public final FluidTank FLUID_TANK = new FluidTank(16000) {
         @Override
         protected void onContentsChanged() {
             setChanged();
             assert level != null;
-            if (!level.isClientSide) {
-                ModPackets.sendToClients(new SoulFluidSyncS2CPacket(this.fluid, worldPosition));
+            if (!level.isClientSide()) {
+                ModPackets.sendToClients(new SoulFluidSyncS2CPacket(this.getFluid(), worldPosition));
             }
         }
 
@@ -86,9 +84,8 @@ public class SoulSolidifierBlockEntity extends BlockEntity implements MenuProvid
         return this.FLUID_TANK.getFluid();
     }
 
-    private LazyOptional<IFluidHandler> lazyFluidHandler = LazyOptional.empty();
-
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
+    private LazyOptional<IFluidHandler> lazyFluidHandler = LazyOptional.empty();
 
     public SoulSolidifierBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.SOUL_SOLIDIFIER_BLOCK_ENTITY.get(), pPos, pBlockState);
@@ -125,6 +122,7 @@ public class SoulSolidifierBlockEntity extends BlockEntity implements MenuProvid
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
+        ModPackets.sendToClients(new SoulFluidSyncS2CPacket(this.getFluidStack(), worldPosition));
         return new SoulSolidifierMenu(pContainerId, pPlayerInventory, this, this.data);
     }
 
@@ -176,11 +174,12 @@ public class SoulSolidifierBlockEntity extends BlockEntity implements MenuProvid
             inventory.setItem(i, itemHandler.getStackInSlot(i));
         }
 
+        assert this.level != null;
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
 
     public static void tick(Level pLevel, BlockPos pPos, BlockState pState, SoulSolidifierBlockEntity blockEntity) {
-        if (hasNotReachedStackLimit(blockEntity) && hasEnoughFluid(blockEntity)) {
+        if (hasNotReachedStackLimit(blockEntity) && hasEnoughFluid(blockEntity) && hasTungsten(blockEntity) && (blockEntity.FLUID_TANK.getFluid().getFluid() == ModSoul.SOURCE_DARK_SOUL.get() || blockEntity.FLUID_TANK.getFluid().getFluid() == ModSoul.SOURCE_SOUL.get())) {
             blockEntity.progress++;
             setChanged(pLevel, pPos, pState);
             if (blockEntity.progress >= blockEntity.maxProgress) {
@@ -197,18 +196,24 @@ public class SoulSolidifierBlockEntity extends BlockEntity implements MenuProvid
         }
     }
 
+    private static boolean hasTungsten(SoulSolidifierBlockEntity blockEntity) {
+        return blockEntity.itemHandler.getStackInSlot(0).is(ModItems.TUNGSTEN_INGOT.get());
+    }
+
     private static boolean hasEnoughFluid(SoulSolidifierBlockEntity blockEntity) {
         return blockEntity.FLUID_TANK.getFluidAmount() >= blockEntity.amountOfFluidToExtractForSoul;
     }
 
     private static void transferItemFluidToFluidTank(SoulSolidifierBlockEntity blockEntity) {
-        blockEntity.itemHandler.getStackInSlot(3).getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(handler -> {
+        blockEntity.itemHandler.getStackInSlot(2).getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(handler -> {
             int drainAmount = Math.min(blockEntity.FLUID_TANK.getSpace(), 1000);
 
             FluidStack stack = handler.drain(drainAmount, IFluidHandler.FluidAction.SIMULATE);
-            if (blockEntity.FLUID_TANK.isFluidValid(stack) && stack.getFluid().isSame(ModSoul.SOURCE_SOUL.get()) || stack.getFluid().isSame(ModSoul.SOURCE_DARK_SOUL.get())) {
-                stack = handler.drain(drainAmount, IFluidHandler.FluidAction.EXECUTE);
-                fillTankWithFluid(blockEntity, stack, handler.getContainer());
+            if (blockEntity.FLUID_TANK.isFluidValid(stack)) {
+                if (blockEntity.FLUID_TANK.getFluid().getFluid().isSame(stack.getFluid()) || blockEntity.FLUID_TANK.isEmpty()) {
+                    stack = handler.drain(drainAmount, IFluidHandler.FluidAction.EXECUTE);
+                    fillTankWithFluid(blockEntity, stack, handler.getContainer());
+                }
             }
         });
     }
@@ -216,24 +221,25 @@ public class SoulSolidifierBlockEntity extends BlockEntity implements MenuProvid
     private static void fillTankWithFluid(SoulSolidifierBlockEntity blockEntity, FluidStack stack, ItemStack container) {
         blockEntity.FLUID_TANK.fill(stack, IFluidHandler.FluidAction.EXECUTE);
 
-        blockEntity.itemHandler.extractItem(0, 1, false);
-        blockEntity.itemHandler.insertItem(0, container, false);
+        blockEntity.itemHandler.extractItem(2, 1, false);
+        blockEntity.itemHandler.insertItem(2, container, false);
     }
 
     private static boolean hasFluidItemInSourceSlot(SoulSolidifierBlockEntity blockEntity) {
-        return blockEntity.itemHandler.getStackInSlot(3).getCount() > 0;
+        return blockEntity.itemHandler.getStackInSlot(2).getCount() > 0;
     }
 
     private static void craftItem(SoulSolidifierBlockEntity entity) {
         int numberOfSoulToAdd = 1;
         entity.FLUID_TANK.drain(entity.amountOfFluidToExtractForSoul, IFluidHandler.FluidAction.EXECUTE);
+        entity.itemHandler.extractItem(0, 1, false);
         entity.itemHandler.insertItem(1, new ItemStack(entity.itemHandler.getStackInSlot(1).getItem(), entity.itemHandler.getStackInSlot(1).getCount() + numberOfSoulToAdd), false);
         entity.resetProgress();
     }
 
 
     private static boolean hasNotReachedStackLimit(SoulSolidifierBlockEntity pBlockEntity) {
-        return pBlockEntity.itemHandler.getStackInSlot(3).getCount() < pBlockEntity.itemHandler.getStackInSlot(3).getMaxStackSize();
+        return pBlockEntity.itemHandler.getStackInSlot(1).getCount() < pBlockEntity.itemHandler.getStackInSlot(1).getMaxStackSize();
     }
 
     private void resetProgress() {
