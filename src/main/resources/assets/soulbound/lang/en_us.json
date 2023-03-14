@@ -15,6 +15,7 @@
 
   "soulbound.tooltip.fluid.amount_with_capacity": "%s / %s mB",
   "soulbound.tooltip.fluid.amount": "%s mB",
+  "soulbound.fluid.empty": "Fluid Tank is Empty",
 
   "block.soulbound.wand_imbuing_table": "Wand Imbuing Table",
   "block.soulbound.ancient_oak_log": "Ancient Oak Log",

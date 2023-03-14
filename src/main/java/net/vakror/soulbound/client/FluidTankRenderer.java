@@ -84,6 +84,7 @@ public class FluidTankRenderer {
         int fluidColor = getColorTint(fluidStack);
 
         long amount = fluidStack.getAmount();
+        System.out.println("fluid amount renderer: " + amount);
         long scaledAmount = (amount * height) / capacity;
 
         if (amount > 0 && scaledAmount < MIN_FLUID_HEIGHT) {
@@ -174,6 +175,7 @@ public class FluidTankRenderer {
         Fluid fluidType = fluidStack.getFluid();
         try {
             if (fluidType.isSame(Fluids.EMPTY)) {
+                tooltip.add(Component.translatable("soulbound.fluid.empty").withStyle(ChatFormatting.GREEN));
                 return tooltip;
             }
 
