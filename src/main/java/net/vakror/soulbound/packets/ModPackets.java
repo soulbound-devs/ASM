@@ -35,7 +35,7 @@ public class ModPackets {
         net.messageBuilder(SoulFluidSyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
                 .decoder(SoulFluidSyncS2CPacket::new)
                 .encoder(SoulFluidSyncS2CPacket::encode)
-                .consumerNetworkThread(SoulFluidSyncS2CPacket::handle)
+                .consumerMainThread(SoulFluidSyncS2CPacket::handle)
                 .add();
     }
 
