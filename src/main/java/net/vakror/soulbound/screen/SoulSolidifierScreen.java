@@ -14,7 +14,7 @@ import net.vakror.soulbound.client.FluidTankRenderer;
 import java.util.Optional;
 
 public class SoulSolidifierScreen extends AbstractContainerScreen<SoulSolidifierMenu> {
-    private static final ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation(SoulboundMod.MOD_ID, "textures/gui/imbuer_gui.png");
+    private static final ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation(SoulboundMod.MOD_ID, "textures/gui/soul_solidifier.png");
     private FluidTankRenderer renderer;
 
     public SoulSolidifierScreen(SoulSolidifierMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
@@ -28,7 +28,7 @@ public class SoulSolidifierScreen extends AbstractContainerScreen<SoulSolidifier
     }
 
     private void assignFluidRenderer() {
-        renderer = new FluidTankRenderer(32000, true, 16, 46);
+        renderer = new FluidTankRenderer(menu.blockEntity.FLUID_TANK.getCapacity(), true, 16, 46);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class SoulSolidifierScreen extends AbstractContainerScreen<SoulSolidifier
     }
 
     private void renderFluidTooltips(PoseStack pPoseStack, int pMouseX, int pMouseY, int x, int y) {
-        if (isMouseAboveArea(pMouseX, pMouseY, x, y, 50, 8)) {
+        if(isMouseAboveArea(pMouseX, pMouseY, x, y, 50, 8)) {
             renderTooltip(pPoseStack, renderer.getTooltip(menu.getStack(), TooltipFlag.Default.NORMAL),
                     Optional.empty(), pMouseX - x, pMouseY - y);
         }
