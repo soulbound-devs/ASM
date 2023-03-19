@@ -33,8 +33,20 @@ public class ModBiomes {
         Music music = Musics.createGameMusic(SoundEvents.MUSIC_BIOME_DEEP_DARK);
         return OverworldBiomes.biome(Biome.Precipitation.RAIN, 0.5F, 0.5F, mobSpawnSettingsBuilder, biomeGenerationSettingsBuilder, music);
     }
+    public static Biome dungeon() {
+        MobSpawnSettings.Builder mobSpawnSettingsBuilder = new MobSpawnSettings.Builder();
+        mobSpawnSettingsBuilder.addSpawn(MobCategory.AMBIENT, new MobSpawnSettings.SpawnerData(EntityType.ZOMBIE, 10, 4, 6));
+        mobSpawnSettingsBuilder.addSpawn(MobCategory.AMBIENT, new MobSpawnSettings.SpawnerData(EntityType.EVOKER, 25, 8, 8));
+        mobSpawnSettingsBuilder.addSpawn(MobCategory.AMBIENT, new MobSpawnSettings.SpawnerData(EntityType.ILLUSIONER, 25, 8, 8));
+        mobSpawnSettingsBuilder.addSpawn(MobCategory.AMBIENT, new MobSpawnSettings.SpawnerData(EntityType.RAVAGER, 25, 8, 8));
+        mobSpawnSettingsBuilder.addSpawn(MobCategory.AMBIENT, new MobSpawnSettings.SpawnerData(EntityType.SKELETON, 25, 8, 8));
+
+        BiomeGenerationSettings.Builder biomeGenerationSettingsBuilder = new BiomeGenerationSettings.Builder();
+        return OverworldBiomes.biome(Biome.Precipitation.RAIN, 0.5F, 0.5F, mobSpawnSettingsBuilder, biomeGenerationSettingsBuilder, null);
+    }
 
     public static final RegistryObject<Biome> CORRUPTED_CAVE = registerBiome("corrupted_cave", corrupted_cave());
+    public static final RegistryObject<Biome> DUNGEON = registerBiome("dungeon", dungeon());
 
     public static void register(IEventBus eventBus) {
         BIOMES.register(eventBus);

@@ -17,6 +17,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.vakror.soulbound.SoulboundMod;
+import net.vakror.soulbound.blocks.custom.DungeonAccessBlock;
 import net.vakror.soulbound.blocks.custom.ModFlammableRotatedPillarBlock;
 import net.vakror.soulbound.blocks.custom.SoulSolidifierBlock;
 import net.vakror.soulbound.blocks.custom.WandImbuingTableBlock;
@@ -89,6 +90,8 @@ public class ModBlocks {
     public static final RegistryObject<LiquidBlock> DARK_SOUL_FLUID_BLOCK = registerBlockWithoutBlockItem("dark_soul_fluid_block",
             () -> new LiquidBlock(ModSoul.SOURCE_DARK_SOUL, BlockBehaviour.Properties.copy(Blocks.WATER)));
 
+    public static final RegistryObject<Block> DUNGEON_KEY_BLOCK = registerBlock("dungeon_key_block",
+            () -> new DungeonAccessBlock(BlockBehaviour.Properties.of(Material.WOOD).noLootTable().strength(3)), ModCreativeModeTab.SOULBOUND);
 
     private static <T extends Block> RegistryObject<T> registerBlockWithoutBlockItem(String name, Supplier<T> block) {
         return BLOCKS.register(name, block);

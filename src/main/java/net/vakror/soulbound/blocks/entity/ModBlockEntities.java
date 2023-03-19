@@ -7,6 +7,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.vakror.soulbound.SoulboundMod;
 import net.vakror.soulbound.blocks.ModBlocks;
+import net.vakror.soulbound.blocks.entity.custom.DungeonAccessBlockEntity;
 import net.vakror.soulbound.blocks.entity.custom.SoulSolidifierBlockEntity;
 import net.vakror.soulbound.blocks.entity.custom.WandImbuingTableBlockEntity;
 
@@ -18,6 +19,9 @@ public class ModBlockEntities {
 
     public static final RegistryObject<BlockEntityType<SoulSolidifierBlockEntity>> SOUL_SOLIDIFIER_BLOCK_ENTITY =
             BLOCK_ENTITIES.register("soul_solidifier_block_entity", () -> BlockEntityType.Builder.of(SoulSolidifierBlockEntity::new, ModBlocks.SOUL_SOLIDIFIER.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<DungeonAccessBlockEntity>> DUNGEON_ACCESS_BLOCK_ENTITY =
+            BLOCK_ENTITIES.register("dungeon_access_block_entity", () -> BlockEntityType.Builder.of(DungeonAccessBlockEntity::new, ModBlocks.DUNGEON_KEY_BLOCK.get()).build(null));
 
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);
