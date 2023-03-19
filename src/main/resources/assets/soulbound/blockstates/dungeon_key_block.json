@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=east,locked=false": {
+      "model": "soulbound:block/dungeon_key_block_unlocked",
+      "y": 90
+    },
+    "facing=east,locked=true": {
+      "model": "soulbound:block/dungeon_key_block_locked",
+      "y": 90
+    },
+    "facing=north,locked=false": {
+      "model": "soulbound:block/dungeon_key_block_unlocked"
+    },
+    "facing=north,locked=true": {
+      "model": "soulbound:block/dungeon_key_block_locked"
+    },
+    "facing=south,locked=false": {
+      "model": "soulbound:block/dungeon_key_block_unlocked",
+      "y": 180
+    },
+    "facing=south,locked=true": {
+      "model": "soulbound:block/dungeon_key_block_locked",
+      "y": 180
+    },
+    "facing=west,locked=false": {
+      "model": "soulbound:block/dungeon_key_block_unlocked",
+      "y": 270
+    },
+    "facing=west,locked=true": {
+      "model": "soulbound:block/dungeon_key_block_locked",
+      "y": 270
+    }
+  }
+}
