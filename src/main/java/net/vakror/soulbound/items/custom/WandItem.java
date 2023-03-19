@@ -46,15 +46,15 @@ public class WandItem extends DiggerItem {
             boolean hasHoeing = hasSeal("hoeing", stack);
 
             if (hasAxing && state.is(BlockTags.MINEABLE_WITH_AXE)) {
-                System.out.println("Can mine with axe");
+                SoulboundMod.LOGGER.info("Can mine with axe");
                 return true;
             }
             if (hasPickaxing && state.is(BlockTags.MINEABLE_WITH_PICKAXE)) {
-                System.out.println("Can mine with pickaxe");
+                SoulboundMod.LOGGER.info("Can mine with pickaxe");
                 return true;
             }
             if (hasHoeing && state.is(BlockTags.MINEABLE_WITH_HOE)) {
-                System.out.println("Can mine with hoe");
+                SoulboundMod.LOGGER.info("Can mine with hoe");
                 return true;
             }
         }
