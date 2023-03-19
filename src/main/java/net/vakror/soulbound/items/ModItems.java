@@ -10,7 +10,6 @@ import net.minecraftforge.registries.RegistryObject;
 import net.vakror.soulbound.SoulboundMod;
 import net.vakror.soulbound.items.custom.WandItem;
 import net.vakror.soulbound.items.custom.seals.SealItem;
-import net.vakror.soulbound.seal.seals.Seal;
 import net.vakror.soulbound.soul.ModSoul;
 import net.vakror.soulbound.wand.WandTiers;
 
@@ -58,7 +57,10 @@ public class ModItems {
             () -> new BucketItem(ModSoul.SOURCE_DARK_SOUL, new Item.Properties().tab(ModCreativeModeTab.SOULBOUND).stacksTo(1).craftRemainder(Items.BUCKET)));
 
     public static final RegistryObject<Item> TUNGSTEN_INGOT = ITEMS.register("tungsten_ingot",
-            () -> new BucketItem(ModSoul.SOURCE_DARK_SOUL, new Item.Properties().tab(ModCreativeModeTab.SOULBOUND).stacksTo(1).craftRemainder(Items.BUCKET)));
+            () -> new Item(new Item.Properties().tab(ModCreativeModeTab.SOULBOUND)));
+
+    public static final RegistryObject<Item> KEY = ITEMS.register("key",
+            () -> new Item(new Item.Properties().tab(ModCreativeModeTab.SOULBOUND)));
 
 
     public static void register(IEventBus eventBus) {
