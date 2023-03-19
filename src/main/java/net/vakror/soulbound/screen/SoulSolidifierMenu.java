@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.SlotItemHandler;
+import net.vakror.soulbound.SoulboundMod;
 import net.vakror.soulbound.blocks.ModBlocks;
 import net.vakror.soulbound.blocks.entity.custom.SoulSolidifierBlockEntity;
 import net.vakror.soulbound.screen.slot.ModResultSlot;
@@ -107,7 +108,7 @@ public class SoulSolidifierMenu extends AbstractContainerMenu {
                 return ItemStack.EMPTY;
             }
         } else {
-            System.out.println("Invalid slotIndex:" + index);
+            SoulboundMod.LOGGER.error("Invalid slotIndex:" + index);
             return ItemStack.EMPTY;
         }
         // If stack size == 0 (the entire stack was moved) set slot contents to null
