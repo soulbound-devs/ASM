@@ -9,12 +9,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
+import net.vakror.soulbound.SoulboundMod;
 import net.vakror.soulbound.blocks.ModBlocks;
 import net.vakror.soulbound.blocks.entity.custom.WandImbuingTableBlockEntity;
 import net.vakror.soulbound.screen.slot.ModResultSlot;
 import net.vakror.soulbound.screen.slot.ModSealSlot;
 import net.vakror.soulbound.screen.slot.ModWandSlot;
-import org.jetbrains.annotations.Nullable;
 
 public class WandImbuingMenu extends AbstractContainerMenu {
     public final WandImbuingTableBlockEntity blockEntity;
@@ -108,7 +108,7 @@ public class WandImbuingMenu extends AbstractContainerMenu {
                 return ItemStack.EMPTY;
             }
         } else {
-            System.out.println("Invalid slotIndex:" + index);
+            SoulboundMod.LOGGER.info("Invalid slotIndex:" + index);
             return ItemStack.EMPTY;
         }
         // If stack size == 0 (the entire stack was moved) set slot contents to null
