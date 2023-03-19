@@ -9,7 +9,7 @@ import net.minecraftforge.network.simple.SimpleChannel;
 import net.vakror.soulbound.SoulboundMod;
 
 public class ModPackets {
-    private static SimpleChannel INSTANCE;
+    public static SimpleChannel INSTANCE;
 
     private static int packetID = 0;
     private static int id() {
@@ -36,6 +36,12 @@ public class ModPackets {
                 .decoder(SoulFluidSyncS2CPacket::new)
                 .encoder(SoulFluidSyncS2CPacket::encode)
                 .consumerMainThread(SoulFluidSyncS2CPacket::handle)
+                .add();
+
+        net.messageBuilder(PacketSyncDimensionListChanges.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(PacketSyncDimensionListChanges::new)
+                .encoder(PacketSyncDimensionListChanges::encode)
+                .consumerMainThread(PacketSyncDimensionListChanges::handle)
                 .add();
     }
 
