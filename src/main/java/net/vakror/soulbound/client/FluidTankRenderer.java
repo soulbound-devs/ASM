@@ -18,6 +18,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidType;
+import net.vakror.soulbound.SoulboundMod;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -84,7 +85,7 @@ public class FluidTankRenderer {
         int fluidColor = getColorTint(fluidStack);
 
         long amount = fluidStack.getAmount();
-        System.out.println("fluid amount renderer: " + amount);
+        SoulboundMod.LOGGER.info("fluid amount renderer: " + amount);
         long scaledAmount = (amount * height) / capacity;
 
         if (amount > 0 && scaledAmount < MIN_FLUID_HEIGHT) {
