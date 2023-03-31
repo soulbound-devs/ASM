@@ -31,6 +31,8 @@ import net.vakror.asm.world.biome.ModBiomes;
 import net.vakror.asm.world.dimension.Dimensions;
 import net.vakror.asm.world.feature.ModConfiguredFeatures;
 import net.vakror.asm.world.feature.ModPlacedFeatures;
+import net.vakror.asm.world.structure.ModDungeonPieces;
+import net.vakror.asm.world.structure.ModStructures;
 import org.slf4j.Logger;
 import terrablender.api.Regions;
 import top.theillusivec4.curios.api.SlotTypeMessage;
@@ -57,6 +59,8 @@ public class ASMMod {
         ModBiomes.register(modEventBus);
         ModConfiguredFeatures.register(modEventBus);
         ModPlacedFeatures.register(modEventBus);
+        ModStructures.register(modEventBus);
+        ModDungeonPieces.register(modEventBus);
 
         Dimensions.register();
 
