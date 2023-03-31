@@ -1,18 +1,18 @@
 {
   "parent": "item/generated",
-  "loader": "soulbound:wand",
+  "loader": "asm:wand",
   "textures": {
-    "particle": "soulbound:item/wands/wand"
+    "particle": "asm:item/wands/wand"
   },
   "wand": {
-    "wand": "soulbound:item/wands/wand",
+    "wand": "asm:item/wands/wand",
     "seals": [
       {
-        "pickaxing": "soulbound:item/wands/activated/pickaxing",
-        "hoeing": "soulbound:item/wands/activated/axing",
-        "shoveling": "soulbound:item/wands/activated/axing",
-        "axing": "soulbound:item/wands/activated/axing",
-        "scythe": "soulbound:item/wands/activated/scythe"
+        "pickaxing": "asm:item/wands/activated/pickaxing",
+        "hoeing": "asm:item/wands/activated/axing",
+        "shoveling": "asm:item/wands/activated/axing",
+        "axing": "asm:item/wands/activated/axing",
+        "scythe": "asm:item/wands/activated/scythe"
       }
     ]
   }

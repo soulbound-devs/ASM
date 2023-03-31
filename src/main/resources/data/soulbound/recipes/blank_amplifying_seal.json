@@ -8,17 +8,17 @@
   ],
   "key": {
     "I": {
-      "item": "soulbound:soul"
+      "item": "asm:soul"
     },
     "P": {
-      "item": "soulbound:blank_passive_seal"
+      "item": "asm:blank_passive_seal"
     },
     "X": {
-      "item": "soulbound:dark_soul"
+      "item": "asm:dark_soul"
     }
   },
   "result": {
-    "item": "soulbound:blank_amplifying_seal",
+    "item": "asm:blank_amplifying_seal",
     "count": 1
   }
 }

@@ -1,8 +1,8 @@
 {
   "required": true,
-  "package": "net.vakror.soulbound.mixin",
+  "package": "net.vakror.asm.mixin",
   "compatibilityLevel": "JAVA_17",
-  "refmap": "soulbound.refmap.json",
+  "refmap": "asm.refmap.json",
   "mixins": [
     "IMinecraftServerAccessor",
     "MappedRegistryMixin"

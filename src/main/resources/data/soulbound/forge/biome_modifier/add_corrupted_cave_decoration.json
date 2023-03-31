@@ -1,8 +1,8 @@
 {
   "type": "forge:add_features",
-  "biomes": "soulbound:corrupted_cave",
+  "biomes": "asm:corrupted_cave",
   "features": [
-    "soulbound:corrupted_tree_placed",
+    "asm:corrupted_tree_placed",
     "minecraft:sculk_patch_deep_dark",
     "minecraft:sculk_patch_ancient_city",
     "minecraft:sculk_vein"

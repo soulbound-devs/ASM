@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "soulbound:item/dark_soul"
+    "layer0": "asm:item/dark_soul"
   }
 }

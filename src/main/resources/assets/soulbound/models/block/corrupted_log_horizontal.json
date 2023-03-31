@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/cube_column_horizontal",
   "textures": {
-    "end": "soulbound:block/corrupted_log_top",
-    "side": "soulbound:block/corrupted_log"
+    "end": "asm:block/corrupted_log_top",
+    "side": "asm:block/corrupted_log"
   }
 }

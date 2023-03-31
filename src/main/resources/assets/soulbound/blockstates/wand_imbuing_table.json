@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "soulbound:block/wand_imbuing_table"
+      "model": "asm:block/wand_imbuing_table"
     }
   }
 }

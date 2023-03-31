@@ -3,12 +3,12 @@
 	"render_type": "cutout",
 	"texture_size": [32, 32],
 	"textures": {
-		"2": "soulbound:item/wands/wand",
-		"3": "soulbound:block/wood_crate",
-		"4": "soulbound:block/ancient_oak_planks",
-		"5": "soulbound:block/page",
-		"6": "soulbound:gui/slot_color",
-		"particle": "soulbound:block/wood_crate"
+		"2": "asm:item/wands/wand",
+		"3": "asm:block/wood_crate",
+		"4": "asm:block/ancient_oak_planks",
+		"5": "asm:block/page",
+		"6": "asm:gui/slot_color",
+		"particle": "asm:block/wood_crate"
 	},
 	"elements": [
 		{

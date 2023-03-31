@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "soulbound:item/seals/pickaxing_seal"
+    "layer0": "asm:item/seals/pickaxing_seal"
   }
 }

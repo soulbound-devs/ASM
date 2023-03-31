@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "soulbound:item/seals/hoeing_seal"
+    "layer0": "asm:item/seals/hoeing_seal"
   }
 }

@@ -1,8 +1,6 @@
 {
     "pack": {
-        "description": "Unnamed Magic Mod",
-        "pack_format": 9,
-        "forge:resource_pack_format": 8,
-        "forge:data_pack_format": 9
+        "description": "Advanced Soul Manipulation (ASM) is a Magic and Tech mod all about using soul to do stuff",
+        "pack_format": 9
     }
 }

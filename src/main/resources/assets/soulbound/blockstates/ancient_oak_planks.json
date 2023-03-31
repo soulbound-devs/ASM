@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "soulbound:block/ancient_oak_planks"
+      "model": "asm:block/ancient_oak_planks"
     }
   }
 }

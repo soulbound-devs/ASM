@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "soulbound:block/corrupted_leaves"
+      "model": "asm:block/corrupted_leaves"
     }
   }
 }

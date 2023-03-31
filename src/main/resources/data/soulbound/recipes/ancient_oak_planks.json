@@ -6,11 +6,11 @@
   ],
   "key": {
     "I": {
-      "item": "soulbound:ancient_oak_log"
+      "item": "asm:ancient_oak_log"
     }
   },
   "result": {
-    "item": "soulbound:ancient_oak_planks",
+    "item": "asm:ancient_oak_planks",
     "count": 4
   }
 }

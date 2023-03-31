@@ -2,7 +2,7 @@
   "providers": [
     {
       "type": "bitmap",
-      "file": "soulbound:font/wand/active.png",
+      "file": "asm:font/wand/active.png",
       "ascent": 7,
       "height": 8,
       "chars": ["\uEff1"]

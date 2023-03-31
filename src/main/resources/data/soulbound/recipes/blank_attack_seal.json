@@ -8,14 +8,14 @@
   ],
   "key": {
     "I": {
-      "item": "soulbound:dark_soul"
+      "item": "asm:dark_soul"
     },
     "X": {
       "item": "minecraft:honeycomb"
     }
   },
   "result": {
-    "item": "soulbound:blank_attack_seal",
+    "item": "asm:blank_attack_seal",
     "count": 1
   }
 }

@@ -1,15 +1,15 @@
 {
   "variants": {
     "axis=x": {
-      "model": "soulbound:block/corrupted_log_horizontal",
+      "model": "asm:block/corrupted_log_horizontal",
       "x": 90,
       "y": 90
     },
     "axis=y": {
-      "model": "soulbound:block/corrupted_log"
+      "model": "asm:block/corrupted_log"
     },
     "axis=z": {
-      "model": "soulbound:block/corrupted_log_horizontal",
+      "model": "asm:block/corrupted_log_horizontal",
       "x": 90
     }
   }
