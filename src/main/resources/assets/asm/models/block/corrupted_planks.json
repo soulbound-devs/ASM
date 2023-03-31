@@ -1,6 +1,6 @@
 {
 	"parent": "minecraft:block/cube_all",
 	"textures": {
-		"all": "soulbound:block/corrupted_planks"
+		"all": "asm:block/corrupted_planks"
 	}
 }
