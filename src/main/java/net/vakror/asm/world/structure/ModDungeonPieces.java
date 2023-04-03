@@ -5,10 +5,11 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
+import net.vakror.asm.ASMMod;
 
 public class ModDungeonPieces {
-    private static final DeferredRegister<StructurePieceType> STRUCTURE_PIECE;
-    public static final RegistryObject<StructurePieceType> DEFAULT_DUNGEON_PIECE;
+    private static final DeferredRegister<StructurePieceType> STRUCTURE_PIECE = DeferredRegister.create(Registry.STRUCTURE_PIECE_REGISTRY, ASMMod.MOD_ID);
+    public static final RegistryObject<StructurePieceType> DEFAULT_DUNGEON_PIECE = register("default", DungeonPiece::new);;
 
     public ModDungeonPieces() {
     }
@@ -21,10 +22,5 @@ public class ModDungeonPieces {
 
     public static void register(IEventBus eventBus) {
         STRUCTURE_PIECE.register(eventBus);
-    }
-
-    static {
-        STRUCTURE_PIECE = DeferredRegister.create(Registry.STRUCTURE_PIECE_REGISTRY, "asm");
-        DEFAULT_DUNGEON_PIECE = register("default", DungeonPiece::new);
     }
 }

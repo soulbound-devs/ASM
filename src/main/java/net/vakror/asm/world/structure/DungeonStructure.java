@@ -4,10 +4,12 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
@@ -29,16 +31,18 @@ public class DungeonStructure extends Structure {
         super(settings);
     }
 
+    @Override
     public Optional<Structure.GenerationStub> findGenerationPoint(Structure.GenerationContext context) {
         ChunkPos chunkPos = context.chunkPos();
         int startY = (new UniformHeight(VerticalAnchor.BOTTOM, VerticalAnchor.TOP)).sample(context.random(), new WorldGenerationContext(context.chunkGenerator(), context.heightAccessor()));
         BlockPos blockPos = new BlockPos(chunkPos.getMinBlockX(), startY, chunkPos.getMinBlockZ());
         return Optional.of(new Structure.GenerationStub(blockPos, (builder) -> {
-            this.generatePieces(builder, DungeonTheme.getRandomTheme());
+            this.generatePieces(blockPos, Rotation.getRandom(RandomSource.create()), context.structureTemplateManager(), builder);
         }));
     }
 
-    public void generatePieces(StructurePiecesBuilder builder, DungeonTheme theme) {
+    public void generatePieces(BlockPos pos, Rotation rot, StructureTemplateManager manager, StructurePiecesBuilder builder) {
+        DungeonPiece.generateDungeon(pos, rot, manager, builder);
     }
 
     public StructureStart generate(RegistryAccess pRegistryAccess, ChunkGenerator pChunkGenerator, BiomeSource pBiomeSource, RandomState pRandomState, StructureTemplateManager pStructureTemplateManager, long pSeed, ChunkPos pChunkPos, int p_226604_, LevelHeightAccessor pHeightAccessor, Predicate<Holder<Biome>> pValidBiome) {
@@ -46,6 +50,6 @@ public class DungeonStructure extends Structure {
     }
 
     public StructureType<?> type() {
-        return (StructureType)ModStructures.DUNGEON.get();
+        return ModStructures.DUNGEON_TYPE.get();
     }
 }
