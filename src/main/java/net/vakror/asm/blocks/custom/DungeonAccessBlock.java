@@ -22,21 +22,19 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
-import net.vakror.asm.blocks.ModBlocks;
 import net.vakror.asm.blocks.entity.custom.DungeonAccessBlockEntity;
 import net.vakror.asm.items.ModItems;
 import net.vakror.asm.world.dimension.DungeonTeleporter;
-import net.vakror.asm.world.dimension.ToOverworldDungeonTeleporter;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 import static net.vakror.asm.world.dimension.DimensionUtils.createWorld;
 
 public class DungeonAccessBlock extends BaseEntityBlock {
     public static final BooleanProperty LOCKED = BooleanProperty.create("locked");
+    public static final BooleanProperty TO_OVERWORLD = BooleanProperty.create("to_overworld");
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public DungeonAccessBlock(Properties properties) {
@@ -54,6 +52,7 @@ public class DungeonAccessBlock extends BaseEntityBlock {
         if (!level.isClientSide && player.getItemInHand(hand).getItem().equals(ModItems.KEY.get())) {
             level.setBlock(pos, state.setValue(LOCKED, false), 35);
             System.out.println("UNLOCKED!");
+            return super.use(state, level, pos, player, hand, hitResult);
         }
         if (!level.isClientSide && !state.getValue(LOCKED)) {
             /*
@@ -64,21 +63,9 @@ public class DungeonAccessBlock extends BaseEntityBlock {
                     blockEntity.setDimensionUUID(UUID.randomUUID());
                     blockEntity.setChanged();
                 }
-                if (player.level.dimension() == Level.OVERWORLD) {
-                    ServerLevel dimension = createWorld(level, blockEntity);
-                    player.setPortalCooldown();
-                    player.changeDimension(dimension, new DungeonTeleporter(dimension, pos));
-                    dimension.setBlock(pos, ModBlocks.DUNGEON_KEY_BLOCK.get().defaultBlockState().setValue(DungeonAccessBlock.LOCKED, Boolean.FALSE), 3);
-//                    Structure structure =
-//                    ChunkGenerator chunkgenerator = serverlevel.getChunkSource().getGenerator();
-//                    StructureStart structurestart = structure.generate(pSource.registryAccess(), chunkgenerator, chunkgenerator.getBiomeSource(), serverlevel.getChunkSource().randomState(), serverlevel.getStructureManager(), serverlevel.getSeed(), new ChunkPos(pPos), 0, serverlevel, (p_214580_) -> {
-//                        return true;
-//                    });
-                }
-                else if (player.level.dimension() != Level.OVERWORLD) {
-                    player.setPortalCooldown();
-                    player.changeDimension(Objects.requireNonNull(player.level.getServer()).overworld(), new ToOverworldDungeonTeleporter());
-                }
+                ServerLevel dimension = createWorld(level, blockEntity);
+                player.setPortalCooldown();
+                player.changeDimension(dimension, new DungeonTeleporter(dimension, pos, this));
             }
         }
         return super.use(state, level, pos, player, hand, hitResult);
@@ -89,6 +76,7 @@ public class DungeonAccessBlock extends BaseEntityBlock {
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(LOCKED);
         builder.add(FACING);
+        builder.add(TO_OVERWORLD);
     }
     @Override
     public List<ItemStack> getDrops(BlockState pState, LootContext.Builder pBuilder) {
