@@ -26,7 +26,7 @@ public class ModStructures {
 
     RegistryObject<StructureSet> DUNGEON_SET = registerSet("dungeon", DUNGEON.getHolder().get(), new RandomSpreadStructurePlacement(80, 20, RandomSpreadType.TRIANGULAR, 10387319));
 
-    private static Structure.StructureSettings structure() {
+    public static Structure.StructureSettings structure() {
         return new Structure.StructureSettings(HolderSet.direct(), Map.of(), GenerationStep.Decoration.SURFACE_STRUCTURES, TerrainAdjustment.NONE);
     }
 
