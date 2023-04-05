@@ -1,15 +1,21 @@
 package net.vakror.asm.event;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.Registry;
+import net.minecraft.core.SectionPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -28,8 +34,13 @@ import net.vakror.asm.soul.PlayerSoul;
 import net.vakror.asm.soul.PlayerSoulProvider;
 import net.vakror.asm.wand.ItemWand;
 import net.vakror.asm.wand.ItemWandProvider;
+import net.vakror.asm.world.dimension.Dimensions;
+import net.vakror.asm.world.structure.DungeonStructure;
+import net.vakror.asm.world.structure.ModStructures;
 
 import java.util.List;
+
+import static net.vakror.asm.world.dimension.DungeonTeleporter.checkLoaded;
 
 public class ModEvents {
     @Mod.EventBusSubscriber(modid = ASMMod.MOD_ID)
@@ -118,6 +129,23 @@ public class ModEvents {
                 if (event.getEntity() instanceof ServerPlayer player) {
                     player.getCapability(PlayerSoulProvider.PLAYER_SOUL).ifPresent(soul -> {
                         ModPackets.sendToClient(new SyncSoulS2CPacket(soul.getSoul(), soul.getMaxSoul(), soul.getDarkSoul(), soul.getMaxDarkSoul()), player);
+                    });
+                }
+            }
+        }
+
+        @SubscribeEvent
+        public static void onPlayerEnterDungeon(EntityJoinLevelEvent event) {
+            if (!event.getLevel().isClientSide) {
+                ServerLevel world = (ServerLevel) event.getLevel();
+                if (world.dimensionType() == world.registryAccess().registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY).getOrCreateHolderOrThrow(Dimensions.DUNGEON_TYPE).get()) {
+                    StructureStart start = new DungeonStructure(ModStructures.structure()).generate(world.registryAccess(), world.getChunkSource().getGenerator(), world.getChunkSource().getGenerator().getBiomeSource(), world.getChunkSource().randomState(), world.getStructureManager(), world.getSeed(), new ChunkPos(event.getEntity().blockPosition().below()), 0, world, (biomeHolder) -> true);
+                    BoundingBox boundingbox = start.getBoundingBox();
+                    ChunkPos chunkpos = new ChunkPos(SectionPos.blockToSectionCoord(boundingbox.minX()), SectionPos.blockToSectionCoord(boundingbox.minZ()));
+                    ChunkPos chunkpos1 = new ChunkPos(SectionPos.blockToSectionCoord(boundingbox.maxX()), SectionPos.blockToSectionCoord(boundingbox.maxZ()));
+                    checkLoaded(world, chunkpos, chunkpos1);
+                    ChunkPos.rangeClosed(chunkpos, chunkpos1).forEach((chunkPos) -> {
+                        start.placeInChunk(world, world.structureManager(), world.getChunkSource().getGenerator(), world.getRandom(), new BoundingBox(chunkPos.getMinBlockX(), world.getMinBuildHeight(), chunkPos.getMinBlockZ(), chunkPos.getMaxBlockX(), world.getMaxBuildHeight(), chunkPos.getMaxBlockZ()), chunkPos);
                     });
                 }
             }
