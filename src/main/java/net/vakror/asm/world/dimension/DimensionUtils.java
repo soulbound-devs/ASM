@@ -67,7 +67,7 @@ public class DimensionUtils {
                             registryAccess.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY)
                             , new FlatLevelGeneratorSettings(Optional.empty(), BuiltinRegistries.BIOME));
                     ASMMod.LOGGER.info("create world func");
-                    LevelStem stem = new LevelStem(registryAccess.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY).getOrCreateHolderOrThrow(type) , generator);
+                    LevelStem stem = new LevelStem(registryAccess.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY).getOrCreateHolderOrThrow(type), generator);
                     GameData.unfreezeData();
                     return stem;
                 });
