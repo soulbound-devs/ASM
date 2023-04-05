@@ -47,7 +47,7 @@ public class DungeonTeleporter implements ITeleporter {
         return new PortalInfo(new Vec3(pos.above().getX(), pos.above().getY(), pos.above().getZ()), entity.getDeltaMovement(), entity.getYRot(), entity.getXRot());
     }
 
-    private static void checkLoaded(ServerLevel pLevel, ChunkPos pStart, ChunkPos pEnd) {
+    public static void checkLoaded(ServerLevel pLevel, ChunkPos pStart, ChunkPos pEnd) {
         if (ChunkPos.rangeClosed(pStart, pEnd).anyMatch((pos) -> !pLevel.isLoaded(pos.getWorldPosition()))) {
             throw new IllegalStateException("Pos Not Loaded!");
         }
