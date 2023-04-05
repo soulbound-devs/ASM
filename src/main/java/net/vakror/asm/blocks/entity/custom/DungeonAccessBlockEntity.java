@@ -3,7 +3,6 @@ package net.vakror.asm.blocks.entity.custom;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.vakror.asm.blocks.ModBlocks;
@@ -16,9 +15,6 @@ public class DungeonAccessBlockEntity extends BlockEntity{
 
     public DungeonAccessBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.DUNGEON_ACCESS_BLOCK_ENTITY.get(), pPos, pBlockState);
-    }
-
-    public static void tick(Level pLevel, BlockPos pPos, BlockState pState, DungeonAccessBlockEntity blockEntity) {
     }
 
     @Override
