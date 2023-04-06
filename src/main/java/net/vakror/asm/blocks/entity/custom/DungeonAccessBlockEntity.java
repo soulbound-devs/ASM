@@ -12,6 +12,7 @@ import java.util.UUID;
 
 public class DungeonAccessBlockEntity extends BlockEntity{
     private UUID dimensionUUID;
+    private boolean hasGeneratedDungeon = false;
 
     public DungeonAccessBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.DUNGEON_ACCESS_BLOCK_ENTITY.get(), pPos, pBlockState);
@@ -23,6 +24,7 @@ public class DungeonAccessBlockEntity extends BlockEntity{
             dimensionUUID = UUID.randomUUID();
         }
         nbt.putUUID("uuid", dimensionUUID);
+        nbt.putBoolean("hasGeneratedDungeon", hasGeneratedDungeon);
 
         super.saveAdditional(nbt);
     }
@@ -31,6 +33,7 @@ public class DungeonAccessBlockEntity extends BlockEntity{
     public void load(CompoundTag pTag) {
         super.load(pTag);
         dimensionUUID = pTag.getUUID("uuid");
+        hasGeneratedDungeon = pTag.getBoolean("hasGeneratedDungeon");
     }
 
     public UUID getDimensionUUID() {
@@ -45,5 +48,13 @@ public class DungeonAccessBlockEntity extends BlockEntity{
         CompoundTag droppedBlockNbt;
         droppedBlockNbt = this.saveWithoutMetadata();
         return new ItemStack(ModBlocks.DUNGEON_KEY_BLOCK.get(), 1, droppedBlockNbt);
+    }
+
+    public boolean hasGeneratedDungeon() {
+        return hasGeneratedDungeon;
+    }
+
+    public void hasGeneratedDungeon(boolean value) {
+        hasGeneratedDungeon = value;
     }
 }
