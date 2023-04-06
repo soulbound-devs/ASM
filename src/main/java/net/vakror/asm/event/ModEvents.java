@@ -148,6 +148,7 @@ public class ModEvents {
                     ChunkPos.rangeClosed(chunkpos, chunkpos1).forEach((chunkPos) -> {
                         start.placeInChunk(world, world.structureManager(), world.getChunkSource().getGenerator(), world.getRandom(), new BoundingBox(chunkPos.getMinBlockX(), world.getMinBuildHeight(), chunkPos.getMinBlockZ(), chunkPos.getMaxBlockX(), world.getMaxBuildHeight(), chunkPos.getMaxBlockZ()), chunkPos);
                     });
+                    entity.hasGeneratedDungeon(true);
                 }
             }
         }
