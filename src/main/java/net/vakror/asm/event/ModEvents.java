@@ -27,6 +27,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.vakror.asm.ASMMod;
+import net.vakror.asm.blocks.entity.custom.DungeonAccessBlockEntity;
 import net.vakror.asm.items.custom.WandItem;
 import net.vakror.asm.packets.ModPackets;
 import net.vakror.asm.packets.SyncSoulS2CPacket;
@@ -138,7 +139,7 @@ public class ModEvents {
         public static void onPlayerEnterDungeon(EntityJoinLevelEvent event) {
             if (!event.getLevel().isClientSide) {
                 ServerLevel world = (ServerLevel) event.getLevel();
-                if (world.dimensionType() == world.registryAccess().registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY).getOrCreateHolderOrThrow(Dimensions.DUNGEON_TYPE).get()) {
+                if (world.dimensionType() == world.registryAccess().registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY).getOrCreateHolderOrThrow(Dimensions.DUNGEON_TYPE).get() && (event.getLevel().getBlockEntity(event.getEntity().blockPosition().below()) instanceof DungeonAccessBlockEntity entity && !entity.hasGeneratedDungeon())) {
                     StructureStart start = new DungeonStructure(ModStructures.structure()).generate(world.registryAccess(), world.getChunkSource().getGenerator(), world.getChunkSource().getGenerator().getBiomeSource(), world.getChunkSource().randomState(), world.getStructureManager(), world.getSeed(), new ChunkPos(event.getEntity().blockPosition().below()), 0, world, (biomeHolder) -> true);
                     BoundingBox boundingbox = start.getBoundingBox();
                     ChunkPos chunkpos = new ChunkPos(SectionPos.blockToSectionCoord(boundingbox.minX()), SectionPos.blockToSectionCoord(boundingbox.minZ()));
