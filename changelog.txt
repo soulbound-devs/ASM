@@ -252,7 +252,7 @@
  - 40.0.20 Allow sound instances to play custom audio streams (#8295)
  - 40.0.19 Fix NPE caused by canceling onServerChatEvent (#8516)
  - 40.0.18 [1.18.2] Fix tags for custom forge registries. (#8495)
-           Tag-enabled registries must now be registered to vanilla's root registry. See RegistryBuilder#hasTags.
+           Tag-enabled registries must now be registered to vanilla's root Registries. See RegistryBuilder#hasTags.
            Modded tag-enabled registries have to use the format `data/<namespace>/tags/<registrynamespace>/<registryname>/<tag>.json`
            This format is to prevent conflicts for registries with the same path but different namespaces
            EX: Registry name `examplemod:shoe`, tag name `blue_shoes` would be `data/<namespace>/tags/examplemod/shoe/blue_shoes.json`
