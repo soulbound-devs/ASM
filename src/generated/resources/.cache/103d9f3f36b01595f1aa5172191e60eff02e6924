@@ -1,0 +1,7 @@
+// 1.19.3	2023-04-09T18:38:35.654604	Registries
+13d67864a333f38c4fbc487e273f462d9bf509d8 data/asm/worldgen/configured_feature/corrupted_tree.json
+5ac787b06bb89c80ca251fcef51dfc3aaf35380e data/asm/worldgen/configured_feature/corrupted_tree_spawn.json
+63bc2a8fc070f6b693398fbd362157add8118d56 data/asm/worldgen/placed_feature/corrupted_tree_checked.json
+adf4b90726264651c5da427ec174c48731688e88 data/asm/worldgen/placed_feature/corrupted_tree_placed.json
+a499d4ca503849991846586e87843c8d3c63fa64 data/asm/worldgen/structure/dungeon.json
+81967230875b9f4b4dd4f591d214cfbd07e6f7b5 data/asm/worldgen/structure_set/dungeon.json
