@@ -1,4 +1,5 @@
-// 1.19.3	2023-04-09T18:38:35.654604	Registries
+// 1.19.3	2023-04-09T19:39:08.100196	Registries
+2b3c2573424d570ae73e54e5a32e673afd61ed48 data/asm/worldgen/biome/corrupted_cave.json
 13d67864a333f38c4fbc487e273f462d9bf509d8 data/asm/worldgen/configured_feature/corrupted_tree.json
 5ac787b06bb89c80ca251fcef51dfc3aaf35380e data/asm/worldgen/configured_feature/corrupted_tree_spawn.json
 63bc2a8fc070f6b693398fbd362157add8118d56 data/asm/worldgen/placed_feature/corrupted_tree_checked.json
