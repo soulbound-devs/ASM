@@ -76,7 +76,7 @@ public enum WandModelLoader implements IGeometryLoader<WandModel> {
 			@SuppressWarnings("deprecation")
 			Material material = new Material(TextureAtlas.LOCATION_BLOCKS, location);
             TextureAtlasSprite sprite = material != null ? spriteGetter.apply(material) : null;
-            if(sprite != null && !sprite.getName().equals(MissingTextureAtlasSprite.getLocation())){
+            if(sprite != null && !sprite.atlasLocation().equals(MissingTextureAtlasSprite.getLocation())){
                 return sprite;
             }
 			return null;

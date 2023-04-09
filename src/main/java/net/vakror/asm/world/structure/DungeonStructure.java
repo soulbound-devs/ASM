@@ -20,6 +20,7 @@ import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -32,7 +33,7 @@ public class DungeonStructure extends Structure {
     }
 
     @Override
-    public Optional<Structure.GenerationStub> findGenerationPoint(Structure.GenerationContext context) {
+    public @NotNull Optional<Structure.GenerationStub> findGenerationPoint(Structure.GenerationContext context) {
         ChunkPos chunkPos = context.chunkPos();
         int startY = (new UniformHeight(VerticalAnchor.BOTTOM, VerticalAnchor.TOP)).sample(context.random(), new WorldGenerationContext(context.chunkGenerator(), context.heightAccessor()));
         BlockPos blockPos = new BlockPos(chunkPos.getMinBlockX(), startY, chunkPos.getMinBlockZ());
@@ -45,7 +46,7 @@ public class DungeonStructure extends Structure {
         DungeonPiece.generateDungeon(pos, rot, manager, builder);
     }
 
-    public StructureStart generate(RegistryAccess pRegistryAccess, ChunkGenerator pChunkGenerator, BiomeSource pBiomeSource, RandomState pRandomState, StructureTemplateManager pStructureTemplateManager, long pSeed, ChunkPos pChunkPos, int p_226604_, LevelHeightAccessor pHeightAccessor, Predicate<Holder<Biome>> pValidBiome) {
+    public @NotNull StructureStart generate(RegistryAccess pRegistryAccess, ChunkGenerator pChunkGenerator, BiomeSource pBiomeSource, RandomState pRandomState, StructureTemplateManager pStructureTemplateManager, long pSeed, ChunkPos pChunkPos, int p_226604_, LevelHeightAccessor pHeightAccessor, Predicate<Holder<Biome>> pValidBiome) {
         return super.generate(pRegistryAccess, pChunkGenerator, pBiomeSource, pRandomState, pStructureTemplateManager, pSeed, pChunkPos, p_226604_, pHeightAccessor, pValidBiome);
     }
 

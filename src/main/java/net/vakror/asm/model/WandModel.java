@@ -32,7 +32,7 @@ public class WandModel implements IUnbakedGeometry<WandModel> {
 	}
 
 	@Override
-	public BakedModel bake(IGeometryBakingContext owner, ModelBakery bakery
+	public BakedModel bake(IGeometryBakingContext owner, ModelBaker bakery
 			, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelTransform
 			, ItemOverrides overrides, ResourceLocation modelLocation){
 
@@ -51,7 +51,6 @@ public class WandModel implements IUnbakedGeometry<WandModel> {
 		return new WandBakedModel(this.baseMaterial, this.typedTexturesList, spriteGetter, particle, transformMap, transform, owner.useBlockLight());
 	}
 
-	@Override
 	public Collection<Material> getMaterials(IGeometryBakingContext owner
 			, Function<ResourceLocation, UnbakedModel> modelGetter
 			, Set<Pair<String, String>> missingTextureErrors){

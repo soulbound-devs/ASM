@@ -13,57 +13,61 @@ import net.vakror.asm.items.custom.seals.SealItem;
 import net.vakror.asm.soul.ModSoul;
 import net.vakror.asm.wand.WandTiers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ModItems {
-    public static final DeferredRegister<Item> ITEMS =
+    public static List<Item> ITEMS = new ArrayList<>();
+    
+    public static final DeferredRegister<Item> ITEMS_REGISTRY =
             DeferredRegister.create(ForgeRegistries.ITEMS, ASMMod.MOD_ID);
 
-    public static final RegistryObject<Item> AXING_SEAL = ITEMS.register("axing_seal",
-            () -> new SealItem(new Item.Properties().tab(ModCreativeModeTab.ASM), "axing", 1));
+    public static final RegistryObject<Item> AXING_SEAL = ITEMS_REGISTRY.register("axing_seal",
+           () -> new SealItem(new Item.Properties(), "axing", 1));
 
-    public static final RegistryObject<Item> WAND = ITEMS.register("wand",
-            () -> new WandItem(new Item.Properties().tab(ModCreativeModeTab.ASM), WandTiers.ANCIENT_OAK));
+    public static final RegistryObject<Item> WAND = ITEMS_REGISTRY.register("wand",
+           () -> new WandItem(new Item.Properties(), WandTiers.ANCIENT_OAK));
 
-    public static final RegistryObject<Item> PICKAXING_SEAL = ITEMS.register("pickaxing_seal",
-            () -> new SealItem(new Item.Properties().tab(ModCreativeModeTab.ASM), "pickaxing", 0));
+    public static final RegistryObject<Item> PICKAXING_SEAL = ITEMS_REGISTRY.register("pickaxing_seal",
+           () -> new SealItem(new Item.Properties(), "pickaxing", 0));
 
-    public static final RegistryObject<Item> HOEING_SEAL = ITEMS.register("hoeing_seal",
-            () -> new SealItem(new Item.Properties().tab(ModCreativeModeTab.ASM), "hoeing", 0));
+    public static final RegistryObject<Item> HOEING_SEAL = ITEMS_REGISTRY.register("hoeing_seal",
+           () -> new SealItem(new Item.Properties(), "hoeing", 0));
 
-    public static final RegistryObject<Item> MINING_SPEED_SEAL = ITEMS.register("mining_speed_seal",
-            () -> new SealItem(new Item.Properties().tab(ModCreativeModeTab.ASM), "mining_speed", 2));
+    public static final RegistryObject<Item> MINING_SPEED_SEAL = ITEMS_REGISTRY.register("mining_speed_seal",
+           () -> new SealItem(new Item.Properties(), "mining_speed", 2));
 
-    public static final RegistryObject<Item> SWORDING_SEAL = ITEMS.register("swording_seal",
-            () -> new SealItem(new Item.Properties().tab(ModCreativeModeTab.ASM), "swording", 1));
+    public static final RegistryObject<Item> SWORDING_SEAL = ITEMS_REGISTRY.register("swording_seal",
+           () -> new SealItem(new Item.Properties(),"swording", 1));
 
-    public static final RegistryObject<Item> SOUL = ITEMS.register("soul",
-            () -> new Item(new Item.Properties().tab(ModCreativeModeTab.ASM)));
+    public static final RegistryObject<Item> SOUL = ITEMS_REGISTRY.register("soul",
+           () -> new Item(new Item.Properties()));
 
-    public static final RegistryObject<Item> DARK_SOUL = ITEMS.register("dark_soul",
-            () -> new Item(new Item.Properties().tab(ModCreativeModeTab.ASM)));
+    public static final RegistryObject<Item> DARK_SOUL = ITEMS_REGISTRY.register("dark_soul",
+           () -> new Item(new Item.Properties()));
 
-    public static final RegistryObject<Item> BLANK_PASSIVE_SEAL = ITEMS.register("blank_passive_seal",
-            () -> new Item(new Item.Properties().tab(ModCreativeModeTab.ASM)));
+    public static final RegistryObject<Item> BLANK_PASSIVE_SEAL = ITEMS_REGISTRY.register("blank_passive_seal",
+           () -> new Item(new Item.Properties()));
 
-    public static final RegistryObject<Item> BLANK_ATTACK_SEAL = ITEMS.register("blank_attack_seal",
-            () -> new Item(new Item.Properties().tab(ModCreativeModeTab.ASM)));
+    public static final RegistryObject<Item> BLANK_ATTACK_SEAL = ITEMS_REGISTRY.register("blank_attack_seal",
+           () -> new Item(new Item.Properties()));
 
-    public static final RegistryObject<Item> BLANK_AMPLIFYING_SEAL = ITEMS.register("blank_amplifying_seal",
-            () -> new Item(new Item.Properties().tab(ModCreativeModeTab.ASM)));
+    public static final RegistryObject<Item> BLANK_AMPLIFYING_SEAL = ITEMS_REGISTRY.register("blank_amplifying_seal",
+           () -> new Item(new Item.Properties()));
 
-    public static final RegistryObject<Item> SOUL_BUCKET = ITEMS.register("soul_bucket",
-            () -> new BucketItem(ModSoul.SOURCE_SOUL, new Item.Properties().tab(ModCreativeModeTab.ASM).stacksTo(1).craftRemainder(Items.BUCKET)));
+    public static final RegistryObject<Item> SOUL_BUCKET = ITEMS_REGISTRY.register("soul_bucket",
+           () -> new BucketItem(ModSoul.SOURCE_SOUL, new Item.Properties().stacksTo(1).craftRemainder(Items.BUCKET)));
 
-    public static final RegistryObject<Item> DARK_SOUL_BUCKET = ITEMS.register("dark_soul_bucket",
-            () -> new BucketItem(ModSoul.SOURCE_DARK_SOUL, new Item.Properties().tab(ModCreativeModeTab.ASM).stacksTo(1).craftRemainder(Items.BUCKET)));
+    public static final RegistryObject<Item> DARK_SOUL_BUCKET = ITEMS_REGISTRY.register("dark_soul_bucket",
+           () -> new BucketItem(ModSoul.SOURCE_DARK_SOUL, new Item.Properties().stacksTo(1).craftRemainder(Items.BUCKET)));
 
-    public static final RegistryObject<Item> TUNGSTEN_INGOT = ITEMS.register("tungsten_ingot",
-            () -> new Item(new Item.Properties().tab(ModCreativeModeTab.ASM)));
+    public static final RegistryObject<Item> TUNGSTEN_INGOT = ITEMS_REGISTRY.register("tungsten_ingot",
+           () -> new Item(new Item.Properties()));
 
-    public static final RegistryObject<Item> KEY = ITEMS.register("key",
-            () -> new Item(new Item.Properties().tab(ModCreativeModeTab.ASM)));
-
+    public static final RegistryObject<Item> KEY = ITEMS_REGISTRY.register("key",
+           () -> new Item(new Item.Properties()));
 
     public static void register(IEventBus eventBus) {
-        ITEMS.register(eventBus);
+        ITEMS_REGISTRY.register(eventBus);
     }
 }

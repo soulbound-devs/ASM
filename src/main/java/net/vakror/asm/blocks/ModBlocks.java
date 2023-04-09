@@ -21,7 +21,6 @@ import net.vakror.asm.blocks.custom.DungeonAccessBlock;
 import net.vakror.asm.blocks.custom.ModFlammableRotatedPillarBlock;
 import net.vakror.asm.blocks.custom.SoulSolidifierBlock;
 import net.vakror.asm.blocks.custom.WandImbuingTableBlock;
-import net.vakror.asm.items.ModCreativeModeTab;
 import net.vakror.asm.items.ModItems;
 import net.vakror.asm.soul.ModSoul;
 
@@ -34,16 +33,16 @@ public class ModBlocks {
             DeferredRegister.create(ForgeRegistries.BLOCKS, ASMMod.MOD_ID);
 
     public static final RegistryObject<Block> WAND_IMBUING_TABLE = registerBlock("wand_imbuing_table",
-            () -> new WandImbuingTableBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(5).requiresCorrectToolForDrops().noOcclusion()), ModCreativeModeTab.ASM);
+           () -> new WandImbuingTableBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(5).requiresCorrectToolForDrops().noOcclusion()));
 
     public static final RegistryObject<Block> SOUL_SOLIDIFIER = registerBlock("soul_solidifier",
-            () -> new SoulSolidifierBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(5).requiresCorrectToolForDrops().noOcclusion()), ModCreativeModeTab.ASM);
+           () -> new SoulSolidifierBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(5).requiresCorrectToolForDrops().noOcclusion()));
 
     public static final RegistryObject<Block> ANCIENT_OAK_LOG = registerBlock("ancient_oak_log",
-            () -> new ModFlammableRotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LOG)), ModCreativeModeTab.ASM);
+           () -> new ModFlammableRotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LOG)));
 
     public static final RegistryObject<Block> ANCIENT_OAK_PLANKS = registerBlock("ancient_oak_planks",
-            () -> new Block(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)) {
+           () -> new Block(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)) {
                 @Override
                 public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
                     return true;
@@ -58,16 +57,16 @@ public class ModBlocks {
                 public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
                     return 5;
                 }
-            }, ModCreativeModeTab.ASM);
+            });
 
     public static final RegistryObject<Block> CORRUPTED_LOG = registerBlock("corrupted_log",
-            () -> new ModFlammableRotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LOG)), ModCreativeModeTab.ASM);
+           () -> new ModFlammableRotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LOG)));
 
     public static final RegistryObject<Block> CORRUPTED_LEAVES = registerBlock("corrupted_leaves",
-            () -> new ModFlammableRotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LOG)), ModCreativeModeTab.ASM);
+           () -> new ModFlammableRotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LOG)));
 
     public static final RegistryObject<Block> CORRUPTED_PLANKS = registerBlock("corrupted_planks",
-            () -> new Block(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)) {
+           () -> new Block(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)) {
                 @Override
                 public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
                     return true;
@@ -82,32 +81,29 @@ public class ModBlocks {
                 public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
                     return 5;
                 }
-            }, ModCreativeModeTab.ASM);
+            });
 
     public static final RegistryObject<LiquidBlock> SOUL_FLUID_BLOCK = registerBlockWithoutBlockItem("soul_fluid_block",
-            () -> new LiquidBlock(ModSoul.SOURCE_SOUL, BlockBehaviour.Properties.copy(Blocks.WATER)));
+           () -> new LiquidBlock(ModSoul.SOURCE_SOUL, BlockBehaviour.Properties.copy(Blocks.WATER)));
 
     public static final RegistryObject<LiquidBlock> DARK_SOUL_FLUID_BLOCK = registerBlockWithoutBlockItem("dark_soul_fluid_block",
-            () -> new LiquidBlock(ModSoul.SOURCE_DARK_SOUL, BlockBehaviour.Properties.copy(Blocks.WATER)));
+           () -> new LiquidBlock(ModSoul.SOURCE_DARK_SOUL, BlockBehaviour.Properties.copy(Blocks.WATER)));
 
     public static final RegistryObject<Block> DUNGEON_KEY_BLOCK = registerBlock("dungeon_key_block",
-            () -> new DungeonAccessBlock(BlockBehaviour.Properties.of(Material.STONE).strength(1.5F, 6.0F).requiresCorrectToolForDrops()), ModCreativeModeTab.ASM);
+            () -> new DungeonAccessBlock(BlockBehaviour.Properties.of(Material.STONE).strength(1.5F, 6.0F).requiresCorrectToolForDrops()));
 
     private static <T extends Block> RegistryObject<T> registerBlockWithoutBlockItem(String name, Supplier<T> block) {
         return BLOCKS.register(name, block);
     }
 
-    private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block,
-                                                                     CreativeModeTab tab, String tooltipKey) {
+    private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block, String tooltipKey) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
-        registerBlockItem(name, toReturn, tab, tooltipKey);
+        registerBlockItem(name, toReturn, tooltipKey);
         return toReturn;
     }
 
-    private static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block,
-                                                                            CreativeModeTab tab, String tooltipKey) {
-        return ModItems.ITEMS.register(name, () -> new BlockItem(block.get(),
-                new Item.Properties().tab(tab)) {
+    private static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block, String tooltipKey) {
+        return ModItems.ITEMS_REGISTRY.register(name, () -> new BlockItem(block.get(), new Item.Properties()){
             @Override
             public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
                 pTooltip.add(Component.translatable(tooltipKey));
@@ -115,16 +111,15 @@ public class ModBlocks {
         });
     }
 
-    private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab) {
+    private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
-        registerBlockItem(name, toReturn, tab);
+        registerBlockItem(name, toReturn);
         return toReturn;
     }
 
-    private static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block,
-                                                                            CreativeModeTab tab) {
-        return ModItems.ITEMS.register(name, () -> new BlockItem(block.get(),
-                new Item.Properties().tab(tab)));
+    private static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block) {
+        return ModItems.ITEMS_REGISTRY.register(name, () -> new BlockItem(block.get(),
+                new Item.Properties()));
     }
 
     public static void register(IEventBus eventBus) {

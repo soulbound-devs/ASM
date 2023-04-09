@@ -1,6 +1,6 @@
 package net.vakror.asm.world.structure;
 
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -8,8 +8,8 @@ import net.minecraftforge.registries.RegistryObject;
 import net.vakror.asm.ASMMod;
 
 public class ModDungeonPieces {
-    private static final DeferredRegister<StructurePieceType> STRUCTURE_PIECE = DeferredRegister.create(Registry.STRUCTURE_PIECE_REGISTRY, ASMMod.MOD_ID);
-    public static final RegistryObject<StructurePieceType> DEFAULT_DUNGEON_PIECE = register("default", DungeonPiece::new);;
+    private static final DeferredRegister<StructurePieceType> STRUCTURE_PIECE = DeferredRegister.create(Registries.STRUCTURE_PIECE, ASMMod.MOD_ID);
+    public static final RegistryObject<StructurePieceType> DEFAULT_DUNGEON_PIECE = register("default", DungeonPiece::new);
 
     public ModDungeonPieces() {
     }

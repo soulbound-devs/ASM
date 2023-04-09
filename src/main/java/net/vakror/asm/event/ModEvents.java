@@ -1,9 +1,10 @@
 package net.vakror.asm.event;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.Registry;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.Vec3i;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -11,6 +12,8 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelAccessor;
@@ -19,6 +22,7 @@ import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -28,6 +32,7 @@ import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.vakror.asm.ASMMod;
 import net.vakror.asm.blocks.entity.custom.DungeonAccessBlockEntity;
+import net.vakror.asm.items.ModItems;
 import net.vakror.asm.items.custom.WandItem;
 import net.vakror.asm.packets.ModPackets;
 import net.vakror.asm.packets.SyncSoulS2CPacket;
@@ -40,8 +45,6 @@ import net.vakror.asm.world.structure.DungeonStructure;
 import net.vakror.asm.world.structure.ModStructures;
 
 import java.util.List;
-
-import static net.vakror.asm.world.dimension.DungeonTeleporter.checkLoaded;
 
 public class ModEvents {
     @Mod.EventBusSubscriber(modid = ASMMod.MOD_ID)
@@ -83,8 +86,8 @@ public class ModEvents {
         }
 
         public static <T extends Entity> List<T> getNearbyEntities(final LevelAccessor world, final Vec3i pos, final float radius, final Class<T> entityClass) {
-            final AABB selectBox = new AABB(0.0, 0.0, 0.0, 1.0, 1.0, 1.0).move((double) pos.getX(), (double) pos.getY(), (double) pos.getZ()).inflate((double) radius);
-            return (List<T>) world.getEntitiesOfClass(entityClass, selectBox, entity -> entity.isAlive() && !entity.isSpectator());
+            final AABB selectBox = new AABB(0.0, 0.0, 0.0, 1.0, 1.0, 1.0).move(pos.getX(), pos.getY(), pos.getZ()).inflate(radius);
+            return world.getEntitiesOfClass(entityClass, selectBox, entity -> entity.isAlive() && !entity.isSpectator());
         }
 
         @SubscribeEvent
@@ -137,20 +140,40 @@ public class ModEvents {
 
         @SubscribeEvent
         public static void onPlayerEnterDungeon(EntityJoinLevelEvent event) {
-            if (!event.getLevel().isClientSide) {
+            if (!event.getLevel().isClientSide && event.getEntity() instanceof Player) {
                 ServerLevel world = (ServerLevel) event.getLevel();
-                if (world.dimensionType() == world.registryAccess().registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY).getOrCreateHolderOrThrow(Dimensions.DUNGEON_TYPE).get() && (event.getLevel().getBlockEntity(event.getEntity().blockPosition().below()) instanceof DungeonAccessBlockEntity entity && !entity.hasGeneratedDungeon())) {
+                if (world.dimensionType() == world.registryAccess().registryOrThrow(Registries.DIMENSION_TYPE).getHolderOrThrow(Dimensions.DUNGEON_TYPE).get() && (event.getLevel().getBlockEntity(event.getEntity().blockPosition().below()) instanceof DungeonAccessBlockEntity entity && !entity.hasGeneratedDungeon())) {
                     StructureStart start = new DungeonStructure(ModStructures.structure()).generate(world.registryAccess(), world.getChunkSource().getGenerator(), world.getChunkSource().getGenerator().getBiomeSource(), world.getChunkSource().randomState(), world.getStructureManager(), world.getSeed(), new ChunkPos(event.getEntity().blockPosition().below()), 0, world, (biomeHolder) -> true);
                     BoundingBox boundingbox = start.getBoundingBox();
                     ChunkPos chunkpos = new ChunkPos(SectionPos.blockToSectionCoord(boundingbox.minX()), SectionPos.blockToSectionCoord(boundingbox.minZ()));
                     ChunkPos chunkpos1 = new ChunkPos(SectionPos.blockToSectionCoord(boundingbox.maxX()), SectionPos.blockToSectionCoord(boundingbox.maxZ()));
-                    checkLoaded(world, chunkpos, chunkpos1);
                     ChunkPos.rangeClosed(chunkpos, chunkpos1).forEach((chunkPos) -> {
                         start.placeInChunk(world, world.structureManager(), world.getChunkSource().getGenerator(), world.getRandom(), new BoundingBox(chunkPos.getMinBlockX(), world.getMinBuildHeight(), chunkPos.getMinBlockZ(), chunkPos.getMaxBlockX(), world.getMaxBuildHeight(), chunkPos.getMaxBlockZ()), chunkPos);
                     });
                     entity.hasGeneratedDungeon(true);
                 }
             }
+        }
+
+        @SubscribeEvent
+        public static void addItemsToCreativeModeTab(CreativeModeTabEvent.BuildContents event) {
+            if (event.getTab() == ASM_TAB) {
+                for (Item item : ModItems.ITEMS) {
+                    event.accept(item);
+                }
+            }
+        }
+
+        static CreativeModeTab ASM_TAB;
+
+        @SubscribeEvent
+        public static void createCreativeModeTab(CreativeModeTabEvent.Register event) {
+            event.registerCreativeModeTab(new ResourceLocation(ASMMod.MOD_ID, "asm"), (builder) -> {
+                builder.title(Component.literal("ASM"));
+                builder.icon(() -> new ItemStack(ModItems.PICKAXING_SEAL.get()));
+                builder.withSearchBar();
+                ASM_TAB = builder.build();
+            });
         }
     }
 }

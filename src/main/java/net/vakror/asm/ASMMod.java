@@ -1,10 +1,8 @@
 package net.vakror.asm;
 
 import com.mojang.logging.LogUtils;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.event.ModelEvent;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -27,10 +25,7 @@ import net.vakror.asm.seal.SealRegistry;
 import net.vakror.asm.soul.ModSoul;
 import net.vakror.asm.soul.ModSoulTypes;
 import net.vakror.asm.world.biome.ASMRegion;
-import net.vakror.asm.world.biome.ModBiomes;
 import net.vakror.asm.world.dimension.Dimensions;
-import net.vakror.asm.world.feature.ModConfiguredFeatures;
-import net.vakror.asm.world.feature.ModPlacedFeatures;
 import net.vakror.asm.world.structure.ModDungeonPieces;
 import net.vakror.asm.world.structure.ModStructures;
 import org.slf4j.Logger;
@@ -46,7 +41,6 @@ public class ASMMod {
     public static final String MOD_ID = "asm";
 
     public ASMMod() {
-
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
 
@@ -56,9 +50,6 @@ public class ASMMod {
         ModBlocks.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModMenuTypes.register(modEventBus);
-        ModBiomes.register(modEventBus);
-        ModConfiguredFeatures.register(modEventBus);
-        ModPlacedFeatures.register(modEventBus);
         ModStructures.register(modEventBus);
         ModDungeonPieces.register(modEventBus);
 
@@ -66,7 +57,6 @@ public class ASMMod {
 
         ModSoul.register(modEventBus);
         ModSoulTypes.register(modEventBus);
-
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
         MinecraftForge.EVENT_BUS.register(this);
@@ -106,14 +96,14 @@ public class ASMMod {
         public static void onModelsRegistered(ModelEvent.RegisterGeometryLoaders event) {
             event.register("wand", WandModelLoader.INSTANCE);
         }
-        @SubscribeEvent
-        public static void onTextureStitch(TextureStitchEvent.Pre event) {
-            if (event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
-                event.addSprite(new ResourceLocation(ASMMod.MOD_ID, "item/wands/activated/axing"));
-                event.addSprite(new ResourceLocation(ASMMod.MOD_ID, "item/wands/wand"));
-                event.addSprite(new ResourceLocation(ASMMod.MOD_ID, "item/wands/activated/pickaxing"));
-                event.addSprite(new ResourceLocation(ASMMod.MOD_ID, "item/wands/activated/scythe"));
-            }
-        }
+//        @SubscribeEvent
+//        public static void onTextureStitch(TextureStitchEvent. event) {
+//            if (event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
+//                event.addSprite(new ResourceLocation(ASMMod.MOD_ID, "item/wands/activated/axing"));
+//                event.addSprite(new ResourceLocation(ASMMod.MOD_ID, "item/wands/wand"));
+//                event.addSprite(new ResourceLocation(ASMMod.MOD_ID, "item/wands/activated/pickaxing"));
+//                event.addSprite(new ResourceLocation(ASMMod.MOD_ID, "item/wands/activated/scythe"));
+//            }
+//        }
     }
 }

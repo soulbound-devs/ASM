@@ -54,7 +54,7 @@ public class WandBakedModel extends BakedItemModel {
 		this.transform = transformIn;
 
 		TextureAtlasSprite sprite = spriteGetter.apply(new Material(TextureAtlas.LOCATION_BLOCKS, baseMateriallocaiton));
-		if (!sprite.getName().equals(MissingTextureAtlasSprite.getLocation())) {
+		if (!sprite.atlasLocation().equals(MissingTextureAtlasSprite.getLocation())) {
 			this.baseSprite = sprite;
 		}
 	}
@@ -281,7 +281,7 @@ public class WandBakedModel extends BakedItemModel {
 		for(int spriteIndex = sprites.size()-1; spriteIndex >= 0; spriteIndex --){
 			TextureAtlasSprite sprite = sprites.get(spriteIndex);
 			if (sprite != null) {
-				if (!sprite.isTransparent(0, x, y)) {
+				if (!sprite.contents().isTransparent(0, x, y)) {
 					return sprite;
 				}
 			}
@@ -303,11 +303,11 @@ public class WandBakedModel extends BakedItemModel {
 	private String getCacheKeyString(){
 		List<String> locations = new ArrayList<String>();
 		if(this.baseSprite != null)
-			locations.add(this.baseSprite.getName().toString());
+			locations.add(this.baseSprite.atlasLocation().toString());
 
 		for(TextureAtlasSprite sprite : this.ingredientSprites) {
 			if (sprite != null) {
-				locations.add(sprite.getName().toString());
+				locations.add(sprite.atlasLocation().toString());
 			}
 		}
 

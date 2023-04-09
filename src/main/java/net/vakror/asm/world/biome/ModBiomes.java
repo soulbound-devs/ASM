@@ -1,62 +1,47 @@
 package net.vakror.asm.world.biome;
 
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
+import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.data.worldgen.Carvers;
 import net.minecraft.data.worldgen.biome.OverworldBiomes;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.Musics;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.level.biome.*;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeGenerationSettings;
+import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.vakror.asm.ASMMod;
 
 public class ModBiomes {
-    private static final DeferredRegister<Biome> BIOMES = DeferredRegister.create(ForgeRegistries.BIOMES, ASMMod.MOD_ID);
-
-
-    public static Biome corrupted_cave() {
+    public static Biome corrupted_cave(BootstapContext<Biome> context) {
         MobSpawnSettings.Builder mobSpawnSettingsBuilder = new MobSpawnSettings.Builder();
         mobSpawnSettingsBuilder.addSpawn(MobCategory.AMBIENT, new MobSpawnSettings.SpawnerData(EntityType.CAVE_SPIDER, 10, 4, 6));
         mobSpawnSettingsBuilder.addSpawn(MobCategory.AMBIENT, new MobSpawnSettings.SpawnerData(EntityType.EVOKER, 25, 8, 8));
         BiomeDefaultFeatures.caveSpawns(mobSpawnSettingsBuilder);
-
-        BiomeGenerationSettings.Builder biomeGenerationSettingsBuilder = new BiomeGenerationSettings.Builder();
+        HolderGetter<PlacedFeature> holdergetter = context.lookup(Registries.PLACED_FEATURE);
+        HolderGetter<ConfiguredWorldCarver<?>> holdergetter1 = context.lookup(Registries.CONFIGURED_CARVER);
+        BiomeGenerationSettings.Builder biomeGenerationSettingsBuilder = new BiomeGenerationSettings.Builder(holdergetter, holdergetter1);
         OverworldBiomes.globalOverworldGeneration(biomeGenerationSettingsBuilder);
         biomeGenerationSettingsBuilder.addCarver(GenerationStep.Carving.AIR, Carvers.CAVE);
         biomeGenerationSettingsBuilder.addCarver(GenerationStep.Carving.AIR, Carvers.CAVE_EXTRA_UNDERGROUND);
         Music music = Musics.createGameMusic(SoundEvents.MUSIC_BIOME_DEEP_DARK);
         return OverworldBiomes.biome(Biome.Precipitation.RAIN, 0.5F, 0.5F, mobSpawnSettingsBuilder, biomeGenerationSettingsBuilder, music);
     }
-    public static Biome dungeon() {
-        MobSpawnSettings.Builder mobSpawnSettingsBuilder = new MobSpawnSettings.Builder();
-        mobSpawnSettingsBuilder.addSpawn(MobCategory.AMBIENT, new MobSpawnSettings.SpawnerData(EntityType.ZOMBIE, 10, 4, 6));
-        mobSpawnSettingsBuilder.addSpawn(MobCategory.AMBIENT, new MobSpawnSettings.SpawnerData(EntityType.EVOKER, 25, 8, 8));
-        mobSpawnSettingsBuilder.addSpawn(MobCategory.AMBIENT, new MobSpawnSettings.SpawnerData(EntityType.ILLUSIONER, 25, 8, 8));
-        mobSpawnSettingsBuilder.addSpawn(MobCategory.AMBIENT, new MobSpawnSettings.SpawnerData(EntityType.RAVAGER, 25, 8, 8));
-        mobSpawnSettingsBuilder.addSpawn(MobCategory.AMBIENT, new MobSpawnSettings.SpawnerData(EntityType.SKELETON, 25, 8, 8));
 
-        BiomeGenerationSettings.Builder biomeGenerationSettingsBuilder = new BiomeGenerationSettings.Builder();
-        return OverworldBiomes.biome(Biome.Precipitation.RAIN, 0.5F, 0.5F, mobSpawnSettingsBuilder, biomeGenerationSettingsBuilder, null);
+    public static void bootstrap(BootstapContext<Biome> context) {
+        Biome corrupted_cave = corrupted_cave(context);
+
+        context.register(CORRUPTED_CAVE, corrupted_cave);
     }
 
-    public static final RegistryObject<Biome> CORRUPTED_CAVE = registerBiome("corrupted_cave", corrupted_cave());
-    public static final RegistryObject<Biome> DUNGEON = registerBiome("dungeon", dungeon());
-
-    public static void register(IEventBus eventBus) {
-        BIOMES.register(eventBus);
-    }
-
-    private static <I extends Biome> RegistryObject<I> registerBiome(String name, I biome) {
-        return BIOMES.register(name, () -> biome);
-    }
-
-    public static int toColorInt(int R, int G, int B, int A) {
-        return (A & 0xff) << 24 | (R & 0xff) << 16 | (G & 0xff) << 8 | (B & 0xff);
-    }
+    public static final ResourceKey<Biome> CORRUPTED_CAVE = ResourceKey.create(Registries.BIOME, new ResourceLocation(ASMMod.MOD_ID, "corrupted_cave"));
 }
