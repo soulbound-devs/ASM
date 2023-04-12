@@ -7,7 +7,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -30,7 +29,6 @@ import net.vakror.asm.world.structure.ModDungeonPieces;
 import net.vakror.asm.world.structure.ModStructures;
 import org.slf4j.Logger;
 import terrablender.api.Regions;
-import top.theillusivec4.curios.api.SlotTypeMessage;
 
 import static net.vakror.asm.ASMMod.MOD_ID;
 
@@ -83,7 +81,6 @@ public class ASMMod {
     private void enqueueIMC(final InterModEnqueueEvent event)
     {
         // Dispatch IMC
-        InterModComms.sendTo("curios", "REGISTER_TYPE", () -> new SlotTypeMessage.Builder("necklace").priority(3).size(2).build());
     }
 
     private void processIMC(final InterModProcessEvent event)

@@ -7,7 +7,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Transformation;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemTransform;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -16,6 +15,7 @@ import net.minecraft.client.resources.model.Material;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Position;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.model.pipeline.QuadBakingVertexConsumer;
 import net.minecraftforge.client.model.pipeline.TransformingVertexPipeline;
@@ -47,7 +47,7 @@ public class WandBakedModel extends BakedItemModel {
 			ResourceLocation baseMateriallocaiton
 			, ImmutableList<WandModelLoader.TypedTextures> materials
 			, Function<Material, TextureAtlasSprite> spriteGetter, TextureAtlasSprite particle
-			, ImmutableMap<ItemTransforms.TransformType, ItemTransform> transformMap
+			, ImmutableMap<ItemDisplayContext, ItemTransform> transformMap
 			, Transformation transformIn, boolean isSideLit) {
 		super(ImmutableList.of(), particle, transformMap, new WandItemOverrideList(materials, spriteGetter), transformIn.isIdentity(), isSideLit);
 
@@ -259,7 +259,7 @@ public class WandBakedModel extends BakedItemModel {
 	}
 
 	@Override
-	public BakedModel applyTransform(ItemTransforms.TransformType type, PoseStack poseStack, boolean applyLeftHandTransform) {
+	public BakedModel applyTransform(ItemDisplayContext type, PoseStack poseStack, boolean applyLeftHandTransform) {
 		return super.applyTransform(type, poseStack, applyLeftHandTransform);
 	}
 
