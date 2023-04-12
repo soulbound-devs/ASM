@@ -3,7 +3,6 @@ package net.vakror.asm.world.dimension;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.serialization.Lifecycle;
-import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.WritableRegistry;
@@ -14,7 +13,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.progress.ChunkProgressListener;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.border.BorderChangeListener;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.dimension.DimensionType;
@@ -66,7 +65,7 @@ public class DimensionUtils {
 
         return getOrCreateLevel(world.getServer(), key,
                 (server, registryKey) -> {
-                    ChunkGenerator generator = new FlatLevelSource(new FlatLevelGeneratorSettings(Optional.empty(), (Holder<Biome>) Registries.BIOME, null));
+                    ChunkGenerator generator = new FlatLevelSource(new FlatLevelGeneratorSettings(Optional.empty(), registryAccess.lookup(Registries.BIOME).get().getOrThrow(Biomes.PLAINS), null));
                     ASMMod.LOGGER.info("create world func");
                     LevelStem stem = new LevelStem(registryAccess.registryOrThrow(Registries.DIMENSION_TYPE).getHolderOrThrow(type), generator);
                     GameData.unfreezeData();
