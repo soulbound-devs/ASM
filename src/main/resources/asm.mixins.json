@@ -5,7 +5,8 @@
   "refmap": "asm.refmap.json",
   "mixins": [
     "IMinecraftServerAccessor",
-    "MappedRegistryMixin"
+    "MappedRegistryMixin",
+    "OverworldBiomesInvoker"
   ],
   "client": [
   ],
