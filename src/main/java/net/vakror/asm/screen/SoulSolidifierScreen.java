@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.TooltipFlag;
 import net.vakror.asm.ASMMod;
-import net.vakror.asm.client.FluidTankRenderer;
+import net.vakror.asm.client.renderer.FluidTankRenderer;
 
 import java.util.Optional;
 

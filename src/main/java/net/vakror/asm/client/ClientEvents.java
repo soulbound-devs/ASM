@@ -5,6 +5,7 @@ import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.vakror.asm.ASMMod;
+import net.vakror.asm.client.renderer.SoulHudOverlay;
 
 public class ClientEvents {
     @Mod.EventBusSubscriber(modid = ASMMod.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)

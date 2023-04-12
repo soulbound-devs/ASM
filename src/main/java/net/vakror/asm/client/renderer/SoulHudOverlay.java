@@ -1,4 +1,4 @@
-package net.vakror.asm.client;
+package net.vakror.asm.client.renderer;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiComponent;
@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import net.vakror.asm.ASMMod;
+import net.vakror.asm.client.ClientSoulData;
 
 public class SoulHudOverlay {
     private static final ResourceLocation SOUL_BAR = new ResourceLocation(ASMMod.MOD_ID,

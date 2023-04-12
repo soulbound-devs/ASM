@@ -1,4 +1,4 @@
-package net.vakror.asm.client;
+package net.vakror.asm.client.renderer;
 
 import com.google.common.base.Preconditions;
 import com.mojang.blaze3d.systems.RenderSystem;
