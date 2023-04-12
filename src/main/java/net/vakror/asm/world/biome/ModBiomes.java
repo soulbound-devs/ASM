@@ -20,6 +20,7 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.vakror.asm.ASMMod;
+import net.vakror.asm.mixin.OverworldBiomesInvoker;
 
 public class ModBiomes {
     public static Biome corrupted_cave(BootstapContext<Biome> context) {
@@ -34,7 +35,8 @@ public class ModBiomes {
         biomeGenerationSettingsBuilder.addCarver(GenerationStep.Carving.AIR, Carvers.CAVE);
         biomeGenerationSettingsBuilder.addCarver(GenerationStep.Carving.AIR, Carvers.CAVE_EXTRA_UNDERGROUND);
         Music music = Musics.createGameMusic(SoundEvents.MUSIC_BIOME_DEEP_DARK);
-        return OverworldBiomes.biome(Biome.Precipitation.RAIN, 0.5F, 0.5F, mobSpawnSettingsBuilder, biomeGenerationSettingsBuilder, music);
+        // Params bool precipitation, float temperature, float downfall, MobSpawnSettings, GenerationSettings, music
+        return OverworldBiomesInvoker.invokeBiome(false, 0.5F, 0.5F, mobSpawnSettingsBuilder, biomeGenerationSettingsBuilder, music);
     }
 
     public static void bootstrap(BootstapContext<Biome> context) {
