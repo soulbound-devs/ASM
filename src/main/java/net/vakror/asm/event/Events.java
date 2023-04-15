@@ -46,7 +46,7 @@ import net.vakror.asm.world.structure.ModStructures;
 
 import java.util.List;
 
-public class ModEvents {
+public class Events {
     @Mod.EventBusSubscriber(modid = ASMMod.MOD_ID)
     public static class ForgeEvents {
         @SubscribeEvent
@@ -175,5 +175,10 @@ public class ModEvents {
                 ASM_TAB = builder.build();
             });
         }
+    }
+
+    @Mod.EventBusSubscriber(modid = ASMMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    public static class ModEvents {
+
     }
 }
