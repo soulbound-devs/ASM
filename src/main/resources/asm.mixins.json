@@ -9,6 +9,7 @@
     "OverworldBiomesInvoker"
   ],
   "client": [
+    "LocalPlayerMixin"
   ],
   "minVersion": "0.8"
 }
