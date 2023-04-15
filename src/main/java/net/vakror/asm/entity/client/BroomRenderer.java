@@ -22,7 +22,7 @@ public class BroomRenderer<T extends BroomEntity> extends EntityRenderer<T> {
     EntityRendererProvider.Context context;
     ResourceLocation TEXTURE = new ResourceLocation(ASMMod.MOD_ID, "textures/entity/broom_basic.png");
 
-    protected BroomRenderer(EntityRendererProvider.Context context) {
+    public BroomRenderer(EntityRendererProvider.Context context) {
         super(context);
         this.shadowRadius = 1;
         this.context = context;
