@@ -16,6 +16,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.vakror.asm.blocks.ModBlocks;
 import net.vakror.asm.blocks.entity.ModBlockEntities;
 import net.vakror.asm.client.ASMClient;
+import net.vakror.asm.entity.ModEntities;
 import net.vakror.asm.items.ModItems;
 import net.vakror.asm.model.WandModelLoader;
 import net.vakror.asm.packets.ModPackets;
@@ -50,6 +51,7 @@ public class ASMMod {
         ModMenuTypes.register(modEventBus);
         ModStructures.register(modEventBus);
         ModDungeonPieces.register(modEventBus);
+        ModEntities.register(modEventBus);
 
         Dimensions.register();
 
