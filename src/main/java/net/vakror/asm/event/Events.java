@@ -154,7 +154,10 @@ public class Events {
                 }
             }
         }
+    }
 
+    @Mod.EventBusSubscriber(modid = ASMMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    public static class ModEvents {
         @SubscribeEvent
         public static void addItemsToCreativeModeTab(CreativeModeTabEvent.BuildContents event) {
             if (event.getTab() == ASM_TAB) {
@@ -175,10 +178,5 @@ public class Events {
                 ASM_TAB = builder.build();
             });
         }
-    }
-
-    @Mod.EventBusSubscriber(modid = ASMMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-    public static class ModEvents {
-
     }
 }
