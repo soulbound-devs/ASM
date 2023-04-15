@@ -13,7 +13,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelAccessor;
@@ -32,6 +31,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.vakror.asm.ASMMod;
+import net.vakror.asm.blocks.ModBlocks;
 import net.vakror.asm.blocks.entity.custom.DungeonAccessBlockEntity;
 import net.vakror.asm.entity.ModEntities;
 import net.vakror.asm.entity.client.BroomModel;
@@ -165,9 +165,29 @@ public class Events {
         @SubscribeEvent
         public static void addItemsToCreativeModeTab(CreativeModeTabEvent.BuildContents event) {
             if (event.getTab() == ASM_TAB) {
-                for (Item item : ModItems.ITEMS) {
-                    event.accept(item);
-                }
+                event.accept(ModItems.AXING_SEAL.get());
+                event.accept(ModItems.WAND.get());
+                event.accept(ModItems.PICKAXING_SEAL.get());
+                event.accept(ModItems.HOEING_SEAL.get());
+                event.accept(ModItems.MINING_SPEED_SEAL.get());
+                event.accept(ModItems.SWORDING_SEAL.get());
+                event.accept(ModItems.SOUL.get());
+                event.accept(ModItems.DARK_SOUL.get());
+                event.accept(ModItems.BLANK_PASSIVE_SEAL.get());
+                event.accept(ModItems.BLANK_ATTACK_SEAL.get());
+                event.accept(ModItems.BLANK_AMPLIFYING_SEAL.get());
+                event.accept(ModItems.SOUL_BUCKET.get());
+                event.accept(ModItems.DARK_SOUL_BUCKET.get());
+                event.accept(ModItems.TUNGSTEN_INGOT.get());
+                event.accept(ModItems.KEY.get());
+                event.accept(ModBlocks.WAND_IMBUING_TABLE.get());
+                event.accept(ModBlocks.SOUL_SOLIDIFIER.get());
+                event.accept(ModBlocks.ANCIENT_OAK_LOG.get());
+                event.accept(ModBlocks.ANCIENT_OAK_PLANKS.get());
+                event.accept(ModBlocks.CORRUPTED_LOG.get());
+                event.accept(ModBlocks.CORRUPTED_LEAVES.get());
+                event.accept(ModBlocks.CORRUPTED_PLANKS.get());
+                event.accept(ModBlocks.DUNGEON_KEY_BLOCK.get());
             }
         }
 
