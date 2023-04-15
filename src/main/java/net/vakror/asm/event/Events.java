@@ -20,6 +20,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.CreativeModeTabEvent;
@@ -32,6 +33,9 @@ import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.vakror.asm.ASMMod;
 import net.vakror.asm.blocks.entity.custom.DungeonAccessBlockEntity;
+import net.vakror.asm.entity.ModEntities;
+import net.vakror.asm.entity.client.BroomModel;
+import net.vakror.asm.entity.client.BroomRenderer;
 import net.vakror.asm.items.ModItems;
 import net.vakror.asm.items.custom.WandItem;
 import net.vakror.asm.packets.ModPackets;
@@ -177,6 +181,16 @@ public class Events {
                 builder.withSearchBar();
                 ASM_TAB = builder.build();
             });
+        }
+
+        @SubscribeEvent
+        public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+            event.registerEntityRenderer(ModEntities.BROOM.get(), BroomRenderer::new);
+        }
+
+        @SubscribeEvent
+        public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+            event.registerLayerDefinition(BroomModel.LAYER_LOCATION, BroomModel::createBodyLayer);
         }
     }
 }
