@@ -120,6 +120,11 @@ public class BroomEntity extends Entity {
     }
 
     @Override
+    public boolean isNoGravity() {
+        return true;
+    }
+
+    @Override
     protected void checkFallDamage(double p_19911_, boolean p_19912_, BlockState p_19913_, BlockPos p_19914_) {
         this.fallDistance = 0;
     }
