@@ -138,6 +138,7 @@ public class BroomEntity extends Entity {
     }
 
     private void handleMove(Vec3 movement, float speed, float angle) {
+        speed *= 0.01;
         if (this.isVehicle()) {
             Vec3 inputVec;
             double length = movement.lengthSqr();
