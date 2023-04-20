@@ -146,7 +146,7 @@ public class BroomEntity extends Entity {
             }
 
             if (this.hasInput()) {
-                this.setDeltaMovement(this.getDeltaMovement().add(inputVec));
+                this.setDeltaMovement(this.getDeltaMovement().add(inputVec).add(0.0f, -this.getXRot(), 0.0f).scale(speed / 5));
             }
         }
     }
