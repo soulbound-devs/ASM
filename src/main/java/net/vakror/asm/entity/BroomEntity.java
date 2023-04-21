@@ -150,11 +150,11 @@ public class BroomEntity extends Entity {
                 Vec3 vec = (length > 1 ? movement.normalize() : movement).scale(horizontalSpeed);
                 float f = Mth.sin(angle * ((float) Math.PI/180));
                 float alsoF = Mth.cos(angle * ((float) Math.PI/180));
-                inputVec = new Vec3(vec.x * (double) alsoF - vec.z * (double) f, vec.y, vec.z * (double) alsoF + vec.x * (double) f);
+                inputVec = new Vec3(vec.x * (double) alsoF - vec.z * (double) f, (-this.getXRot()/2), vec.z * (double) alsoF + vec.x * (double) f);
             }
 
             if (this.hasInput()) {
-                this.setDeltaMovement(this.getDeltaMovement().add(inputVec).add(0.0f, -this.getXRot(), 0.0f).scale(speed / 5));
+                this.setDeltaMovement(this.getDeltaMovement().add(inputVec));
             }
         }
     }
