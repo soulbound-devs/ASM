@@ -97,7 +97,9 @@ public class BroomEntity extends Entity {
             }
             this.move(MoverType.SELF, this.getDeltaMovement());
         }
-
+        if (this.getDeltaMovement() != Vec3.ZERO) {
+            this.setDeltaMovement((getDeltaMovement().x <= 0.3 ? -0.3: 0), (getDeltaMovement().y <= 0.3 ? -0.3: 0), (getDeltaMovement().z <= 0.3 ? -0.3: 0));
+        }
     }
 
     @Override
