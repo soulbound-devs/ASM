@@ -93,12 +93,9 @@ public class BroomEntity extends Entity {
             if (this.level.isClientSide()) {
                 LivingEntity controller = this.getControllingPassenger();
                 assert controller != null;
-                this.handleMove(new Vec3(controller.xxa, controller.yya, controller.zza), 1, this.getYRot());
+                this.handleMove(new Vec3(controller.xxa, controller.yya, controller.zza), 0.3f, this.getYRot());
             }
             this.move(MoverType.SELF, this.getDeltaMovement());
-        }
-        if (this.getDeltaMovement() != Vec3.ZERO) {
-            this.setDeltaMovement((getDeltaMovement().x <= 0.3 ? -0.3: 0), (getDeltaMovement().y <= 0.3 ? -0.3: 0), (getDeltaMovement().z <= 0.3 ? -0.3: 0));
         }
     }
 
@@ -140,7 +137,7 @@ public class BroomEntity extends Entity {
     }
 
     private void handleMove(Vec3 movement, float speed, float angle) {
-        float horizontalSpeed = speed * 0.8F;
+        float horizontalSpeed = speed * 0.05F;
         if (this.isVehicle()) {
             Vec3 inputVec;
             double length = movement.lengthSqr();
@@ -150,7 +147,7 @@ public class BroomEntity extends Entity {
                 Vec3 vec = (length > 1 ? movement.normalize() : movement).scale(horizontalSpeed);
                 float f = Mth.sin(angle * ((float) Math.PI/180));
                 float alsoF = Mth.cos(angle * ((float) Math.PI/180));
-                inputVec = new Vec3(vec.x * (double) alsoF - vec.z * (double) f, (-this.getXRot()/2), vec.z * (double) alsoF + vec.x * (double) f);
+                inputVec = new Vec3(vec.x * (double) alsoF - vec.z * (double) f, (-this.getXRot()/5), vec.z * (double) alsoF + vec.x * (double) f).scale(speed);
             }
 
             if (this.hasInput()) {
