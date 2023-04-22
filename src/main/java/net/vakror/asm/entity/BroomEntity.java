@@ -156,6 +156,13 @@ public class BroomEntity extends Entity {
             if (this.hasInput()) {
                 this.setDeltaMovement(this.getDeltaMovement().add(inputVec));
             }
+
+            if (!this.getDeltaMovement().equals(Vec3.ZERO)) {
+                Vec3 velocity = this.getDeltaMovement();
+                double length1 = velocity.length();
+                Vec3 resistance = velocity.normalize().scale(-(this.entityData.get(AIR_RESISTANCE)) * length1);
+                this.setDeltaMovement(velocity.add(resistance));
+            }
         }
     }
 
