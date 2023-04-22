@@ -50,7 +50,7 @@ public class BroomEntity extends Entity {
     @Override
     protected void defineSynchedData() {
         this.entityData.define(STACK, ItemStack.EMPTY);
-        this.entityData.define(AIR_RESISTANCE, 1f);
+        this.entityData.define(AIR_RESISTANCE, 0.001f);
     }
 
     @Override
