@@ -36,12 +36,6 @@ public class BroomEntity extends Entity {
         this(ModEntities.BROOM.get(), level);
         this.entityData.set(STACK, stack);
     }
-
-
-    public static void destroy(BroomEntity entity, Player player) {
-
-    }
-
     public ItemStack getItem() {
         return this.entityData.get(STACK);
     }
