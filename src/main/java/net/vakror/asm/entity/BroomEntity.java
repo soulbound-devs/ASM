@@ -23,6 +23,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class BroomEntity extends Entity {
     private static final EntityDataAccessor<ItemStack> STACK = SynchedEntityData.defineId(BroomEntity.class, EntityDataSerializers.ITEM_STACK);
+    private static final EntityDataAccessor<Float> AIR_RESISTANCE = SynchedEntityData.defineId(BroomEntity.class, EntityDataSerializers.FLOAT);
     public boolean left;
     public boolean right;
     public boolean front;
@@ -35,6 +36,7 @@ public class BroomEntity extends Entity {
     public <T extends BroomEntity> BroomEntity(ItemStack stack, Level level) {
         this(ModEntities.BROOM.get(), level);
         this.entityData.set(STACK, stack);
+        this.entityData.set(AIR_RESISTANCE, 1f);
     }
 
 
@@ -49,6 +51,7 @@ public class BroomEntity extends Entity {
     @Override
     protected void defineSynchedData() {
         this.entityData.define(STACK, ItemStack.EMPTY);
+        this.entityData.define(AIR_RESISTANCE, 1f);
     }
 
     @Override
