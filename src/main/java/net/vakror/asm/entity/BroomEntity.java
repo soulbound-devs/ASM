@@ -89,9 +89,11 @@ public class BroomEntity extends Entity {
         super.tick();
         if (!this.isNoGravity()) {
             this.setDeltaMovement(this.getDeltaMovement().add(new Vec3(0D, -0.008D, 0D)));
-        } if (this.isVehicle() && this.getControllingPassenger() instanceof Player player) {
+        }
+        if (this.isVehicle() && this.getControllingPassenger() instanceof Player player) {
             this.setRot(player.getYRot(), player.getXRot());
-        } if (this.isControlledByLocalInstance()) {
+        }
+        if (this.isControlledByLocalInstance()) {
             if (this.level.isClientSide()) {
                 LivingEntity controller = this.getControllingPassenger();
                 assert controller != null;
