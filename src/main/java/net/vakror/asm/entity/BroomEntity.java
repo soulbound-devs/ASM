@@ -67,7 +67,6 @@ public class BroomEntity extends Entity {
             return false;
         } else if (!this.level.isClientSide && !this.isRemoved()) {
             this.discard();
-            giveWandToPlayer(this);
         }
         return true;
     }
@@ -162,10 +161,6 @@ public class BroomEntity extends Entity {
 
     private boolean hasInput() {
         return left || right || front || back;
-    }
-
-    public static void giveWandToPlayer(BroomEntity entity) {
-
     }
 
     @Override
