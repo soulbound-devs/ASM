@@ -100,6 +100,7 @@ public class BroomEntity extends Entity {
                 this.handleMove(new Vec3(controller.xxa, controller.yya, controller.zza), 0.3f, this.getYRot());
             }
             this.move(MoverType.SELF, this.getDeltaMovement());
+            this.setDeltaMovement(Vec3.ZERO);
         }
     }
 
