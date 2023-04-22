@@ -36,7 +36,6 @@ public class BroomEntity extends Entity {
     public <T extends BroomEntity> BroomEntity(ItemStack stack, Level level) {
         this(ModEntities.BROOM.get(), level);
         this.entityData.set(STACK, stack);
-        this.entityData.set(AIR_RESISTANCE, 1f);
     }
 
 
