@@ -1,4 +1,4 @@
-package net.vakror.asm.seal.seals;
+package net.vakror.asm.seal.seals.activatable;
 
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;

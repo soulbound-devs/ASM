@@ -1,12 +1,12 @@
-package net.vakror.asm.seal.seals;
+package net.vakror.asm.seal.seals.activatable;
 
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.context.UseOnContext;
 import net.vakror.asm.seal.type.ActivatableSeal;
 
-public class PickaxingSeal extends ActivatableSeal {
-    public PickaxingSeal() {
-        super("pickaxing");
+public class HoeingSeal extends ActivatableSeal {
+    public HoeingSeal() {
+        super("hoeing");
     }
 
     @Override

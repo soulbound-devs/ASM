@@ -1,8 +1,11 @@
 package net.vakror.asm.seal;
 
 
-import net.vakror.asm.seal.seals.*;
-import net.vakror.asm.seal.type.BaseSeal;
+import net.vakror.asm.seal.seals.activatable.AxingSeal;
+import net.vakror.asm.seal.seals.activatable.HoeingSeal;
+import net.vakror.asm.seal.seals.activatable.PickaxingSeal;
+import net.vakror.asm.seal.seals.activatable.SwordSeal;
+import net.vakror.asm.seal.seals.amplifying.HasteSeal;
 
 import java.util.HashMap;
 import java.util.Map;

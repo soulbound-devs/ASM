@@ -1,4 +1,4 @@
-package net.vakror.asm.seal.seals;
+package net.vakror.asm.seal.seals.amplifying;
 
 import net.vakror.asm.seal.type.BaseSeal;
 
