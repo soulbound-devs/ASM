@@ -5,7 +5,7 @@ import net.minecraft.nbt.CompoundTag;
 public class PlayerSoul {
     private int soul;
     private int darkSoul;
-    private final int MIN_SOUL = 0;
+    public final int MIN_SOUL = 0;
 
     private int maxSoul = 100;
     private int maxDarkSoul = 100;
@@ -68,10 +68,6 @@ public class PlayerSoul {
 
     public void addSoul(int soulToAdd) {
         this.soul = Math.min(soul + soulToAdd, maxSoul);
-    }
-
-    public void subtractSoul(int soulToSubtract) {
-        this.soul = Math.max(soul - soulToSubtract, MIN_SOUL);
     }
 
     public void copyFrom(PlayerSoul source) {
