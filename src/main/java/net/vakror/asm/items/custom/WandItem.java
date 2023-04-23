@@ -82,7 +82,7 @@ public class WandItem extends DiggerItem {
                     itemWand.setActiveSeal(null);
                     String mode = itemWand.isSelectedIsAttack() ? "Offensive/Defensive" : "Passive";
                     int readableSlot = itemWand.isSelectedIsAttack() ? itemWand.getSelectedSealSlot() - tier.getPassiveSlots() : itemWand.getSelectedSealSlot();
-                    String selectedSealName = "";
+                    String selectedSealName;
                     if (itemWand.getAllActivatableSeals().size() > itemWand.getSelectedSealSlot() - 1) {
                         selectedSealName = capitalizeString(itemWand.getAllActivatableSeals().get(itemWand.getSelectedSealSlot() - 1).getId());
                         ((ServerPlayer) pPlayer).connection.send(new ClientboundSetActionBarTextPacket(Component.literal("Selected " + mode + " Slot: " + readableSlot + " (" + selectedSealName + ")")));
