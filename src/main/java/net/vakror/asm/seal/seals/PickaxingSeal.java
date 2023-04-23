@@ -1,9 +1,7 @@
 package net.vakror.asm.seal.seals;
 
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.item.context.UseOnContext;
 import net.vakror.asm.seal.type.ActivatableSeal;
 
 public class PickaxingSeal extends ActivatableSeal {
@@ -12,7 +10,7 @@ public class PickaxingSeal extends ActivatableSeal {
     }
 
     @Override
-    public InteractionResult useAction(Level level, Player player, InteractionHand hand) {
+    public InteractionResult useAction(UseOnContext context) {
         return InteractionResult.PASS;
     }
 }

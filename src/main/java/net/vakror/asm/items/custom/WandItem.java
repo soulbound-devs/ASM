@@ -73,7 +73,7 @@ public class WandItem extends DiggerItem {
         AtomicReference<InteractionResult> result = new AtomicReference<>(null);
         player.getItemInHand(hand).getCapability(ItemWandProvider.WAND).ifPresent(wand -> {
             if (wand.getActiveSeal() != null) {
-                result.set(((ActivatableSeal) wand.getActiveSeal()).useAction(level, player, hand));
+                result.set(((ActivatableSeal) wand.getActiveSeal()).useAction(context));
             }
         });
         return (result.get() == null ? InteractionResult.PASS: result.get());

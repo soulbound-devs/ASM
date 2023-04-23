@@ -1,10 +1,8 @@
 package net.vakror.asm.seal.type;
 
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.item.context.UseOnContext;
 import net.vakror.asm.seal.ISeal;
 
 public abstract class AttackSeal extends ActivatableSeal implements ISeal {
@@ -13,7 +11,8 @@ public abstract class AttackSeal extends ActivatableSeal implements ISeal {
         super(id);
     }
 
-    public InteractionResult useAction(Level level, Player player, InteractionHand hand) {
+    @Override
+    public InteractionResult useAction(UseOnContext context) {
         return InteractionResult.PASS;
     }
 
