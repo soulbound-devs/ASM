@@ -8,10 +8,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.DiggerItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -24,7 +26,6 @@ import net.vakror.asm.seal.SealType;
 import net.vakror.asm.seal.type.ActivatableSeal;
 import net.vakror.asm.wand.IWandTier;
 import net.vakror.asm.wand.ItemWandProvider;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -64,26 +65,18 @@ public class WandItem extends DiggerItem {
     }
 
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
-        AtomicReference<InteractionResultHolder<ItemStack>> result = new AtomicReference<>(null);
+    @SuppressWarnings("all")
+    public InteractionResult useOn(UseOnContext context) {
+        Player player = context.getPlayer();
+        InteractionHand hand = context.getHand();
+        Level level = context.getLevel();
+        AtomicReference<InteractionResult> result = new AtomicReference<>(null);
         player.getItemInHand(hand).getCapability(ItemWandProvider.WAND).ifPresent(wand -> {
             if (wand.getActiveSeal() != null) {
                 result.set(((ActivatableSeal) wand.getActiveSeal()).useAction(level, player, hand));
             }
         });
-        return (result.get() == null ? InteractionResultHolder.pass(player.getItemInHand(hand)): result.get());
-    }
-
-    @Override
-    @SuppressWarnings("all")
-    public InteractionResult useOn(UseOnContext pContext) {
-        if (hasSeal("hoeing", pContext.getItemInHand())) {
-            Items.DIAMOND_HOE.useOn(pContext);
-        }
-        if (hasSeal("axing", pContext.getItemInHand())) {
-            Items.DIAMOND_AXE.useOn(pContext);
-        }
-        return super.useOn(pContext);
+        return (result.get() == null ? InteractionResult.PASS: result.get());
     }
 
     @Override

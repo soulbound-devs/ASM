@@ -1,7 +1,7 @@
 package net.vakror.asm.seal.type;
 
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -13,8 +13,8 @@ public abstract class AttackSeal extends ActivatableSeal implements ISeal {
         super(id);
     }
 
-    public InteractionResultHolder<ItemStack> useAction(Level level, Player player, InteractionHand hand) {
-        return InteractionResultHolder.pass(player.getItemInHand(hand));
+    public InteractionResult useAction(Level level, Player player, InteractionHand hand) {
+        return InteractionResult.PASS;
     }
 
     public abstract int getDamage(ItemStack stack);
