@@ -5,10 +5,12 @@
   "refmap": "asm.refmap.json",
   "mixins": [
     "IMinecraftServerAccessor",
+    "LivingEntityMixin",
     "MappedRegistryMixin",
     "OverworldBiomesInvoker"
   ],
   "client": [
+    "LocalPlayerMixin"
   ],
   "minVersion": "0.8"
 }

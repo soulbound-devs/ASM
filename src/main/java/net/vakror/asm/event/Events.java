@@ -13,13 +13,13 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.CreativeModeTabEvent;
@@ -31,7 +31,11 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.vakror.asm.ASMMod;
+import net.vakror.asm.blocks.ModBlocks;
 import net.vakror.asm.blocks.entity.custom.DungeonAccessBlockEntity;
+import net.vakror.asm.entity.ModEntities;
+import net.vakror.asm.entity.client.BroomModel;
+import net.vakror.asm.entity.client.BroomRenderer;
 import net.vakror.asm.items.ModItems;
 import net.vakror.asm.items.custom.WandItem;
 import net.vakror.asm.packets.ModPackets;
@@ -46,7 +50,7 @@ import net.vakror.asm.world.structure.ModStructures;
 
 import java.util.List;
 
-public class ModEvents {
+public class Events {
     @Mod.EventBusSubscriber(modid = ASMMod.MOD_ID)
     public static class ForgeEvents {
         @SubscribeEvent
@@ -154,13 +158,36 @@ public class ModEvents {
                 }
             }
         }
+    }
 
+    @Mod.EventBusSubscriber(modid = ASMMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    public static class ModEvents {
         @SubscribeEvent
         public static void addItemsToCreativeModeTab(CreativeModeTabEvent.BuildContents event) {
             if (event.getTab() == ASM_TAB) {
-                for (Item item : ModItems.ITEMS) {
-                    event.accept(item);
-                }
+                event.accept(ModItems.AXING_SEAL.get());
+                event.accept(ModItems.WAND.get());
+                event.accept(ModItems.PICKAXING_SEAL.get());
+                event.accept(ModItems.HOEING_SEAL.get());
+                event.accept(ModItems.MINING_SPEED_SEAL.get());
+                event.accept(ModItems.SWORDING_SEAL.get());
+                event.accept(ModItems.SOUL.get());
+                event.accept(ModItems.DARK_SOUL.get());
+                event.accept(ModItems.BLANK_PASSIVE_SEAL.get());
+                event.accept(ModItems.BLANK_ATTACK_SEAL.get());
+                event.accept(ModItems.BLANK_AMPLIFYING_SEAL.get());
+                event.accept(ModItems.SOUL_BUCKET.get());
+                event.accept(ModItems.DARK_SOUL_BUCKET.get());
+                event.accept(ModItems.TUNGSTEN_INGOT.get());
+                event.accept(ModItems.KEY.get());
+                event.accept(ModBlocks.WAND_IMBUING_TABLE.get());
+                event.accept(ModBlocks.SOUL_SOLIDIFIER.get());
+                event.accept(ModBlocks.ANCIENT_OAK_LOG.get());
+                event.accept(ModBlocks.ANCIENT_OAK_PLANKS.get());
+                event.accept(ModBlocks.CORRUPTED_LOG.get());
+                event.accept(ModBlocks.CORRUPTED_LEAVES.get());
+                event.accept(ModBlocks.CORRUPTED_PLANKS.get());
+                event.accept(ModBlocks.DUNGEON_KEY_BLOCK.get());
             }
         }
 
@@ -174,6 +201,16 @@ public class ModEvents {
                 builder.withSearchBar();
                 ASM_TAB = builder.build();
             });
+        }
+
+        @SubscribeEvent
+        public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+            event.registerEntityRenderer(ModEntities.BROOM.get(), BroomRenderer::new);
+        }
+
+        @SubscribeEvent
+        public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+            event.registerLayerDefinition(BroomModel.LAYER_LOCATION, BroomModel::createBodyLayer);
         }
     }
 }

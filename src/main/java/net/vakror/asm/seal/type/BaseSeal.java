@@ -1,19 +1,14 @@
-package net.vakror.asm.seal.seals;
+package net.vakror.asm.seal.type;
 
 import net.vakror.asm.seal.ISeal;
 
-public class Seal implements ISeal {
+public abstract class BaseSeal implements ISeal {
     private final String id;
     private final boolean canBeActivated;
 
-    public Seal(String id, boolean canBeActivated) {
+    public BaseSeal(String id, boolean canBeActivated) {
         this.id = id;
         this.canBeActivated = canBeActivated;
-    }
-
-    public Seal(String id) {
-        this.id = id;
-        this.canBeActivated = false;
     }
 
     @Override
