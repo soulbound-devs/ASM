@@ -60,7 +60,6 @@ public enum WandModelLoader implements IGeometryLoader<WandModel> {
 			Map<String, ResourceLocation> map = new HashMap<>();
 			for(Entry<String, JsonElement> entry : elementIn.entrySet()){
 				ResourceLocation location = new ResourceLocation(entry.getValue().getAsString());
-				System.err.println(entry.getKey() + ", " + entry.getValue().getAsString());
 				map.put(entry.getKey(), location);
 			}
 			map.put("wand", wandLocation);
@@ -74,7 +73,6 @@ public enum WandModelLoader implements IGeometryLoader<WandModel> {
 
 		@Nullable
 		public TextureAtlasSprite getSprite(String name, Function<Material, TextureAtlasSprite> spriteGetter){
-			System.err.println(name);
 			ResourceLocation location = this.textures.get(name);
 			assert location != null;
 			@SuppressWarnings("deprecation")
