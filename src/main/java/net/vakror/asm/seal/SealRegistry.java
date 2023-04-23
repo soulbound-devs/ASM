@@ -1,7 +1,8 @@
 package net.vakror.asm.seal;
 
 
-import net.vakror.asm.seal.seals.Seal;
+import net.vakror.asm.seal.seals.*;
+import net.vakror.asm.seal.type.BaseSeal;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,11 +14,11 @@ public class SealRegistry {
     public static Map<String, ISeal> amplifyingSeals = new HashMap<>();
 
     public static void registerSeals() {
-        addAttackSeal("axing", new Seal("axing", true));
-        addPassiveSeal("pickaxing", new Seal("pickaxing", true));
-        addPassiveSeal("hoeing", new Seal("hoeing", true));
-        addAmplifyingSealSeal("mining_speed", new Seal("mining_speed"));
-        addAttackSeal("swording", new Seal("swording", true));
+        addAttackSeal("axing", new AxingSeal());
+        addPassiveSeal("pickaxing", new PickaxingSeal());
+        addPassiveSeal("hoeing", new HoeingSeal());
+        addAmplifyingSealSeal("mining_speed", new HasteSeal());
+        addAttackSeal("swording", new SwordSeal());
     }
 
     public static void addPassiveSeal(String name, ISeal seal) {
