@@ -4,9 +4,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
-import net.minecraft.network.protocol.game.ClientboundSetActionBarTextPacket;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -23,12 +21,15 @@ import net.vakror.asm.items.custom.seals.SealItem;
 import net.vakror.asm.seal.ISeal;
 import net.vakror.asm.seal.SealRegistry;
 import net.vakror.asm.seal.SealType;
+import net.vakror.asm.seal.type.ActivatableSeal;
 import net.vakror.asm.wand.IWandTier;
 import net.vakror.asm.wand.ItemWandProvider;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class WandItem extends DiggerItem {
 
@@ -63,50 +64,14 @@ public class WandItem extends DiggerItem {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
-        if (!pLevel.isClientSide) {
-            if (pPlayer.isShiftKeyDown()) {
-                pPlayer.getItemInHand(pUsedHand).getCapability(ItemWandProvider.WAND).ifPresent(itemWand -> {
-                    itemWand.setSelectedSealSlot(itemWand.getSelectedSealSlot() + 1);
-                    if (itemWand.getSelectedSealSlot() > tier.getActivatableSlots()) {
-                        itemWand.setSelectedSealSlot(1);
-                        itemWand.setSelectedIsAttack(false);
-                    } else if (itemWand.getSelectedSealSlot() > tier.getPassiveSlots()) {
-                        itemWand.setSelectedIsAttack(true);
-                    }
-                    itemWand.setActiveSeal(null);
-                    String mode = itemWand.isSelectedIsAttack() ? "Offensive/Defensive" : "Passive";
-                    int readableSlot = itemWand.isSelectedIsAttack() ? itemWand.getSelectedSealSlot() - tier.getPassiveSlots() : itemWand.getSelectedSealSlot();
-                    String selectedSealName = "";
-                    if (itemWand.getAllActivatableSeals().size() > itemWand.getSelectedSealSlot() - 1) {
-                        selectedSealName = capitalizeString(itemWand.getAllActivatableSeals().get(itemWand.getSelectedSealSlot() - 1).getId());
-                        ((ServerPlayer) pPlayer).connection.send(new ClientboundSetActionBarTextPacket(Component.literal("Selected " + mode + " Slot: " + readableSlot + " (" + selectedSealName + ")")));
-                    }
-                });
+    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
+        AtomicReference<InteractionResultHolder<ItemStack>> result = new AtomicReference<>(null);
+        player.getItemInHand(hand).getCapability(ItemWandProvider.WAND).ifPresent(wand -> {
+            if (wand.getActiveSeal() != null) {
+                result.set(((ActivatableSeal) wand.getActiveSeal()).useAction(level, player, hand));
             }
-            else {
-                pPlayer.getItemInHand(pUsedHand).getCapability(ItemWandProvider.WAND).ifPresent(wand -> {
-                    if (wand.getActiveSeal() != null) {
-                        wand.setActiveSeal(null);
-                    }
-                    else if (wand.getActiveSeal() == null && wand.isSelectedIsAttack()) {
-                        int attackSelectedSlot = wand.getSelectedSealSlot() - tier.getPassiveSlots();
-                        if (attackSelectedSlot >= 1) {
-                            if (wand.getAttackSeals().size() != 0 && wand.getAttackSeals().get(attackSelectedSlot - 1) != null) {
-                                wand.setActiveSeal(wand.getAttackSeals().get(attackSelectedSlot  - 1));
-                            }
-                        }
-                    }
-                    else if (wand.getActiveSeal() == null && !wand.isSelectedIsAttack()){
-                        if (wand.getPassiveSeals().size() != 0 && wand.getPassiveSeals().get(wand.getSelectedSealSlot() - 1) != null) {
-                            wand.setActiveSeal(wand.getPassiveSeals().get(wand.getSelectedSealSlot() - 1));
-                        }
-                    }
-                });
-            }
-        }
-
-        return super.use(pLevel, pPlayer, pUsedHand);
+        });
+        return (result.get() == null ? InteractionResultHolder.pass(player.getItemInHand(hand)): result.get());
     }
 
     @Override
