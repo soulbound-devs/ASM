@@ -9,10 +9,11 @@
     "seals": [
       {
         "pickaxing": "asm:item/wands/activated/pickaxing",
-        "hoeing": "asm:item/wands/activated/axing",
+        "hoeing": "asm:item/wands/activated/hoeing",
         "shoveling": "asm:item/wands/activated/axing",
         "axing": "asm:item/wands/activated/axing",
-        "scythe": "asm:item/wands/activated/scythe"
+        "scythe": "asm:item/wands/activated/scythe",
+        "error": "asm:item/wands/wand"
       }
     ]
   }

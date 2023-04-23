@@ -295,7 +295,7 @@ public class WandBakedModel extends BakedItemModel {
 	}
 
 	/* Give a new MealBakedModel with sprites added */
-	public WandBakedModel setIngredientSprites(List<TextureAtlasSprite> spritesIn){
+	public WandBakedModel setSprites(List<TextureAtlasSprite> spritesIn){
 		return new WandBakedModel(this, spritesIn);
 	}
 

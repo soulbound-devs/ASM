@@ -3,7 +3,7 @@ package net.vakror.asm.seal;
 public interface ISeal {
 
     public default String getId() {
-        return "null";
+        return "error";
     }
 
     public default boolean canBeActivated() {

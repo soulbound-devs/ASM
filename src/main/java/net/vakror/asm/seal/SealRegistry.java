@@ -5,7 +5,7 @@ import net.vakror.asm.seal.seals.activatable.AxingSeal;
 import net.vakror.asm.seal.seals.activatable.HoeingSeal;
 import net.vakror.asm.seal.seals.activatable.PickaxingSeal;
 import net.vakror.asm.seal.seals.activatable.SwordSeal;
-import net.vakror.asm.seal.seals.amplifying.HasteSeal;
+import net.vakror.asm.seal.seals.amplifying.MiningSpeedSeal;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +20,7 @@ public class SealRegistry {
         addAttackSeal("axing", new AxingSeal());
         addPassiveSeal("pickaxing", new PickaxingSeal());
         addPassiveSeal("hoeing", new HoeingSeal());
-        addAmplifyingSealSeal("mining_speed", new HasteSeal());
+        addAmplifyingSealSeal("mining_speed", new MiningSpeedSeal());
         addAttackSeal("swording", new SwordSeal());
     }
 

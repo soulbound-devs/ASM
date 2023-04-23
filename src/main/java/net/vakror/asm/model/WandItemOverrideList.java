@@ -33,7 +33,7 @@ public class WandItemOverrideList extends ItemOverrides {
 	@Override
 	public BakedModel resolve(BakedModel model, ItemStack stack, ClientLevel worldIn, LivingEntity entityIn, int seed) {
 		if (stack.getItem() instanceof WandItem && model instanceof WandBakedModel mealModel) {
-			AtomicReference<WandBakedModel> finalMealModel = new AtomicReference<>(mealModel);
+			AtomicReference<WandBakedModel> finalWandModel = new AtomicReference<>(mealModel);
 			List<TextureAtlasSprite> sprites = new ArrayList<TextureAtlasSprite>();
 
 			List<WandModelLoader.TypedTextures> mutableTypedTextures = Lists.newArrayList(this.materials);
@@ -41,7 +41,7 @@ public class WandItemOverrideList extends ItemOverrides {
 				TextureAtlasSprite sprite = typedTextures.getSprite("wand", this.spriteGetter);
 				mutableTypedTextures.remove(typedTextures);
 				sprites.add(sprite);
-				finalMealModel.set(finalMealModel.get().setIngredientSprites(sprites));
+				finalWandModel.set(finalWandModel.get().setSprites(sprites));
 				break;
 			}
 			stack.getCapability(ItemWandProvider.WAND).ifPresent(wand -> {
@@ -56,9 +56,9 @@ public class WandItemOverrideList extends ItemOverrides {
 						}
 					}
 				}
-				finalMealModel.set(finalMealModel.get().setIngredientSprites(sprites));
+				finalWandModel.set(finalWandModel.get().setSprites(sprites));
 			});
-			return finalMealModel.get().getNewBakedItemModel();
+			return finalWandModel.get().getNewBakedItemModel();
 		}
 		return model;
 	}

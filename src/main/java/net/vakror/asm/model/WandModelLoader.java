@@ -39,8 +39,8 @@ public enum WandModelLoader implements IGeometryLoader<WandModel> {
 			WandModelLoader.textures.add(wandLocation);
 			
 			JsonArray parts = wandJsonObject.get("seals").getAsJsonArray();
-			for(JsonElement element : parts){
-				TypedTextures typedTextures = new TypedTextures((JsonObject) element);
+			for(JsonElement element : parts) {
+				TypedTextures typedTextures = new TypedTextures(wandLocation, (JsonObject) element);
 				typedTexturesList.add(typedTextures);
 				
 				for(Entry<String, ResourceLocation> entry : typedTextures.getTextures().entrySet()){
@@ -55,13 +55,15 @@ public enum WandModelLoader implements IGeometryLoader<WandModel> {
 	public static class TypedTextures{
 		private final ImmutableMap<String, ResourceLocation> textures;
 		
-		private TypedTextures(JsonObject elementIn){
+		private TypedTextures(ResourceLocation wandLocation, JsonObject elementIn){
 
 			Map<String, ResourceLocation> map = new HashMap<>();
 			for(Entry<String, JsonElement> entry : elementIn.entrySet()){
 				ResourceLocation location = new ResourceLocation(entry.getValue().getAsString());
+				System.err.println(entry.getKey() + ", " + entry.getValue().getAsString());
 				map.put(entry.getKey(), location);
 			}
+			map.put("wand", wandLocation);
 			
 			this.textures = ImmutableMap.copyOf(map);
 		}
@@ -72,10 +74,12 @@ public enum WandModelLoader implements IGeometryLoader<WandModel> {
 
 		@Nullable
 		public TextureAtlasSprite getSprite(String name, Function<Material, TextureAtlasSprite> spriteGetter){
+			System.err.println(name);
 			ResourceLocation location = this.textures.get(name);
+			assert location != null;
 			@SuppressWarnings("deprecation")
 			Material material = new Material(TextureAtlas.LOCATION_BLOCKS, location);
-            TextureAtlasSprite sprite = material != null ? spriteGetter.apply(material) : null;
+            TextureAtlasSprite sprite = spriteGetter.apply(material);
             if(sprite != null && !sprite.atlasLocation().equals(MissingTextureAtlasSprite.getLocation())){
                 return sprite;
             }
