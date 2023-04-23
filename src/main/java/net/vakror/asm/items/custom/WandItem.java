@@ -22,6 +22,7 @@ import net.vakror.asm.ASMMod;
 import net.vakror.asm.items.custom.seals.SealItem;
 import net.vakror.asm.seal.ISeal;
 import net.vakror.asm.seal.SealRegistry;
+import net.vakror.asm.seal.SealType;
 import net.vakror.asm.wand.IWandTier;
 import net.vakror.asm.wand.ItemWandProvider;
 import org.jetbrains.annotations.Nullable;
@@ -157,7 +158,7 @@ public class WandItem extends DiggerItem {
 
     public boolean canAddSeal(ItemStack stack, int type, ItemStack sealStack) {
         AtomicBoolean toReturn = new AtomicBoolean(false);
-        if (type == 0) {
+        if (type == SealType.PASSIVE.getId()) {
             int passiveSealSlots = tier.getPassiveSlots();
             stack.getCapability(ItemWandProvider.WAND).ifPresent(wand -> {
                 String id = ((SealItem) sealStack.getItem()).getId();
@@ -166,7 +167,7 @@ public class WandItem extends DiggerItem {
                 }
             });
         }
-        else if (type == 1) {
+        else if (type == SealType.OFFENSIVE.getId()) {
             int attackSealSlots = tier.getAttackSlots();
             stack.getCapability(ItemWandProvider.WAND).ifPresent(wand -> {
                 String id = ((SealItem) sealStack.getItem()).getId();
@@ -175,7 +176,7 @@ public class WandItem extends DiggerItem {
                 }
             });
         }
-        else if (type == 2) {
+        else if (type == SealType.AMPLIFYING.getId()) {
             int amplifyingSealSlots = tier.getAmplificationSlots();
             stack.getCapability(ItemWandProvider.WAND).ifPresent(wand -> {
                 String id = ((SealItem) sealStack.getItem()).getId();
