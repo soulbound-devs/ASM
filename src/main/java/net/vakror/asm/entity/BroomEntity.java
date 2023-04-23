@@ -19,6 +19,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.vakror.asm.soul.PlayerSoul;
+import net.vakror.asm.soul.PlayerSoulProvider;
 import org.jetbrains.annotations.Nullable;
 
 public class BroomEntity extends Entity {
@@ -83,6 +85,14 @@ public class BroomEntity extends Entity {
         }
         if (this.isVehicle() && this.getControllingPassenger() instanceof Player player) {
             this.setRot(player.getYRot(), player.getXRot());
+            player.getCapability(PlayerSoulProvider.PLAYER_SOUL).ifPresent((soul ->  {
+                if (soul.getSoul() != soul.MIN_SOUL) {
+                    soul.addSoul(-1);
+                } else {
+                    player.setItemInHand(InteractionHand.MAIN_HAND, getItem());
+                    this.discard();
+                }
+            }));
         }
         if (this.isControlledByLocalInstance()) {
             if (this.level.isClientSide()) {
