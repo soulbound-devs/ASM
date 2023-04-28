@@ -17,25 +17,25 @@ public class SealRegistry {
     public static Map<String, ISeal> amplifyingSeals = new HashMap<>();
 
     public static void registerSeals() {
-        addAttackSeal("axing", new AxingSeal());
-        addPassiveSeal("pickaxing", new PickaxingSeal());
-        addPassiveSeal("hoeing", new HoeingSeal());
-        addAmplifyingSealSeal("mining_speed", new MiningSpeedSeal());
-        addAttackSeal("swording", new SwordSeal());
+        addAttackSeal(new AxingSeal());
+        addPassiveSeal(new PickaxingSeal());
+        addPassiveSeal(new HoeingSeal());
+        addAmplifyingSealSeal(new MiningSpeedSeal());
+        addAttackSeal(new SwordSeal());
     }
 
-    public static void addPassiveSeal(String name, ISeal seal) {
-        passiveSeals.put(name, seal);
-        allSeals.put(name, seal);
+    public static void addPassiveSeal(ISeal seal) {
+        passiveSeals.put(seal.getId(), seal);
+        allSeals.put(seal.getId(), seal);
     }
 
-    public static void addAttackSeal(String name, ISeal seal) {
-        attackSeals.put(name, seal);
-        allSeals.put(name, seal);
+    public static void addAttackSeal(ISeal seal) {
+        attackSeals.put(seal.getId(), seal);
+        allSeals.put(seal.getId(), seal);
     }
 
-    public static void addAmplifyingSealSeal(String name, ISeal seal) {
-        amplifyingSeals.put(name, seal);
-        allSeals.put(name, seal);
+    public static void addAmplifyingSealSeal(ISeal seal) {
+        amplifyingSeals.put(seal.getId(), seal);
+        allSeals.put(seal.getId(), seal);
     }
 }

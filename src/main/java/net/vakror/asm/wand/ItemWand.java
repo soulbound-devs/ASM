@@ -65,12 +65,12 @@ public class ItemWand {
 
     public void addPassiveSeal(String id) {
         createIfNull();
-        passiveSeals.add(SealRegistry.allSeals.get(id));
+        passiveSeals.add(SealRegistry.passiveSeals.get(id));
     }
 
     public void addAttackSeal(String id) {
         createIfNull();
-        attackSeals.add(SealRegistry.allSeals.get(id));
+        attackSeals.add(SealRegistry.attackSeals.get(id));
     }
 
     public void addAmplifyingSeal(String id) {

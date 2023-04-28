@@ -9,4 +9,8 @@ public interface ISeal {
     public default boolean canBeActivated() {
         return false;
     }
+
+    default boolean isAttack() {
+        return false;
+    };
 }

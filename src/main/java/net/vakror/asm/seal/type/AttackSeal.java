@@ -17,4 +17,9 @@ public abstract class AttackSeal extends ActivatableSeal implements ISeal {
     }
 
     public abstract int getDamage(ItemStack stack);
+
+    @Override
+    public boolean isAttack() {
+        return true;
+    }
 }
