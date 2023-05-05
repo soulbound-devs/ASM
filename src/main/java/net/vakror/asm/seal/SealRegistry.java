@@ -29,6 +29,15 @@ public class SealRegistry {
         allSeals.put(seal.getId(), seal);
     }
 
+    public static void addSeal(ISeal seal, SealType type) {
+        switch (type) {
+            case PASSIVE ->  passiveSeals.put(seal.getId(), seal);
+            case OFFENSIVE ->  attackSeals.put(seal.getId(), seal);
+            case AMPLIFYING ->  amplifyingSeals.put(seal.getId(), seal);
+        }
+        allSeals.put(seal.getId(), seal);
+    }
+
     public static void addAttackSeal(ISeal seal) {
         attackSeals.put(seal.getId(), seal);
         allSeals.put(seal.getId(), seal);
