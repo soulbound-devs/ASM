@@ -75,7 +75,6 @@ public class Events {
                     }
                     player.getItemInHand(hand).getCapability(ItemWandProvider.WAND).ifPresent(wand -> {
                         List<Mob> nearbyMobs = getNearbyEntities(event.getEntity().level, player.blockPosition(), (float) 3, Mob.class);
-                        nearbyMobs.remove((Mob) event.getEntity());
                         int i = 1;
                         for (Mob mob : nearbyMobs) {
                             mob.hurt(event.getSource(), event.getAmount());
@@ -197,9 +196,11 @@ public class Events {
         public static void createCreativeModeTab(CreativeModeTabEvent.Register event) {
             event.registerCreativeModeTab(new ResourceLocation(ASMMod.MOD_ID, "asm"), (builder) -> {
                 builder.title(Component.literal("ASM"));
+                builder.withTabsImage(new ResourceLocation(ASMMod.MOD_ID, "item/seals/axing_seal"));
                 builder.icon(() -> new ItemStack(ModItems.PICKAXING_SEAL.get()));
                 builder.withSearchBar();
                 ASM_TAB = builder.build();
+                System.out.print(ASM_TAB.getDisplayName().getString());
             });
         }
 
