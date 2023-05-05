@@ -77,7 +77,7 @@ public class WandItem extends DiggerItem {
                         itemWand.setSelectedSealSlot(1);
                         itemWand.setSelectedIsAttack(itemWand.getAllActivatableSeals().get(0).isAttack());
                     } else if (itemWand.getSelectedSealSlot() > tier.getPassiveSlots() && itemWand.getSelectedSealSlot() != 0) {
-                        itemWand.setSelectedIsAttack(itemWand.getAllActivatableSeals().get(itemWand.getSelectedSealSlot() - 1).isAttack());
+                        itemWand.setSelectedIsAttack(itemWand.getAllActivatableSeals().get(itemWand.getSelectedSealSlot() - 2).isAttack());
                     }
                     itemWand.setActiveSeal(null);
                     String mode = itemWand.isSelectedIsAttack() ? "Offensive/Defensive" : "Passive";
@@ -96,10 +96,10 @@ public class WandItem extends DiggerItem {
                     }
                     else if (wand.getActiveSeal() == null && wand.isSelectedIsAttack()) {
                         int attackSelectedSlot = wand.getSelectedSealSlot() - tier.getPassiveSlots();
-                        if (attackSelectedSlot > 0) {
-                            if (wand.getAttackSeals().size() != 0 && wand.getAttackSeals().get(attackSelectedSlot - 1) != null) {
-                                wand.setActiveSeal(wand.getAttackSeals().get(attackSelectedSlot - 1));
-                                System.err.println(wand.getAttackSeals().get(attackSelectedSlot - 1).getId() + "IS ACTIVE!");
+                        if (attackSelectedSlot >= 0) {
+                            if (wand.getAttackSeals().size() != 0 && wand.getAttackSeals().get(attackSelectedSlot) != null) {
+                                wand.setActiveSeal(wand.getAttackSeals().get(attackSelectedSlot));
+                                System.err.println(wand.getAttackSeals().get(attackSelectedSlot).getId() + "IS ACTIVE!");
                             }
                         }
                     }
