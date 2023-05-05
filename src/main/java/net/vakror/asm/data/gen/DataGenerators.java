@@ -1,4 +1,4 @@
-package net.vakror.asm.datagen;
+package net.vakror.asm.data.gen;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
@@ -20,6 +20,5 @@ public class DataGenerators {
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
         generator.addProvider(event.includeServer(), new ModWorldGenProvider(packOutput, lookupProvider));
-
     }
 }

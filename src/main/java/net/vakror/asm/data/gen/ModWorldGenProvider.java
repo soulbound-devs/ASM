@@ -1,4 +1,4 @@
-package net.vakror.asm.datagen;
+package net.vakror.asm.data.gen;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
