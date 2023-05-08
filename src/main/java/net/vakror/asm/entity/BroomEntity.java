@@ -19,7 +19,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.vakror.asm.soul.PlayerSoul;
 import net.vakror.asm.soul.PlayerSoulProvider;
 import org.jetbrains.annotations.Nullable;
 
