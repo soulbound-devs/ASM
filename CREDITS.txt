@@ -4,3 +4,6 @@ Textures By Stormy:
 Development:
   James AKA Vakror Alor AKA Viktor Aylor:
     https://www.github.com/vaylor27/
+
+  Some code for scrollable Inventory GUIS By Rubensworks:
+    https://github.com/CyclopsMC/ColossalChests
