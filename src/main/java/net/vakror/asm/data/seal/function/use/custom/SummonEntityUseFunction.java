@@ -17,7 +17,7 @@ public class SummonEntityUseFunction extends UseFunction {
     }
 
     @Override
-    public void executeUse(UseOnContext context) {
+    public void executeUseOn(UseOnContext context) {
 
     }
 }

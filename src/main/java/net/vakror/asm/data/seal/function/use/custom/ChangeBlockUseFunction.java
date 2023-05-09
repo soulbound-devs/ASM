@@ -44,8 +44,8 @@ public class ChangeBlockUseFunction extends UseFunction {
     }
 
     @Override
-    public void executeUse(UseOnContext context) {
-        super.executeUse(context);
+    public void executeUseOn(UseOnContext context) {
+        super.executeUseOn(context);
         BlockState clickedBlockState = context.getLevel().getBlockState(context.getClickedPos());
         if ((block != null && clickedBlockState.getBlock().equals(block)) || (blockTag != null && clickedBlockState.is(blockTag))) {
             context.getLevel().setBlock(context.getClickedPos(), block.defaultBlockState(), 3);

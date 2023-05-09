@@ -17,7 +17,7 @@ public class ChangeBlockStateUseFunction extends UseFunction {
     }
 
     @Override
-    public void executeUse(UseOnContext context) {
+    public void executeUseOn(UseOnContext context) {
 
     }
 }
