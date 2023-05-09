@@ -9,6 +9,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.vakror.asm.ASMMod;
+import net.vakror.asm.backpack.screen.BackpackMenu;
 
 public class ModMenuTypes {
     public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, ASMMod.MOD_ID);
@@ -18,6 +19,7 @@ public class ModMenuTypes {
     public static final RegistryObject<MenuType<SoulSolidifierMenu>> SOUL_SOLIDIFIER_MENU = registerMenuType(SoulSolidifierMenu::new, "soul_solidifier_menu");
 
     public static final RegistryObject<MenuType<BackpackMenu>> BACKPACK_MENU = registerMenuType(BackpackMenu::new, "backpack_menu");
+
 
     private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> registerMenuType(IContainerFactory<T> factory, String name) {
         return MENUS.register(name, () -> IForgeMenuType.create(factory));

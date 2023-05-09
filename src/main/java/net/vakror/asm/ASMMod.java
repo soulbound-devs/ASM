@@ -19,6 +19,8 @@ import net.vakror.asm.client.ASMClient;
 import net.vakror.asm.entity.ModEntities;
 import net.vakror.asm.items.ModItems;
 import net.vakror.asm.model.WandModelLoader;
+import net.vakror.asm.backpack.screen.ClientProxy;
+import net.vakror.asm.backpack.screen.CommonProxy;
 import net.vakror.asm.packets.ModPackets;
 import net.vakror.asm.screen.ModMenuTypes;
 import net.vakror.asm.seal.SealRegistry;
@@ -28,6 +30,10 @@ import net.vakror.asm.world.biome.ASMRegion;
 import net.vakror.asm.world.dimension.Dimensions;
 import net.vakror.asm.world.structure.ModDungeonPieces;
 import net.vakror.asm.world.structure.ModStructures;
+import org.cyclops.cyclopscore.Reference;
+import org.cyclops.cyclopscore.init.ModBaseVersionable;
+import org.cyclops.cyclopscore.proxy.IClientProxy;
+import org.cyclops.cyclopscore.proxy.ICommonProxy;
 import org.slf4j.Logger;
 import terrablender.api.Regions;
 
@@ -35,11 +41,14 @@ import static net.vakror.asm.ASMMod.MOD_ID;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(MOD_ID)
-public class ASMMod {
+public class ASMMod extends ModBaseVersionable<ASMMod> {
     public static final Logger LOGGER = LogUtils.getLogger();
     public static final String MOD_ID = "asm";
 
+    public static ASMMod _instance;
+
     public ASMMod() {
+        super(Reference.MOD_ID, (instance) -> _instance = instance);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
 
@@ -78,6 +87,16 @@ public class ASMMod {
     public void onServerStarting(ServerStartingEvent event) {
         // Do something when the server starts
         LOGGER.info("HELLO from server starting");
+    }
+
+    @Override
+    protected IClientProxy constructClientProxy() {
+        return new ClientProxy();
+    }
+
+    @Override
+    protected ICommonProxy constructCommonProxy() {
+        return new CommonProxy();
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event)

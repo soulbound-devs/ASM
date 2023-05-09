@@ -11,8 +11,11 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tiers;
@@ -22,6 +25,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.TierSortingRegistry;
 import net.vakror.asm.ASMMod;
+import net.vakror.asm.backpack.BackpackHelper;
+import net.vakror.asm.backpack.screen.BackpackMenu;
 import net.vakror.asm.items.custom.seals.SealItem;
 import net.vakror.asm.seal.ISeal;
 import net.vakror.asm.seal.SealRegistry;
@@ -29,15 +34,19 @@ import net.vakror.asm.seal.SealType;
 import net.vakror.asm.seal.type.ActivatableSeal;
 import net.vakror.asm.wand.IWandTier;
 import net.vakror.asm.wand.ItemWandProvider;
+import org.cyclops.cyclopscore.inventory.LargeInventory;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class WandItem extends DiggerItem {
+public class WandItem extends DiggerItem implements MenuProvider {
 
     private final IWandTier tier;
+    private int backpackSize = 27;
+    private int backpackStackLimit = 128;
+    private ItemStack stack;
 
     public WandItem(Properties properties, IWandTier tier) {
         super(3, -3, Tiers.DIAMOND, BlockTags.create(new ResourceLocation(ASMMod.MOD_ID, "none")), properties);
@@ -88,28 +97,26 @@ public class WandItem extends DiggerItem {
                         ((ServerPlayer) pPlayer).connection.send(new ClientboundSetActionBarTextPacket(Component.literal("Selected " + mode + " Slot: " + readableSlot + " (" + selectedSealName + ")")));
                     }
                 });
-            }
-            else {
-                pPlayer.getItemInHand(pUsedHand).getCapability(ItemWandProvider.WAND).ifPresent(wand -> {
-                    if (wand.getActiveSeal() != null) {
-                        wand.setActiveSeal(null);
-                    }
-                    else if (wand.getActiveSeal() == null && wand.isSelectedIsAttack()) {
-                        int attackSelectedSlot = wand.getSelectedSealSlot() - tier.getPassiveSlots();
-                        if (attackSelectedSlot >= 0) {
-                            if (wand.getAttackSeals().size() != 0 && wand.getAttackSeals().get(attackSelectedSlot) != null) {
-                                wand.setActiveSeal(wand.getAttackSeals().get(attackSelectedSlot));
-                                System.err.println(wand.getAttackSeals().get(attackSelectedSlot).getId() + "IS ACTIVE!");
-                            }
+            } /* pPlayer.getItemInHand(pUsedHand).getCapability(ItemWandProvider.WAND).ifPresent(wand -> {
+                if (wand.getActiveSeal() != null) {
+                    wand.setActiveSeal(null);
+                }
+                else if (wand.getActiveSeal() == null && wand.isSelectedIsAttack()) {
+                    int attackSelectedSlot = wand.getSelectedSealSlot() - tier.getPassiveSlots();
+                    if (attackSelectedSlot >= 0) {
+                        if (wand.getAttackSeals().size() != 0 && wand.getAttackSeals().get(attackSelectedSlot) != null) {
+                            wand.setActiveSeal(wand.getAttackSeals().get(attackSelectedSlot));
+                            System.err.println(wand.getAttackSeals().get(attackSelectedSlot).getId() + "IS ACTIVE!");
                         }
                     }
-                    else if (wand.getActiveSeal() == null && !wand.isSelectedIsAttack()){
-                        if (wand.getPassiveSeals().size() != 0 && wand.getPassiveSeals().get(wand.getSelectedSealSlot() - 1) != null) {
-                            wand.setActiveSeal(wand.getPassiveSeals().get(wand.getSelectedSealSlot() - 1));
-                        }
+                }
+                else if (wand.getActiveSeal() == null && !wand.isSelectedIsAttack()){
+                    if (wand.getPassiveSeals().size() != 0 && wand.getPassiveSeals().get(wand.getSelectedSealSlot() - 1) != null) {
+                        wand.setActiveSeal(wand.getPassiveSeals().get(wand.getSelectedSealSlot() - 1));
                     }
-                });
-            }
+                }
+            }); */
+            BackpackHelper.openBackpackGui(pPlayer, pPlayer.getItemInHand(pUsedHand));
         }
         return super.use(pLevel, pPlayer, pUsedHand);
     }
@@ -138,6 +145,7 @@ public class WandItem extends DiggerItem {
                 attackDamageBaseline *= wand.getActiveSeal().equals(SealRegistry.attackSeals.get("scythe")) ? 3.2 : 1;
             }
         });
+        this.stack = pStack;
         super.inventoryTick(pStack, pLevel, pEntity, pSlotId, pIsSelected);
     }
 
@@ -259,5 +267,16 @@ public class WandItem extends DiggerItem {
             }
         }
         return String.valueOf(chars);
+    }
+
+    @Override
+    public Component getDisplayName() {
+        return Component.literal("Backpack");
+    }
+
+    @Nullable
+    @Override
+    public AbstractContainerMenu createMenu(int containerId, Inventory playerInv, Player player) {
+        return new BackpackMenu(containerId, playerInv, stack, new LargeInventory(backpackSize, backpackStackLimit));
     }
 }
