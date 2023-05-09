@@ -17,6 +17,8 @@ public class ModMenuTypes {
 
     public static final RegistryObject<MenuType<SoulSolidifierMenu>> SOUL_SOLIDIFIER_MENU = registerMenuType(SoulSolidifierMenu::new, "soul_solidifier_menu");
 
+    public static final RegistryObject<MenuType<BackpackMenu>> BACKPACK_MENU = registerMenuType(BackpackMenu::new, "backpack_menu");
+
     private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> registerMenuType(IContainerFactory<T> factory, String name) {
         return MENUS.register(name, () -> IForgeMenuType.create(factory));
     }
