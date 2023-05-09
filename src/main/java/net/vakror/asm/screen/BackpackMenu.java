@@ -1,35 +1,20 @@
 package net.vakror.asm.screen;
 
 import com.google.common.collect.Lists;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.Tesselator;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.*;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.SimpleContainerData;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.client.gui.widget.ScrollPanel;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.SlotItemHandler;
 import net.vakror.asm.ASMMod;
-import net.vakror.asm.blocks.ModBlocks;
-import net.vakror.asm.blocks.entity.custom.WandImbuingTableBlockEntity;
-import net.vakror.asm.screen.slot.ModResultSlot;
-import net.vakror.asm.screen.slot.ModSealSlot;
-import net.vakror.asm.screen.slot.ModWandSlot;
-import org.cyclops.cyclopscore.client.gui.container.ContainerScreenScrolling;
 import org.cyclops.cyclopscore.inventory.LargeInventory;
 import org.cyclops.cyclopscore.inventory.container.ScrollingInventoryContainer;
 import org.cyclops.cyclopscore.inventory.slot.SlotExtended;
 
-import java.io.FileReader;
 import java.util.Collections;
 import java.util.List;
 
@@ -40,7 +25,7 @@ public class BackpackMenu extends ScrollingInventoryContainer<Slot> {
     private final NonNullList<ItemStack> stacks;
 
     public BackpackMenu(int pContainerId, Inventory inv, FriendlyByteBuf data) {
-        this(pContainerId, inv, new SimpleContainerData(1), data.readItem(), new LargeInventory(data.readInt(), 64);
+        this(pContainerId, inv, new SimpleContainerData(1), data.readItem(), new LargeInventory(data.readInt(), 64));
     }
 
     public BackpackMenu(int id, Inventory playerInv, ContainerData data, ItemStack wand, Container inventory) {
