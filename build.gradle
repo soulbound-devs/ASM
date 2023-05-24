@@ -10,6 +10,7 @@ buildscript {
         classpath 'org.parchmentmc:librarian:1.+'
         classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
     }
+    apply from: 'dependencies.gradle'
 }
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 plugins {
@@ -142,17 +143,10 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.19.4-45.0.43'
+    minecraft supportDependencies.forge
 
-    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-    implementation fg.deobf('com.github.glitchfiend:TerraBlender-forge:1.19.4-2.2.0.155')
-    implementation fg.deobf("curse.maven:cyclopscore-${cyclops_core_id}:${cyclops_core_version}")
-//    modImplementation("net.mehvahdjukaar:moonlight-forge:${project.moonlight_version}")
-
-//    // compile against the JEI API but do not include it at runtime
-//    compileOnly fg.deobf("mezz.jei:jei-1.19.2:11.5.0.297:api")
-//    // at runtime, use the full JEI jar
-//    runtimeOnly fg.deobf("mezz.jei:jei-1.19.2:11.5.0.297")
+    annotationProcessor 'supportDependencies.processor'
+    implementation fg.deobf(terrablender)
 }
 
 // Example for how to get properties into the manifest for reading at runtime.
