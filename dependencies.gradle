@@ -1,17 +1,14 @@
 ext {
-    // -- PLUGINS
-    springBootVersion = "2.5.5"
-    springDependencyManagementVersion = "1.0.11.RELEASE"
-
     //-- DEPENDENCIES
-     springFoxBootVersion = "3.0.0"
-    hibernateVersion = "5.4.31.Final"
-    c3p0Version = "0.9.5.5"
-    postgresVersion = "42.2.10"
+    forgeVersion = "1.19.4-45.1.0"
+    mixinVersion = "0.8.5"
+    libNinePatchVersion = "1.2.0"
+    terrablenderVersion = "1.19.4-2.2.0.155"
 
     supportDependencies = [
-            forge            : 'net.minecraftforge:forge:1.19.4-45.0.43',
-            processor           : 'org.spongepowered:mixin:0.8.5:processor',
-            terrablender                    : 'com.github.glitchfiend:TerraBlender-forge:1.19.4-2.2.0.155'
+            forge: "net.minecraftforge:forge:${forgeVersion}",
+            processor: "org.spongepowered:mixin:${mixinVersion}:processor",
+            terrablender: "com.github.glitchfiend:TerraBlender-forge:${terrablenderVersion}",
+            libNinePatch: "io.github.juuxel:libninepatch:${libNinePatchVersion}"
     ]
 }
