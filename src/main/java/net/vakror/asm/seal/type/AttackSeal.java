@@ -1,11 +1,9 @@
 package net.vakror.asm.seal.type;
 
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
-import net.vakror.asm.seal.ISeal;
 
-public abstract class AttackSeal extends ActivatableSeal implements ISeal {
+public abstract class AttackSeal extends ActivatableSeal{
 
     public AttackSeal(String id) {
         super(id);
@@ -16,10 +14,5 @@ public abstract class AttackSeal extends ActivatableSeal implements ISeal {
         return InteractionResult.PASS;
     }
 
-    public abstract int getDamage(ItemStack stack);
-
-    @Override
-    public boolean isAttack() {
-        return true;
-    }
+    public abstract float getDamage();
 }

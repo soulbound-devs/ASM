@@ -13,7 +13,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Position;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.Vec3;
@@ -27,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-/* Do not use this baked model directly, it'll display nothing, use MealBakedModel#getNewBakedItemModel */
+/* Do not use this baked model directly, it'll display nothing, use WandBakedModel#getNewBakedItemModel */
 @SuppressWarnings("deprecation")
 public class WandBakedModel extends BakedItemModel {
 	private TextureAtlasSprite baseSprite = null;
@@ -70,7 +69,7 @@ public class WandBakedModel extends BakedItemModel {
 	private ImmutableList<BakedQuad> genQuads() {
 		String cacheKey = this.getCacheKeyString();
 
-		/* Check is this sprite location combination is already baked or not  */
+		/* Check if this sprite location combination is already baked or not  */
 		if (WandBakedModel.cache.containsKey(cacheKey))
 			return WandBakedModel.cache.get(cacheKey);
 
@@ -251,7 +250,7 @@ public class WandBakedModel extends BakedItemModel {
 		float fv = sprite.getV(v);
 
 		consumer.vertex((float) vec.x, (float) vec.y, (float) vec.z)
-				.color(WandBakedModel.COLOR_R, WandBakedModel.COLOR_G, WandBakedModel.COLOR_B, 1.0f)
+				.color(WandBakedModel.COLOR_R, WandBakedModel.COLOR_G, WandBakedModel.COLOR_B, 1)
 				.normal((float) orientation.getStepX(), (float) orientation.getStepY(), (float) orientation.getStepZ())
 				.uv(fu, fv)
 				.uv2(0, 0)
@@ -263,22 +262,10 @@ public class WandBakedModel extends BakedItemModel {
 		return super.applyTransform(type, poseStack, applyLeftHandTransform);
 	}
 
-	public static void putVertex(VertexConsumer builder, Position normal, double x, double y, double z, float u, float v, TextureAtlasSprite sprite, float r, float g, float b, float a) {
-		float iu = sprite.getU(u);
-		float iv = sprite.getV(v);
-		builder
-				.vertex(x, y, z)
-				.uv(iu, iv)
-				.uv2(0, 0)
-				.color(r, g, b, a)
-				.normal((float)normal.x(), (float)normal.y(), (float)normal.z())
-				.endVertex();
-	}
-
 	/* Find the last sprite not transparent in sprites with given position */
 	@Nullable
 	private static TextureAtlasSprite findLastNotTransparent(int x, int y, List<TextureAtlasSprite> sprites){
-		for(int spriteIndex = sprites.size()-1; spriteIndex >= 0; spriteIndex --){
+		for(int spriteIndex = sprites.size() - 1; spriteIndex >= 0; spriteIndex--){
 			TextureAtlasSprite sprite = sprites.get(spriteIndex);
 			if (sprite != null) {
 				if (!sprite.contents().isTransparent(0, x, y)) {
@@ -295,11 +282,11 @@ public class WandBakedModel extends BakedItemModel {
 	}
 
 	/* Give a new MealBakedModel with sprites added */
-	public WandBakedModel setSprites(List<TextureAtlasSprite> spritesIn){
+	public WandBakedModel setIngredientSprites(List<TextureAtlasSprite> spritesIn){
 		return new WandBakedModel(this, spritesIn);
 	}
 
-	/* Get a combination string of loactions, used in cache's key */
+	/* Get a combination string of locations, used in cache's key */
 	private String getCacheKeyString(){
 		List<String> locations = new ArrayList<String>();
 		if(this.baseSprite != null)

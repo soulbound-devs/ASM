@@ -6,10 +6,11 @@ buildscript {
         maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-        classpath 'org.parchmentmc:librarian:1.+'
-        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '[6.0,6.2]', changing: true
+        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7.33'
+//        classpath 'org.parchmentmc:librarian:1.+'
     }
+    apply from: 'dependencies.gradle'
 }
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 plugins {
@@ -17,12 +18,11 @@ plugins {
     id 'maven-publish'
 }
 apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'org.parchmentmc.librarian.forgegradle'
 apply plugin: 'org.spongepowered.mixin'
 
 mixin {
-
     config "asm.mixins.json"
+    config "libgui.mixins.json"
 }
 
 version = '1.1.0-ALPHA'
@@ -142,17 +142,11 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.19.4-45.0.43'
+    minecraft supportDependencies.forge
 
-    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-    implementation fg.deobf('com.github.glitchfiend:TerraBlender-forge:1.19.4-2.2.0.155')
-    implementation fg.deobf("curse.maven:cyclopscore-${cyclops_core_id}:${cyclops_core_version}")
-//    modImplementation("net.mehvahdjukaar:moonlight-forge:${project.moonlight_version}")
-
-//    // compile against the JEI API but do not include it at runtime
-//    compileOnly fg.deobf("mezz.jei:jei-1.19.2:11.5.0.297:api")
-//    // at runtime, use the full JEI jar
-//    runtimeOnly fg.deobf("mezz.jei:jei-1.19.2:11.5.0.297")
+    annotationProcessor supportDependencies.processor
+    implementation fg.deobf(supportDependencies.terrablender)
+    minecraftLibrary(supportDependencies.libNinePatch)
 }
 
 // Example for how to get properties into the manifest for reading at runtime.

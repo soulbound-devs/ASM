@@ -1,5 +1,6 @@
 package net.vakror.asm.packets;
 
+import dustw.libgui.network.LibGuiPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
@@ -42,6 +43,18 @@ public class ModPackets {
                 .decoder(PacketSyncDimensionListChanges::new)
                 .encoder(PacketSyncDimensionListChanges::encode)
                 .consumerMainThread(PacketSyncDimensionListChanges::handle)
+                .add();
+
+        net.messageBuilder(LibGuiPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(LibGuiPacket::new)
+                .encoder(LibGuiPacket::toBytes)
+                .consumerMainThread(LibGuiPacket::handler)
+                .add();
+
+        net.messageBuilder(SyncSackC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(SyncSackC2SPacket::new)
+                .encoder(SyncSackC2SPacket::toBytes)
+                .consumerMainThread(SyncSackC2SPacket::handle)
                 .add();
     }
 

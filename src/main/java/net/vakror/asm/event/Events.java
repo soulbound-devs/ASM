@@ -4,7 +4,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -12,7 +11,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelAccessor;
@@ -31,8 +29,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.vakror.asm.ASMMod;
-import net.vakror.asm.blocks.ModBlocks;
 import net.vakror.asm.blocks.entity.custom.DungeonAccessBlockEntity;
+import net.vakror.asm.capability.wand.ItemSeal;
+import net.vakror.asm.capability.wand.ItemSealProvider;
 import net.vakror.asm.entity.ModEntities;
 import net.vakror.asm.entity.client.BroomModel;
 import net.vakror.asm.entity.client.BroomRenderer;
@@ -42,13 +41,14 @@ import net.vakror.asm.packets.ModPackets;
 import net.vakror.asm.packets.SyncSoulS2CPacket;
 import net.vakror.asm.soul.PlayerSoul;
 import net.vakror.asm.soul.PlayerSoulProvider;
-import net.vakror.asm.wand.ItemWand;
-import net.vakror.asm.wand.ItemWandProvider;
 import net.vakror.asm.world.dimension.Dimensions;
 import net.vakror.asm.world.structure.DungeonStructure;
 import net.vakror.asm.world.structure.ModStructures;
 
 import java.util.List;
+
+import static net.vakror.asm.blocks.ModBlocks.*;
+import static net.vakror.asm.items.ModItems.*;
 
 public class Events {
     @Mod.EventBusSubscriber(modid = ASMMod.MOD_ID)
@@ -73,7 +73,7 @@ public class Events {
                     } else {
                         hand = InteractionHand.OFF_HAND;
                     }
-                    player.getItemInHand(hand).getCapability(ItemWandProvider.WAND).ifPresent(wand -> {
+                    player.getItemInHand(hand).getCapability(ItemSealProvider.SEAL).ifPresent(wand -> {
                         List<Mob> nearbyMobs = getNearbyEntities(event.getEntity().level, player.blockPosition(), (float) 3, Mob.class);
                         int i = 1;
                         for (Mob mob : nearbyMobs) {
@@ -94,9 +94,9 @@ public class Events {
         }
 
         @SubscribeEvent
-        public static void onAttachCapabilitiesItem(AttachCapabilitiesEvent<ItemStack> event) {
+        public static void attachCapability(AttachCapabilitiesEvent<ItemStack> event) {
             if (event.getObject().getItem() instanceof WandItem) {
-                event.addCapability(new ResourceLocation(ASMMod.MOD_ID, "seals"), new ItemWandProvider());
+                event.addCapability(new ResourceLocation(ASMMod.MOD_ID, "seals"), new ItemSealProvider());
             }
         }
 
@@ -114,7 +114,7 @@ public class Events {
         @SubscribeEvent
         public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
             event.register(PlayerSoul.class);
-            event.register(ItemWand.class);
+            event.register(ItemSeal.class);
         }
 
         @SubscribeEvent
@@ -162,46 +162,37 @@ public class Events {
     @Mod.EventBusSubscriber(modid = ASMMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ModEvents {
         @SubscribeEvent
-        public static void addItemsToCreativeModeTab(CreativeModeTabEvent.BuildContents event) {
-            if (event.getTab() == ASM_TAB) {
-                event.accept(ModItems.AXING_SEAL.get());
-                event.accept(ModItems.WAND.get());
-                event.accept(ModItems.PICKAXING_SEAL.get());
-                event.accept(ModItems.HOEING_SEAL.get());
-                event.accept(ModItems.MINING_SPEED_SEAL.get());
-                event.accept(ModItems.SWORDING_SEAL.get());
-                event.accept(ModItems.SOUL.get());
-                event.accept(ModItems.DARK_SOUL.get());
-                event.accept(ModItems.BLANK_PASSIVE_SEAL.get());
-                event.accept(ModItems.BLANK_ATTACK_SEAL.get());
-                event.accept(ModItems.BLANK_AMPLIFYING_SEAL.get());
-                event.accept(ModItems.SOUL_BUCKET.get());
-                event.accept(ModItems.DARK_SOUL_BUCKET.get());
-                event.accept(ModItems.TUNGSTEN_INGOT.get());
-                event.accept(ModItems.KEY.get());
-                event.accept(ModBlocks.WAND_IMBUING_TABLE.get());
-                event.accept(ModBlocks.SOUL_SOLIDIFIER.get());
-                event.accept(ModBlocks.ANCIENT_OAK_LOG.get());
-                event.accept(ModBlocks.ANCIENT_OAK_PLANKS.get());
-                event.accept(ModBlocks.CORRUPTED_LOG.get());
-                event.accept(ModBlocks.CORRUPTED_LEAVES.get());
-                event.accept(ModBlocks.CORRUPTED_PLANKS.get());
-                event.accept(ModBlocks.DUNGEON_KEY_BLOCK.get());
-            }
-        }
-
-        static CreativeModeTab ASM_TAB;
-
-        @SubscribeEvent
-        public static void createCreativeModeTab(CreativeModeTabEvent.Register event) {
-            event.registerCreativeModeTab(new ResourceLocation(ASMMod.MOD_ID, "asm"), (builder) -> {
-                builder.title(Component.literal("ASM"));
-                builder.withTabsImage(new ResourceLocation(ASMMod.MOD_ID, "item/seals/axing_seal"));
-                builder.icon(() -> new ItemStack(ModItems.PICKAXING_SEAL.get()));
-                builder.withSearchBar();
-                ASM_TAB = builder.build();
-                System.out.print(ASM_TAB.getDisplayName().getString());
-            });
+        public void registerTabs(CreativeModeTabEvent.Register event) {
+            event.registerCreativeModeTab(new ResourceLocation(ASMMod.MOD_ID, "tab"), builder -> builder
+                    .icon(() -> new ItemStack(ModItems.WAND.get()))
+                    .displayItems((featureFlags, output) -> {
+                        output.accept(WAND.get());
+                        output.accept(AXING_SEAL.get());
+                        output.accept(PICKAXING_SEAL.get());
+                        output.accept(HOEING_SEAL.get());
+                        output.accept(MINING_SPEED_SEAL.get());
+                        output.accept(SWORDING_SEAL.get());
+                        output.accept(SOUL.get());
+                        output.accept(DARK_SOUL.get());
+                        output.accept(BLANK_PASSIVE_SEAL.get());
+                        output.accept(BLANK_ATTACK_SEAL.get());
+                        output.accept(BLANK_AMPLIFYING_SEAL.get());
+                        output.accept(SOUL_BUCKET.get());
+                        output.accept(DARK_SOUL_BUCKET.get());
+                        output.accept(TUNGSTEN_INGOT.get());
+                        output.accept(KEY.get());
+                        output.accept(SACK.get());
+                        output.accept(WAND_IMBUING_TABLE.get());
+                        output.accept(SOUL_SOLIDIFIER.get());
+                        output.accept(ANCIENT_OAK_LOG.get());
+                        output.accept(ANCIENT_OAK_PLANKS.get());
+                        output.accept(CORRUPTED_LOG.get());
+                        output.accept(CORRUPTED_LEAVES.get());
+                        output.accept(CORRUPTED_PLANKS.get());
+                        output.accept(DUNGEON_KEY_BLOCK.get());
+                    })
+                    .withSearchBar()
+            );
         }
 
         @SubscribeEvent

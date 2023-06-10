@@ -13,7 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.vakror.asm.ASMMod;
 import net.vakror.asm.entity.BroomEntity;
-import net.vakror.asm.wand.ItemWandProvider;
+import net.vakror.asm.capability.wand.ItemSealProvider;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -44,7 +44,7 @@ public class BroomRenderer<T extends BroomEntity> extends EntityRenderer<T> {
     private VertexConsumer buffer(T entity, EntityModel<BroomEntity> model, ResourceLocation texture, MultiBufferSource multiBufferSource) {
         AtomicReference<VertexConsumer> buffer = new AtomicReference<>();
         ItemStack broomItem = entity.getItem();
-        broomItem.getCapability(ItemWandProvider.WAND).ifPresent((wand) -> {
+        broomItem.getCapability(ItemSealProvider.SEAL).ifPresent((wand) -> {
             if (!wand.getAmplifyingSeals().isEmpty()) {
                buffer.set(VertexMultiConsumer.create(multiBufferSource.getBuffer(RenderType.entityGlint()), multiBufferSource.getBuffer(model.renderType(texture))));
             } else {

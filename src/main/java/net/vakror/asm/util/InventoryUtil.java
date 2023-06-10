@@ -8,37 +8,40 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InventoryUtil {
-    public static boolean hasPlayerStackInInventory(Player player, Item item) {
-        for(int i = 0; i < player.getInventory().getContainerSize(); i++) {
-            ItemStack currentStack = player.getInventory().getItem(i);
-            if (!currentStack.isEmpty() && currentStack.sameItem(new ItemStack(item))) {
-                return true;
+    public static class PlayerInventory {
+
+        public static boolean hasPlayerStackInInventory(Player player, Item item) {
+            for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+                ItemStack currentStack = player.getInventory().getItem(i);
+                if (!currentStack.isEmpty() && currentStack.sameItem(new ItemStack(item))) {
+                    return true;
+                }
             }
+
+            return false;
         }
 
-        return false;
-    }
-
-    public static int getFirstInventoryIndex(Player player, Item item) {
-        for(int i = 0; i < player.getInventory().getContainerSize(); i++) {
-            ItemStack currentStack = player.getInventory().getItem(i);
-            if (!currentStack.isEmpty() && currentStack.sameItem(new ItemStack(item))) {
-                return i;
+        public static int getFirstInventoryIndex(Player player, Item item) {
+            for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+                ItemStack currentStack = player.getInventory().getItem(i);
+                if (!currentStack.isEmpty() && currentStack.sameItem(new ItemStack(item))) {
+                    return i;
+                }
             }
+
+            return -1;
         }
 
-        return -1;
-    }
-
-    public static List<Integer> getAllInventoryIndexes(Player player, Item item) {
-        List<Integer> indexes = new ArrayList<>();
-        for(int i = 0; i < player.getInventory().getContainerSize(); i++) {
-            ItemStack currentStack = player.getInventory().getItem(i);
-            if (!currentStack.isEmpty() && currentStack.sameItem(new ItemStack(item))) {
-                indexes.add(i);
+        public static List<Integer> getAllInventoryIndexes(Player player, Item item) {
+            List<Integer> indexes = new ArrayList<>();
+            for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+                ItemStack currentStack = player.getInventory().getItem(i);
+                if (!currentStack.isEmpty() && currentStack.sameItem(new ItemStack(item))) {
+                    indexes.add(i);
+                }
             }
-        }
 
-        return indexes;
+            return indexes;
+        }
     }
 }

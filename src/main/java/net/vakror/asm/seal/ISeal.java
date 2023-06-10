@@ -1,5 +1,9 @@
 package net.vakror.asm.seal;
 
+import net.vakror.asm.seal.type.AttackSeal;
+
+import java.util.List;
+
 public interface ISeal {
 
     public default String getId() {
@@ -11,6 +15,8 @@ public interface ISeal {
     }
 
     default boolean isAttack() {
-        return false;
+        return this instanceof AttackSeal;
     };
+
+    List<SealProperty> properties();
 }

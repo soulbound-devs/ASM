@@ -27,7 +27,7 @@ import net.vakror.asm.items.custom.WandItem;
 import net.vakror.asm.items.custom.seals.SealItem;
 import net.vakror.asm.screen.WandImbuingMenu;
 import net.vakror.asm.seal.SealRegistry;
-import net.vakror.asm.wand.ItemWandProvider;
+import net.vakror.asm.capability.wand.ItemSealProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -166,7 +166,7 @@ public class WandImbuingTableBlockEntity extends BlockEntity implements MenuProv
         }
 
         entity.itemHandler.setStackInSlot(3, entity.itemHandler.getStackInSlot(1));
-        entity.itemHandler.getStackInSlot(3).getCapability(ItemWandProvider.WAND).ifPresent(wand -> entity.itemHandler.getStackInSlot(1).getCapability(ItemWandProvider.WAND).ifPresent(oldWand -> {
+        entity.itemHandler.getStackInSlot(3).getCapability(ItemSealProvider.SEAL).ifPresent(wand -> entity.itemHandler.getStackInSlot(1).getCapability(ItemSealProvider.SEAL).ifPresent(oldWand -> {
             wand.copyFrom(oldWand);
             if (SealRegistry.passiveSeals.containsKey(((SealItem) entity.itemHandler.getStackInSlot(2).getItem()).getId())) {
                 wand.addPassiveSeal(((SealItem) entity.itemHandler.getStackInSlot(2).getItem()).getId());

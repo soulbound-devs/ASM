@@ -9,8 +9,8 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.vakror.asm.capability.wand.ItemSealProvider;
 import net.vakror.asm.items.custom.WandItem;
-import net.vakror.asm.wand.ItemWandProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ public class WandItemOverrideList extends ItemOverrides {
 	@Override
 	public BakedModel resolve(BakedModel model, ItemStack stack, ClientLevel worldIn, LivingEntity entityIn, int seed) {
 		if (stack.getItem() instanceof WandItem && model instanceof WandBakedModel mealModel) {
-			AtomicReference<WandBakedModel> finalWandModel = new AtomicReference<>(mealModel);
+			AtomicReference<WandBakedModel> finalMealModel = new AtomicReference<>(mealModel);
 			List<TextureAtlasSprite> sprites = new ArrayList<TextureAtlasSprite>();
 
 			List<WandModelLoader.TypedTextures> mutableTypedTextures = Lists.newArrayList(this.materials);
@@ -41,14 +41,15 @@ public class WandItemOverrideList extends ItemOverrides {
 				TextureAtlasSprite sprite = typedTextures.getSprite("wand", this.spriteGetter);
 				mutableTypedTextures.remove(typedTextures);
 				sprites.add(sprite);
-				finalWandModel.set(finalWandModel.get().setSprites(sprites));
+				finalMealModel.set(finalMealModel.get().setIngredientSprites(sprites));
 				break;
 			}
-			stack.getCapability(ItemWandProvider.WAND).ifPresent(wand -> {
+			stack.getCapability(ItemSealProvider.SEAL).ifPresent(wand -> {
 				List<WandModelLoader.TypedTextures> mutableTypedTextures1 = Lists.newArrayList(this.materials);
-				if (wand.getActiveSeal() != null) {
+				if (!stack.getTag().getString("activeSeal").equals("")) {
 					for (WandModelLoader.TypedTextures typedTextures : mutableTypedTextures1) {
-						TextureAtlasSprite sprite = typedTextures.getSprite(wand.getActiveSeal().getId(), this.spriteGetter);
+						String  activeSeal = stack.getTag().getString("activeSeal");
+						TextureAtlasSprite sprite = typedTextures.getSprite(activeSeal, this.spriteGetter);
 						if (sprite != null) {
 							mutableTypedTextures1.remove(typedTextures);
 							sprites.add(sprite);
@@ -56,9 +57,9 @@ public class WandItemOverrideList extends ItemOverrides {
 						}
 					}
 				}
-				finalWandModel.set(finalWandModel.get().setSprites(sprites));
+				finalMealModel.set(finalMealModel.get().setIngredientSprites(sprites));
 			});
-			return finalWandModel.get().getNewBakedItemModel();
+			return finalMealModel.get().getNewBakedItemModel();
 		}
 		return model;
 	}

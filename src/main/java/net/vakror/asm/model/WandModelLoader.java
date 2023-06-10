@@ -2,7 +2,6 @@ package net.vakror.asm.model;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -29,41 +28,40 @@ public enum WandModelLoader implements IGeometryLoader<WandModel> {
 
 
 	@Override
-	public WandModel read(JsonObject modelContents, JsonDeserializationContext deserializationContext){
+	public WandModel read(JsonObject modelContents, JsonDeserializationContext deserializationContext) {
 		List<TypedTextures> typedTexturesList = new ArrayList<>();
 		ResourceLocation wandLocation = new ResourceLocation("");
-		
-		if(modelContents.has("wand")){
+
+		if (modelContents.has("wand")) {
 			JsonObject wandJsonObject = modelContents.getAsJsonObject("wand");
 			wandLocation = new ResourceLocation(wandJsonObject.get("wand").getAsString());
 			WandModelLoader.textures.add(wandLocation);
-			
-			JsonArray parts = wandJsonObject.get("seals").getAsJsonArray();
-			for(JsonElement element : parts) {
-				TypedTextures typedTextures = new TypedTextures(wandLocation, (JsonObject) element);
-				typedTexturesList.add(typedTextures);
-				
-				for(Entry<String, ResourceLocation> entry : typedTextures.getTextures().entrySet()){
-					WandModelLoader.textures.add(entry.getValue());
-				}
+
+			TypedTextures typedTextures = new TypedTextures(wandJsonObject);
+			typedTexturesList.add(typedTextures);
+
+			for (Entry<String, ResourceLocation> entry : typedTextures.getTextures().entrySet()) {
+				WandModelLoader.textures.add(entry.getValue());
 			}
 		}
-		
+
 		return new WandModel(wandLocation, ImmutableList.copyOf(typedTexturesList));
 	}
 	
 	public static class TypedTextures{
 		private final ImmutableMap<String, ResourceLocation> textures;
 		
-		private TypedTextures(ResourceLocation wandLocation, JsonObject elementIn){
+		private TypedTextures(JsonObject wandObject){
 
 			Map<String, ResourceLocation> map = new HashMap<>();
-			for(Entry<String, JsonElement> entry : elementIn.entrySet()){
-				ResourceLocation location = new ResourceLocation(entry.getValue().getAsString());
-				map.put(entry.getKey(), location);
+			map.put("wand", new ResourceLocation(wandObject.get("wand").getAsString()));
+			for (JsonElement element: wandObject.getAsJsonArray("seals")) {
+				JsonObject elementIn = (JsonObject) element;
+				for (Entry<String, JsonElement> entry : elementIn.entrySet()) {
+					ResourceLocation location = new ResourceLocation(entry.getValue().getAsString());
+					map.put(entry.getKey(), location);
+				}
 			}
-			map.put("wand", wandLocation);
-			
 			this.textures = ImmutableMap.copyOf(map);
 		}
 
@@ -72,7 +70,7 @@ public enum WandModelLoader implements IGeometryLoader<WandModel> {
 		}
 
 		@Nullable
-		public TextureAtlasSprite getSprite(String name, Function<Material, TextureAtlasSprite> spriteGetter){
+		public TextureAtlasSprite getSprite(String name, Function<Material, TextureAtlasSprite> spriteGetter) {
 			ResourceLocation location = this.textures.get(name);
 			assert location != null;
 			@SuppressWarnings("deprecation")

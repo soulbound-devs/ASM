@@ -8,18 +8,15 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.vakror.asm.ASMMod;
+import net.vakror.asm.capability.wand.WandTiers;
+import net.vakror.asm.items.custom.SackItem;
 import net.vakror.asm.items.custom.WandItem;
 import net.vakror.asm.items.custom.seals.SealItem;
 import net.vakror.asm.seal.SealType;
 import net.vakror.asm.soul.ModSoul;
-import net.vakror.asm.wand.WandTiers;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ModItems {
-    public static List<Item> ITEMS = new ArrayList<>();
-    
+
     public static final DeferredRegister<Item> ITEMS_REGISTRY =
             DeferredRegister.create(ForgeRegistries.ITEMS, ASMMod.MOD_ID);
 
@@ -67,6 +64,9 @@ public class ModItems {
 
     public static final RegistryObject<Item> KEY = ITEMS_REGISTRY.register("key",
            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> SACK = ITEMS_REGISTRY.register("sack",
+           () -> new SackItem(new Item.Properties(), WandTiers.SACK));
 
     public static void register(IEventBus eventBus) {
         ITEMS_REGISTRY.register(eventBus);

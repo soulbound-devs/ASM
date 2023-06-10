@@ -14,6 +14,7 @@
   "item.asm.dark_soul_bucket": "Bucket of Dark Soul",
   "item.asm.tungsten_ingot": "Tungsten Ingot",
   "item.asm.key": "Keystone Key",
+  "item.asm.sack": "Sack",
 
   "asm.tooltip.fluid.amount_with_capacity": "%s / %s mB",
   "asm.tooltip.fluid.amount": "%s mB",
@@ -27,5 +28,22 @@
   "block.asm.corrupted_leaves": "Corrupted Leaves",
   "block.asm.dungeon_key_block": "Dungeon Keystone",
 
-  "itemGroup.asm": "asm Tab"
+  "itemGroup.asm": "asm Tab",
+
+
+  "options.libgui.libgui_settings": "LibGui Settings",
+  "option.libgui.darkmode": "Dark Mode",
+  "widget.libgui.item_slot.narration.title": "Item slot %s out of %s",
+  "widget.libgui.labeled_slider.narration.title": "%s slider: at %s between %s and %s",
+  "widget.libgui.scroll_bar.narration.title": "Scroll bar",
+  "widget.libgui.slider.narration.title": "Slider: at %s between %s and %s",
+  "widget.libgui.slider.narration.usage": "Move by dragging or with arrow keys",
+  "widget.libgui.tab.narration.title": "%s tab",
+  "widget.libgui.tab.narration.position": "Tab %s out of %s",
+  "widget.libgui.text_field.narration.title": "Text field: %s",
+  "widget.libgui.text_field.narration.suggestion": "Suggestion: %s",
+  "widget.libgui.toggle_button.narration.unnamed": "Toggle button: %s",
+  "widget.libgui.toggle_button.narration.named": "Toggle button: %s (%s)",
+  "widget.libgui.toggle_button.narration.on": "On",
+  "widget.libgui.toggle_button.narration.off": "Off"
 }

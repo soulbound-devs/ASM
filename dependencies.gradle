@@ -1,0 +1,14 @@
+ext {
+    //-- DEPENDENCIES
+    forgeVersion = "1.19.4-45.1.0"
+    mixinVersion = "0.8.5"
+    libNinePatchVersion = "1.2.0"
+    terrablenderVersion = "1.19.4-2.2.0.155"
+
+    supportDependencies = [
+            forge: "net.minecraftforge:forge:${forgeVersion}",
+            processor: "org.spongepowered:mixin:${mixinVersion}:processor",
+            terrablender: "com.github.glitchfiend:TerraBlender-forge:${terrablenderVersion}",
+            libNinePatch: "io.github.juuxel:libninepatch:${libNinePatchVersion}"
+    ]
+}

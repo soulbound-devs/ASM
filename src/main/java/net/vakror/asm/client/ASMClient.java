@@ -1,10 +1,10 @@
 package net.vakror.asm.client;
 
+import io.github.cottonmc.cotton.gui.impl.client.LibGuiShaders;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.vakror.asm.backpack.screen.BackpackScreen;
 import net.vakror.asm.screen.*;
 import net.vakror.asm.soul.ModSoul;
 
@@ -12,7 +12,9 @@ public class ASMClient {
     public static void doClientRegister(final FMLClientSetupEvent event) {
         MenuScreens.register(ModMenuTypes.WAND_IMBUING_MENU.get(), WandImbuingScreen::new);
         MenuScreens.register(ModMenuTypes.SOUL_SOLIDIFIER_MENU.get(), SoulSolidifierScreen::new);
-        MenuScreens.register(ModMenuTypes.BACKPACK_MENU.get(), BackpackScreen::new);
+        MenuScreens.register(ModMenuTypes.SACK_MENU.get(), SackScreen::new);
+
+        LibGuiShaders.register();
 
         ItemBlockRenderTypes.setRenderLayer(ModSoul.SOURCE_SOUL.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(ModSoul.FLOWING_SOUL.get(), RenderType.translucent());
