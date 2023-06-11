@@ -12,7 +12,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.TierSortingRegistry;
 import net.vakror.asm.ASMMod;
-import net.vakror.asm.capability.wand.IWandTier;
+import net.vakror.asm.seal.tier.ISealableTier;
 import net.vakror.asm.capability.wand.ItemSealProvider;
 import net.vakror.asm.seal.function.amplify.AmplifyFunction;
 import net.vakror.asm.seal.function.amplify.damage.DamageAmplifyFunction;
@@ -29,7 +29,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class WandItem extends ActivatableSealableItem {
 
-    public WandItem(Properties properties, IWandTier tier) {
+    public WandItem(Properties properties, ISealableTier tier) {
         super(properties, tier);
     }
 

@@ -1,6 +1,6 @@
-package net.vakror.asm.capability.wand;
+package net.vakror.asm.seal.tier;
 
-public enum WandTiers implements IWandTier {
+public enum ModWandTiers implements ISealableTier {
     ANCIENT_OAK(0, 1, 1, 2),
     SACK(0, 0, 0, 0);
 
@@ -9,7 +9,7 @@ public enum WandTiers implements IWandTier {
     private final int amplificationSlots;
     private final int tier;
 
-    WandTiers(int tier, int passiveSlots, int attackSlots, int amplificationSlots) {
+    ModWandTiers(int tier, int passiveSlots, int attackSlots, int amplificationSlots) {
         this.tier = tier;
         this.passiveSlots = passiveSlots;
         this.attackSlots = attackSlots;

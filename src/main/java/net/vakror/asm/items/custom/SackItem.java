@@ -12,7 +12,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
-import net.vakror.asm.capability.wand.IWandTier;
+import net.vakror.asm.seal.tier.ISealableTier;
 import net.vakror.asm.screen.SackMenu;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,7 +23,7 @@ public class SackItem extends SealableItem {
     private int height = 3;
     private int stackLimit = 64;
 
-    public SackItem(Properties properties, IWandTier tier) {
+    public SackItem(Properties properties, ISealableTier tier) {
         super(properties, tier);
     }
 

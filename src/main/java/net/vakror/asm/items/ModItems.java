@@ -8,7 +8,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.vakror.asm.ASMMod;
-import net.vakror.asm.capability.wand.WandTiers;
+import net.vakror.asm.seal.tier.ModWandTiers;
 import net.vakror.asm.items.custom.SackItem;
 import net.vakror.asm.items.custom.WandItem;
 import net.vakror.asm.items.custom.seals.SealItem;
@@ -24,7 +24,7 @@ public class ModItems {
            () -> new SealItem(new Item.Properties(), "axing", SealType.OFFENSIVE));
 
     public static final RegistryObject<Item> WAND = ITEMS_REGISTRY.register("wand",
-           () -> new WandItem(new Item.Properties(), WandTiers.ANCIENT_OAK));
+           () -> new WandItem(new Item.Properties(), ModWandTiers.ANCIENT_OAK));
 
     public static final RegistryObject<Item> PICKAXING_SEAL = ITEMS_REGISTRY.register("pickaxing_seal",
            () -> new SealItem(new Item.Properties(), "pickaxing", SealType.PASSIVE));
@@ -66,7 +66,7 @@ public class ModItems {
            () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> SACK = ITEMS_REGISTRY.register("sack",
-           () -> new SackItem(new Item.Properties(), WandTiers.SACK));
+           () -> new SackItem(new Item.Properties(), ModWandTiers.SACK));
 
     public static void register(IEventBus eventBus) {
         ITEMS_REGISTRY.register(eventBus);

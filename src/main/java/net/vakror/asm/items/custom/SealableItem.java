@@ -14,7 +14,7 @@ import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.vakror.asm.ASMMod;
-import net.vakror.asm.capability.wand.IWandTier;
+import net.vakror.asm.seal.tier.ISealableTier;
 import net.vakror.asm.capability.wand.ItemSeal;
 import net.vakror.asm.capability.wand.ItemSealProvider;
 import net.vakror.asm.items.custom.seals.SealItem;
@@ -29,10 +29,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SealableItem extends DiggerItem {
 
-    protected final IWandTier tier;
+    protected final ISealableTier tier;
     protected ItemStack stack;
 
-    public SealableItem(Properties properties, IWandTier tier) {
+    public SealableItem(Properties properties, ISealableTier tier) {
         super(3, -3, Tiers.DIAMOND, BlockTags.create(new ResourceLocation(ASMMod.MOD_ID, "none")), properties);
         this.tier = tier;
     }

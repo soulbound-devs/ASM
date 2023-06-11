@@ -8,11 +8,11 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.vakror.asm.capability.wand.IWandTier;
+import net.vakror.asm.seal.tier.ISealableTier;
 import net.vakror.asm.capability.wand.ItemSealProvider;
 
 public class ActivatableSealableItem extends SealableItem {
-    public ActivatableSealableItem(Properties properties, IWandTier tier) {
+    public ActivatableSealableItem(Properties properties, ISealableTier tier) {
         super(properties, tier);
     }
 

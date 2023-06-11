@@ -1,6 +1,6 @@
-package net.vakror.asm.capability.wand;
+package net.vakror.asm.seal.tier;
 
-public interface IWandTier {
+public interface ISealableTier {
     int getPassiveSlots();
     int getAttackSlots();
     int getAmplificationSlots();
