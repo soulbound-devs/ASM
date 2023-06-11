@@ -1,6 +1,5 @@
 package net.vakror.asm.client;
 
-import io.github.cottonmc.cotton.gui.impl.client.LibGuiShaders;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -13,8 +12,6 @@ public class ASMClient {
         MenuScreens.register(ModMenuTypes.WAND_IMBUING_MENU.get(), WandImbuingScreen::new);
         MenuScreens.register(ModMenuTypes.SOUL_SOLIDIFIER_MENU.get(), SoulSolidifierScreen::new);
         MenuScreens.register(ModMenuTypes.SACK_MENU.get(), SackScreen::new);
-
-        LibGuiShaders.register();
 
         ItemBlockRenderTypes.setRenderLayer(ModSoul.SOURCE_SOUL.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(ModSoul.FLOWING_SOUL.get(), RenderType.translucent());
