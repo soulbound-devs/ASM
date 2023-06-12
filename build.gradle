@@ -6,8 +6,8 @@ buildscript {
         maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '[6.0,6.2]', changing: true
-        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7.33'
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1+', changing: true
+        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7.+'
 //        classpath 'org.parchmentmc:librarian:1.+'
     }
     apply from: 'dependencies.gradle'
@@ -21,18 +21,22 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.spongepowered.mixin'
 
 mixin {
+    add sourceSets.main, 'asm.refmap.json'
     config "asm.mixins.json"
+
+    debug.verbose = true
+    debug.export = true
 }
 
-version = '1.1.0-ALPHA'
-group = 'com.yourname.' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+version = '1.2.1-ALPHA'
+group = 'net.vakror.' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'asm'
 // Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 minecraft {
-    mappings channel: 'official', version: '1.19.4'
+    mappings channel: 'official', version: '1.20'
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
@@ -145,7 +149,6 @@ dependencies {
 
     annotationProcessor supportDependencies.processor
     implementation fg.deobf(supportDependencies.terrablender)
-    minecraftLibrary(supportDependencies.libNinePatch)
 }
 
 // Example for how to get properties into the manifest for reading at runtime.

@@ -3,7 +3,10 @@ package net.vakror.asm.blocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -11,7 +14,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -33,10 +36,10 @@ public class ModBlocks {
             DeferredRegister.create(ForgeRegistries.BLOCKS, ASMMod.MOD_ID);
 
     public static final RegistryObject<Block> WAND_IMBUING_TABLE = registerBlock("wand_imbuing_table",
-           () -> new WandImbuingTableBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(5).requiresCorrectToolForDrops().noOcclusion()));
+           () -> new WandImbuingTableBlock(BlockBehaviour.Properties.of().strength(5).requiresCorrectToolForDrops().noOcclusion().ignitedByLava().instrument(NoteBlockInstrument.BASS)));
 
     public static final RegistryObject<Block> SOUL_SOLIDIFIER = registerBlock("soul_solidifier",
-           () -> new SoulSolidifierBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(5).requiresCorrectToolForDrops().noOcclusion()));
+           () -> new SoulSolidifierBlock(BlockBehaviour.Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).strength(5).requiresCorrectToolForDrops().noOcclusion()));
 
     public static final RegistryObject<Block> ANCIENT_OAK_LOG = registerBlock("ancient_oak_log",
            () -> new ModFlammableRotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LOG)));
@@ -90,7 +93,7 @@ public class ModBlocks {
            () -> new LiquidBlock(ModSoul.SOURCE_DARK_SOUL, BlockBehaviour.Properties.copy(Blocks.WATER)));
 
     public static final RegistryObject<Block> DUNGEON_KEY_BLOCK = registerBlock("dungeon_key_block",
-            () -> new DungeonAccessBlock(BlockBehaviour.Properties.of(Material.STONE).strength(1.5F, 6.0F).requiresCorrectToolForDrops()));
+            () -> new DungeonAccessBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).strength(1.5F, 6.0F).requiresCorrectToolForDrops()));
 
     private static <T extends Block> RegistryObject<T> registerBlockWithoutBlockItem(String name, Supplier<T> block) {
         return BLOCKS.register(name, block);

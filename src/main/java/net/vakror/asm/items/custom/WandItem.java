@@ -12,19 +12,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.TierSortingRegistry;
 import net.vakror.asm.ASMMod;
-import net.vakror.asm.seal.tier.ISealableTier;
 import net.vakror.asm.capability.wand.ItemSealProvider;
-import net.vakror.asm.seal.function.amplify.AmplifyFunction;
 import net.vakror.asm.seal.function.amplify.damage.DamageAmplifyFunction;
+import net.vakror.asm.seal.tier.ISealableTier;
 import net.vakror.asm.seal.type.ActivatableSeal;
 import net.vakror.asm.seal.type.AttackSeal;
 import net.vakror.asm.seal.type.amplifying.ItemAmplificationSeal;
-import net.vakror.asm.util.MapUtil;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class WandItem extends ActivatableSealableItem {
@@ -86,33 +81,30 @@ public class WandItem extends ActivatableSealableItem {
 
     @Override
     public float getAttackDamage() {
-        AtomicReference<Float> damage = new AtomicReference<>((float) 0);
-        final Map<DamageAmplifyFunction, Integer> damageMap = new LinkedHashMap<>();
+        AtomicReference<Float> finalDamage = new AtomicReference<>((float) 0);
         stack.getCapability(ItemSealProvider.SEAL).ifPresent(wand -> {
+            final float[] damage = {0f};
             if (wand.getActiveSeal() != null && wand.getActiveSeal().isAttack()) {
-                damage.set(((AttackSeal) wand.getActiveSeal()).getDamage());
-            }
-            wand.getAmplifyingSeals().forEach((seal -> {
+                damage[0] = ((AttackSeal) wand.getActiveSeal()).getDamage();
+            } wand.getAmplifyingSeals().forEach((seal -> {
                 if (seal instanceof ItemAmplificationSeal amplificationSeal) {
-                    List<AmplifyFunction> damageFunctions = amplificationSeal.getAmplifyFunctions().stream().filter((AmplifyFunction::isDamage)).toList();
-                    damageFunctions.forEach((damageAmplifyFunction -> {
-                        damageMap.put((DamageAmplifyFunction) damageAmplifyFunction, amplificationSeal.getPriority());
+                    amplificationSeal.getAmplifyFunctions().forEach((amplifyFunction -> {
+                        if (amplifyFunction.isDamage()) {
+                            DamageAmplifyFunction function = (DamageAmplifyFunction) amplifyFunction;
+                            switch (function.getIncreaseType()) {
+                                case ADD -> damage[0] += function.getAmount();
+                                case SUBTRACT -> damage[0] -= function.getAmount();
+                                case MULTIPLY -> damage[0] *= function.getAmount();
+                                case DIVIDE -> damage[0] /= function.getAmount();
+                                case POW -> damage[0] = (float) Math.pow(damage[0], function.getAmount());
+                            }
+                        }
                     }));
                 }
             }));
+            finalDamage.set(damage[0]);
         });
-        Map<DamageAmplifyFunction, Integer> sortedDamageMap = MapUtil.sortByValue(damageMap);
-        sortedDamageMap.keySet().forEach((damageAmplifyFunction -> {
-            float damageAmount = damageAmplifyFunction.getAmount();
-            switch (damageAmplifyFunction.getIncreaseType()) {
-                case ADD -> damage.set(damage.get() + damageAmount);
-                case MULTIPLY -> damage.set(damage.get() * damageAmount);
-                case SUBTRACT -> damage.set(damage.get() - damageAmount);
-                case DIVIDE -> damage.set(damage.get() / damageAmount);
-                case POW -> damage.set((float) Math.pow(damage.get(), damageAmount));
-            }
-        }));
-        return damage.get();
+        return finalDamage.get();
     }
 
     @Override

@@ -43,8 +43,8 @@ public class DungeonPiece extends TemplateStructurePiece {
         return (new StructurePlaceSettings()).setIgnoreEntities(true).addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK).setRotation(rotation).setMirror(mirror);
     }
 
-    public static void generateDungeon(BlockPos pos, Rotation rotation, StructureTemplateManager manager, StructurePiecesBuilder builder) {
-        DungeonPiece piece = new DungeonPiece(ModDungeonPieces.DEFAULT_DUNGEON_PIECE.get(), 0, manager, new ResourceLocation("asm", "dungeon_room_50"), "dungeon_room_50", makeSettings(rotation, Mirror.NONE), pos, DungeonTheme.getRandomTheme());
+    public static void generateDungeon(BlockPos pos, Rotation rotation, StructureTemplateManager manager, StructurePiecesBuilder builder, int size, int layer) {
+        DungeonPiece piece = new DungeonPiece(ModDungeonPieces.DEFAULT_DUNGEON_PIECE.get(), 128, manager, new ResourceLocation("asm", "dungeon_room_" + size + "_" + layer), "dungeon_room_" + size + "_" + layer, makeSettings(rotation, Mirror.NONE), pos, DungeonTheme.getRandomTheme());
         builder.addPiece(piece);
     }
 

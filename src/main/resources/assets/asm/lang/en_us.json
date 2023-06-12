@@ -28,8 +28,7 @@
   "block.asm.corrupted_leaves": "Corrupted Leaves",
   "block.asm.dungeon_key_block": "Dungeon Keystone",
 
-  "itemGroup.asm": "asm Tab",
-
+  "itemGroup.asm": "ASM",
 
   "options.libgui.libgui_settings": "LibGui Settings",
   "option.libgui.darkmode": "Dark Mode",

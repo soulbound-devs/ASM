@@ -60,7 +60,7 @@ public class BroomEntity extends Entity {
     public boolean hurt(DamageSource source, float p_19947_) {
         if (this.isInvulnerableTo(source)) {
             return false;
-        } else if (!this.level.isClientSide && !this.isRemoved()) {
+        } else if (!this.level().isClientSide && !this.isRemoved()) {
             this.discard();
         }
         return true;
@@ -94,7 +94,7 @@ public class BroomEntity extends Entity {
             }));
         }
         if (this.isControlledByLocalInstance()) {
-            if (this.level.isClientSide()) {
+            if (this.level().isClientSide()) {
                 LivingEntity controller = this.getControllingPassenger();
                 assert controller != null;
                 this.handleMove(new Vec3(controller.xxa, controller.yya, controller.zza), 0.3f, this.getYRot());
@@ -115,7 +115,7 @@ public class BroomEntity extends Entity {
             return InteractionResult.PASS;
         }
         else {
-            if (!this.level.isClientSide) {
+            if (!this.level().isClientSide) {
                 return player.startRiding(this) ? InteractionResult.CONSUME: InteractionResult.PASS;
             } else {
                 return InteractionResult.SUCCESS;

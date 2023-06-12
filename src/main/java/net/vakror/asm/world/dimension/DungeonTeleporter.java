@@ -29,9 +29,9 @@ public class DungeonTeleporter implements ITeleporter {
     @Override
     public @Nullable PortalInfo getPortalInfo(Entity entity, ServerLevel destWorld, Function<ServerLevel, PortalInfo> defaultPortalInfo) {
         if (!(destWorld.getBlockEntity(pos) instanceof DungeonAccessBlockEntity)) {
-            destWorld.setBlock(pos, ModBlocks.DUNGEON_KEY_BLOCK.get().defaultBlockState().setValue(DungeonAccessBlock.TO_OVERWORLD, true), 3);
+            destWorld.setBlock(pos, ModBlocks.DUNGEON_KEY_BLOCK.get().defaultBlockState(), 3);
         }
-        return new PortalInfo(new Vec3(pos.above().getX(), pos.above().getY(), pos.above().getZ()), entity.getDeltaMovement(), entity.getYRot(), entity.getXRot());
+        return new PortalInfo(new Vec3(pos.above().getX(), pos.above().getY(), pos.above().getZ()), Vec3.ZERO, entity.getYRot(), entity.getXRot());
     }
 
     public static boolean loaded(ServerLevel pLevel, ChunkPos pStart, ChunkPos pEnd) {

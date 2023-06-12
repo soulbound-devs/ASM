@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.vakror.asm.blocks.entity.custom.DungeonAccessBlockEntity;
@@ -34,7 +34,6 @@ import static net.vakror.asm.world.dimension.DimensionUtils.createWorld;
 
 public class DungeonAccessBlock extends BaseEntityBlock {
     public static final BooleanProperty LOCKED = BooleanProperty.create("locked");
-    public static final BooleanProperty TO_OVERWORLD = BooleanProperty.create("to_overworld");
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public DungeonAccessBlock(Properties properties) {
@@ -76,13 +75,12 @@ public class DungeonAccessBlock extends BaseEntityBlock {
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(LOCKED);
         builder.add(FACING);
-        builder.add(TO_OVERWORLD);
     }
     @Override
-    public List<ItemStack> getDrops(BlockState pState, LootContext.Builder pBuilder) {
+    public List<ItemStack> getDrops(BlockState pState, LootParams.Builder pBuilder) {
         if (pBuilder.getOptionalParameter(LootContextParams.BLOCK_ENTITY) instanceof DungeonAccessBlockEntity blockEntity) {
             blockEntity.drops();
-            pBuilder.withDynamicDrop(new ResourceLocation("uuid"), ((pLootContext, pStackConsumer) -> {
+            pBuilder.withDynamicDrop(new ResourceLocation("uuid"), ((pStackConsumer) -> {
                 pStackConsumer.accept(blockEntity.drops());
             }));
         }

@@ -28,6 +28,7 @@ import net.vakror.asm.items.custom.seals.SealItem;
 import net.vakror.asm.screen.WandImbuingMenu;
 import net.vakror.asm.seal.SealRegistry;
 import net.vakror.asm.capability.wand.ItemSealProvider;
+import net.vakror.asm.seal.SealType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -196,7 +197,7 @@ public class WandImbuingTableBlockEntity extends BlockEntity implements MenuProv
         if (!(wandItem instanceof WandItem)) {
             return false;
         }
-        int sealType = ((SealItem) sealStack.getItem()).getType();
+        SealType sealType = ((SealItem) sealStack.getItem()).getType();
         return ((WandItem) wandItem).canAddSeal(wandStack, sealType, sealStack);
     }
 

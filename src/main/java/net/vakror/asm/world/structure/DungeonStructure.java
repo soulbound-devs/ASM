@@ -28,8 +28,19 @@ import java.util.function.Predicate;
 public class DungeonStructure extends Structure {
     public static final Codec<DungeonStructure> CODEC = simpleCodec(DungeonStructure::new);
 
+    public final int size;
+    public final int layer;
+
     public DungeonStructure(Structure.StructureSettings settings) {
         super(settings);
+        this.size = 50;
+        this.layer = 0;
+    }
+
+    public DungeonStructure(Structure.StructureSettings settings, int size, int layer) {
+        super(settings);
+        this.size = size;
+        this.layer = layer;
     }
 
     @Override
@@ -43,7 +54,7 @@ public class DungeonStructure extends Structure {
     }
 
     public void generatePieces(BlockPos pos, Rotation rot, StructureTemplateManager manager, StructurePiecesBuilder builder) {
-        DungeonPiece.generateDungeon(pos, rot, manager, builder);
+        DungeonPiece.generateDungeon(pos, rot, manager, builder, this.size, this.layer);
     }
 
     public @NotNull StructureStart generate(RegistryAccess pRegistryAccess, ChunkGenerator pChunkGenerator, BiomeSource pBiomeSource, RandomState pRandomState, StructureTemplateManager pStructureTemplateManager, long pSeed, ChunkPos pChunkPos, int p_226604_, LevelHeightAccessor pHeightAccessor, Predicate<Holder<Biome>> pValidBiome) {

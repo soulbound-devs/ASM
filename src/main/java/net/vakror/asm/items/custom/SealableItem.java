@@ -47,7 +47,7 @@ public class SealableItem extends DiggerItem {
         return toReturn.get();
     }
 
-    public boolean hasSeal(String propertyId) {
+    public boolean hasSealWithProperty(String propertyId) {
         AtomicBoolean toReturn = new AtomicBoolean(false);
         stack.getCapability(ItemSealProvider.SEAL).ifPresent(wand -> {
             wand.getAllActivatableSeals().forEach((seal -> {
@@ -65,45 +65,47 @@ public class SealableItem extends DiggerItem {
         super.inventoryTick(pStack, pLevel, pEntity, p_41407_, p_41408_);
     }
 
-
-    protected String propertiesToString(List<SealProperty> properties) {
-        StringBuilder builder = new StringBuilder();
-        properties.forEach((sealProperty -> {
-            builder.append(sealProperty.id());
-            builder.append(", ");
-        }));
-        return builder.toString();
+    public boolean canAddSeal(ItemStack sealable, SealType type, ItemStack sealItem) {
+        return switch(type) {
+            case PASSIVE -> canAddPassiveSeal(sealable, sealItem);
+            case OFFENSIVE -> canAddOffensiveSeal(sealable, sealItem);
+            case AMPLIFYING -> canAddAmplifyingSeal(sealable, sealItem);
+        };
     }
 
-    public boolean canAddSeal(ItemStack stack, int type, ItemStack sealStack) {
-        AtomicBoolean toReturn = new AtomicBoolean(false);
-        if (type == SealType.PASSIVE.getId()) {
-            int passiveSealSlots = tier.getPassiveSlots();
-            stack.getCapability(ItemSealProvider.SEAL).ifPresent(wand -> {
-                String id = ((SealItem) sealStack.getItem()).getId();
-                if (!wand.getPassiveSeals().contains(SealRegistry.passiveSeals.get(id))) {
-                    toReturn.set(wand.getPassiveSeals().size() < passiveSealSlots);
-                }
-            });
-        }
-        else if (type == SealType.OFFENSIVE.getId()) {
-            int attackSealSlots = tier.getAttackSlots();
-            stack.getCapability(ItemSealProvider.SEAL).ifPresent(wand -> {
-                String id = ((SealItem) sealStack.getItem()).getId();
-                if (!wand.getAttackSeals().contains(SealRegistry.attackSeals.get(id))) {
-                    toReturn.set(wand.getPassiveSeals().size() < attackSealSlots);
-                }
-            });
-        }
-        else if (type == SealType.AMPLIFYING.getId()) {
-            int amplifyingSealSlots = tier.getAmplificationSlots();
-            stack.getCapability(ItemSealProvider.SEAL).ifPresent(wand -> {
-                String id = ((SealItem) sealStack.getItem()).getId();
-                if (!wand.getAmplifyingSeals().contains(SealRegistry.amplifyingSeals.get(id))) {
-                    toReturn.set(wand.getAmplifyingSeals().size() < amplifyingSealSlots);
-                }
-            });
-        }
+    private boolean canAddPassiveSeal(ItemStack sealable, ItemStack sealItem) {
+        AtomicBoolean toReturn = new AtomicBoolean();
+        int passiveSealSlots = tier.getPassiveSlots();
+        sealable.getCapability(ItemSealProvider.SEAL).ifPresent(wand -> {
+            String id = ((SealItem) sealItem.getItem()).getId();
+            if (!wand.getPassiveSeals().contains(SealRegistry.passiveSeals.get(id))) {
+                toReturn.set(wand.getPassiveSeals().size() < passiveSealSlots);
+            }
+        });
+        return toReturn.get();
+    }
+
+    private boolean canAddOffensiveSeal(ItemStack sealable, ItemStack sealItem) {
+        AtomicBoolean toReturn = new AtomicBoolean();
+        int attackSealSlots = tier.getAttackSlots();
+        sealable.getCapability(ItemSealProvider.SEAL).ifPresent(wand -> {
+            String id = ((SealItem) sealItem.getItem()).getId();
+            if (!wand.getAttackSeals().contains(SealRegistry.attackSeals.get(id))) {
+                toReturn.set(wand.getPassiveSeals().size() < attackSealSlots);
+            }
+        });
+        return toReturn.get();
+    }
+
+    private boolean canAddAmplifyingSeal(ItemStack sealable, ItemStack sealItem) {
+        AtomicBoolean toReturn = new AtomicBoolean();
+        int amplifyingSealSlots = tier.getAmplificationSlots();
+        sealable.getCapability(ItemSealProvider.SEAL).ifPresent(wand -> {
+            String id = ((SealItem) sealItem.getItem()).getId();
+            if (!wand.getAmplifyingSeals().contains(SealRegistry.amplifyingSeals.get(id))) {
+                toReturn.set(wand.getAmplifyingSeals().size() < amplifyingSealSlots);
+            }
+        });
         return toReturn.get();
     }
 

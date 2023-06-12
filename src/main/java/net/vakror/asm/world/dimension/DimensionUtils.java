@@ -100,7 +100,7 @@ public class DimensionUtils {
         // the int in create() here is radius of chunks to watch, 11 is what the server uses when it initializes worlds
         final ChunkProgressListener chunkProgressListener = ((IMinecraftServerAccessor) server).getProgressListenerFactory().create(11);
         final Executor executor = ((IMinecraftServerAccessor) server).getExecutor();
-        final LevelStorageSource.LevelStorageAccess anvilConverter = ((IMinecraftServerAccessor) server).getStorageSource();
+        final LevelStorageSource.LevelStorageAccess levelStorageAccess = ((IMinecraftServerAccessor) server).getStorageSource();
         final WorldData worldData = server.getWorldData();
         final WorldGenSettings worldGenSettings = new WorldGenSettings(worldData.worldGenOptions(), new WorldDimensions(server.registryAccess().registryOrThrow(Registries.LEVEL_STEM)));
         final DerivedLevelData derivedLevelData = new DerivedLevelData(worldData, worldData.overworldData());
@@ -123,7 +123,7 @@ public class DimensionUtils {
         final ServerLevel newWorld = new ServerLevel(
                 server,
                 executor,
-                anvilConverter,
+                levelStorageAccess,
                 derivedLevelData,
                 worldKey,
                 dimension,
@@ -135,7 +135,8 @@ public class DimensionUtils {
                 // this is always empty for non-overworld dimensions (including json dimensions)
                 // these spawners are ticked when the world ticks to do their spawning logic,
                 // mods that need "special spawns" for their own dimensions should implement them via tick events or other systems
-                false // "tick time", true for overworld, always false for nether, end, and json dimensions
+                false, // "tick time", true for overworld, always false for nether, end, and json dimensions
+                null
         );
 
         // add world border listener, for parity with json dimensions

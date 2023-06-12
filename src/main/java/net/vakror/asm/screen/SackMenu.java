@@ -61,7 +61,7 @@ public class SackMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        if (player.level.isClientSide) return true;
+        if (player.level().isClientSide) return true;
 
         var stack = inv.getHolderStack();
         var uuidMatch = SackItem.isUUIDMatch(stack, this.uuid);

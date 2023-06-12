@@ -10,18 +10,23 @@ import java.nio.file.Path;
 
 public class UseFunction {
     public String id;
-    public UseActionType type;
 
     public UseFunction(JsonObject function, Path path) {
         readFromJson(function, path);
     }
 
+    public UseFunction() {
+    }
+
     public void readFromJson(JsonObject function, Path path) {
         this.id = function.get("id").getAsString();
-        this.type = UseActionType.valueOf(function.get("action").getAsString().toUpperCase());
     }
 
     public void executeUseOn(UseOnContext context) {
+
+    }
+
+    public <T> void passParameter(String key, T value) {
 
     }
 

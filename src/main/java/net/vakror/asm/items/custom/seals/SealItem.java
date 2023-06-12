@@ -7,8 +7,8 @@ public class SealItem extends Item {
     private final String id;
     private final SealType type;
 
-    public int getType() {
-        return type.getId();
+    public SealType getType() {
+        return type;
     }
 
     public String getId() {

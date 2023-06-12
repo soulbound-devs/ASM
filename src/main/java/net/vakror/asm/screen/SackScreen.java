@@ -1,12 +1,13 @@
 package net.vakror.asm.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import org.jetbrains.annotations.NotNull;
 
 public class SackScreen extends AbstractContainerScreen<SackMenu> {
 
@@ -20,52 +21,52 @@ public class SackScreen extends AbstractContainerScreen<SackMenu> {
     }
 
     @Override
-    public void renderBg(PoseStack matrices, float delta, int mouseX, int mouseY) {
+    public void renderBg(GuiGraphics graphics, float delta, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, GENERIC_54);
-        matrices.pushPose();
-        matrices.translate(this.leftPos, this.topPos, 0.0D);
+        graphics.pose().pushPose();
+        graphics.pose().translate(this.leftPos, this.topPos, 0.0D);
 
         // Background storage texture pseudo-generation //
 
         // Upper-left corner
-        blit(matrices, 0, 0, 0, 0, 7, 17);
+        graphics.blit(GENERIC_54, 0, 0, 0, 0, 7, 17);
 
         // Top
-        blit(matrices, 7, 0, menu.getWidth() * 18, 17, 7, 0, 1, 17, 256, 256);
+        graphics.blit(GENERIC_54, 7, 0, menu.getWidth() * 18, 17, 7, 0, 1, 17, 256, 256);
 
         // Upper-right corner
-        blit(matrices, 7 + menu.getWidth() * 18, 0, 169, 0, 7, 17);
+        graphics.blit(GENERIC_54, 7 + menu.getWidth() * 18, 0, 169, 0, 7, 17);
 
         // Left
-        blit(matrices, 0, 17, 7, (menu.getHeight() + 4) * 18 + 22, 0, 17, 7, 1, 256, 256);
+        graphics.blit(GENERIC_54, 0, 17, 7, (menu.getHeight() + 4) * 18 + 22, 0, 17, 7, 1, 256, 256);
 
         // Lower-left corner
-        blit(matrices, 0, (menu.getHeight() + 4) * 18 + 34, 0, 215, 7, 7);
+        graphics.blit(GENERIC_54, 0, (menu.getHeight() + 4) * 18 + 34, 0, 215, 7, 7);
 
         // Lower
-        blit(matrices, 7, (menu.getHeight() + 4) * 18 + 34, menu.getWidth() * 18, 7, 7, 215, 1, 7, 256, 256);
+        graphics.blit(GENERIC_54, 7, (menu.getHeight() + 4) * 18 + 34, menu.getWidth() * 18, 7, 7, 215, 1, 7, 256, 256);
 
         // Lower-right corner
-        blit(matrices, (menu.getWidth() * 18 + 7), (menu.getHeight() + 4) * 18 + 34, 169, 215, 7, 7);
+        graphics.blit(GENERIC_54, (menu.getWidth() * 18 + 7), (menu.getHeight() + 4) * 18 + 34, 169, 215, 7, 7);
 
         // Right
-        blit(matrices, (menu.getWidth() * 18 + 7), 17, 7, (menu.getHeight() + 4) * 18 + 17, 169, 17, 7, 1, 256, 256);
+        graphics.blit(GENERIC_54, (menu.getWidth() * 18 + 7), 17, 7, (menu.getHeight() + 4) * 18 + 17, 169, 17, 7, 1, 256, 256);
 
         // Background fill
-        fill(matrices, 7, 17, this.imageWidth - 10, this.imageHeight - 7, 0xFFC6C6C6);
+        graphics.fill(7, 17, this.imageWidth - 10, this.imageHeight - 7, 0xFFC6C6C6);
 
         this.menu.playerInvSlots.forEach(s -> {
-            blit(matrices, s.x - 1, s.y - 1, 7, 17, 18, 18);
+            graphics.blit(GENERIC_54, s.x - 1, s.y - 1, 7, 17, 18, 18);
         });
 
-        renderInvSlots(matrices);
+        renderInvSlots(graphics);
 
-        matrices.popPose();
+        graphics.pose().popPose();
     }
 
-    private void renderInvSlots(PoseStack matrices) {
+    private void renderInvSlots(GuiGraphics graphics) {
         int amountOfPixelsToScaleSlotsTo = 18;
 
         if (menu.getHeight() * menu.getWidth() > 54) {
@@ -74,20 +75,20 @@ public class SackScreen extends AbstractContainerScreen<SackMenu> {
 
         int scale = amountOfPixelsToScaleSlotsTo / 18;
 
-        matrices.scale(scale, scale, scale);
+        graphics.pose().scale(scale, scale, scale);
 
 
         for (int n = 0; n < menu.getHeight(); ++n) {
             for (int m = 0; m < menu.getWidth(); ++m)  {
-                blit(matrices, 7 + m * amountOfPixelsToScaleSlotsTo, 17 + n * amountOfPixelsToScaleSlotsTo, 7, 17, 18, 18);
+                graphics.blit(GENERIC_54, 7 + m * amountOfPixelsToScaleSlotsTo, 17 + n * amountOfPixelsToScaleSlotsTo, 7, 17, 18, 18);
             }
         }
     }
 
     @Override
-    public void render(PoseStack matrices, int mouseX, int mouseY, float delta) {
-        this.renderBackground(matrices);
-        super.render(matrices, mouseX, mouseY, delta);
-        this.renderTooltip(matrices, mouseX, mouseY);
+    public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+        this.renderBackground(graphics);
+        super.render(graphics, mouseX, mouseY, delta);
+        this.renderTooltip(graphics, mouseX, mouseY);
     }
 }

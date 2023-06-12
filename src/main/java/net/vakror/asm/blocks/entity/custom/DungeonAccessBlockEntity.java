@@ -57,4 +57,8 @@ public class DungeonAccessBlockEntity extends BlockEntity{
     public void hasGeneratedDungeon(boolean value) {
         hasGeneratedDungeon = value;
     }
+
+    public int getDungeonSize() {
+        return 50;
+    }
 }

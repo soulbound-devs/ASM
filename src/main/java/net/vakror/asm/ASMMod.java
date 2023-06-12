@@ -26,6 +26,7 @@ import net.vakror.asm.screen.ModMenuTypes;
 import net.vakror.asm.seal.SealRegistry;
 import net.vakror.asm.soul.ModSoul;
 import net.vakror.asm.soul.ModSoulTypes;
+import net.vakror.asm.tab.ModCreativeModeTabs;
 import net.vakror.asm.world.biome.ASMRegion;
 import net.vakror.asm.world.dimension.Dimensions;
 import net.vakror.asm.world.structure.ModDungeonPieces;
@@ -54,6 +55,7 @@ public class ASMMod {
         SealRegistry.registerSeals();
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
+        ModCreativeModeTabs.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModMenuTypes.register(modEventBus);
         ModStructures.register(modEventBus);

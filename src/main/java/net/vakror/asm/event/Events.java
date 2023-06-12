@@ -20,7 +20,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.CreativeModeTabEvent;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -35,12 +35,12 @@ import net.vakror.asm.capability.wand.ItemSealProvider;
 import net.vakror.asm.entity.ModEntities;
 import net.vakror.asm.entity.client.BroomModel;
 import net.vakror.asm.entity.client.BroomRenderer;
-import net.vakror.asm.items.ModItems;
 import net.vakror.asm.items.custom.WandItem;
 import net.vakror.asm.packets.ModPackets;
 import net.vakror.asm.packets.SyncSoulS2CPacket;
 import net.vakror.asm.soul.PlayerSoul;
 import net.vakror.asm.soul.PlayerSoulProvider;
+import net.vakror.asm.tab.ModCreativeModeTabs;
 import net.vakror.asm.world.dimension.Dimensions;
 import net.vakror.asm.world.structure.DungeonStructure;
 import net.vakror.asm.world.structure.ModStructures;
@@ -74,7 +74,7 @@ public class Events {
                         hand = InteractionHand.OFF_HAND;
                     }
                     player.getItemInHand(hand).getCapability(ItemSealProvider.SEAL).ifPresent(wand -> {
-                        List<Mob> nearbyMobs = getNearbyEntities(event.getEntity().level, player.blockPosition(), (float) 3, Mob.class);
+                        List<Mob> nearbyMobs = getNearbyEntities(event.getEntity().level(), player.blockPosition(), (float) 3, Mob.class);
                         int i = 1;
                         for (Mob mob : nearbyMobs) {
                             mob.hurt(event.getSource(), event.getAmount());
@@ -146,7 +146,18 @@ public class Events {
             if (!event.getLevel().isClientSide && event.getEntity() instanceof Player) {
                 ServerLevel world = (ServerLevel) event.getLevel();
                 if (world.dimensionType() == world.registryAccess().registryOrThrow(Registries.DIMENSION_TYPE).getHolderOrThrow(Dimensions.DUNGEON_TYPE).get() && (event.getLevel().getBlockEntity(event.getEntity().blockPosition().below()) instanceof DungeonAccessBlockEntity entity && !entity.hasGeneratedDungeon())) {
-                    StructureStart start = new DungeonStructure(ModStructures.structure()).generate(world.registryAccess(), world.getChunkSource().getGenerator(), world.getChunkSource().getGenerator().getBiomeSource(), world.getChunkSource().randomState(), world.getStructureManager(), world.getSeed(), new ChunkPos(event.getEntity().blockPosition().below()), 0, world, (biomeHolder) -> true);
+                    StructureStart start = new DungeonStructure(
+                            ModStructures.structure(), entity.getDungeonSize(), 0)
+                            .generate(world.registryAccess(),
+                                    world.getChunkSource().getGenerator(),
+                                    world.getChunkSource().getGenerator().getBiomeSource(),
+                                    world.getChunkSource().randomState(),
+                                    world.getStructureManager(),
+                                    world.getSeed(),
+                                    new ChunkPos(event.getEntity().blockPosition().below()),
+                                    0,
+                                    world,
+                                    (biomeHolder) -> true);
                     BoundingBox boundingbox = start.getBoundingBox();
                     ChunkPos chunkpos = new ChunkPos(SectionPos.blockToSectionCoord(boundingbox.minX()), SectionPos.blockToSectionCoord(boundingbox.minZ()));
                     ChunkPos chunkpos1 = new ChunkPos(SectionPos.blockToSectionCoord(boundingbox.maxX()), SectionPos.blockToSectionCoord(boundingbox.maxZ()));
@@ -161,38 +172,37 @@ public class Events {
 
     @Mod.EventBusSubscriber(modid = ASMMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ModEvents {
+
         @SubscribeEvent
-        public void registerTabs(CreativeModeTabEvent.Register event) {
-            event.registerCreativeModeTab(new ResourceLocation(ASMMod.MOD_ID, "tab"), builder -> builder
-                    .icon(() -> new ItemStack(ModItems.WAND.get()))
-                    .displayItems((featureFlags, output) -> {
-                        output.accept(WAND.get());
-                        output.accept(AXING_SEAL.get());
-                        output.accept(PICKAXING_SEAL.get());
-                        output.accept(HOEING_SEAL.get());
-                        output.accept(MINING_SPEED_SEAL.get());
-                        output.accept(SWORDING_SEAL.get());
-                        output.accept(SOUL.get());
-                        output.accept(DARK_SOUL.get());
-                        output.accept(BLANK_PASSIVE_SEAL.get());
-                        output.accept(BLANK_ATTACK_SEAL.get());
-                        output.accept(BLANK_AMPLIFYING_SEAL.get());
-                        output.accept(SOUL_BUCKET.get());
-                        output.accept(DARK_SOUL_BUCKET.get());
-                        output.accept(TUNGSTEN_INGOT.get());
-                        output.accept(KEY.get());
-                        output.accept(SACK.get());
-                        output.accept(WAND_IMBUING_TABLE.get());
-                        output.accept(SOUL_SOLIDIFIER.get());
-                        output.accept(ANCIENT_OAK_LOG.get());
-                        output.accept(ANCIENT_OAK_PLANKS.get());
-                        output.accept(CORRUPTED_LOG.get());
-                        output.accept(CORRUPTED_LEAVES.get());
-                        output.accept(CORRUPTED_PLANKS.get());
-                        output.accept(DUNGEON_KEY_BLOCK.get());
-                    })
-                    .withSearchBar()
-            );
+        public void buildContents(BuildCreativeModeTabContentsEvent event) {
+            // Add to ingredients tab
+            if (event.getTabKey() == ModCreativeModeTabs.ASM_TAB.getKey()) {
+                event.accept(SACK.get());
+                event.accept(WAND.get());
+                event.accept(AXING_SEAL.get());
+                event.accept(PICKAXING_SEAL.get());
+                event.accept(HOEING_SEAL.get());
+                event.accept(MINING_SPEED_SEAL.get());
+                event.accept(SWORDING_SEAL.get());
+                event.accept(SOUL.get());
+                event.accept(DARK_SOUL.get());
+                event.accept(BLANK_PASSIVE_SEAL.get());
+                event.accept(BLANK_ATTACK_SEAL.get());
+                event.accept(BLANK_AMPLIFYING_SEAL.get());
+                event.accept(SOUL_BUCKET.get());
+                event.accept(DARK_SOUL_BUCKET.get());
+                event.accept(TUNGSTEN_INGOT.get());
+                event.accept(KEY.get());
+                event.accept(SACK.get());
+                event.accept(WAND_IMBUING_TABLE.get());
+                event.accept(SOUL_SOLIDIFIER.get());
+                event.accept(ANCIENT_OAK_LOG.get());
+                event.accept(ANCIENT_OAK_PLANKS.get());
+                event.accept(CORRUPTED_LOG.get());
+                event.accept(CORRUPTED_LEAVES.get());
+                event.accept(CORRUPTED_PLANKS.get());
+                event.accept(DUNGEON_KEY_BLOCK.get());
+            }
         }
 
         @SubscribeEvent
