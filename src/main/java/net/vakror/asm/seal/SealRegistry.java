@@ -5,7 +5,11 @@ import net.vakror.asm.seal.seals.activatable.AxingSeal;
 import net.vakror.asm.seal.seals.activatable.HoeingSeal;
 import net.vakror.asm.seal.seals.activatable.PickaxingSeal;
 import net.vakror.asm.seal.seals.activatable.SwordSeal;
+import net.vakror.asm.seal.seals.amplifying.ColumnUpgradeSeal;
 import net.vakror.asm.seal.seals.amplifying.MiningSpeedSeal;
+import net.vakror.asm.seal.seals.amplifying.RowUpgradeSeal;
+import net.vakror.asm.seal.seals.amplifying.StackSizeUpgradeSeal;
+import net.vakror.asm.util.ArithmeticActionType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +25,9 @@ public class SealRegistry {
         addPassiveSeal(new PickaxingSeal());
         addPassiveSeal(new HoeingSeal());
         addAmplifyingSealSeal(new MiningSpeedSeal());
+        addAmplifyingSealSeal(new StackSizeUpgradeSeal(1, 2, ArithmeticActionType.MULTIPLY));
+        addAmplifyingSealSeal(new ColumnUpgradeSeal(1, 2, ArithmeticActionType.ADD));
+        addAmplifyingSealSeal(new RowUpgradeSeal(1, 2, ArithmeticActionType.ADD));
         addAttackSeal(new SwordSeal());
     }
 

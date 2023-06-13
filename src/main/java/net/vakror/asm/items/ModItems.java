@@ -23,6 +23,15 @@ public class ModItems {
     public static final RegistryObject<Item> AXING_SEAL = ITEMS_REGISTRY.register("axing_seal",
            () -> new SealItem(new Item.Properties(), "axing", SealType.OFFENSIVE));
 
+    public static final RegistryObject<Item> SACK_ROW_UPGRADE_SEAL_TIER_1 = ITEMS_REGISTRY.register("sack_row_upgrade_seal_tier_1",
+           () -> new SealItem(new Item.Properties(), "row_tier_1", SealType.AMPLIFYING));
+
+    public static final RegistryObject<Item> SACK_COLUMN_UPGRADE_SEAL_TIER_1 = ITEMS_REGISTRY.register("sack_column_upgrade_seal_tier_1",
+           () -> new SealItem(new Item.Properties(), "column_tier_1", SealType.AMPLIFYING));
+
+    public static final RegistryObject<Item> SACK_STACK_SIZE_UPGRADE_SEAL_TIER_1 = ITEMS_REGISTRY.register("sack_stack_size_upgrade_seal_tier_1",
+           () -> new SealItem(new Item.Properties(), "stack_size_tier_1", SealType.AMPLIFYING));
+
     public static final RegistryObject<Item> WAND = ITEMS_REGISTRY.register("wand",
            () -> new WandItem(new Item.Properties(), ModWandTiers.ANCIENT_OAK));
 
