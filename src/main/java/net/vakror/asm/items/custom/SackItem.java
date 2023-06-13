@@ -12,6 +12,10 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
+import net.vakror.asm.capability.wand.ItemSealProvider;
+import net.vakror.asm.seal.seals.amplifying.ColumnUpgradeSeal;
+import net.vakror.asm.seal.seals.amplifying.RowUpgradeSeal;
+import net.vakror.asm.seal.seals.amplifying.StackSizeUpgradeSeal;
 import net.vakror.asm.seal.tier.ISealableTier;
 import net.vakror.asm.screen.SackMenu;
 import org.jetbrains.annotations.NotNull;
@@ -41,9 +45,9 @@ public class SackItem extends SealableItem {
         // Getting existing UUID or generated new one
         var uuid = getOrBindUUID(stack);
 
-        var width = getWidthFromSealList(stack);
-        var height = getHeightFromSealList(stack);
-        var stackLimit = getStackLimitFromSealList(stack);
+        var width = getSackWidth(stack);
+        var height = getSackHeight(stack);
+        var stackLimit = getSackStackSize(stack);
 
         MenuProvider provider = new MenuProvider() {
             @Override
@@ -117,11 +121,57 @@ public class SackItem extends SealableItem {
     }
 
     public static int getSackWidth(ItemStack stack){
-        return ((SackItem) stack.getItem()).width;
+        final int[] width = new int[]{((SackItem) stack.getItem()).width};
+        stack.getCapability(ItemSealProvider.SEAL).ifPresent((itemSeal -> {
+            itemSeal.getAmplifyingSeals().forEach((seal -> {
+                if (seal instanceof ColumnUpgradeSeal upgradeSeal) {
+                    switch (upgradeSeal.actionType) {
+                        case ADD -> width[0] += upgradeSeal.amount;
+                        case SUBTRACT -> width[0] -= upgradeSeal.amount;
+                        case MULTIPLY -> width[0] *= upgradeSeal.amount;
+                        case DIVIDE -> width[0] /= upgradeSeal.amount;
+                        case POW -> width[0] = (int) Math.pow(width[0], upgradeSeal.amount);
+                    }
+                }
+            }));
+        }));
+        return width[0];
     }
 
     public static int getSackHeight(ItemStack stack){
-        return ((SackItem) stack.getItem()).height;
+        final int[] height = new int[]{((SackItem) stack.getItem()).height};
+        stack.getCapability(ItemSealProvider.SEAL).ifPresent((itemSeal -> {
+            itemSeal.getAmplifyingSeals().forEach((seal -> {
+                if (seal instanceof RowUpgradeSeal upgradeSeal) {
+                    switch (upgradeSeal.actionType) {
+                        case ADD -> height[0] += upgradeSeal.amount;
+                        case SUBTRACT -> height[0] -= upgradeSeal.amount;
+                        case MULTIPLY -> height[0] *= upgradeSeal.amount;
+                        case DIVIDE -> height[0] /= upgradeSeal.amount;
+                        case POW -> height[0] = (int) Math.pow(height[0], upgradeSeal.amount);
+                    }
+                }
+            }));
+        }));
+        return height[0];
+    }
+
+    public static int getSackStackSize(ItemStack stack){
+        final int[] stackSize = new int[]{((SackItem) stack.getItem()).stackLimit};
+        stack.getCapability(ItemSealProvider.SEAL).ifPresent((itemSeal -> {
+            itemSeal.getAmplifyingSeals().forEach((seal -> {
+                if (seal instanceof StackSizeUpgradeSeal upgradeSeal) {
+                    switch (upgradeSeal.actionType) {
+                        case ADD -> stackSize[0] += upgradeSeal.amount;
+                        case SUBTRACT -> stackSize[0] -= upgradeSeal.amount;
+                        case MULTIPLY -> stackSize[0] *= upgradeSeal.amount;
+                        case DIVIDE -> stackSize[0] /= upgradeSeal.amount;
+                        case POW -> stackSize[0] = (int) Math.pow(stackSize[0], upgradeSeal.amount);
+                    }
+                }
+            }));
+        }));
+        return stackSize[0];
     }
 
     public static int getBPInvSize(ItemStack stack){
