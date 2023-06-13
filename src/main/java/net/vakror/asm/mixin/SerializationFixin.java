@@ -34,8 +34,8 @@ public abstract class SerializationFixin {
         }
     }
 
-    @Inject(at = @At ("TAIL"), method = "deserializeNBT(Lnet/minecraft/nbt/CompoundTag;)V", remap = false)
-    void onSerialization(CompoundTag nbt, CallbackInfo ci) {
+    @Inject(at = @At ("TAIL"), method = "save", remap = false)
+    void onSerialization(CompoundTag nbt, CallbackInfoReturnable<CompoundTag> cir) {
         if (this.count > Byte.MAX_VALUE) {
             nbt.putInt("countInteger", this.count);
             // make downgrading less painful
