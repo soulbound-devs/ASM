@@ -22,12 +22,12 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.vakror.asm.blocks.entity.ModBlockEntities;
+import net.vakror.asm.capability.wand.ItemSealProvider;
 import net.vakror.asm.items.ModItems;
-import net.vakror.asm.items.custom.WandItem;
+import net.vakror.asm.items.custom.SealableItem;
 import net.vakror.asm.items.custom.seals.SealItem;
 import net.vakror.asm.screen.WandImbuingMenu;
 import net.vakror.asm.seal.SealRegistry;
-import net.vakror.asm.capability.wand.ItemSealProvider;
 import net.vakror.asm.seal.SealType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -180,6 +180,8 @@ public class WandImbuingTableBlockEntity extends BlockEntity implements MenuProv
             if (SealRegistry.amplifyingSeals.containsKey(((SealItem) entity.itemHandler.getStackInSlot(2).getItem()).getId())) {
                 wand.addAmplifyingSeal(((SealItem) entity.itemHandler.getStackInSlot(2).getItem()).getId());
                 System.err.println("AMPLIFYING");
+            } else {
+                System.err.println("SEAL ID NOT FOUND!!!");
             }
         }));
         entity.itemHandler.extractItem(1, 1, false);
@@ -193,12 +195,12 @@ public class WandImbuingTableBlockEntity extends BlockEntity implements MenuProv
         if (wandStack.isEmpty() || sealStack.isEmpty()) {
             return false;
         }
-        Item wandItem = wandStack.getItem();
-        if (!(wandItem instanceof WandItem)) {
+        Item sealableItem = wandStack.getItem();
+        if (!(sealableItem instanceof SealableItem)) {
             return false;
         }
         SealType sealType = ((SealItem) sealStack.getItem()).getType();
-        return ((WandItem) wandItem).canAddSeal(wandStack, sealType, sealStack);
+        return ((SealableItem) sealableItem).canAddSeal(wandStack, sealType, sealStack);
     }
 
 
