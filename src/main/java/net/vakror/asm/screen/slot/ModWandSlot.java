@@ -3,7 +3,7 @@ package net.vakror.asm.screen.slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
-import net.vakror.asm.items.custom.WandItem;
+import net.vakror.asm.items.custom.SealableItem;
 import org.jetbrains.annotations.NotNull;
 
 public class ModWandSlot extends SlotItemHandler {
@@ -13,6 +13,6 @@ public class ModWandSlot extends SlotItemHandler {
 
     @Override
     public boolean mayPlace(@NotNull ItemStack stack) {
-        return stack.getItem() instanceof WandItem;
+        return stack.getItem() instanceof SealableItem;
     }
 }
