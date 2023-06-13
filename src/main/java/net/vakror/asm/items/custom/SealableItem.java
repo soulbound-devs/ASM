@@ -86,11 +86,15 @@ public class SealableItem extends DiggerItem {
 
     private boolean canAddPassiveSeal(ItemStack sealable, ItemStack sealItem) {
         AtomicBoolean toReturn = new AtomicBoolean();
-        int passiveSealSlots = tier.getPassiveSlots();
+        int passiveSlots = tier.getPassiveSlots();
         sealable.getCapability(ItemSealProvider.SEAL).ifPresent(wand -> {
             String id = ((SealItem) sealItem.getItem()).getId();
-            if (!wand.getPassiveSeals().contains(SealRegistry.passiveSeals.get(id))) {
-                toReturn.set(wand.getPassiveSeals().size() < passiveSealSlots);
+            if (!((SealItem) sealItem.getItem()).canAddMultiple()) {
+                if (!wand.getPassiveSeals().contains(SealRegistry.passiveSeals.get(id))) {
+                    toReturn.set(wand.getPassiveSeals().size() < passiveSlots);
+                }
+            } else {
+                toReturn.set(wand.getPassiveSeals().size() < passiveSlots);
             }
         });
         return toReturn.get();
@@ -98,11 +102,15 @@ public class SealableItem extends DiggerItem {
 
     private boolean canAddOffensiveSeal(ItemStack sealable, ItemStack sealItem) {
         AtomicBoolean toReturn = new AtomicBoolean();
-        int attackSealSlots = tier.getAttackSlots();
+        int offensiveSlots = tier.getAttackSlots();
         sealable.getCapability(ItemSealProvider.SEAL).ifPresent(wand -> {
             String id = ((SealItem) sealItem.getItem()).getId();
-            if (!wand.getAttackSeals().contains(SealRegistry.attackSeals.get(id))) {
-                toReturn.set(wand.getPassiveSeals().size() < attackSealSlots);
+            if (!((SealItem) sealItem.getItem()).canAddMultiple()) {
+                if (!wand.getAttackSeals().contains(SealRegistry.attackSeals.get(id))) {
+                    toReturn.set(wand.getAttackSeals().size() < offensiveSlots);
+                }
+            } else {
+                toReturn.set(wand.getAttackSeals().size() < offensiveSlots);
             }
         });
         return toReturn.get();
@@ -113,7 +121,11 @@ public class SealableItem extends DiggerItem {
         int amplifyingSealSlots = tier.getAmplificationSlots();
         sealable.getCapability(ItemSealProvider.SEAL).ifPresent(wand -> {
             String id = ((SealItem) sealItem.getItem()).getId();
-            if (!wand.getAmplifyingSeals().contains(SealRegistry.amplifyingSeals.get(id))) {
+            if (!((SealItem) sealItem.getItem()).canAddMultiple()) {
+                if (!wand.getAmplifyingSeals().contains(SealRegistry.amplifyingSeals.get(id))) {
+                    toReturn.set(wand.getAmplifyingSeals().size() < amplifyingSealSlots);
+                }
+            } else {
                 toReturn.set(wand.getAmplifyingSeals().size() < amplifyingSealSlots);
             }
         });
