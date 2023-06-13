@@ -1,7 +1,6 @@
 {
   "replace": false,
   "values": [
-    "asm:tungsten_ore",
-    "asm:raw_tungsten_block"
+    "asm:tungsten_ore"
   ]
 }

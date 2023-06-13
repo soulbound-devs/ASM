@@ -98,8 +98,8 @@ public class ModBlocks {
     public static final RegistryObject<Block> TUNGSTEN_ORE = registerBlock("tungsten_ore",
             () -> new DropExperienceBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(3.0F, 3.0F).requiresCorrectToolForDrops(), UniformInt.of(3, 6)));
 
-    public static final RegistryObject<Block> RAW_TUNGSTEN_BLOCK = registerBlock("raw_tungsten_block",
-            () -> new Block(BlockBehaviour.Properties.of().strength(4.0F, 4.0F).requiresCorrectToolForDrops().mapColor(new MapColor(62, colorFromRGB(255, 201, 240, 234)))));
+    public static final RegistryObject<Block> TUNGSTEN_BLOCK = registerBlock("tungsten_block",
+            () -> new DropExperienceBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(3.0F, 3.0F).requiresCorrectToolForDrops(), UniformInt.of(3, 6)));
 
     private static <T extends Block> RegistryObject<T> registerBlockWithoutBlockItem(String name, Supplier<T> block) {
         return BLOCKS.register(name, block);

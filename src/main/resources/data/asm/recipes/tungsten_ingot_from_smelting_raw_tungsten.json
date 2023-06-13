@@ -5,7 +5,7 @@
   "experience": 2,
   "group": "tungsten",
   "ingredient": {
-    "item": "minecraft:raw_tungsten"
+    "item": "asm:raw_tungsten"
   },
-  "result": "minecraft:tungsten_ingot"
+  "result": "asm:tungsten_ingot"
 }

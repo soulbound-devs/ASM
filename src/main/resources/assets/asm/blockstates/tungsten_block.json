@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "asm:block/tungsten_block"
+    }
+  }
+}

@@ -1,6 +1,6 @@
 {
 	"parent": "minecraft:block/cube_all",
 	"textures": {
-		"all": "asm:block/raw_tungsten_block"
+		"all": "asm:block/tungsten_block"
 	}
 }

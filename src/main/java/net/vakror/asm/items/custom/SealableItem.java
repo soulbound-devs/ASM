@@ -60,6 +60,11 @@ public class SealableItem extends DiggerItem {
     }
 
     @Override
+    public boolean isEnchantable(ItemStack p_41456_) {
+        return false;
+    }
+
+    @Override
     public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int p_41407_, boolean p_41408_) {
         this.stack = pStack;
         super.inventoryTick(pStack, pLevel, pEntity, p_41407_, p_41408_);

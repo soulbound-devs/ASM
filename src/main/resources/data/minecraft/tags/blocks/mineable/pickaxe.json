@@ -3,7 +3,6 @@
   "values": [
     "asm:dungeon_key_block",
     "asm:tungsten_ore",
-    "asm:soul_solidifier",
-    "asm:raw_tungsten_block",
+    "asm:soul_solidifier"
   ]
 }

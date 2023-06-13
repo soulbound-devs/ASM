@@ -34,6 +34,7 @@ import net.vakror.asm.capability.wand.ItemSealProvider;
 import net.vakror.asm.entity.ModEntities;
 import net.vakror.asm.entity.client.BroomModel;
 import net.vakror.asm.entity.client.BroomRenderer;
+import net.vakror.asm.items.custom.SealableItem;
 import net.vakror.asm.items.custom.WandItem;
 import net.vakror.asm.packets.ModPackets;
 import net.vakror.asm.packets.SyncSoulS2CPacket;
@@ -90,7 +91,7 @@ public class Events {
 
         @SubscribeEvent
         public static void attachCapability(AttachCapabilitiesEvent<ItemStack> event) {
-            if (event.getObject().getItem() instanceof WandItem) {
+            if (event.getObject().getItem() instanceof SealableItem) {
                 event.addCapability(new ResourceLocation(ASMMod.MOD_ID, "seals"), new ItemSealProvider());
             }
         }

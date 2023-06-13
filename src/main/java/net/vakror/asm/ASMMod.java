@@ -102,8 +102,8 @@ public class ASMMod {
             event.accept(DARK_SOUL_BUCKET.get());
             event.accept(TUNGSTEN_ORE.get());
             event.accept(RAW_TUNGSTEN.get());
-            event.accept(RAW_TUNGSTEN_BLOCK.get());
             event.accept(TUNGSTEN_INGOT.get());
+            event.accept(TUNGSTEN_BLOCK.get());
             event.accept(KEY.get());
             event.accept(SACK.get());
             event.accept(WAND_IMBUING_TABLE.get());

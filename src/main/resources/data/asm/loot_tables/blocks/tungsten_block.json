@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "asm:raw_tungsten_block"
+          "name": "asm:tungsten_block"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "asm:blocks/raw_tungsten_block"
+  "random_sequence": "asm:blocks/tungsten_block"
 }
