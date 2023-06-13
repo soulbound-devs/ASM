@@ -57,32 +57,51 @@ public class SackScreen extends AbstractContainerScreen<SackMenu> {
         // Background fill
         graphics.fill(7, 17, this.imageWidth - 10, this.imageHeight - 7, 0xFFC6C6C6);
 
-        this.menu.playerInvSlots.forEach(s -> {
+        this.menu.slots.forEach(s -> {
             graphics.blit(GENERIC_54, s.x - 1, s.y - 1, 7, 17, 18, 18);
         });
 
-        renderInvSlots(graphics);
+//        renderInvSlots(graphics);
 
         graphics.pose().popPose();
     }
 
     private void renderInvSlots(GuiGraphics graphics) {
-        int amountOfPixelsToScaleSlotsTo = 18;
+        float amountOfPixelsToScaleSlotsTo = 18;
 
         if (menu.getHeight() * menu.getWidth() > 54) {
-            amountOfPixelsToScaleSlotsTo = (54 / (menu.getWidth() * menu.getHeight())) * 18;
+            amountOfPixelsToScaleSlotsTo = ((float) 54 / (menu.getWidth() * menu.getHeight())) * 18;
         }
 
-        int scale = amountOfPixelsToScaleSlotsTo / 18;
+        float scale = amountOfPixelsToScaleSlotsTo / 18;
 
-        graphics.pose().scale(scale, scale, scale);
 
+        float newAmountOfPixelsToScaleTo = 18;
+        if (menu.getHeight() > 6 || menu.getWidth() > 9) {
+            if ((menu.getHeight() - 6) > (menu.getWidth() - 9)) {
+                newAmountOfPixelsToScaleTo = ((float) 6 / menu.getHeight()) * 18;
+            }
+            if ((menu.getHeight() - 6) < (menu.getWidth() - 9)) {
+                newAmountOfPixelsToScaleTo = ((float) 9 / menu.getWidth()) * 18;
+            }
+        }
+
+        float newScale = newAmountOfPixelsToScaleTo / 18;
+
+        System.err.println(newAmountOfPixelsToScaleTo);
+        System.err.println(newAmountOfPixelsToScaleTo / 18);
+        System.err.println(amountOfPixelsToScaleSlotsTo);
+        System.err.println(scale);
+
+
+        graphics.pose().scale(newScale, newScale, newScale);
 
         for (int n = 0; n < menu.getHeight(); ++n) {
             for (int m = 0; m < menu.getWidth(); ++m)  {
-                graphics.blit(GENERIC_54, 7 + m * amountOfPixelsToScaleSlotsTo, 17 + n * amountOfPixelsToScaleSlotsTo, 7, 17, 18, 18);
+                graphics.blit(GENERIC_54, (int) (7 + (m + 1) * Math.floor(newAmountOfPixelsToScaleTo)), (int) (17 + (n + 1) * Math.floor(newAmountOfPixelsToScaleTo)), 7, 17, 18, 18);
             }
         }
+        int a = 0;
     }
 
     @Override
