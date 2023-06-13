@@ -93,6 +93,9 @@ public class ASMMod {
             event.accept(HOEING_SEAL.get());
             event.accept(MINING_SPEED_SEAL.get());
             event.accept(SWORDING_SEAL.get());
+            event.accept(SACK_ROW_UPGRADE_SEAL_TIER_1.get());
+            event.accept(SACK_COLUMN_UPGRADE_SEAL_TIER_1.get());
+            event.accept(SACK_STACK_SIZE_UPGRADE_SEAL_TIER_1.get());
             event.accept(SOUL.get());
             event.accept(DARK_SOUL.get());
             event.accept(BLANK_PASSIVE_SEAL.get());
