@@ -5,27 +5,8 @@ import org.apache.commons.lang3.Validate;
 public class ItemCountRenderHandler {
 	private static ItemCountRenderHandler instance = new ItemCountRenderHandler();
 
-	private static final char[] POWER = {
-			'k',
-			'm',
-			'b',
-			't',
-	};
-
 	public String toConsiseString(int count) {
-		int index = 0;
-		if (count > 9999) {
-			while (count / 1000 != 0) {
-				count /= 1000;
-				index++;
-			}
-		}
-
-		if (index > 0) {
-			return count + String.valueOf(POWER[index - 1]);
-		} else {
-			return String.valueOf(count);
-		}
+		return String.valueOf(count);
 	}
 
 	/**
