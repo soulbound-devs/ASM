@@ -4,7 +4,10 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.vakror.asm.screen.*;
+import net.vakror.asm.screen.ModMenuTypes;
+import net.vakror.asm.screen.SackScreen;
+import net.vakror.asm.screen.SoulSolidifierScreen;
+import net.vakror.asm.screen.WandImbuingScreen;
 import net.vakror.asm.soul.ModSoul;
 
 public class ASMClient {
