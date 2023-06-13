@@ -131,4 +131,89 @@ public class SackMenu extends AbstractContainerMenu {
     public int getStackLimit() {
         return stackLimit;
     }
+
+    @Override
+    protected boolean moveItemStackTo(ItemStack stack, int startIndex, int endIndex, boolean reverseDirection) {
+        boolean flag = false;
+        int i = startIndex;
+        if (reverseDirection) {
+            i = endIndex - 1;
+        }
+
+        if (stack.isStackable()) {
+            while(!stack.isEmpty()) {
+                if (reverseDirection) {
+                    if (i < startIndex) {
+                        break;
+                    }
+                } else if (i >= endIndex) {
+                    break;
+                }
+
+                Slot slot = this.slots.get(i);
+                ItemStack itemstack = slot.getItem();
+                if (!itemstack.isEmpty() && ItemStack.isSameItemSameTags(stack, itemstack)) {
+                    int j = itemstack.getCount() + stack.getCount();
+                    int maxSize = stack.getMaxStackSize() == 1 ? 1: slot.getMaxStackSize();
+                    if (j <= maxSize) {
+                        stack.setCount(0);
+                        itemstack.setCount(j);
+                        slot.setChanged();
+                        flag = true;
+                    } else if (itemstack.getCount() < maxSize) {
+                        stack.shrink(maxSize - itemstack.getCount());
+                        itemstack.setCount(maxSize);
+                        slot.setChanged();
+                        flag = true;
+                    }
+                }
+
+                if (reverseDirection) {
+                    --i;
+                } else {
+                    ++i;
+                }
+            }
+        }
+
+        if (!stack.isEmpty()) {
+            if (reverseDirection) {
+                i = endIndex - 1;
+            } else {
+                i = startIndex;
+            }
+
+            while(true) {
+                if (reverseDirection) {
+                    if (i < startIndex) {
+                        break;
+                    }
+                } else if (i >= endIndex) {
+                    break;
+                }
+
+                Slot slot1 = this.slots.get(i);
+                ItemStack itemstack1 = slot1.getItem();
+                if (itemstack1.isEmpty() && slot1.mayPlace(stack)) {
+                    if (stack.getCount() > slot1.getMaxStackSize()) {
+                        slot1.setByPlayer(stack.split(slot1.getMaxStackSize()));
+                    } else {
+                        slot1.setByPlayer(stack.split(stack.getCount()));
+                    }
+
+                    slot1.setChanged();
+                    flag = true;
+                    break;
+                }
+
+                if (reverseDirection) {
+                    --i;
+                } else {
+                    ++i;
+                }
+            }
+        }
+
+        return flag;
+    }
 }
