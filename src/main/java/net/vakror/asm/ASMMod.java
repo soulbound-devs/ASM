@@ -5,6 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.event.server.ServerStoppedEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -35,6 +36,9 @@ import org.slf4j.Logger;
 import terrablender.api.Regions;
 
 import static net.vakror.asm.ASMMod.MOD_ID;
+import static net.vakror.asm.blocks.ModBlocks.*;
+import static net.vakror.asm.blocks.ModBlocks.DUNGEON_KEY_BLOCK;
+import static net.vakror.asm.items.ModItems.*;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(MOD_ID)
@@ -50,12 +54,13 @@ public class ASMMod {
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::buildContents);
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        ModCreativeModeTabs.register(modEventBus);
         SealRegistry.registerSeals();
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
-        ModCreativeModeTabs.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModMenuTypes.register(modEventBus);
         ModStructures.register(modEventBus);
@@ -76,6 +81,37 @@ public class ASMMod {
             ModPackets.register();
             Regions.register(new ASMRegion(new ResourceLocation(MOD_ID, "asm_region"), 1));
         });
+    }
+
+    public void buildContents(BuildCreativeModeTabContentsEvent event) {
+        // Add to ingredients tab
+        if (event.getTabKey() == ModCreativeModeTabs.ASM_TAB.getKey()) {
+            event.accept(SACK.get());
+            event.accept(WAND.get());
+            event.accept(AXING_SEAL.get());
+            event.accept(PICKAXING_SEAL.get());
+            event.accept(HOEING_SEAL.get());
+            event.accept(MINING_SPEED_SEAL.get());
+            event.accept(SWORDING_SEAL.get());
+            event.accept(SOUL.get());
+            event.accept(DARK_SOUL.get());
+            event.accept(BLANK_PASSIVE_SEAL.get());
+            event.accept(BLANK_ATTACK_SEAL.get());
+            event.accept(BLANK_AMPLIFYING_SEAL.get());
+            event.accept(SOUL_BUCKET.get());
+            event.accept(DARK_SOUL_BUCKET.get());
+            event.accept(TUNGSTEN_INGOT.get());
+            event.accept(KEY.get());
+            event.accept(SACK.get());
+            event.accept(WAND_IMBUING_TABLE.get());
+            event.accept(SOUL_SOLIDIFIER.get());
+            event.accept(ANCIENT_OAK_LOG.get());
+            event.accept(ANCIENT_OAK_PLANKS.get());
+            event.accept(CORRUPTED_LOG.get());
+            event.accept(CORRUPTED_LEAVES.get());
+            event.accept(CORRUPTED_PLANKS.get());
+            event.accept(DUNGEON_KEY_BLOCK.get());
+        }
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {

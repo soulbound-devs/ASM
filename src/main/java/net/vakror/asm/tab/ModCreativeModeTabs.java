@@ -11,10 +11,14 @@ import net.vakror.asm.ASMMod;
 import net.vakror.asm.items.ModItems;
 
 public class ModCreativeModeTabs {
-    public static DeferredRegister<CreativeModeTab> registry = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, ASMMod.MOD_ID);
-    public static RegistryObject<CreativeModeTab> ASM_TAB = registry.register("asm", () -> CreativeModeTab.builder().withSearchBar().icon(() -> new ItemStack(ModItems.PICKAXING_SEAL.get(), 1)).title(Component.translatable("itemGroup.asm")).build());
+    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB,
+            ASMMod.MOD_ID);
+
+    public static RegistryObject<CreativeModeTab> ASM_TAB = CREATIVE_MODE_TABS.register("asm", () ->
+            CreativeModeTab.builder().icon(() -> new ItemStack(ModItems.WAND.get()))
+                    .title(Component.translatable("itemGroup.asm")).build());
 
     public static void register(IEventBus eventBus) {
-        registry.register(eventBus);
+        CREATIVE_MODE_TABS.register(eventBus);
     }
 }

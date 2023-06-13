@@ -20,7 +20,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -40,15 +39,11 @@ import net.vakror.asm.packets.ModPackets;
 import net.vakror.asm.packets.SyncSoulS2CPacket;
 import net.vakror.asm.soul.PlayerSoul;
 import net.vakror.asm.soul.PlayerSoulProvider;
-import net.vakror.asm.tab.ModCreativeModeTabs;
 import net.vakror.asm.world.dimension.Dimensions;
 import net.vakror.asm.world.structure.DungeonStructure;
 import net.vakror.asm.world.structure.ModStructures;
 
 import java.util.List;
-
-import static net.vakror.asm.blocks.ModBlocks.*;
-import static net.vakror.asm.items.ModItems.*;
 
 public class Events {
     @Mod.EventBusSubscriber(modid = ASMMod.MOD_ID)
@@ -172,38 +167,6 @@ public class Events {
 
     @Mod.EventBusSubscriber(modid = ASMMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ModEvents {
-
-        @SubscribeEvent
-        public void buildContents(BuildCreativeModeTabContentsEvent event) {
-            // Add to ingredients tab
-            if (event.getTabKey() == ModCreativeModeTabs.ASM_TAB.getKey()) {
-                event.accept(SACK.get());
-                event.accept(WAND.get());
-                event.accept(AXING_SEAL.get());
-                event.accept(PICKAXING_SEAL.get());
-                event.accept(HOEING_SEAL.get());
-                event.accept(MINING_SPEED_SEAL.get());
-                event.accept(SWORDING_SEAL.get());
-                event.accept(SOUL.get());
-                event.accept(DARK_SOUL.get());
-                event.accept(BLANK_PASSIVE_SEAL.get());
-                event.accept(BLANK_ATTACK_SEAL.get());
-                event.accept(BLANK_AMPLIFYING_SEAL.get());
-                event.accept(SOUL_BUCKET.get());
-                event.accept(DARK_SOUL_BUCKET.get());
-                event.accept(TUNGSTEN_INGOT.get());
-                event.accept(KEY.get());
-                event.accept(SACK.get());
-                event.accept(WAND_IMBUING_TABLE.get());
-                event.accept(SOUL_SOLIDIFIER.get());
-                event.accept(ANCIENT_OAK_LOG.get());
-                event.accept(ANCIENT_OAK_PLANKS.get());
-                event.accept(CORRUPTED_LOG.get());
-                event.accept(CORRUPTED_LEAVES.get());
-                event.accept(CORRUPTED_PLANKS.get());
-                event.accept(DUNGEON_KEY_BLOCK.get());
-            }
-        }
 
         @SubscribeEvent
         public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {

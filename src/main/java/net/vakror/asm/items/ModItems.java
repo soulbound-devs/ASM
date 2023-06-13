@@ -68,6 +68,12 @@ public class ModItems {
     public static final RegistryObject<Item> SACK = ITEMS_REGISTRY.register("sack",
            () -> new SackItem(new Item.Properties(), ModWandTiers.SACK));
 
+    public static final RegistryObject<Item> RAW_TUNGSTEN = ITEMS_REGISTRY.register("raw_tungsten",
+           () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> CORRUPTED_BERRIES = ITEMS_REGISTRY.register("corrupted_berries",
+           () -> new Item(new Item.Properties().food(ModFoodProperties.CORRUPTED_BERRY)));
+
     public static void register(IEventBus eventBus) {
         ITEMS_REGISTRY.register(eventBus);
     }

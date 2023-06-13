@@ -2,18 +2,17 @@
   "parent": "item/generated",
   "loader": "asm:wand",
   "textures": {
-    "particle": "asm:item/wands/wand"
+    "particle": "asm:item/wands/ancient_oak_wand"
   },
   "wand": {
-    "wand": "asm:item/wands/wand",
+    "wand": "asm:item/wands/ancient_oak_wand",
     "seals": [
       {
         "pickaxing": "asm:item/wands/activated/pickaxing",
         "hoeing": "asm:item/wands/activated/hoeing",
         "shoveling": "asm:item/wands/activated/axing",
         "axing": "asm:item/wands/activated/axing",
-        "scythe": "asm:item/wands/activated/scythe",
-        "error": "asm:item/wands/wand"
+        "scythe": "asm:item/wands/activated/scythe"
       }
     ]
   }
