@@ -28,7 +28,7 @@ mixin {
     debug.export = true
 }
 
-version = '1.2.3-ALPHA'
+version = '1.2.4-ALPHA'
 group = 'net.vakror.' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'asm'
 // Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
