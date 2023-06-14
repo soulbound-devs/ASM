@@ -4,9 +4,12 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.vakror.asm.seal.ISeal;
 import net.vakror.asm.seal.SealRegistry;
+import net.vakror.asm.seal.SealType;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 public class ItemSeal {
     private List<ISeal> passiveSeals = null;
@@ -39,6 +42,11 @@ public class ItemSeal {
         return passiveSeals;
     }
 
+    public Set<ISeal> getUniquePassiveSeals() {
+        createIfNull();
+        return Set.copyOf(passiveSeals);
+    }
+
     public ISeal getActiveSeal() {
         return activeSeal;
     }
@@ -62,9 +70,19 @@ public class ItemSeal {
         return attackSeals;
     }
 
+    public Set<ISeal> getUniqueAttackSeals() {
+        createIfNull();
+        return Set.copyOf(attackSeals);
+    }
+
     public List<ISeal> getAmplifyingSeals() {
         createIfNull();
         return amplifyingSeals;
+    }
+
+    public Set<ISeal> getUniqueAmplifyingSeals() {
+        createIfNull();
+        return Set.copyOf(amplifyingSeals);
     }
 
     public void addPassiveSeal(String id) {
@@ -79,7 +97,7 @@ public class ItemSeal {
 
     public void addAmplifyingSeal(String id) {
         createIfNull();
-        amplifyingSeals.add(SealRegistry.allSeals.get(id));
+        amplifyingSeals.add(SealRegistry.amplifyingSeals.get(id));
     }
 
     public void createIfNull() {
@@ -106,6 +124,21 @@ public class ItemSeal {
         this.amplifyingSeals = amplifyingSeals;
     }
 
+    public int getAmountOfTimesThatSealIsPresent(SealType type, ISeal seal) {
+        return switch (type) {
+            case PASSIVE -> Collections.frequency(passiveSeals, seal);
+            case OFFENSIVE -> Collections.frequency(attackSeals, seal);
+            case AMPLIFYING -> Collections.frequency(amplifyingSeals, seal);
+        };
+    }
+
+    public int getAmountOfTimesThatSealIsPresent(SealType type, String sealId) {
+        return switch (type) {
+            case PASSIVE -> Collections.frequency(passiveSeals, SealRegistry.passiveSeals.get(sealId));
+            case OFFENSIVE -> Collections.frequency(attackSeals, SealRegistry.attackSeals.get(sealId));
+            case AMPLIFYING -> Collections.frequency(amplifyingSeals, SealRegistry.amplifyingSeals.get(sealId));
+        };
+    }
 
     public void copyFrom(ItemSeal source) {
         this.passiveSeals = source.passiveSeals;
@@ -116,13 +149,13 @@ public class ItemSeal {
     public void saveNBTData(CompoundTag nbt) {
         if (this.passiveSeals != null && this.attackSeals != null && this.amplifyingSeals != null) {
             for (String sealId : SealRegistry.passiveSeals.keySet()) {
-                nbt.putBoolean(sealId, passiveSeals.contains(SealRegistry.allSeals.get(sealId)));
+                nbt.putInt(sealId, Collections.frequency(passiveSeals, SealRegistry.passiveSeals.get(sealId)));
             }
             for (String sealId : SealRegistry.attackSeals.keySet()) {
-                nbt.putBoolean(sealId, attackSeals.contains(SealRegistry.allSeals.get(sealId)));
+                nbt.putInt(sealId, Collections.frequency(attackSeals, SealRegistry.attackSeals.get(sealId)));
             }
             for (String sealId : SealRegistry.amplifyingSeals.keySet()) {
-                nbt.putBoolean(sealId, amplifyingSeals.contains(SealRegistry.allSeals.get(sealId)));
+                nbt.putInt(sealId, Collections.frequency(amplifyingSeals, SealRegistry.amplifyingSeals.get(sealId)));
             }
             if (activeSeal != null) {
                 nbt.putString("active_seal", activeSeal.getId());
@@ -135,18 +168,24 @@ public class ItemSeal {
     public void loadNBTData(CompoundTag nbt) {
         createIfNull();
         for (String sealId : SealRegistry.passiveSeals.keySet()) {
-            if (nbt.getBoolean(sealId)) {
-                passiveSeals.add(SealRegistry.passiveSeals.get(sealId));
+            if (nbt.getInt(sealId) > 0) {
+                for (int i = 1; i <= nbt.getInt(sealId); ++i) {
+                    passiveSeals.add(SealRegistry.passiveSeals.get(sealId));
+                }
             }
         }
         for (String sealId : SealRegistry.attackSeals.keySet()) {
-            if (nbt.getBoolean(sealId)) {
-                attackSeals.add(SealRegistry.attackSeals.get(sealId));
+            if (nbt.getInt(sealId) > 0) {
+                for (int i = 1; i <= nbt.getInt(sealId); ++i) {
+                    attackSeals.add(SealRegistry.attackSeals.get(sealId));
+                }
             }
         }
         for (String sealId : SealRegistry.amplifyingSeals.keySet()) {
-            if (nbt.getBoolean(sealId)) {
-                amplifyingSeals.add(SealRegistry.amplifyingSeals.get(sealId));
+            if (nbt.getInt(sealId) > 0) {
+                for (int i = 1; i <= nbt.getInt(sealId); ++i) {
+                    amplifyingSeals.add(SealRegistry.amplifyingSeals.get(sealId));
+                }
             }
         }
         activeSeal = SealRegistry.allSeals.get(nbt.getString("active_seal"));
