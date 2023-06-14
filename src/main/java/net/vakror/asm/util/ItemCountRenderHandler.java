@@ -5,8 +5,27 @@ import org.apache.commons.lang3.Validate;
 public class ItemCountRenderHandler {
 	private static ItemCountRenderHandler instance = new ItemCountRenderHandler();
 
+	private static final char[] POWER = {
+			'K',
+			'M',
+			'B',
+			'T'
+	};
+
 	public String toConsiseString(int count) {
-		return String.valueOf(count);
+		int index = 0;
+		if (count > 9999) {
+			while (count / 1000 != 0) {
+				count /= 1000;
+				index++;
+			}
+		}
+
+		if (index > 0) {
+			return count + String.valueOf(POWER[index - 1]);
+		} else {
+			return String.valueOf(count);
+		}
 	}
 
 	/**
@@ -14,12 +33,10 @@ public class ItemCountRenderHandler {
 	 * @return 1 == vanilla
 	 */
 	public float scale(String string) {
-		if (string != null) {
-			if (string.length() > 3) {
-				return .5f;
-			} else if (string.length() == 3) {
-				return .75f;
-			}
+		if (string.length() > 3) {
+			return .5f;
+		} else if (string.length() == 3) {
+			return .75f;
 		}
 		return 1f;
 	}
