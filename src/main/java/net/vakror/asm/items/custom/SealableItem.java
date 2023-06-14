@@ -95,7 +95,7 @@ public class SealableItem extends DiggerItem {
                 }
             } else {
                 if (wand.getAmountOfTimesThatSealIsPresent(SealType.PASSIVE, ((SealItem) sealItem.getItem()).getId()) < ((SealItem) sealItem.getItem()).getMaxSealStack()) {
-                    toReturn.set(wand.getUniquePassiveSeals().size() < passiveSlots);
+                    toReturn.set(wand.getPassiveSeals().size() < passiveSlots);
                 }
             }
         });
@@ -112,7 +112,9 @@ public class SealableItem extends DiggerItem {
                     toReturn.set(wand.getAttackSeals().size() < offensiveSlots);
                 }
             } else {
-                toReturn.set(wand.getAttackSeals().size() < offensiveSlots);
+                if (wand.getAmountOfTimesThatSealIsPresent(SealType.OFFENSIVE, ((SealItem) sealItem.getItem()).getId()) < ((SealItem) sealItem.getItem()).getMaxSealStack()) {
+                    toReturn.set(wand.getAttackSeals().size() < offensiveSlots);
+                }
             }
         });
         return toReturn.get();
@@ -128,7 +130,9 @@ public class SealableItem extends DiggerItem {
                     toReturn.set(wand.getAmplifyingSeals().size() < amplifyingSealSlots);
                 }
             } else {
-                toReturn.set(wand.getAmplifyingSeals().size() < amplifyingSealSlots);
+                if (wand.getAmountOfTimesThatSealIsPresent(SealType.AMPLIFYING, ((SealItem) sealItem.getItem()).getId()) < ((SealItem) sealItem.getItem()).getMaxSealStack()) {
+                    toReturn.set(wand.getAmplifyingSeals().size() < amplifyingSealSlots);
+                }
             }
         });
         return toReturn.get();
