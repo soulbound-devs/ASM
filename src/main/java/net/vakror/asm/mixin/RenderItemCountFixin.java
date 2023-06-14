@@ -38,7 +38,7 @@ public class RenderItemCountFixin {
 			at = @At (value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;translate(FFF)V", shift = At.Shift.AFTER),
 			locals = LocalCapture.CAPTURE_FAILHARD)
 	private void rescaleText(Font font, ItemStack stack, int x, int y, String string, CallbackInfo ci, String s) {
-		float f = ItemCountRenderHandler.getInstance().scale(string);
+		float f = ItemCountRenderHandler.getInstance().scale(s);
 		if (f != 1f) {
 			pose.translate(x * (1 - f), y * (1 - f) + (1 - f) * 16, 0);
 			pose.scale(f, f, f);
