@@ -94,7 +94,9 @@ public class SealableItem extends DiggerItem {
                     toReturn.set(wand.getPassiveSeals().size() < passiveSlots);
                 }
             } else {
-                toReturn.set(wand.getPassiveSeals().size() < passiveSlots);
+                if (wand.getAmountOfTimesThatSealIsPresent(SealType.PASSIVE, ((SealItem) sealItem.getItem()).getId()) < ((SealItem) sealItem.getItem()).getMaxSealStack()) {
+                    toReturn.set(wand.getUniquePassiveSeals().size() < passiveSlots);
+                }
             }
         });
         return toReturn.get();
@@ -152,12 +154,12 @@ public class SealableItem extends DiggerItem {
     private void addPassiveSealTooltips(ItemSeal itemSeal, List<Component> tooltip, ISeal activeSeal) {
         tooltip.add(Component.literal("Passive Seals:"));
         int count = 0;
-        for (ISeal seal: itemSeal.getPassiveSeals()) {
+        for (ISeal seal: itemSeal.getUniquePassiveSeals()) {
             String active = "    ";
             if (activeSeal != null) {
                 active = (activeSeal.getId().equals(seal.getId())) ? activeCharacter(): "";
             }
-            Component stylizedTooltip = stylizeSeal(Component.literal("    " + active + " " + capitalizeString(seal.getId())), ChatFormatting.AQUA);
+            Component stylizedTooltip = stylizeSeal(Component.literal(buildTooltipString(SealType.AMPLIFYING, seal, itemSeal, active)), ChatFormatting.AQUA);
             tooltip.add(stylizedTooltip);
             count++;
         }
@@ -171,12 +173,12 @@ public class SealableItem extends DiggerItem {
     private void addOffensiveSealTooltips(ItemSeal itemSeal, List<Component> tooltip, ISeal activeSeal) {
         tooltip.add(Component.literal("Offensive/Defensive Seals:"));
         int count = 0;
-        for (ISeal seal: itemSeal.getAttackSeals()) {
+        for (ISeal seal: itemSeal.getUniqueAttackSeals()) {
             String active = "   ";
             if (activeSeal != null) {
                 active = (activeSeal.getId().equals(seal.getId())) ? activeCharacter(): "";
             }
-            Component stylizedTooltip = stylizeSeal(Component.literal("    " + active + " " + capitalizeString(seal.getId())), ChatFormatting.RED);
+            Component stylizedTooltip = stylizeSeal(Component.literal(buildTooltipString(SealType.AMPLIFYING, seal, itemSeal, active)), ChatFormatting.RED);
             tooltip.add(stylizedTooltip);
             count++;
         }
@@ -190,8 +192,8 @@ public class SealableItem extends DiggerItem {
     private void addAmplifyingSealTooltip(ItemSeal itemSeal, List<Component> tooltip) {
         tooltip.add(Component.literal("Amplifying Seals:"));
         int count = 0;
-        for (ISeal seal: itemSeal.getAmplifyingSeals()) {
-            tooltip.add(Component.literal("    " + capitalizeString(seal.getId())).withStyle(ChatFormatting.GOLD));
+        for (ISeal seal: itemSeal.getUniqueAmplifyingSeals()) {
+            tooltip.add(Component.literal(buildTooltipString(SealType.AMPLIFYING, seal, itemSeal, "")).withStyle(ChatFormatting.GOLD));
             count++;
         }
         if (count <= tier.getAmplificationSlots()) {
@@ -199,6 +201,19 @@ public class SealableItem extends DiggerItem {
                 tooltip.add(Component.literal("    Slot " + (slot + 1) + " is empty").withStyle(ChatFormatting.DARK_GREEN));
             }
         }
+    }
+
+    private String buildTooltipString(SealType sealType, ISeal seal, ItemSeal itemSeal, String active) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("  ");
+        stringBuilder.append(active);
+        if (itemSeal.getAmountOfTimesThatSealIsPresent(sealType, seal) > 1) {
+            stringBuilder.append("x");
+            stringBuilder.append(itemSeal.getAmountOfTimesThatSealIsPresent(sealType, seal));
+        }
+        stringBuilder.append(" ");
+        stringBuilder.append(capitalizeString(seal.getId()));
+        return stringBuilder.toString();
     }
 
     private static Component stylizeSeal(MutableComponent seal, ChatFormatting color) {
