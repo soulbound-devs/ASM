@@ -158,7 +158,7 @@ public class SealableItem extends DiggerItem {
     private void addPassiveSealTooltips(ItemSeal itemSeal, List<Component> tooltip, ISeal activeSeal) {
         tooltip.add(Component.literal("Passive Seals:"));
         int count = 0;
-        for (ISeal seal: itemSeal.getUniquePassiveSeals()) {
+        for (ISeal seal: itemSeal.getPassiveSeals()) {
             String active = "    ";
             if (activeSeal != null) {
                 active = (activeSeal.getId().equals(seal.getId())) ? activeCharacter(): "";
@@ -177,7 +177,7 @@ public class SealableItem extends DiggerItem {
     private void addOffensiveSealTooltips(ItemSeal itemSeal, List<Component> tooltip, ISeal activeSeal) {
         tooltip.add(Component.literal("Offensive/Defensive Seals:"));
         int count = 0;
-        for (ISeal seal: itemSeal.getUniqueAttackSeals()) {
+        for (ISeal seal: itemSeal.getAttackSeals()) {
             String active = "   ";
             if (activeSeal != null) {
                 active = (activeSeal.getId().equals(seal.getId())) ? activeCharacter(): "";
@@ -196,7 +196,7 @@ public class SealableItem extends DiggerItem {
     private void addAmplifyingSealTooltip(ItemSeal itemSeal, List<Component> tooltip) {
         tooltip.add(Component.literal("Amplifying Seals:"));
         int count = 0;
-        for (ISeal seal: itemSeal.getUniqueAmplifyingSeals()) {
+        for (ISeal seal: itemSeal.getAmplifyingSeals()) {
             tooltip.add(Component.literal(buildTooltipString(SealType.AMPLIFYING, seal, itemSeal, "")).withStyle(ChatFormatting.GOLD));
             count++;
         }
@@ -211,10 +211,6 @@ public class SealableItem extends DiggerItem {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("  ");
         stringBuilder.append(active);
-        if (itemSeal.getAmountOfTimesThatSealIsPresent(sealType, seal) > 1) {
-            stringBuilder.append("x");
-            stringBuilder.append(itemSeal.getAmountOfTimesThatSealIsPresent(sealType, seal));
-        }
         stringBuilder.append(" ");
         stringBuilder.append(capitalizeString(seal.getId()));
         return stringBuilder.toString();
