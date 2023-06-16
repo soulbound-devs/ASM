@@ -20,10 +20,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.vakror.asm.ASMMod;
-import net.vakror.asm.blocks.custom.DungeonAccessBlock;
-import net.vakror.asm.blocks.custom.ModFlammableRotatedPillarBlock;
-import net.vakror.asm.blocks.custom.SoulSolidifierBlock;
-import net.vakror.asm.blocks.custom.WandImbuingTableBlock;
+import net.vakror.asm.blocks.custom.*;
 import net.vakror.asm.items.ModItems;
 import net.vakror.asm.soul.ModSoul;
 
@@ -37,6 +34,9 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> WAND_IMBUING_TABLE = registerBlock("wand_imbuing_table",
            () -> new WandImbuingTableBlock(BlockBehaviour.Properties.of().strength(5).requiresCorrectToolForDrops().noOcclusion().ignitedByLava().instrument(NoteBlockInstrument.BASS)));
+
+    public static final RegistryObject<Block> SOUL_CATALYST = registerBlock("soul_catalyst",
+           () -> new SoulCatalystBlock(BlockBehaviour.Properties.of().strength(5).requiresCorrectToolForDrops().noOcclusion().ignitedByLava().instrument(NoteBlockInstrument.BASS)));
 
     public static final RegistryObject<Block> SOUL_SOLIDIFIER = registerBlock("soul_solidifier",
            () -> new SoulSolidifierBlock(BlockBehaviour.Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).strength(5).requiresCorrectToolForDrops().noOcclusion()));

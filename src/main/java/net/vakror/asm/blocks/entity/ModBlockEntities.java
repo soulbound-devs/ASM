@@ -8,6 +8,7 @@ import net.minecraftforge.registries.RegistryObject;
 import net.vakror.asm.ASMMod;
 import net.vakror.asm.blocks.ModBlocks;
 import net.vakror.asm.blocks.entity.custom.DungeonAccessBlockEntity;
+import net.vakror.asm.blocks.entity.custom.SoulCatalystBlockEntity;
 import net.vakror.asm.blocks.entity.custom.SoulSolidifierBlockEntity;
 import net.vakror.asm.blocks.entity.custom.WandImbuingTableBlockEntity;
 
@@ -16,6 +17,9 @@ public class ModBlockEntities {
 
     public static final RegistryObject<BlockEntityType<WandImbuingTableBlockEntity>> WAND_IMBUING_TABLE_BLOCK_ENTITY =
             BLOCK_ENTITIES.register("wand_imbuing_table_block_entity", () -> BlockEntityType.Builder.of(WandImbuingTableBlockEntity::new, ModBlocks.WAND_IMBUING_TABLE.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<SoulCatalystBlockEntity>> SOUL_CATALYST_BLOCK_ENTITY =
+            BLOCK_ENTITIES.register("soul_catalyst_block_entity", () -> BlockEntityType.Builder.of(SoulCatalystBlockEntity::new, ModBlocks.SOUL_CATALYST.get()).build(null));
 
     public static final RegistryObject<BlockEntityType<SoulSolidifierBlockEntity>> SOUL_SOLIDIFIER_BLOCK_ENTITY =
             BLOCK_ENTITIES.register("soul_solidifier_block_entity", () -> BlockEntityType.Builder.of(SoulSolidifierBlockEntity::new, ModBlocks.SOUL_SOLIDIFIER.get()).build(null));

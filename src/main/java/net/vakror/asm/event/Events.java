@@ -1,6 +1,7 @@
 package net.vakror.asm.event;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.Registries;
@@ -10,10 +11,14 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.phys.AABB;
@@ -22,20 +27,22 @@ import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.vakror.asm.ASMMod;
+import net.vakror.asm.blocks.ModBlocks;
 import net.vakror.asm.blocks.entity.custom.DungeonAccessBlockEntity;
+import net.vakror.asm.blocks.entity.custom.SoulCatalystBlockEntity;
 import net.vakror.asm.capability.wand.ItemSeal;
 import net.vakror.asm.capability.wand.ItemSealProvider;
 import net.vakror.asm.entity.ModEntities;
 import net.vakror.asm.entity.client.BroomModel;
 import net.vakror.asm.entity.client.BroomRenderer;
 import net.vakror.asm.items.custom.SealableItem;
-import net.vakror.asm.items.custom.WandItem;
 import net.vakror.asm.packets.ModPackets;
 import net.vakror.asm.packets.SyncSoulS2CPacket;
 import net.vakror.asm.soul.PlayerSoul;
@@ -62,9 +69,9 @@ public class Events {
         public static void triggerScytheAOE(LivingHurtEvent event) {
             Player player = Minecraft.getInstance().player;
             if (player != null) {
-                if (player.getMainHandItem().getItem() instanceof WandItem || player.getOffhandItem().getItem() instanceof WandItem) {
+                if (player.getMainHandItem().getItem() instanceof SealableItem || player.getOffhandItem().getItem() instanceof SealableItem) {
                     InteractionHand hand;
-                    if (player.getMainHandItem().getItem() instanceof WandItem) {
+                    if (player.getMainHandItem().getItem() instanceof SealableItem) {
                         hand = InteractionHand.MAIN_HAND;
                     } else {
                         hand = InteractionHand.OFF_HAND;
@@ -84,9 +91,43 @@ public class Events {
             }
         }
 
+        @SubscribeEvent
+        public static void triggerSoulCatalyst(LivingDeathEvent event) {
+            Player player = Minecraft.getInstance().player;
+            System.err.println("DEATH");
+            System.err.println(player);
+            if (player != null) {
+                List<BlockPos> blocksNearby = getNearbyBlockPos(event.getEntity().level(), player.blockPosition(), 3);
+                blocksNearby.forEach((pos -> {
+                    BlockEntity entity = event.getEntity().level().getBlockEntity(pos);
+                    if (entity instanceof SoulCatalystBlockEntity catalystEntity && catalystEntity.getDelay() == 0) {
+                        System.err.println("CATALYST");
+                        catalystEntity.setDelay(catalystEntity.getMaxDelay());
+                        player.getCapability(PlayerSoulProvider.PLAYER_SOUL).ifPresent(playerSoul -> {
+                            if (event.getEntity() instanceof EnderDragon) {
+                                playerSoul.addDarkSoul(10);
+                                System.err.println("DRAGON");
+                            } else if (event.getEntity() instanceof Monster) {
+                                playerSoul.addDarkSoul(1);
+                                System.err.println("MONSTER");
+                            } else if (event.getEntity() instanceof Animal) {
+                                playerSoul.addSoul(1);
+                                System.err.println("ANIMAL");
+                            }
+                        });
+                    }
+                }));
+            }
+        }
+
         public static <T extends Entity> List<T> getNearbyEntities(final LevelAccessor world, final Vec3i pos, final float radius, final Class<T> entityClass) {
             final AABB selectBox = new AABB(0.0, 0.0, 0.0, 1.0, 1.0, 1.0).move(pos.getX(), pos.getY(), pos.getZ()).inflate(radius);
             return world.getEntitiesOfClass(entityClass, selectBox, entity -> entity.isAlive() && !entity.isSpectator());
+        }
+
+        public static List<BlockPos> getNearbyBlockPos(final LevelAccessor world, final Vec3i pos, final float radius) {
+            final AABB selectBox = new AABB(0.0, 0.0, 0.0, 1.0, 1.0, 1.0).move(pos.getX(), pos.getY(), pos.getZ()).inflate(radius);
+            return BlockPos.betweenClosedStream(selectBox).toList();
         }
 
         @SubscribeEvent

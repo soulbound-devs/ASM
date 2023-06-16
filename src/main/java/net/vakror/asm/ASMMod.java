@@ -37,7 +37,6 @@ import terrablender.api.Regions;
 
 import static net.vakror.asm.ASMMod.MOD_ID;
 import static net.vakror.asm.blocks.ModBlocks.*;
-import static net.vakror.asm.blocks.ModBlocks.DUNGEON_KEY_BLOCK;
 import static net.vakror.asm.items.ModItems.*;
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -110,6 +109,7 @@ public class ASMMod {
             event.accept(KEY.get());
             event.accept(SACK.get());
             event.accept(WAND_IMBUING_TABLE.get());
+            event.accept(SOUL_CATALYST.get());
             event.accept(SOUL_SOLIDIFIER.get());
             event.accept(ANCIENT_OAK_LOG.get());
             event.accept(ANCIENT_OAK_PLANKS.get());
