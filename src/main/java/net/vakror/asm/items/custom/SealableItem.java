@@ -25,6 +25,7 @@ import net.vakror.asm.seal.SealRegistry;
 import net.vakror.asm.seal.SealType;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -58,6 +59,18 @@ public class SealableItem extends DiggerItem {
             }));
         });
         return toReturn.get();
+    }
+
+    public List<ISeal> getAllSealsWithProperty(String propertyId) {
+        List<ISeal> seals = new ArrayList<>();
+        stack.getCapability(ItemSealProvider.SEAL).ifPresent(wand -> {
+            wand.getAllActivatableSeals().forEach((seal -> {
+                if (seal.properties().contains(new SealProperty(propertyId))) {
+                    seals.add(seal);
+                }
+            }));
+        });
+        return seals;
     }
 
     @Override
