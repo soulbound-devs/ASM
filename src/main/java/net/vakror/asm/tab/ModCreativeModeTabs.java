@@ -16,7 +16,7 @@ public class ModCreativeModeTabs {
 
     public static RegistryObject<CreativeModeTab> ASM_TAB = CREATIVE_MODE_TABS.register("asm", () ->
             CreativeModeTab.builder().icon(() -> new ItemStack(ModItems.WAND.get()))
-                    .title(Component.translatable("itemGroup.asm")).build());
+                    .title(Component.translatable("itemGroup.asm")).withSearchBar().build());
 
     public static void register(IEventBus eventBus) {
         CREATIVE_MODE_TABS.register(eventBus);
