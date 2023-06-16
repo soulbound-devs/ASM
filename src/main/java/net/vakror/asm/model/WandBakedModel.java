@@ -290,11 +290,11 @@ public class WandBakedModel extends BakedItemModel {
 	private String getCacheKeyString(){
 		List<String> locations = new ArrayList<String>();
 		if(this.baseSprite != null)
-			locations.add(this.baseSprite.atlasLocation().toString());
+			locations.add(this.baseSprite.contents().name().toString());
 
 		for(TextureAtlasSprite sprite : this.ingredientSprites) {
 			if (sprite != null) {
-				locations.add(sprite.atlasLocation().toString());
+				locations.add(sprite.contents().name().toString());
 			}
 		}
 
