@@ -8,12 +8,14 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.vakror.asm.ASMMod;
-import net.vakror.asm.seal.tier.ModWandTiers;
 import net.vakror.asm.items.custom.SackItem;
 import net.vakror.asm.items.custom.WandItem;
 import net.vakror.asm.items.custom.seals.SealItem;
 import net.vakror.asm.seal.SealType;
+import net.vakror.asm.seal.tier.ModWandTiers;
 import net.vakror.asm.soul.ModSoul;
+
+import static net.vakror.asm.seal.SealTooltips.*;
 
 public class ModItems {
 
@@ -21,31 +23,31 @@ public class ModItems {
             DeferredRegister.create(ForgeRegistries.ITEMS, ASMMod.MOD_ID);
 
     public static final RegistryObject<Item> AXING_SEAL = ITEMS_REGISTRY.register("axing_seal",
-           () -> new SealItem(new Item.Properties(), "axing", SealType.OFFENSIVE));
+           () -> new SealItem(new Item.Properties(), "axing", SealType.OFFENSIVE, AXING));
 
     public static final RegistryObject<Item> SACK_ROW_UPGRADE_SEAL_TIER_1 = ITEMS_REGISTRY.register("sack_row_upgrade_seal_tier_1",
-           () -> new SealItem(new Item.Properties(), "row_tier_1", SealType.AMPLIFYING));
+           () -> new SealItem(new Item.Properties(), "row_tier_1", SealType.AMPLIFYING, HEIGHT));
 
     public static final RegistryObject<Item> SACK_COLUMN_UPGRADE_SEAL_TIER_1 = ITEMS_REGISTRY.register("sack_column_upgrade_seal_tier_1",
-           () -> new SealItem(new Item.Properties(), "column_tier_1", SealType.AMPLIFYING));
+           () -> new SealItem(new Item.Properties(), "column_tier_1", SealType.AMPLIFYING, WIDTH));
 
     public static final RegistryObject<Item> SACK_STACK_SIZE_UPGRADE_SEAL_TIER_1 = ITEMS_REGISTRY.register("sack_stack_size_upgrade_seal_tier_1",
-           () -> new SealItem(new Item.Properties(), "stack_size_tier_1", SealType.AMPLIFYING));
+           () -> new SealItem(new Item.Properties(), "stack_size_tier_1", SealType.AMPLIFYING, STACK_SIZE));
 
     public static final RegistryObject<Item> WAND = ITEMS_REGISTRY.register("wand",
            () -> new WandItem(new Item.Properties(), ModWandTiers.ANCIENT_OAK));
 
     public static final RegistryObject<Item> PICKAXING_SEAL = ITEMS_REGISTRY.register("pickaxing_seal",
-           () -> new SealItem(new Item.Properties(), "pickaxing", SealType.PASSIVE));
+           () -> new SealItem(new Item.Properties(), "pickaxing", SealType.PASSIVE, PICKING));
 
     public static final RegistryObject<Item> HOEING_SEAL = ITEMS_REGISTRY.register("hoeing_seal",
-           () -> new SealItem(new Item.Properties(), "hoeing", SealType.PASSIVE));
+           () -> new SealItem(new Item.Properties(), "hoeing", SealType.PASSIVE, HOEING));
 
     public static final RegistryObject<Item> MINING_SPEED_SEAL = ITEMS_REGISTRY.register("mining_speed_seal",
-           () -> new SealItem(new Item.Properties(), "mining_speed", SealType.AMPLIFYING));
+           () -> new SealItem(new Item.Properties(), "mining_speed", SealType.AMPLIFYING, HASTE));
 
     public static final RegistryObject<Item> SWORDING_SEAL = ITEMS_REGISTRY.register("swording_seal",
-           () -> new SealItem(new Item.Properties(),"swording", SealType.OFFENSIVE));
+           () -> new SealItem(new Item.Properties(),"swording", SealType.OFFENSIVE, SWORDING));
 
     public static final RegistryObject<Item> SOUL = ITEMS_REGISTRY.register("soul",
            () -> new Item(new Item.Properties()));
