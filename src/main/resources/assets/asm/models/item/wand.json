@@ -10,7 +10,8 @@
       {
         "pickaxing": "asm:item/wands/activated/pickaxing",
         "hoeing": "asm:item/wands/activated/hoeing",
-        "shoveling": "asm:item/wands/activated/axing",
+        "shoveling": "asm:item/wands/activated/shovelling",
+        "swording": "asm:item/wands/activated/swording",
         "axing": "asm:item/wands/activated/axing",
         "scythe": "asm:item/wands/activated/scythe"
       }
