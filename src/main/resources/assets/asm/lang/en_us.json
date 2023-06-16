@@ -15,6 +15,11 @@
   "item.asm.tungsten_ingot": "Tungsten Ingot",
   "item.asm.key": "Keystone Key",
   "item.asm.sack": "Sack",
+  "item.asm.raw_tungsten": "Raw Tungsten",
+  "item.asm.corrupted_berries": "Corrupted Berries",
+  "item.asm.sack_row_upgrade_seal_tier_1": "Height Enhancement Seal | Tier One",
+  "item.asm.sack_column_upgrade_seal_tier_1": "Width Enhancement Seal | Tier One",
+  "item.asm.sack_stack_size_upgrade_seal_tier_1": "Stack Size Enhancement Seal | Tier One",
 
   "asm.tooltip.fluid.amount_with_capacity": "%s / %s mB",
   "asm.tooltip.fluid.amount": "%s mB",
@@ -28,6 +33,9 @@
   "block.asm.corrupted_leaves": "Corrupted Leaves",
   "block.asm.dungeon_key_block": "Dungeon Keystone",
   "block.asm.soul_solidifier": "Soul Soldifier",
+  "block.asm.soul_catalyst": "Soul Catalyst",
+  "block.asm.tungsten_block": "Tungsten Block",
+  "block.asm.tungsten_ore": "Tungsten Ore",
 
   "itemGroup.asm": "ASM",
 
