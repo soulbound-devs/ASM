@@ -1,9 +1,9 @@
 package net.vakror.asm.seal;
 
 
-import net.vakror.asm.seal.seals.activatable.AxingSeal;
-import net.vakror.asm.seal.seals.activatable.HoeingSeal;
-import net.vakror.asm.seal.seals.activatable.PickaxingSeal;
+import net.vakror.asm.seal.seals.activatable.tool.AxingSeal;
+import net.vakror.asm.seal.seals.activatable.tool.HoeingSeal;
+import net.vakror.asm.seal.seals.activatable.tool.PickaxingSeal;
 import net.vakror.asm.seal.seals.activatable.SwordSeal;
 import net.vakror.asm.seal.seals.amplifying.ColumnUpgradeSeal;
 import net.vakror.asm.seal.seals.amplifying.MiningSpeedSeal;

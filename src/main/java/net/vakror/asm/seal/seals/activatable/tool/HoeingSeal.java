@@ -1,20 +1,25 @@
-package net.vakror.asm.seal.seals.activatable;
+package net.vakror.asm.seal.seals.activatable.tool;
 
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.context.UseOnContext;
 import net.vakror.asm.seal.SealProperty;
-import net.vakror.asm.seal.type.ActivatableSeal;
 
 import java.util.List;
 
-public class PickaxingSeal extends ActivatableSeal {
-    public PickaxingSeal() {
-        super("pickaxing");
+public class HoeingSeal extends ToolSeal {
+    public HoeingSeal() {
+        super("hoeing", BlockTags.MINEABLE_WITH_HOE);
     }
 
     @Override
     public InteractionResult useAction(UseOnContext context) {
         return InteractionResult.PASS;
+    }
+
+    @Override
+    public float getDamage() {
+        return 1f;
     }
 
     @Override

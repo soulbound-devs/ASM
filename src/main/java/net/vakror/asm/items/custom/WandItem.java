@@ -1,25 +1,29 @@
 package net.vakror.asm.items.custom;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.tags.BlockTags;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.TierSortingRegistry;
-import net.vakror.asm.ASMMod;
 import net.vakror.asm.capability.wand.ItemSealProvider;
+import net.vakror.asm.seal.ISeal;
 import net.vakror.asm.seal.function.amplify.damage.DamageAmplifyFunction;
+import net.vakror.asm.seal.seals.activatable.tool.ToolSeal;
 import net.vakror.asm.seal.tier.ISealableTier;
 import net.vakror.asm.seal.type.ActivatableSeal;
-import net.vakror.asm.seal.type.AttackSeal;
 import net.vakror.asm.seal.type.amplifying.ItemAmplificationSeal;
-import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class WandItem extends ActivatableSealableItem {
@@ -30,25 +34,17 @@ public class WandItem extends ActivatableSealableItem {
 
     @Override
     public boolean isCorrectToolForDrops(ItemStack stack, BlockState state) {
+        AtomicBoolean bool = new AtomicBoolean();
         if (TierSortingRegistry.isCorrectTierForDrops(getTier(), state)) {
-            boolean hasAxing = hasSeal("axing", stack);
-            boolean hasPickaxing = hasSeal("pickaxing", stack);
-            boolean hasHoeing = hasSeal("hoeing", stack);
-
-            if (hasAxing && state.is(BlockTags.MINEABLE_WITH_AXE)) {
-                ASMMod.LOGGER.info("Can mine with axe");
-                return true;
-            }
-            if (hasPickaxing && state.is(BlockTags.MINEABLE_WITH_PICKAXE)) {
-                ASMMod.LOGGER.info("Can mine with pickaxe");
-                return true;
-            }
-            if (hasHoeing && state.is(BlockTags.MINEABLE_WITH_HOE)) {
-                ASMMod.LOGGER.info("Can mine with hoe");
-                return true;
-            }
+            List<ISeal> miningSeals = getAllSealsWithProperty("tool");
+            miningSeals.forEach((seal -> {
+                ToolSeal miningSeal = (ToolSeal) seal;
+                if (isSealActive(miningSeal.getId(), stack) && state.is(miningSeal.mineableBlocks)) {
+                    bool.set(true);
+                }
+            }));
         }
-        return false;
+        return bool.get();
     }
 
     @Override
@@ -80,12 +76,28 @@ public class WandItem extends ActivatableSealableItem {
     }
 
     @Override
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
+        if (slot == EquipmentSlot.MAINHAND) {
+            ImmutableMultimap.Builder<Attribute, AttributeModifier> map = new ImmutableMultimap.Builder<>();
+            if (getActiveSeal(stack) != null) {
+                ActivatableSeal seal = (ActivatableSeal) getActiveSeal(stack);
+                if (seal.getAttributeModifiers() != null && !seal.getAttributeModifiers().isEmpty()) {
+                    map.putAll(seal.getAttributeModifiers());
+                }
+            }
+            return map.build();
+        } else {
+            return super.getAttributeModifiers(slot, stack);
+        }
+    }
+
+    @Override
     public float getAttackDamage() {
         AtomicReference<Float> finalDamage = new AtomicReference<>((float) 0);
         stack.getCapability(ItemSealProvider.SEAL).ifPresent(wand -> {
             final float[] damage = {0f};
-            if (wand.getActiveSeal() != null && wand.getActiveSeal().isAttack()) {
-                damage[0] = ((AttackSeal) wand.getActiveSeal()).getDamage();
+            if (wand.getActiveSeal() != null) {
+                damage[0] = ((ActivatableSeal) wand.getActiveSeal()).getDamage();
             } wand.getAmplifyingSeals().forEach((seal -> {
                 if (seal instanceof ItemAmplificationSeal amplificationSeal) {
                     amplificationSeal.getAmplifyFunctions().forEach((amplifyFunction -> {
@@ -105,10 +117,5 @@ public class WandItem extends ActivatableSealableItem {
             finalDamage.set(damage[0]);
         });
         return finalDamage.get();
-    }
-
-    @Override
-    public @Nullable CompoundTag getShareTag(ItemStack stack) {
-        return super.getShareTag(stack);
     }
 }
