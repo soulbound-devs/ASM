@@ -1,9 +1,9 @@
 ext {
     //-- DEPENDENCIES
-    forgeVersion = "1.20-46.0.14"
+    forgeVersion = "1.20.1-47.0.3"
     mixinVersion = "0.8.5"
     reflectVersion = "0.10.2"
-    terrablenderVersion = "1.20-3.0.0.163"
+    terrablenderVersion = "1.20.1-3.0.0.164"
 
     supportDependencies = [
             forge: "net.minecraftforge:forge:${forgeVersion}",
