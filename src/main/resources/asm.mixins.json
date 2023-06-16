@@ -5,11 +5,14 @@
   "refmap": "asm.refmap.json",
   "mixins": [
     "CapabilityProviderInvoker",
+    "ClientUpdateStructureBlockUnlimit",
+    "FixSealTooltipMixin",
     "IMinecraftServerAccessor",
     "LivingEntityMixin",
     "MappedRegistryMixin",
     "OverworldBiomesInvoker",
-    "SerializationFixin"
+    "SerializationFixin",
+    "StructureBlockUnlimit"
   ],
   "client": [
     "LocalPlayerMixin",
