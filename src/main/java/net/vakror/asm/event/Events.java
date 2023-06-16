@@ -141,28 +141,39 @@ public class Events {
         public static void onPlayerEnterDungeon(EntityJoinLevelEvent event) {
             if (!event.getLevel().isClientSide && event.getEntity() instanceof Player) {
                 ServerLevel world = (ServerLevel) event.getLevel();
-                if (world.dimensionType() == world.registryAccess().registryOrThrow(Registries.DIMENSION_TYPE).getHolderOrThrow(Dimensions.DUNGEON_TYPE).get() && (event.getLevel().getBlockEntity(event.getEntity().blockPosition().below()) instanceof DungeonAccessBlockEntity entity && !entity.hasGeneratedDungeon())) {
-                    StructureStart start = new DungeonStructure(
-                            ModStructures.structure(), entity.getDungeonSize(), 0)
-                            .generate(world.registryAccess(),
-                                    world.getChunkSource().getGenerator(),
-                                    world.getChunkSource().getGenerator().getBiomeSource(),
-                                    world.getChunkSource().randomState(),
-                                    world.getStructureManager(),
-                                    world.getSeed(),
-                                    new ChunkPos(event.getEntity().blockPosition().below()),
-                                    0,
-                                    world,
-                                    (biomeHolder) -> true);
-                    BoundingBox boundingbox = start.getBoundingBox();
-                    ChunkPos chunkpos = new ChunkPos(SectionPos.blockToSectionCoord(boundingbox.minX()), SectionPos.blockToSectionCoord(boundingbox.minZ()));
-                    ChunkPos chunkpos1 = new ChunkPos(SectionPos.blockToSectionCoord(boundingbox.maxX()), SectionPos.blockToSectionCoord(boundingbox.maxZ()));
-                    ChunkPos.rangeClosed(chunkpos, chunkpos1).forEach((chunkPos) -> {
-                        start.placeInChunk(world, world.structureManager(), world.getChunkSource().getGenerator(), world.getRandom(), new BoundingBox(chunkPos.getMinBlockX(), world.getMinBuildHeight(), chunkPos.getMinBlockZ(), chunkPos.getMaxBlockX(), world.getMaxBuildHeight(), chunkPos.getMaxBlockZ()), chunkPos);
-                    });
-                    entity.hasGeneratedDungeon(true);
+                if (world.dimensionType() == world.registryAccess().registryOrThrow(Registries.DIMENSION_TYPE).getHolderOrThrow(Dimensions.DUNGEON_TYPE).get()) {
+                    if ((event.getLevel().getBlockEntity(event.getEntity().blockPosition().below()) instanceof DungeonAccessBlockEntity entity)) {
+                        genDungeon(entity, world, event);
+                    } else {
+                        world.setBlock(event.getEntity().blockPosition().below(), ModBlocks.DUNGEON_KEY_BLOCK.get().defaultBlockState(), 3);
+                        if (event.getLevel().getBlockEntity(event.getEntity().blockPosition().below()) instanceof DungeonAccessBlockEntity entity) {
+                            genDungeon(entity, world, event);
+                        }
+                    }
                 }
             }
+        }
+
+        private static void genDungeon(DungeonAccessBlockEntity entity, ServerLevel world, EntityJoinLevelEvent event) {
+            StructureStart start = new DungeonStructure(
+                    ModStructures.structure(), entity.getDungeonSize(), 0)
+                    .generate(world.registryAccess(),
+                            world.getChunkSource().getGenerator(),
+                            world.getChunkSource().getGenerator().getBiomeSource(),
+                            world.getChunkSource().randomState(),
+                            world.getStructureManager(),
+                            world.getSeed(),
+                            new ChunkPos(event.getEntity().blockPosition().below()),
+                            0,
+                            world,
+                            (biomeHolder) -> true);
+            BoundingBox boundingbox = start.getBoundingBox();
+            ChunkPos chunkpos = new ChunkPos(SectionPos.blockToSectionCoord(boundingbox.minX()), SectionPos.blockToSectionCoord(boundingbox.minZ()));
+            ChunkPos chunkpos1 = new ChunkPos(SectionPos.blockToSectionCoord(boundingbox.maxX()), SectionPos.blockToSectionCoord(boundingbox.maxZ()));
+            ChunkPos.rangeClosed(chunkpos, chunkpos1).forEach((chunkPos) -> {
+                start.placeInChunk(world, world.structureManager(), world.getChunkSource().getGenerator(), world.getRandom(), new BoundingBox(chunkPos.getMinBlockX(), world.getMinBuildHeight(), chunkPos.getMinBlockZ(), chunkPos.getMaxBlockX(), world.getMaxBuildHeight(), chunkPos.getMaxBlockZ()), chunkPos);
+            });
+            entity.hasGeneratedDungeon(true);
         }
     }
 
