@@ -35,7 +35,7 @@ public class SealableItem extends DiggerItem {
     protected ItemStack stack;
 
     public SealableItem(Properties properties, ISealableTier tier) {
-        super(3, -3, Tiers.DIAMOND, BlockTags.create(new ResourceLocation(ASMMod.MOD_ID, "none")), properties);
+        super(3, 0, Tiers.DIAMOND, BlockTags.create(new ResourceLocation(ASMMod.MOD_ID, "none")), properties);
         this.tier = tier;
     }
 
