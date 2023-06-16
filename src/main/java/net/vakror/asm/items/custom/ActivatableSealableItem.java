@@ -8,8 +8,13 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.vakror.asm.seal.ISeal;
+import net.vakror.asm.seal.SealRegistry;
 import net.vakror.asm.seal.tier.ISealableTier;
 import net.vakror.asm.capability.wand.ItemSealProvider;
+
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ActivatableSealableItem extends SealableItem {
     public ActivatableSealableItem(Properties properties, ISealableTier tier) {
@@ -29,6 +34,26 @@ public class ActivatableSealableItem extends SealableItem {
         return super.use(pLevel, pPlayer, pUsedHand);
     }
 
+    public boolean isSealActive(String sealID, ItemStack stack) {
+        AtomicBoolean toReturn = new AtomicBoolean(false);
+        stack.getCapability(ItemSealProvider.SEAL).ifPresent(wand -> {
+            if (wand.getAttackSeals().contains(SealRegistry.allSeals.get(sealID)) || wand.getPassiveSeals().contains(SealRegistry.allSeals.get(sealID)) || wand.getAmplifyingSeals().contains(SealRegistry.allSeals.get(sealID))) {
+                if (wand.getActiveSeal() != null) {
+                    toReturn.set(wand.getActiveSeal().equals(SealRegistry.allSeals.get(sealID)));
+                }
+            }
+        });
+        return toReturn.get();
+    }
+
+    public ISeal getActiveSeal(ItemStack stack) {
+        AtomicReference<ISeal> seal = new AtomicReference<>();
+        stack.getCapability(ItemSealProvider.SEAL).ifPresent((sealCap -> {
+            seal.set(sealCap.getActiveSeal());
+        }));
+        return seal.get();
+    }
+
     private void activateSeal(ItemStack stack) {
         stack.getCapability(ItemSealProvider.SEAL).ifPresent(wand -> {
             if (wand.getActiveSeal() != null) {
@@ -36,9 +61,8 @@ public class ActivatableSealableItem extends SealableItem {
             } else if (wand.getActiveSeal() == null && wand.isSelectedIsAttack()) {
                 int attackSelectedSlot = wand.getSelectedSealSlot() - tier.getPassiveSlots();
                 if (attackSelectedSlot >= 0) {
-                    if (wand.getAttackSeals().size() > 0 && wand.getAttackSeals().get(attackSelectedSlot) != null) {
-                        wand.setActiveSeal(wand.getAttackSeals().get(attackSelectedSlot), stack);
-                        System.err.println(wand.getAttackSeals().get(attackSelectedSlot).getId() + "IS ACTIVE!");
+                    if (wand.getAttackSeals().size() > 0 && wand.getAttackSeals().get(attackSelectedSlot - 1) != null) {
+                        wand.setActiveSeal(wand.getAttackSeals().get(attackSelectedSlot - 1), stack);
                     }
                 }
             } else if (wand.getActiveSeal() == null && !wand.isSelectedIsAttack()) {
@@ -56,7 +80,7 @@ public class ActivatableSealableItem extends SealableItem {
                 itemWand.setSelectedSealSlot(1);
                 itemWand.setSelectedIsAttack(itemWand.getAllActivatableSeals().get(0).isAttack());
             } else if (itemWand.getSelectedSealSlot() > tier.getPassiveSlots() && itemWand.getSelectedSealSlot() != 0) {
-                itemWand.setSelectedIsAttack(itemWand.getAllActivatableSeals().get(itemWand.getSelectedSealSlot() - 2).isAttack());
+                itemWand.setSelectedIsAttack(itemWand.getAllActivatableSeals().get(itemWand.getSelectedSealSlot() - 1).isAttack());
             }
             itemWand.setActiveSeal(null, wand);
             String mode = itemWand.isSelectedIsAttack() ? "Offensive/Defensive" : "Passive";
