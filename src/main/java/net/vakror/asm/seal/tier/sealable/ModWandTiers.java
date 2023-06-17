@@ -1,4 +1,4 @@
-package net.vakror.asm.seal.tier;
+package net.vakror.asm.seal.tier.sealable;
 
 public enum ModWandTiers implements ISealableTier {
     ANCIENT_OAK(0, 1, 1, 2),
