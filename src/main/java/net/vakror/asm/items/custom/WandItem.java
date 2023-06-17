@@ -85,21 +85,21 @@ public class WandItem extends ActivatableSealableItem {
                     map.putAll(seal.getAttributeModifiers());
                 }
             }
+            map.put(Attributes.ATTACK_DAMAGE, new AttributeModifier("damage_modifier_wand", getDamageFromSeals(stack), AttributeModifier.Operation.ADDITION));
             return map.build();
         } else {
             return super.getAttributeModifiers(slot, stack);
         }
     }
 
-    @Override
-    public float getAttackDamage() {
+    public float getDamageFromSeals(ItemStack stack) {
         AtomicReference<Float> finalDamage = new AtomicReference<>((float) 0);
         stack.getCapability(ItemSealProvider.SEAL).ifPresent(wand -> {
             final float[] damage = {0f};
             if (wand.getActiveSeal() != null) {
                 damage[0] = ((ActivatableSeal) wand.getActiveSeal()).getDamage();
             } wand.getAmplifyingSeals().forEach((seal -> {
-                if (seal instanceof ItemAmplificationSeal amplificationSeal) {
+                if (seal instanceof ItemAmplifyingSeal amplificationSeal) {
                     amplificationSeal.getAmplifyFunctions().forEach((amplifyFunction -> {
                         if (amplifyFunction.isDamage()) {
                             DamageAmplifyFunction function = (DamageAmplifyFunction) amplifyFunction;
