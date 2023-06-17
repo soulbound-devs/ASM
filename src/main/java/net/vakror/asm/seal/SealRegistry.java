@@ -1,14 +1,14 @@
 package net.vakror.asm.seal;
 
 
+import net.vakror.asm.seal.seals.activatable.SwordSeal;
 import net.vakror.asm.seal.seals.activatable.tool.AxingSeal;
 import net.vakror.asm.seal.seals.activatable.tool.HoeingSeal;
 import net.vakror.asm.seal.seals.activatable.tool.PickaxingSeal;
-import net.vakror.asm.seal.seals.activatable.SwordSeal;
-import net.vakror.asm.seal.seals.amplifying.ColumnUpgradeSeal;
-import net.vakror.asm.seal.seals.amplifying.MiningSpeedSeal;
-import net.vakror.asm.seal.seals.amplifying.RowUpgradeSeal;
-import net.vakror.asm.seal.seals.amplifying.StackSizeUpgradeSeal;
+import net.vakror.asm.seal.seals.amplifying.sack.ColumnUpgradeSeal;
+import net.vakror.asm.seal.seals.amplifying.sack.RowUpgradeSeal;
+import net.vakror.asm.seal.seals.amplifying.sack.StackSizeUpgradeSeal;
+import net.vakror.asm.seal.seals.amplifying.wand.haste.HasteSeal;
 import net.vakror.asm.util.ArithmeticActionType;
 
 import java.util.HashMap;
@@ -24,7 +24,9 @@ public class SealRegistry {
         addAttackSeal(new AxingSeal());
         addPassiveSeal(new PickaxingSeal());
         addPassiveSeal(new HoeingSeal());
-        addAmplifyingSealSeal(new MiningSpeedSeal());
+        addAmplifyingSealSeal(new HasteSeal.HasteSealTierOne());
+        addAmplifyingSealSeal(new HasteSeal.HasteSealTierTwo());
+        addAmplifyingSealSeal(new HasteSeal.HasteSealTierThree());
         addAmplifyingSealSeal(new StackSizeUpgradeSeal(1, 2, ArithmeticActionType.MULTIPLY));
         addAmplifyingSealSeal(new ColumnUpgradeSeal(1, 2, ArithmeticActionType.ADD));
         addAmplifyingSealSeal(new RowUpgradeSeal(1, 2, ArithmeticActionType.ADD));
@@ -38,9 +40,9 @@ public class SealRegistry {
 
     public static void addSeal(ISeal seal, SealType type) {
         switch (type) {
-            case PASSIVE ->  passiveSeals.put(seal.getId(), seal);
-            case OFFENSIVE ->  attackSeals.put(seal.getId(), seal);
-            case AMPLIFYING ->  amplifyingSeals.put(seal.getId(), seal);
+            case PASSIVE -> passiveSeals.put(seal.getId(), seal);
+            case OFFENSIVE -> attackSeals.put(seal.getId(), seal);
+            case AMPLIFYING -> amplifyingSeals.put(seal.getId(), seal);
         }
         allSeals.put(seal.getId(), seal);
     }
