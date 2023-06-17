@@ -88,10 +88,6 @@ public class SackScreen extends AbstractContainerScreen<SackMenu> {
 
         float newScale = newAmountOfPixelsToScaleTo / 18;
 
-        System.err.println(newAmountOfPixelsToScaleTo);
-        System.err.println(newAmountOfPixelsToScaleTo / 18);
-        System.err.println(amountOfPixelsToScaleSlotsTo);
-        System.err.println(scale);
 
 
         graphics.pose().scale(newScale, newScale, newScale);
