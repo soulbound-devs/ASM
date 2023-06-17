@@ -1,4 +1,4 @@
-package net.vakror.asm.seal.tier;
+package net.vakror.asm.seal.tier.sealable;
 
 public interface ISealableTier {
     int getPassiveSlots();
