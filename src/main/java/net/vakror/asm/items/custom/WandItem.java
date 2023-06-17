@@ -8,6 +8,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
@@ -18,9 +19,10 @@ import net.vakror.asm.capability.wand.ItemSealProvider;
 import net.vakror.asm.seal.ISeal;
 import net.vakror.asm.seal.function.amplify.damage.DamageAmplifyFunction;
 import net.vakror.asm.seal.seals.activatable.tool.ToolSeal;
-import net.vakror.asm.seal.tier.ISealableTier;
+import net.vakror.asm.seal.tier.seal.IntegerTiered;
+import net.vakror.asm.seal.tier.sealable.ISealableTier;
 import net.vakror.asm.seal.type.ActivatableSeal;
-import net.vakror.asm.seal.type.amplifying.ItemAmplificationSeal;
+import net.vakror.asm.seal.type.amplifying.ItemAmplifyingSeal;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -69,8 +71,14 @@ public class WandItem extends ActivatableSealableItem {
 
     @Override
     public float getDestroySpeed(ItemStack pStack, BlockState pState) {
+        float[] miningSpeed = new float[]{speed};
         if (isCorrectToolForDrops(pStack, pState)) {
-            return hasSeal("mining_speed", pStack) ? this.speed * 2: this.speed;
+            getAllSealsWithProperty("haste").forEach((seal -> {
+                if (seal instanceof IntegerTiered tiered) {
+                    miningSpeed[0] += (tiered.getAmount());
+                }
+            }));
+            return miningSpeed[0];
         }
         return 1.0f;
     }
