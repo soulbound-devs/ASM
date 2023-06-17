@@ -35,6 +35,7 @@ import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.vakror.asm.ASMMod;
 import net.vakror.asm.blocks.ModBlocks;
+import net.vakror.asm.blocks.custom.DungeonAccessBlock;
 import net.vakror.asm.blocks.entity.custom.DungeonAccessBlockEntity;
 import net.vakror.asm.blocks.entity.custom.SoulCatalystBlockEntity;
 import net.vakror.asm.capability.wand.ItemSeal;
@@ -180,15 +181,17 @@ public class Events {
 
         @SubscribeEvent
         public static void onPlayerEnterDungeon(EntityJoinLevelEvent event) {
-            if (!event.getLevel().isClientSide && event.getEntity() instanceof Player) {
-                ServerLevel world = (ServerLevel) event.getLevel();
-                if (world.dimensionType() == world.registryAccess().registryOrThrow(Registries.DIMENSION_TYPE).getHolderOrThrow(Dimensions.DUNGEON_TYPE).get()) {
-                    if ((event.getLevel().getBlockEntity(event.getEntity().blockPosition().below()) instanceof DungeonAccessBlockEntity entity)) {
-                        genDungeon(entity, world, event);
-                    } else {
-                        world.setBlock(event.getEntity().blockPosition().below(), ModBlocks.DUNGEON_KEY_BLOCK.get().defaultBlockState(), 3);
-                        if (event.getLevel().getBlockEntity(event.getEntity().blockPosition().below()) instanceof DungeonAccessBlockEntity entity) {
+            if (!event.loadedFromDisk()) {
+                if (!event.getLevel().isClientSide && event.getEntity() instanceof Player) {
+                    ServerLevel world = (ServerLevel) event.getLevel();
+                    if (world.dimensionType() == world.registryAccess().registryOrThrow(Registries.DIMENSION_TYPE).getHolderOrThrow(Dimensions.DUNGEON_TYPE).get()) {
+                        if ((event.getLevel().getBlockEntity(event.getEntity().blockPosition().below()) instanceof DungeonAccessBlockEntity entity)) {
                             genDungeon(entity, world, event);
+                        } else {
+                            world.setBlock(event.getEntity().blockPosition().below(), ModBlocks.DUNGEON_KEY_BLOCK.get().defaultBlockState().setValue(DungeonAccessBlock.LOCKED, false), 3);
+                            if (event.getLevel().getBlockEntity(event.getEntity().blockPosition().below()) instanceof DungeonAccessBlockEntity entity) {
+                                genDungeon(entity, world, event);
+                            }
                         }
                     }
                 }
