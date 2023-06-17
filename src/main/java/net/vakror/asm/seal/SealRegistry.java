@@ -33,11 +33,6 @@ public class SealRegistry {
         addAttackSeal(new SwordSeal());
     }
 
-    public static void addPassiveSeal(ISeal seal) {
-        passiveSeals.put(seal.getId(), seal);
-        allSeals.put(seal.getId(), seal);
-    }
-
     public static void addSeal(ISeal seal, SealType type) {
         switch (type) {
             case PASSIVE -> passiveSeals.put(seal.getId(), seal);
@@ -49,6 +44,12 @@ public class SealRegistry {
 
     public static void addAttackSeal(ISeal seal) {
         attackSeals.put(seal.getId(), seal);
+        allSeals.put(seal.getId(), seal);
+
+    }
+
+    public static void addPassiveSeal(ISeal seal) {
+        passiveSeals.put(seal.getId(), seal);
         allSeals.put(seal.getId(), seal);
     }
 
