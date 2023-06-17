@@ -1,16 +1,15 @@
-package net.vakror.asm.seal.seals.amplifying;
+package net.vakror.asm.seal.type.amplifying;
 
 import net.vakror.asm.seal.SealProperty;
-import net.vakror.asm.seal.type.BaseSeal;
 import net.vakror.asm.util.ArithmeticActionType;
 
 import java.util.List;
 
-public class StackSizeUpgradeSeal extends BaseSeal {
+public class SackAmplifyingSeal extends AmplifyingSeal{
     public final int amount;
     public final ArithmeticActionType actionType;
-    public StackSizeUpgradeSeal(int tier, int amount, ArithmeticActionType actionType) {
-        super("stack_size_tier_" + tier, false);
+    public SackAmplifyingSeal(String id, int tier, int amount, ArithmeticActionType actionType) {
+        super(id + "_" + tier);
         this.amount = amount;
         this.actionType = actionType;
     }
@@ -18,7 +17,6 @@ public class StackSizeUpgradeSeal extends BaseSeal {
     @Override
     public List<SealProperty> properties() {
         properties.add(new SealProperty("sack"));
-        properties.add(new SealProperty("stack_size"));
         return super.properties();
     }
 }
