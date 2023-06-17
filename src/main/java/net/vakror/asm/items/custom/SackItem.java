@@ -13,10 +13,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
 import net.vakror.asm.capability.wand.ItemSealProvider;
-import net.vakror.asm.seal.seals.amplifying.ColumnUpgradeSeal;
-import net.vakror.asm.seal.seals.amplifying.RowUpgradeSeal;
-import net.vakror.asm.seal.seals.amplifying.StackSizeUpgradeSeal;
-import net.vakror.asm.seal.tier.ISealableTier;
+import net.vakror.asm.seal.seals.amplifying.sack.ColumnUpgradeSeal;
+import net.vakror.asm.seal.seals.amplifying.sack.RowUpgradeSeal;
+import net.vakror.asm.seal.seals.amplifying.sack.StackSizeUpgradeSeal;
+import net.vakror.asm.seal.tier.sealable.ISealableTier;
 import net.vakror.asm.screen.SackMenu;
 import org.jetbrains.annotations.NotNull;
 
