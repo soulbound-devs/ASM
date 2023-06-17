@@ -12,7 +12,7 @@ import net.vakror.asm.items.custom.SackItem;
 import net.vakror.asm.items.custom.WandItem;
 import net.vakror.asm.items.custom.seals.SealItem;
 import net.vakror.asm.seal.SealType;
-import net.vakror.asm.seal.tier.ModWandTiers;
+import net.vakror.asm.seal.tier.sealable.ModWandTiers;
 import net.vakror.asm.soul.ModSoul;
 
 import static net.vakror.asm.seal.SealTooltips.*;
@@ -43,8 +43,14 @@ public class ModItems {
     public static final RegistryObject<Item> HOEING_SEAL = ITEMS_REGISTRY.register("hoeing_seal",
            () -> new SealItem(new Item.Properties(), "hoeing", SealType.PASSIVE, HOEING));
 
-    public static final RegistryObject<Item> MINING_SPEED_SEAL = ITEMS_REGISTRY.register("mining_speed_seal",
+    public static final RegistryObject<Item> MINING_SPEED_SEAL_TIER_1 = ITEMS_REGISTRY.register("mining_speed_seal",
            () -> new SealItem(new Item.Properties(), "mining_speed", SealType.AMPLIFYING, HASTE));
+
+    public static final RegistryObject<Item> MINING_SPEED_SEAL_TIER_2 = ITEMS_REGISTRY.register("mining_speed_seal_tier_2",
+           () -> new SealItem(new Item.Properties(), "mining_speed_tier_2", SealType.AMPLIFYING, HASTE_TIER_2));
+
+    public static final RegistryObject<Item> MINING_SPEED_SEAL_TIER_3 = ITEMS_REGISTRY.register("mining_speed_seal_tier_3",
+           () -> new SealItem(new Item.Properties(), "mining_speed_tier_3", SealType.AMPLIFYING, HASTE_TIER_3));
 
     public static final RegistryObject<Item> SWORDING_SEAL = ITEMS_REGISTRY.register("swording_seal",
            () -> new SealItem(new Item.Properties(),"swording", SealType.OFFENSIVE, SWORDING));
