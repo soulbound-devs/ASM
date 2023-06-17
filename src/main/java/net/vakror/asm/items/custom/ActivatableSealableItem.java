@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.vakror.asm.seal.ISeal;
 import net.vakror.asm.seal.SealRegistry;
-import net.vakror.asm.seal.tier.ISealableTier;
+import net.vakror.asm.seal.tier.sealable.ISealableTier;
 import net.vakror.asm.capability.wand.ItemSealProvider;
 
 import java.util.concurrent.atomic.AtomicBoolean;
