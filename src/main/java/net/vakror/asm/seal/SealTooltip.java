@@ -77,8 +77,17 @@ public record SealTooltip(List<Component> tooltip) {
         }
 
         public SealTooltipComponentBuilder addTierWithNewline(int tier) {
-            tooltip.append("§" + getColorFromTier(tier).id + "Current Tier: " + tier);
+            return addTierWithNewline(tier, false);
+        }
+
+        public SealTooltipComponentBuilder addTierWithNewline(int tier, boolean isMax) {
+            if (isMax) {
+            tooltip.append("§" + getColorFromTier(tier).id + "MAX Tier");
             tooltip.append("\n");
+            } else {
+                tooltip.append("§" + getColorFromTier(tier).id + "Current Tier: " + tier);
+                tooltip.append("\n");
+            }
             return this;
         }
 
@@ -122,7 +131,7 @@ public record SealTooltip(List<Component> tooltip) {
             return new SealTooltipComponent(tooltip, style);
         }
 
-        public static enum ColorCode {
+        public enum ColorCode {
             BLACK(0),
             DARK_BLUE(1),
             GREEN(2),
@@ -141,9 +150,11 @@ public record SealTooltip(List<Component> tooltip) {
             WHITE("F");
 
             final String id;
+
             ColorCode(String id) {
                 this.id = id;
             }
+
             ColorCode(int id) {
                 this.id = String.valueOf(id);
             }
