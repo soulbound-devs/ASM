@@ -10,19 +10,19 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.vakror.asm.ASMMod;
-import net.vakror.asm.seal.tier.ISealableTier;
 import net.vakror.asm.capability.wand.ItemSeal;
 import net.vakror.asm.capability.wand.ItemSealProvider;
+import net.vakror.asm.items.ModTiers;
 import net.vakror.asm.items.custom.seals.SealItem;
 import net.vakror.asm.seal.ISeal;
 import net.vakror.asm.seal.SealProperty;
 import net.vakror.asm.seal.SealRegistry;
 import net.vakror.asm.seal.SealType;
+import net.vakror.asm.seal.tier.sealable.ISealableTier;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class SealableItem extends DiggerItem {
     protected ItemStack stack;
 
     public SealableItem(Properties properties, ISealableTier tier) {
-        super(3, 0, Tiers.DIAMOND, BlockTags.create(new ResourceLocation(ASMMod.MOD_ID, "none")), properties);
+        super(0, 0, ModTiers.DIAMOND_LIKE, BlockTags.create(new ResourceLocation(ASMMod.MOD_ID, "none")), properties);
         this.tier = tier;
     }
 
@@ -64,7 +64,7 @@ public class SealableItem extends DiggerItem {
     public List<ISeal> getAllSealsWithProperty(String propertyId) {
         List<ISeal> seals = new ArrayList<>();
         stack.getCapability(ItemSealProvider.SEAL).ifPresent(wand -> {
-            wand.getAllActivatableSeals().forEach((seal -> {
+            wand.getAllSeals().forEach((seal -> {
                 if (seal.properties().contains(new SealProperty(propertyId))) {
                     seals.add(seal);
                 }
