@@ -50,7 +50,7 @@ public class SealItem extends Item {
         if (!Screen.hasShiftDown()) {
             tooltip.add(Component.literal("Press §eSHIFT§r for more Information"));
         } else {
-            tooltip.addAll(this.tooltip.getTooltip());
+            tooltip.addAll(this.tooltip.tooltip());
         }
         super.appendHoverText(stack, level, tooltip, tooltipFlag);
     }
