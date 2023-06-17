@@ -5,6 +5,7 @@ import net.minecraft.world.item.ItemStack;
 import net.vakror.asm.seal.ISeal;
 import net.vakror.asm.seal.SealRegistry;
 import net.vakror.asm.seal.SealType;
+import net.vakror.asm.util.BetterArrayList;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -65,6 +66,14 @@ public class ItemSeal {
         return seals;
     }
 
+    public List<ISeal> getAllSeals() {
+        List<ISeal> seals = new ArrayList<ISeal>();
+        seals.addAll(passiveSeals);
+        seals.addAll(attackSeals);
+        seals.addAll(amplifyingSeals);
+        return seals;
+    }
+
     public List<ISeal> getAttackSeals() {
         createIfNull();
         return attackSeals;
@@ -102,13 +111,13 @@ public class ItemSeal {
 
     public void createIfNull() {
         if (this.passiveSeals == null) {
-            passiveSeals = new ArrayList<>();
+            passiveSeals = new BetterArrayList<>();
         }
         if (this.attackSeals == null) {
-            attackSeals = new ArrayList<>();
+            attackSeals = new BetterArrayList<>();
         }
         if (this.amplifyingSeals == null) {
-            amplifyingSeals = new ArrayList<>();
+            amplifyingSeals = new BetterArrayList<>();
         }
     }
 
