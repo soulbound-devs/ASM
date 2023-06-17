@@ -8,17 +8,7 @@ import net.minecraft.network.chat.Style;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SealTooltip {
-
-    private final List<Component> tooltip;
-
-    public SealTooltip(List<Component> tooltip) {
-        this.tooltip = tooltip;
-    }
-
-    public List<Component> getTooltip() {
-        return tooltip;
-    }
+public record SealTooltip(List<Component> tooltip) {
 
     public static SealTooltip empty() {
         return new SealTooltip(new ArrayList<>());
@@ -40,6 +30,7 @@ public class SealTooltip {
             return new SealTooltip(tooltip);
         }
     }
+
     public static class SealTooltipComponent {
 
         private final Component tooltip;
