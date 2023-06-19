@@ -40,21 +40,21 @@ public class SackInventory extends SimpleContainer {
     @Override
     public void setChanged() {
         super.setChanged();
-        CompoundTag blockEntityTag = itemStack.getTagElement(getNBTTag());
-        if (blockEntityTag == null)
-            blockEntityTag = itemStack.getOrCreateTagElement(getNBTTag());
+        CompoundTag itemTag = itemStack.getTagElement(getNBTTag());
+        if (itemTag == null)
+            itemTag = itemStack.getOrCreateTagElement(getNBTTag());
 
         if (isEmpty()) {
-            if (blockEntityTag.contains("Items")) blockEntityTag.remove("Items");
+            if (itemTag.contains("Items")) itemTag.remove("Items");
         } else {
             NonNullList<ItemStack> itemStacks = NonNullList.withSize(SIZE, ItemStack.EMPTY);
             for (int i = 0; i < size; i++) {
                 itemStacks.set(i, getItem(i));
             }
-            ContainerHelper.saveAllItems(blockEntityTag, itemStacks);
+            ContainerHelper.saveAllItems(itemTag, itemStacks);
         }
 
-        if (shouldDeleteNBT(blockEntityTag)) {
+        if (shouldDeleteNBT(itemTag)) {
             itemStack.removeTagKey(getNBTTag());
         }
     }
