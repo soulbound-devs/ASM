@@ -13,22 +13,32 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
 import net.vakror.asm.capability.wand.ItemSealProvider;
+import net.vakror.asm.screen.SackInventory;
+import net.vakror.asm.screen.SackMenu;
+import net.vakror.asm.seal.SealRegistry;
 import net.vakror.asm.seal.seals.amplifying.sack.ColumnUpgradeSeal;
 import net.vakror.asm.seal.seals.amplifying.sack.RowUpgradeSeal;
 import net.vakror.asm.seal.seals.amplifying.sack.StackSizeUpgradeSeal;
 import net.vakror.asm.seal.tier.sealable.ISealableTier;
-import net.vakror.asm.screen.SackMenu;
+import net.vakror.asm.util.PickupUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class SackItem extends SealableItem {
     private int width = 9;
     private int height = 3;
     private int stackLimit = 64;
 
+    private PickupUtil.PickupMode pickupMode = PickupUtil.PickupMode.NONE;
+
     public SackItem(Properties properties, ISealableTier tier) {
         super(properties, tier);
+    }
+
+    public static SackInventory getInv(ItemStack sack) {
+        return new SackInventory(sack, getSackSize(sack), getSackStackSize(sack));
     }
 
     @Override
@@ -70,6 +80,14 @@ public class SackItem extends SealableItem {
 
     }
 
+    public PickupUtil.PickupMode getPickupMode() {
+        return pickupMode;
+    }
+
+    public void setPickupMode(PickupUtil.PickupMode pickupMode) {
+        this.pickupMode = pickupMode;
+    }
+
     @Override
     @SuppressWarnings("all")
     public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int p_41407_, boolean p_41408_) {
@@ -93,6 +111,19 @@ public class SackItem extends SealableItem {
         stack.getOrCreateTag().putUUID("SackUUID", uuid);
 
         return uuid;
+    }
+
+    public static PickupUtil.PickupMode getPickupMode(ItemStack stack) {
+        AtomicReference<PickupUtil.PickupMode> mode = new AtomicReference<>(PickupUtil.PickupMode.NONE);
+        stack.getCapability(ItemSealProvider.SEAL).ifPresent((itemSeal -> {
+            boolean hasPickup = itemSeal.getAmplifyingSeals().contains(SealRegistry.amplifyingSeals.get("pickup"));
+            if (hasPickup) {
+                mode.set(((SackItem) stack.getItem()).pickupMode);
+            } else {
+                mode.set(PickupUtil.PickupMode.NONE);
+            }
+        }));
+        return mode.get();
     }
 
     public static UUID getOrBindUUID(ItemStack stack) {
@@ -174,7 +205,11 @@ public class SackItem extends SealableItem {
         return stackSize[0];
     }
 
-    public static int getBPInvSize(ItemStack stack){
+    public static int getSackSize(ItemStack stack){
         return getSackHeight(stack) * getSackWidth(stack);
+    }
+
+    public boolean canPickup(ItemStack stack) {
+        return hasSeal("pickup", stack);
     }
 }

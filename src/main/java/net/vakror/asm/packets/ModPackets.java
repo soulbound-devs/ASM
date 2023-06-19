@@ -44,10 +44,10 @@ public class ModPackets {
                 .consumerMainThread(PacketSyncDimensionListChanges::handle)
                 .add();
 
-        net.messageBuilder(SyncSackC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(SyncSackC2SPacket::new)
-                .encoder(SyncSackC2SPacket::toBytes)
-                .consumerMainThread(SyncSackC2SPacket::handle)
+        net.messageBuilder(SyncPickupModeC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(SyncPickupModeC2SPacket::new)
+                .encoder(SyncPickupModeC2SPacket::encode)
+                .consumerMainThread(SyncPickupModeC2SPacket::handle)
                 .add();
     }
 

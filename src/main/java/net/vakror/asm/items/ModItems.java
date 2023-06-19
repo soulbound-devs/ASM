@@ -34,6 +34,9 @@ public class ModItems {
     public static final RegistryObject<Item> SACK_STACK_SIZE_UPGRADE_SEAL_TIER_1 = ITEMS_REGISTRY.register("sack_stack_size_upgrade_seal_tier_1",
            () -> new SealItem(new Item.Properties(), "stack_size_tier_1", SealType.AMPLIFYING, STACK_SIZE));
 
+    public static final RegistryObject<Item> SACK_PICKUP_SEAL = ITEMS_REGISTRY.register("sack_pickup_seal",
+           () -> new SealItem(new Item.Properties(), "pickup", SealType.AMPLIFYING, PICKUP));
+
     public static final RegistryObject<Item> WAND = ITEMS_REGISTRY.register("wand",
            () -> new WandItem(new Item.Properties(), ModWandTiers.ANCIENT_OAK));
 

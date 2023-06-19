@@ -10,6 +10,7 @@
     "LivingEntityMixin",
     "MappedRegistryMixin",
     "OverworldBiomesInvoker",
+    "PlayerInventoryMixin",
     "SerializationFixin"
   ],
   "client": [

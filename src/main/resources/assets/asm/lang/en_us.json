@@ -21,6 +21,9 @@
   "item.asm.sack_column_upgrade_seal_tier_1": "Width Enhancement Seal | Tier One",
   "item.asm.sack_stack_size_upgrade_seal_tier_1": "Stack Size Enhancement Seal | Tier One",
 
+  "key.category.asm": "ASM Keybinds",
+  "key.asm.pickup_mode_switch": "Switch Sack Pickup Mode",
+
   "asm.tooltip.fluid.amount_with_capacity": "%s / %s mB",
   "asm.tooltip.fluid.amount": "%s mB",
   "asm.fluid.empty": "Fluid Tank is Empty",

@@ -6,6 +6,7 @@ import net.vakror.asm.seal.seals.activatable.tool.AxingSeal;
 import net.vakror.asm.seal.seals.activatable.tool.HoeingSeal;
 import net.vakror.asm.seal.seals.activatable.tool.PickaxingSeal;
 import net.vakror.asm.seal.seals.amplifying.sack.ColumnUpgradeSeal;
+import net.vakror.asm.seal.seals.amplifying.sack.PickupSeal;
 import net.vakror.asm.seal.seals.amplifying.sack.RowUpgradeSeal;
 import net.vakror.asm.seal.seals.amplifying.sack.StackSizeUpgradeSeal;
 import net.vakror.asm.seal.seals.amplifying.wand.haste.HasteSeal;
@@ -27,6 +28,7 @@ public class SealRegistry {
         addAmplifyingSealSeal(new HasteSeal.HasteSealTierOne());
         addAmplifyingSealSeal(new HasteSeal.HasteSealTierTwo());
         addAmplifyingSealSeal(new HasteSeal.HasteSealTierThree());
+        addAmplifyingSealSeal(new PickupSeal());
         addAmplifyingSealSeal(new StackSizeUpgradeSeal(1, 2, ArithmeticActionType.MULTIPLY));
         addAmplifyingSealSeal(new ColumnUpgradeSeal(1, 2, ArithmeticActionType.ADD));
         addAmplifyingSealSeal(new RowUpgradeSeal(1, 2, ArithmeticActionType.ADD));
