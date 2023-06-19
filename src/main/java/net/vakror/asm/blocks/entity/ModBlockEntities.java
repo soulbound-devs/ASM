@@ -7,10 +7,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.vakror.asm.ASMMod;
 import net.vakror.asm.blocks.ModBlocks;
-import net.vakror.asm.blocks.entity.custom.DungeonAccessBlockEntity;
-import net.vakror.asm.blocks.entity.custom.SoulCatalystBlockEntity;
-import net.vakror.asm.blocks.entity.custom.SoulSolidifierBlockEntity;
-import net.vakror.asm.blocks.entity.custom.WandImbuingTableBlockEntity;
+import net.vakror.asm.blocks.entity.custom.*;
 
 public class ModBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, ASMMod.MOD_ID);
@@ -26,6 +23,8 @@ public class ModBlockEntities {
 
     public static final RegistryObject<BlockEntityType<DungeonAccessBlockEntity>> DUNGEON_ACCESS_BLOCK_ENTITY =
             BLOCK_ENTITIES.register("dungeon_access_block_entity", () -> BlockEntityType.Builder.of(DungeonAccessBlockEntity::new, ModBlocks.DUNGEON_KEY_BLOCK.get()).build(null));
+    public static final RegistryObject<BlockEntityType<ReturnToOverWorldBlockEntity>> RETURN_TO_OVERWORLD_BLOCK_ENTITY =
+            BLOCK_ENTITIES.register("return_to_overworld_block_entity", () -> BlockEntityType.Builder.of(ReturnToOverWorldBlockEntity::new, ModBlocks.RETURN_TO_OVERWORLD_BLOCK.get()).build(null));
 
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);

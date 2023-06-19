@@ -171,15 +171,12 @@ public class WandImbuingTableBlockEntity extends BlockEntity implements MenuProv
             wand.copyFrom(oldWand);
             if (SealRegistry.passiveSeals.containsKey(((SealItem) entity.itemHandler.getStackInSlot(2).getItem()).getId())) {
                 wand.addPassiveSeal(((SealItem) entity.itemHandler.getStackInSlot(2).getItem()).getId());
-                System.err.println("PASSIVE");
             }
             if (SealRegistry.attackSeals.containsKey(((SealItem) entity.itemHandler.getStackInSlot(2).getItem()).getId())) {
                 wand.addAttackSeal(((SealItem) entity.itemHandler.getStackInSlot(2).getItem()).getId());
-                System.err.println("ATTACK");
             }
             if (SealRegistry.amplifyingSeals.containsKey(((SealItem) entity.itemHandler.getStackInSlot(2).getItem()).getId())) {
                 wand.addAmplifyingSeal(((SealItem) entity.itemHandler.getStackInSlot(2).getItem()).getId());
-                System.err.println("AMPLIFYING");
             } else {
                 System.err.println("SEAL ID NOT FOUND: " + ((SealItem) entity.itemHandler.getStackInSlot(2).getItem()).getId());
                 System.err.println("Known Ids: " + String.join(", ", SealRegistry.allSeals.keySet()));

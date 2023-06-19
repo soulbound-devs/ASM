@@ -35,8 +35,7 @@ import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.vakror.asm.ASMMod;
 import net.vakror.asm.blocks.ModBlocks;
-import net.vakror.asm.blocks.custom.DungeonAccessBlock;
-import net.vakror.asm.blocks.entity.custom.DungeonAccessBlockEntity;
+import net.vakror.asm.blocks.entity.custom.ReturnToOverWorldBlockEntity;
 import net.vakror.asm.blocks.entity.custom.SoulCatalystBlockEntity;
 import net.vakror.asm.capability.wand.ItemSeal;
 import net.vakror.asm.capability.wand.ItemSealProvider;
@@ -55,6 +54,7 @@ import net.vakror.asm.world.structure.DungeonStructure;
 import net.vakror.asm.world.structure.ModStructures;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Events {
     @Mod.EventBusSubscriber(modid = ASMMod.MOD_ID)
@@ -97,25 +97,19 @@ public class Events {
         @SubscribeEvent
         public static void triggerSoulCatalyst(LivingDeathEvent event) {
             Player player = Minecraft.getInstance().player;
-            System.err.println("DEATH");
-            System.err.println(player);
             if (player != null) {
                 List<BlockPos> blocksNearby = getNearbyBlockPos(event.getEntity().level(), player.blockPosition(), 3);
                 blocksNearby.forEach((pos -> {
                     BlockEntity entity = event.getEntity().level().getBlockEntity(pos);
                     if (entity instanceof SoulCatalystBlockEntity catalystEntity && catalystEntity.getDelay() == 0) {
-                        System.err.println("CATALYST");
                         catalystEntity.setDelay(catalystEntity.getMaxDelay());
                         player.getCapability(PlayerSoulProvider.PLAYER_SOUL).ifPresent(playerSoul -> {
                             if (event.getEntity() instanceof EnderDragon) {
                                 playerSoul.addDarkSoul(10);
-                                System.err.println("DRAGON");
                             } else if (event.getEntity() instanceof Monster) {
                                 playerSoul.addDarkSoul(1);
-                                System.err.println("MONSTER");
                             } else if (event.getEntity() instanceof Animal) {
                                 playerSoul.addSoul(1);
-                                System.err.println("ANIMAL");
                             }
                         });
                     }
@@ -133,7 +127,6 @@ public class Events {
                         if (seal instanceof IntegerTiered tiered) {
                             miningSpeed[0] += (tiered.getAmount());
                             int a = tiered.getAmount();
-                            System.out.println(a);
                         }
                     }));
                     event.setNewSpeed(miningSpeed[0]);
@@ -201,43 +194,44 @@ public class Events {
 
         @SubscribeEvent
         public static void onPlayerEnterDungeon(EntityJoinLevelEvent event) {
-            if (!event.loadedFromDisk()) {
-                if (!event.getLevel().isClientSide && event.getEntity() instanceof Player) {
-                    ServerLevel world = (ServerLevel) event.getLevel();
-                    if (world.dimensionType() == world.registryAccess().registryOrThrow(Registries.DIMENSION_TYPE).getHolderOrThrow(Dimensions.DUNGEON_TYPE).get()) {
-                        if ((event.getLevel().getBlockEntity(event.getEntity().blockPosition().below()) instanceof DungeonAccessBlockEntity entity)) {
+            if (!event.getLevel().isClientSide && event.getEntity() instanceof Player) {
+                ServerLevel world = (ServerLevel) event.getLevel();
+                if (world.dimensionType() == world.registryAccess().registryOrThrow(Registries.DIMENSION_TYPE).getHolderOrThrow(Dimensions.DUNGEON_TYPE).get()) {
+                    if ((event.getLevel().getBlockEntity(new BlockPos(0, 63, 0)) instanceof ReturnToOverWorldBlockEntity entity)) {
+                        genDungeon(entity, world, event);
+                    } else {
+                        world.setBlock(new BlockPos(0, 63, 0), ModBlocks.RETURN_TO_OVERWORLD_BLOCK.get().defaultBlockState(), 3);
+                        if (event.getLevel().getBlockEntity(new BlockPos(0, 63, 0)) instanceof ReturnToOverWorldBlockEntity entity) {
                             genDungeon(entity, world, event);
-                        } else {
-                            world.setBlock(event.getEntity().blockPosition().below(), ModBlocks.DUNGEON_KEY_BLOCK.get().defaultBlockState().setValue(DungeonAccessBlock.LOCKED, false), 3);
-                            if (event.getLevel().getBlockEntity(event.getEntity().blockPosition().below()) instanceof DungeonAccessBlockEntity entity) {
-                                genDungeon(entity, world, event);
-                            }
                         }
                     }
                 }
             }
         }
 
-        private static void genDungeon(DungeonAccessBlockEntity entity, ServerLevel world, EntityJoinLevelEvent event) {
-            StructureStart start = new DungeonStructure(
-                    ModStructures.structure(), entity.getDungeonSize(), 0)
-                    .generate(world.registryAccess(),
-                            world.getChunkSource().getGenerator(),
-                            world.getChunkSource().getGenerator().getBiomeSource(),
-                            world.getChunkSource().randomState(),
-                            world.getStructureManager(),
-                            world.getSeed(),
-                            new ChunkPos(event.getEntity().blockPosition().below()),
-                            0,
-                            world,
-                            (biomeHolder) -> true);
-            BoundingBox boundingbox = start.getBoundingBox();
-            ChunkPos chunkpos = new ChunkPos(SectionPos.blockToSectionCoord(boundingbox.minX()), SectionPos.blockToSectionCoord(boundingbox.minZ()));
-            ChunkPos chunkpos1 = new ChunkPos(SectionPos.blockToSectionCoord(boundingbox.maxX()), SectionPos.blockToSectionCoord(boundingbox.maxZ()));
-            ChunkPos.rangeClosed(chunkpos, chunkpos1).forEach((chunkPos) -> {
-                start.placeInChunk(world, world.structureManager(), world.getChunkSource().getGenerator(), world.getRandom(), new BoundingBox(chunkPos.getMinBlockX(), world.getMinBuildHeight(), chunkPos.getMinBlockZ(), chunkPos.getMaxBlockX(), world.getMaxBuildHeight(), chunkPos.getMaxBlockZ()), chunkPos);
-            });
-            entity.hasGeneratedDungeon(true);
+        private static void genDungeon(ReturnToOverWorldBlockEntity entity, ServerLevel world, EntityJoinLevelEvent event) {
+            if (!entity.hasGeneratedDungeon()) {
+                StructureStart start = new DungeonStructure(
+                        ModStructures.structure(), entity.getDungeonSize(), 0)
+                        .generate(world.registryAccess(),
+                                world.getChunkSource().getGenerator(),
+                                world.getChunkSource().getGenerator().getBiomeSource(),
+                                world.getChunkSource().randomState(),
+                                world.getStructureManager(),
+                                world.getSeed(),
+                                new ChunkPos(event.getEntity().blockPosition().below()),
+                                0,
+                                world,
+                                (biomeHolder) -> true);
+                BoundingBox boundingbox = start.getBoundingBox();
+                ChunkPos chunkpos = new ChunkPos(SectionPos.blockToSectionCoord(boundingbox.minX()), SectionPos.blockToSectionCoord(boundingbox.minZ()));
+                ChunkPos chunkpos1 = new ChunkPos(SectionPos.blockToSectionCoord(boundingbox.maxX()), SectionPos.blockToSectionCoord(boundingbox.maxZ()));
+                ChunkPos.rangeClosed(chunkpos, chunkpos1).forEach((chunkPos) -> {
+                    start.placeInChunk(world, world.structureManager(), world.getChunkSource().getGenerator(), world.getRandom(), new BoundingBox(chunkPos.getMinBlockX(), world.getMinBuildHeight(), chunkPos.getMinBlockZ(), chunkPos.getMaxBlockX(), world.getMaxBuildHeight(), chunkPos.getMaxBlockZ()), chunkPos);
+                });
+                world.setBlock(new BlockPos(0, 63, 0), ModBlocks.RETURN_TO_OVERWORLD_BLOCK.get().defaultBlockState(), 3);
+                ((ReturnToOverWorldBlockEntity) Objects.requireNonNull(world.getBlockEntity(new BlockPos(0, 63, 0)))).hasGeneratedDungeon(true);
+            }
         }
     }
 

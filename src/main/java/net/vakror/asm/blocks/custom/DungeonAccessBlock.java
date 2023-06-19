@@ -47,10 +47,8 @@ public class DungeonAccessBlock extends BaseEntityBlock {
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        System.out.println(state.getValue(LOCKED).toString());
         if (!level.isClientSide && player.getItemInHand(hand).getItem().equals(ModItems.KEY.get())) {
             level.setBlock(pos, state.setValue(LOCKED, false), 35);
-            System.out.println("UNLOCKED!");
             return super.use(state, level, pos, player, hand, hitResult);
         }
         if (!level.isClientSide && !state.getValue(LOCKED)) {
@@ -64,7 +62,7 @@ public class DungeonAccessBlock extends BaseEntityBlock {
                 }
                 ServerLevel dimension = createWorld(level, blockEntity);
                 player.setPortalCooldown();
-                player.changeDimension(dimension, new DungeonTeleporter(dimension, pos, this));
+                player.changeDimension(dimension, new DungeonTeleporter(pos, this));
             }
         }
         return super.use(state, level, pos, player, hand, hitResult);

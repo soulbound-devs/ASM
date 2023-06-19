@@ -2,7 +2,6 @@ package net.vakror.asm.world.structure;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -34,9 +33,9 @@ public class DungeonStructure extends Structure {
     @Override
     public @NotNull Optional<Structure.GenerationStub> findGenerationPoint(Structure.GenerationContext context) {
         ChunkPos chunkPos = context.chunkPos();
-        BlockPos blockPos = new BlockPos(chunkPos.getMinBlockX(), 63, chunkPos.getMinBlockZ());
+        BlockPos blockPos = new BlockPos(-25, 63, -25);
         return Optional.of(new Structure.GenerationStub(blockPos, (builder) -> {
-            this.generatePieces(blockPos, Rotation.getRandom(RandomSource.create()), context.structureTemplateManager(), builder);
+            this.generatePieces(blockPos, Rotation.NONE, context.structureTemplateManager(), builder);
         }));
     }
 

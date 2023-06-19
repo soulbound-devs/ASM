@@ -66,7 +66,6 @@ public class DimensionUtils {
         return getOrCreateLevel(world.getServer(), key,
                 (server, registryKey) -> {
                     ChunkGenerator generator = new FlatLevelSource(new FlatLevelGeneratorSettings(Optional.empty(), registryAccess.lookup(Registries.BIOME).get().getOrThrow(Biomes.PLAINS), null));
-                    ASMMod.LOGGER.info("create world func");
                     LevelStem stem = new LevelStem(registryAccess.registryOrThrow(Registries.DIMENSION_TYPE).getHolderOrThrow(type), generator);
                     GameData.unfreezeData();
                     return stem;
@@ -84,7 +83,6 @@ public class DimensionUtils {
             return existingLevel;
         }
 
-        ASMMod.LOGGER.info("create level func");
         return createAndRegisterWorldAndDimension(server, map, levelKey, dimensionFactory);
     }
 
@@ -157,7 +155,6 @@ public class DimensionUtils {
         // update clients' dimension lists
         PacketSyncDimensionListChanges.updateClientDimensionLists(ImmutableSet.of(worldKey), ImmutableSet.of());
 
-        ASMMod.LOGGER.info("create and register dim func");
         return newWorld;
     }
 }

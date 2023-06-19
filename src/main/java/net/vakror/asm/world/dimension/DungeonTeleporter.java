@@ -1,47 +1,38 @@
 package net.vakror.asm.world.dimension;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.server.level.PlayerRespawnLogic;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.portal.PortalInfo;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.ITeleporter;
-import net.vakror.asm.blocks.ModBlocks;
 import net.vakror.asm.blocks.custom.DungeonAccessBlock;
-import net.vakror.asm.blocks.entity.custom.DungeonAccessBlockEntity;
+import net.vakror.asm.blocks.custom.ReturnToOverworldBlock;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Function;
 
 public class DungeonTeleporter implements ITeleporter {
-    protected final ServerLevel level;
     protected BlockPos pos;
-    protected final DungeonAccessBlock block;
+    protected BaseEntityBlock block;
 
-    public DungeonTeleporter(ServerLevel level, BlockPos pos, DungeonAccessBlock block) {
-        this.level = level;
+    public DungeonTeleporter(BlockPos pos, BaseEntityBlock block) {
         this.pos = pos;
         this.block = block;
     }
 
     @Override
     public @Nullable PortalInfo getPortalInfo(Entity entity, ServerLevel destWorld, Function<ServerLevel, PortalInfo> defaultPortalInfo) {
-        if (destWorld.dimensionType() == destWorld.registryAccess().registryOrThrow(Registries.DIMENSION_TYPE).getHolderOrThrow(Dimensions.DUNGEON_TYPE).get()) {
-            pos.atY(64);
-            if (!(destWorld.getBlockEntity(pos) instanceof DungeonAccessBlockEntity)) {
-                destWorld.setBlock(pos, ModBlocks.DUNGEON_KEY_BLOCK.get().defaultBlockState(), 3);
-            }
-        } else {
-            if (entity instanceof Player player) {
-                pos = PlayerRespawnLogic.getOverworldRespawnPos(destWorld, pos.getX(), pos.getZ());
-            }
+        if (block instanceof DungeonAccessBlock) {
+            pos = new BlockPos(0, 64, 0);
         }
-        return new PortalInfo(new Vec3(pos.above().getX(), pos.above().getY(), pos.above().getZ()), Vec3.ZERO, entity.getYRot(), entity.getXRot());
+        if (block instanceof ReturnToOverworldBlock) {
+            pos = new BlockPos(destWorld.getLevelData().getXSpawn(), destWorld.getLevelData().getYSpawn(), destWorld.getLevelData().getZSpawn());;
+        }
+        return new PortalInfo(pos.getCenter(), Vec3.ZERO, entity.getYRot(), entity.getXRot());
     }
 
     public static boolean loaded(ServerLevel pLevel, ChunkPos pStart, ChunkPos pEnd) {

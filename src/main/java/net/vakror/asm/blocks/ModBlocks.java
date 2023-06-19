@@ -101,6 +101,9 @@ public class ModBlocks {
     public static final RegistryObject<Block> TUNGSTEN_BLOCK = registerBlock("tungsten_block",
             () -> new DropExperienceBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(3.0F, 3.0F).requiresCorrectToolForDrops(), UniformInt.of(3, 6)));
 
+    public static final RegistryObject<Block> RETURN_TO_OVERWORLD_BLOCK = registerBlock("return_to_overworld_block",
+            () -> new ReturnToOverworldBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(3.0F, 3.0F).noLootTable()));
+
     private static <T extends Block> RegistryObject<T> registerBlockWithoutBlockItem(String name, Supplier<T> block) {
         return BLOCKS.register(name, block);
     }
