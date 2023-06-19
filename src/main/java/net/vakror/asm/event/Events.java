@@ -43,9 +43,11 @@ import net.vakror.asm.capability.wand.ItemSealProvider;
 import net.vakror.asm.entity.ModEntities;
 import net.vakror.asm.entity.client.BroomModel;
 import net.vakror.asm.entity.client.BroomRenderer;
+import net.vakror.asm.items.custom.ActivatableSealableItem;
 import net.vakror.asm.items.custom.SealableItem;
 import net.vakror.asm.packets.ModPackets;
 import net.vakror.asm.packets.SyncSoulS2CPacket;
+import net.vakror.asm.seal.tier.seal.IntegerTiered;
 import net.vakror.asm.soul.PlayerSoul;
 import net.vakror.asm.soul.PlayerSoulProvider;
 import net.vakror.asm.world.dimension.Dimensions;
@@ -118,6 +120,24 @@ public class Events {
                         });
                     }
                 }));
+            }
+        }
+
+        @SubscribeEvent
+        public static void adjustBreakSpeed(PlayerEvent.BreakSpeed event) {
+            float[] miningSpeed = new float[]{event.getOriginalSpeed()};
+            ItemStack item = event.getEntity().getItemInHand(InteractionHand.MAIN_HAND);
+            if (item.getItem() instanceof ActivatableSealableItem activatable) {
+                if (item.isCorrectToolForDrops(event.getState())) {
+                    activatable.getAllSealsWithProperty("haste").forEach((seal -> {
+                        if (seal instanceof IntegerTiered tiered) {
+                            miningSpeed[0] += (tiered.getAmount());
+                            int a = tiered.getAmount();
+                            System.out.println(a);
+                        }
+                    }));
+                    event.setNewSpeed(miningSpeed[0]);
+                }
             }
         }
 
