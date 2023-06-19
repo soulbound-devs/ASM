@@ -8,6 +8,7 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.vakror.asm.capability.wand.ItemSeal;
 import net.vakror.asm.seal.ISeal;
 import net.vakror.asm.seal.SealRegistry;
 import net.vakror.asm.seal.tier.sealable.ISealableTier;
@@ -52,6 +53,10 @@ public class ActivatableSealableItem extends SealableItem {
             seal.set(sealCap.getActiveSeal());
         }));
         return seal.get();
+    }
+
+    public ISeal getActiveSeal(ItemSeal sealCap) {
+        return sealCap.getActiveSeal();
     }
 
     private void activateSeal(ItemStack stack) {

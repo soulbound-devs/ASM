@@ -1,7 +1,6 @@
 package net.vakror.asm.items.custom;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
@@ -157,11 +156,7 @@ public class SealableItem extends DiggerItem {
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, tooltip, pIsAdvanced);
         pStack.getCapability(ItemSealProvider.SEAL).ifPresent(itemSeal -> {
-            if (!Screen.hasShiftDown()) {
-                addCompactTooltips(tooltip, itemSeal, itemSeal.getActiveSeal());
-            } else {
-                addAdvancedTooltips(tooltip, itemSeal);
-            }
+            addCompactTooltips(tooltip, itemSeal, itemSeal.getActiveSeal());
         });
     }
 
@@ -197,14 +192,12 @@ public class SealableItem extends DiggerItem {
             int speed = getDamageSpeed(itemSeal);
             tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("\uEff3: §E" + speed).setStyle(toActiveFont()).build().getTooltip());
         }
-
-        tooltip.add(Component.literal("Press §eSHIFT§r for advanced view"));
     }
 
     private int getDamageSpeed(ItemSeal itemSeal) {
         int[] speed = new int[]{0};
         if (this instanceof ActivatableSealableItem activatable) {
-            if (activatable.getActiveSeal(stack) != null) {
+            if (activatable.getActiveSeal(itemSeal) != null) {
                 ActivatableSeal seal = (ActivatableSeal) activatable.getActiveSeal(stack);
                 if (seal.getAttributeModifiers() != null && !seal.getAttributeModifiers().isEmpty()) {
                     seal.getAttributeModifiers().keySet().forEach((attribute -> {

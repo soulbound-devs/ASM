@@ -5,9 +5,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.levelgen.VerticalAnchor;
-import net.minecraft.world.level.levelgen.WorldGenerationContext;
-import net.minecraft.world.level.levelgen.heightproviders.UniformHeight;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
@@ -37,8 +34,7 @@ public class DungeonStructure extends Structure {
     @Override
     public @NotNull Optional<Structure.GenerationStub> findGenerationPoint(Structure.GenerationContext context) {
         ChunkPos chunkPos = context.chunkPos();
-        int startY = (new UniformHeight(VerticalAnchor.BOTTOM, VerticalAnchor.TOP)).sample(context.random(), new WorldGenerationContext(context.chunkGenerator(), context.heightAccessor()));
-        BlockPos blockPos = new BlockPos(chunkPos.getMinBlockX(), startY, chunkPos.getMinBlockZ());
+        BlockPos blockPos = new BlockPos(chunkPos.getMinBlockX(), 63, chunkPos.getMinBlockZ());
         return Optional.of(new Structure.GenerationStub(blockPos, (builder) -> {
             this.generatePieces(blockPos, Rotation.getRandom(RandomSource.create()), context.structureTemplateManager(), builder);
         }));
