@@ -155,26 +155,124 @@ public class SealableItem extends DiggerItem {
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, tooltip, pIsAdvanced);
         pStack.getCapability(ItemSealProvider.SEAL).ifPresent(itemSeal -> {
-            ISeal activeSeal = itemSeal.getActiveSeal();
-            if (tier.getPassiveSlots() != 0) {
-                addPassiveSealTooltips(itemSeal, tooltip, activeSeal);
-            }
-            if (tier.getAttackSlots() != 0) {
-                addOffensiveSealTooltips(itemSeal, tooltip, activeSeal);
-            }
-            if (tier.getAmplificationSlots() != 0) {
-                addAmplifyingSealTooltip(itemSeal, tooltip);
+            if (!Screen.hasShiftDown()) {
+                addCompactTooltips(tooltip, itemSeal, itemSeal.getActiveSeal());
+            } else {
+                addAdvancedTooltips(tooltip, itemSeal);
             }
         });
+    }
+
+    private void addAdvancedTooltips(List<Component> tooltip, ItemSeal itemSeal) {
+        ISeal activeSeal = itemSeal.getActiveSeal();
+        if (tier.getPassiveSlots() != 0) {
+            addPassiveSealTooltips(itemSeal, tooltip, activeSeal);
+        }
+        if (tier.getAttackSlots() != 0) {
+            addOffensiveSealTooltips(itemSeal, tooltip, activeSeal);
+        }
+        if (tier.getAmplificationSlots() != 0) {
+            addAmplifyingSealTooltip(itemSeal, tooltip);
+        }
+    }
+
+    private void addCompactTooltips(List<Component> tooltip, ItemSeal itemSeal, ISeal activeSeal) {
+
+        if (tier.getPassiveSlots() > 0) {
+            addCompactPassiveSealTooltips(tooltip, itemSeal, activeSeal);
+        }
+        if (tier.getAttackSlots() > 0) {
+            addCompactOffensiveSealTooltips(tooltip, itemSeal, activeSeal);
+        }
+        if (tier.getAmplificationSlots() > 0) {
+            addCompactAmplifyingSealTooltips(tooltip, itemSeal, activeSeal);
+        }
+
+        tooltip.add(Component.literal(""));
+
+        if (this instanceof ActivatableSealableItem) {
+            tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("\uEff2: §C" + getDamageFromSeals(itemSeal)).setStyle(toActiveFont()).build().getTooltip());
+            int speed = getDamageSpeed(itemSeal);
+            tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("\uEff3: §E" + speed).setStyle(toActiveFont()).build().getTooltip());
+        }
+
+        tooltip.add(Component.literal("Press §eSHIFT§r for advanced view"));
+    }
+
+    private int getDamageSpeed(ItemSeal itemSeal) {
+        int[] speed = new int[]{0};
+        if (this instanceof ActivatableSealableItem activatable) {
+            if (activatable.getActiveSeal(stack) != null) {
+                ActivatableSeal seal = (ActivatableSeal) activatable.getActiveSeal(stack);
+                if (seal.getAttributeModifiers() != null && !seal.getAttributeModifiers().isEmpty()) {
+                    seal.getAttributeModifiers().keySet().forEach((attribute -> {
+                        if (attribute.equals(Attributes.ATTACK_SPEED)) {
+                            seal.getAttributeModifiers().get(attribute).forEach((attributeModifier -> {
+                                speed[0] += attributeModifier.getAmount();
+                            }));
+                        }
+                    }));
+                }
+            }
+        }
+        return speed[0];
+    }
+
+    private void addCompactAmplifyingSealTooltips(List<Component> tooltip, ItemSeal itemSeal, ISeal activeSeal) {
+        tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("Amplifying Seals", Tooltip.TooltipComponentBuilder.ColorCode.BLUE).build().getTooltip());
+        int count = 0;
+        for (ISeal seal : itemSeal.getAmplifyingSeals()) {
+            if (activeSeal != null && seal.getId().equals(activeSeal.getId())) {
+                tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("    " + activeCharacter() + capitalizeString(seal.getId()), Tooltip.TooltipComponentBuilder.ColorCode.GOLD).setStyle(toActiveFont()).build().getTooltip());
+            } else {
+                tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("    " + capitalizeString(seal.getId()), Tooltip.TooltipComponentBuilder.ColorCode.GOLD).build().getTooltip());
+            }
+            count++;
+        }
+        if ((tier.getAmplificationSlots() - count) > 0) {
+            tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("    " + (tier.getAmplificationSlots() - count) + "  Empty Slot(s)", Tooltip.TooltipComponentBuilder.ColorCode.GREEN).build().getTooltip());
+        }
+    }
+
+    private void addCompactOffensiveSealTooltips(List<Component> tooltip, ItemSeal itemSeal, ISeal activeSeal) {
+        tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("Offensive Seals", Tooltip.TooltipComponentBuilder.ColorCode.BLUE).build().getTooltip());
+        int count = 0;
+        for (ISeal seal : itemSeal.getAttackSeals()) {
+            if (activeSeal != null && seal.getId().equals(activeSeal.getId())) {
+                tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("    " + activeCharacter() + capitalizeString(seal.getId()), Tooltip.TooltipComponentBuilder.ColorCode.RED).setStyle(toActiveFont()).build().getTooltip());
+            } else {
+                tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("    " + capitalizeString(seal.getId()), Tooltip.TooltipComponentBuilder.ColorCode.RED).build().getTooltip());
+            }
+            count++;
+        }
+        if ((tier.getAttackSlots() - count) > 0) {
+            tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("    " + (tier.getAttackSlots() - count) + "  Empty Slot(s)", Tooltip.TooltipComponentBuilder.ColorCode.GREEN).setStyle(toActiveFont()).build().getTooltip());
+        }
+    }
+
+    private void addCompactPassiveSealTooltips(List<Component> tooltip, ItemSeal itemSeal, ISeal activeSeal) {
+        tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("Passive Seals", Tooltip.TooltipComponentBuilder.ColorCode.BLUE).build().getTooltip());
+        int count = 0;
+        for (ISeal seal : itemSeal.getPassiveSeals()) {
+            if (activeSeal != null && seal.getId().equals(activeSeal.getId())) {
+                tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("    " + activeCharacter() + capitalizeString(seal.getId()), Tooltip.TooltipComponentBuilder.ColorCode.LIGHT_BLUE).setStyle(toActiveFont()).build().getTooltip());
+            } else {
+                tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("    " + capitalizeString(seal.getId()), Tooltip.TooltipComponentBuilder.ColorCode.LIGHT_BLUE).build().getTooltip());
+            }
+            count++;
+        }
+        if ((tier.getPassiveSlots() - count) > 0) {
+            tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("    " + (tier.getPassiveSlots() - count) + "  Empty Slot(s)", Tooltip.TooltipComponentBuilder.ColorCode.GREEN).setStyle(toActiveFont()).build().getTooltip());
+        }
     }
 
     private void addPassiveSealTooltips(ItemSeal itemSeal, List<Component> tooltip, ISeal activeSeal) {
         tooltip.add(Component.literal("Passive Seals:"));
         int count = 0;
-        for (ISeal seal: itemSeal.getPassiveSeals()) {
+        for (ISeal seal : itemSeal.getPassiveSeals()) {
             String active = "    ";
             if (activeSeal != null) {
-                active = (activeSeal.getId().equals(seal.getId())) ? activeCharacter(): "";
+                active = (activeSeal.getId().equals(seal.getId())) ? activeCharacter() : "";
             }
             Component stylizedTooltip = stylizeSeal(Component.literal(buildTooltipString(SealType.AMPLIFYING, seal, itemSeal, active)), ChatFormatting.AQUA);
             tooltip.add(stylizedTooltip);
@@ -190,10 +288,10 @@ public class SealableItem extends DiggerItem {
     private void addOffensiveSealTooltips(ItemSeal itemSeal, List<Component> tooltip, ISeal activeSeal) {
         tooltip.add(Component.literal("Offensive/Defensive Seals:"));
         int count = 0;
-        for (ISeal seal: itemSeal.getAttackSeals()) {
+        for (ISeal seal : itemSeal.getAttackSeals()) {
             String active = "   ";
             if (activeSeal != null) {
-                active = (activeSeal.getId().equals(seal.getId())) ? activeCharacter(): "";
+                active = (activeSeal.getId().equals(seal.getId())) ? activeCharacter() : "";
             }
             Component stylizedTooltip = stylizeSeal(Component.literal(buildTooltipString(SealType.AMPLIFYING, seal, itemSeal, active)), ChatFormatting.RED);
             tooltip.add(stylizedTooltip);
@@ -209,7 +307,7 @@ public class SealableItem extends DiggerItem {
     private void addAmplifyingSealTooltip(ItemSeal itemSeal, List<Component> tooltip) {
         tooltip.add(Component.literal("Amplifying Seals:"));
         int count = 0;
-        for (ISeal seal: itemSeal.getAmplifyingSeals()) {
+        for (ISeal seal : itemSeal.getAmplifyingSeals()) {
             tooltip.add(Component.literal(buildTooltipString(SealType.AMPLIFYING, seal, itemSeal, "")).withStyle(ChatFormatting.GOLD));
             count++;
         }

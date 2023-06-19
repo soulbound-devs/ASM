@@ -19,7 +19,6 @@ import net.vakror.asm.capability.wand.ItemSealProvider;
 import net.vakror.asm.seal.ISeal;
 import net.vakror.asm.seal.function.amplify.damage.DamageAmplifyFunction;
 import net.vakror.asm.seal.seals.activatable.tool.ToolSeal;
-import net.vakror.asm.seal.tier.seal.IntegerTiered;
 import net.vakror.asm.seal.tier.sealable.ISealableTier;
 import net.vakror.asm.seal.type.ActivatableSeal;
 import net.vakror.asm.seal.type.amplifying.ItemAmplifyingSeal;
@@ -68,21 +67,6 @@ public class WandItem extends ActivatableSealableItem {
     public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected) {
         super.inventoryTick(pStack, pLevel, pEntity, pSlotId, pIsSelected);
     }
-
-    @Override
-    public float getDestroySpeed(ItemStack pStack, BlockState pState) {
-        float[] miningSpeed = new float[]{speed};
-        if (isCorrectToolForDrops(pStack, pState)) {
-            getAllSealsWithProperty("haste").forEach((seal -> {
-                if (seal instanceof IntegerTiered tiered) {
-                    miningSpeed[0] += (tiered.getAmount());
-                }
-            }));
-            return miningSpeed[0];
-        }
-        return 1.0f;
-    }
-
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
         if (slot == EquipmentSlot.MAINHAND) {
