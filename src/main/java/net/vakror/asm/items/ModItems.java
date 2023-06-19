@@ -44,7 +44,7 @@ public class ModItems {
            () -> new SealItem(new Item.Properties(), "hoeing", SealType.PASSIVE, HOEING));
 
     public static final RegistryObject<Item> MINING_SPEED_SEAL_TIER_1 = ITEMS_REGISTRY.register("mining_speed_seal",
-           () -> new SealItem(new Item.Properties(), "mining_speed", SealType.AMPLIFYING, HASTE));
+           () -> new SealItem(new Item.Properties(), "mining_speed_tier_1", SealType.AMPLIFYING, HASTE));
 
     public static final RegistryObject<Item> MINING_SPEED_SEAL_TIER_2 = ITEMS_REGISTRY.register("mining_speed_seal_tier_2",
            () -> new SealItem(new Item.Properties(), "mining_speed_tier_2", SealType.AMPLIFYING, HASTE_TIER_2));
