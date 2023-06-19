@@ -6,7 +6,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.vakror.asm.seal.SealTooltip;
+import net.vakror.asm.seal.Tooltip;
 import net.vakror.asm.seal.SealType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -18,7 +18,7 @@ public class SealItem extends Item {
     private final SealType type;
     private final boolean canAddMultiple;
     private final int maxSealStack;
-    private final SealTooltip tooltip;
+    private final Tooltip tooltip;
 
     public SealType getType() {
         return type;
@@ -29,14 +29,14 @@ public class SealItem extends Item {
     }
 
     public SealItem(Properties pProperties, String id, SealType type) {
-        this(pProperties, id, type, false, 1, SealTooltip.empty());
+        this(pProperties, id, type, false, 1, Tooltip.empty());
     }
 
-    public SealItem(Properties pProperties, String id, SealType type, SealTooltip tooltip) {
+    public SealItem(Properties pProperties, String id, SealType type, Tooltip tooltip) {
         this(pProperties, id, type, false, 1, tooltip);
     }
 
-    public SealItem(Properties pProperties, String id, SealType type, boolean canAddMultiple, int maxSealStack, SealTooltip tooltip) {
+    public SealItem(Properties pProperties, String id, SealType type, boolean canAddMultiple, int maxSealStack, Tooltip tooltip) {
         super(pProperties);
         this.id = id;
         this.type = type;

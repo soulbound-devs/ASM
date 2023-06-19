@@ -8,34 +8,34 @@ import net.minecraft.network.chat.Style;
 import java.util.ArrayList;
 import java.util.List;
 
-public record SealTooltip(List<Component> tooltip) {
+public record Tooltip(List<Component> tooltip) {
 
-    public static SealTooltip empty() {
-        return new SealTooltip(new ArrayList<>());
+    public static Tooltip empty() {
+        return new Tooltip(new ArrayList<>());
     }
 
-    public static class SealTooltipBuilder {
-        private final List<SealTooltipComponent> tooltips = new ArrayList<>();
+    public static class TooltipBuilder {
+        private final List<TooltipComponent> tooltips = new ArrayList<>();
 
-        public SealTooltipBuilder addPart(SealTooltipComponent part) {
+        public TooltipBuilder addPart(TooltipComponent part) {
             tooltips.add(part);
             return this;
         }
 
-        public SealTooltip build() {
+        public Tooltip build() {
             List<Component> tooltip = new ArrayList<>();
             tooltips.forEach((component) -> {
                 tooltip.add(component.getTooltip());
             });
-            return new SealTooltip(tooltip);
+            return new Tooltip(tooltip);
         }
     }
 
-    public static class SealTooltipComponent {
+    public static class TooltipComponent {
 
         private final Component tooltip;
 
-        public SealTooltipComponent(MutableComponent tooltip, Style style) {
+        private TooltipComponent(MutableComponent tooltip, Style style) {
             this.tooltip = tooltip.withStyle(style);
         }
 
@@ -43,44 +43,44 @@ public record SealTooltip(List<Component> tooltip) {
             return tooltip;
         }
 
-        public static SealTooltipComponent passive() {
-            return new SealTooltipComponentBuilder().addPartWithNewline("").addPart("Passive Seal").setStyle(ChatFormatting.AQUA).build();
+        public static TooltipComponent passive() {
+            return new TooltipComponentBuilder().addPartWithNewline("").addPart("Passive Seal").setStyle(ChatFormatting.AQUA).build();
         }
 
-        public static SealTooltipComponent offensive() {
-            return new SealTooltipComponentBuilder().addPartWithNewline("").addPart("Offensive Seal").setStyle(ChatFormatting.RED).build();
+        public static TooltipComponent offensive() {
+            return new TooltipComponentBuilder().addPartWithNewline("").addPart("Offensive Seal").setStyle(ChatFormatting.RED).build();
         }
 
-        public static SealTooltipComponent amplifying() {
-            return new SealTooltipComponentBuilder().addPartWithNewline("").addPart("Amplifying Seal").setStyle(ChatFormatting.GOLD).build();
+        public static TooltipComponent amplifying() {
+            return new TooltipComponentBuilder().addPartWithNewline("").addPart("Amplifying Seal").setStyle(ChatFormatting.GOLD).build();
         }
 
-        public static SealTooltipComponent empty() {
-            return new SealTooltipComponent(Component.empty(), Style.EMPTY);
+        public static TooltipComponent empty() {
+            return new TooltipComponent(Component.empty(), Style.EMPTY);
         }
     }
 
-    public static class SealTooltipComponentBuilder {
+    public static class TooltipComponentBuilder {
         private final MutableComponent tooltip = Component.literal("");
         private Style style = Style.EMPTY;
 
-        public SealTooltipComponentBuilder addPartWithNewline(String part) {
+        public TooltipComponentBuilder addPartWithNewline(String part) {
             tooltip.append(part);
             tooltip.append("\n");
             return this;
         }
 
-        public SealTooltipComponentBuilder addPartWithNewline(String part, ColorCode color) {
+        public TooltipComponentBuilder addPartWithNewline(String part, ColorCode color) {
             tooltip.append("§" + color.id + part);
             tooltip.append("\n");
             return this;
         }
 
-        public SealTooltipComponentBuilder addTierWithNewline(int tier) {
+        public TooltipComponentBuilder addTierWithNewline(int tier) {
             return addTierWithNewline(tier, false);
         }
 
-        public SealTooltipComponentBuilder addTierWithNewline(int tier, boolean isMax) {
+        public TooltipComponentBuilder addTierWithNewline(int tier, boolean isMax) {
             if (isMax) {
             tooltip.append("§" + getColorFromTier(tier).id + "MAX Tier");
             tooltip.append("\n");
@@ -107,28 +107,28 @@ public record SealTooltip(List<Component> tooltip) {
             };
         }
 
-        public SealTooltipComponentBuilder addPart(String part) {
+        public TooltipComponentBuilder addPart(String part) {
             tooltip.append(part);
             return this;
         }
 
-        public SealTooltipComponentBuilder addPart(String part, ColorCode color) {
+        public TooltipComponentBuilder addPart(String part, ColorCode color) {
             tooltip.append("§" + color.id + part);
             return this;
         }
 
-        public SealTooltipComponentBuilder setStyle(Style style) {
+        public TooltipComponentBuilder setStyle(Style style) {
             this.style = style;
             return this;
         }
 
-        public SealTooltipComponentBuilder setStyle(ChatFormatting style) {
+        public TooltipComponentBuilder setStyle(ChatFormatting style) {
             this.style = Style.EMPTY.applyFormat(style);
             return this;
         }
 
-        public SealTooltipComponent build() {
-            return new SealTooltipComponent(tooltip, style);
+        public TooltipComponent build() {
+            return new TooltipComponent(tooltip, style);
         }
 
         public enum ColorCode {
