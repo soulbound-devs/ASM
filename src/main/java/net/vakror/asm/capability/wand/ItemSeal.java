@@ -5,6 +5,7 @@ import net.minecraft.world.item.ItemStack;
 import net.vakror.asm.seal.ISeal;
 import net.vakror.asm.seal.SealRegistry;
 import net.vakror.asm.seal.SealType;
+import net.vakror.asm.seal.tier.seal.Tiered;
 import net.vakror.asm.util.BetterArrayList;
 
 import java.util.ArrayList;
@@ -95,29 +96,50 @@ public class ItemSeal {
     }
 
     public void addPassiveSeal(String id) {
-        createIfNull();
+        createIfNull();;
+        List<ISeal> toRemove = new BetterArrayList<>();
+        passiveSeals.forEach((passive -> {
+            if (passive instanceof Tiered tiered && SealRegistry.passiveSeals.get(id) instanceof Tiered tiered1 && tiered.getTierId().equals(tiered1.getTierId())) {
+                toRemove.add(passive);
+            }
+        }));
+        passiveSeals.removeAll(toRemove);
         passiveSeals.add(SealRegistry.passiveSeals.get(id));
     }
 
     public void addAttackSeal(String id) {
         createIfNull();
+        List<ISeal> toRemove = new BetterArrayList<>();
+        attackSeals.forEach((attack -> {
+            if (attack instanceof Tiered tiered && SealRegistry.attackSeals.get(id) instanceof Tiered tiered1 && tiered.getTierId().equals(tiered1.getTierId())) {
+                toRemove.add(attack);
+            }
+        }));
+        attackSeals.removeAll(toRemove);
         attackSeals.add(SealRegistry.attackSeals.get(id));
     }
 
     public void addAmplifyingSeal(String id) {
         createIfNull();
+        List<ISeal> toRemove = new BetterArrayList<>();
+        amplifyingSeals.forEach((amplifying -> {
+            if (amplifying instanceof Tiered tiered && SealRegistry.amplifyingSeals.get(id) instanceof Tiered tiered1 && tiered.getTierId().equals(tiered1.getTierId())) {
+                toRemove.add(amplifying);
+            }
+        }));
+        amplifyingSeals.removeAll(toRemove);
         amplifyingSeals.add(SealRegistry.amplifyingSeals.get(id));
     }
 
     public void createIfNull() {
         if (this.passiveSeals == null) {
-            passiveSeals = new BetterArrayList<>();
+            passiveSeals = new ArrayList<>();
         }
         if (this.attackSeals == null) {
-            attackSeals = new BetterArrayList<>();
+            attackSeals = new ArrayList<>();
         }
         if (this.amplifyingSeals == null) {
-            amplifyingSeals = new BetterArrayList<>();
+            amplifyingSeals = new ArrayList<>();
         }
     }
 
