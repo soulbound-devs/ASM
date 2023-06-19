@@ -330,7 +330,7 @@ public class SealableItem extends DiggerItem {
     }
 
     private static Component stylizeSeal(MutableComponent seal, ChatFormatting color) {
-        return seal.withStyle(new Style(TextColor.fromLegacyFormat(color),
+        return seal.withStyle(new Style(null,
                 false, // bold
                 false, // italic
                 false, // underlined
