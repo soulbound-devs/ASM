@@ -56,7 +56,7 @@ public abstract class HasteSeal extends AmplifyingSeal implements IntegerTiered 
 
         @Override
         public int getAmount() {
-            return 16;
+            return 24;
         }
 
         @Override
@@ -78,7 +78,7 @@ public abstract class HasteSeal extends AmplifyingSeal implements IntegerTiered 
 
         @Override
         public int getAmount() {
-            return 24;
+            return 36;
         }
 
         @Override
