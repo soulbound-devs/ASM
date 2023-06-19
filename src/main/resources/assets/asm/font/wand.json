@@ -6,7 +6,22 @@
       "ascent": 7,
       "height": 8,
       "chars": ["\uEff1"]
-    },        {
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:item/iron_sword.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": ["\uEff2"]
+    },
+    {
+      "type": "bitmap",
+      "file": "asm:font/wand/attack_speed.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": ["\uEff3"]
+    },
+    {
       "type": "bitmap",
       "file": "minecraft:font/ascii.png",
       "ascent": 7,
