@@ -1,6 +1,7 @@
 package net.vakror.asm.items.custom;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
@@ -8,6 +9,7 @@ import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -18,11 +20,11 @@ import net.vakror.asm.capability.wand.ItemSeal;
 import net.vakror.asm.capability.wand.ItemSealProvider;
 import net.vakror.asm.items.ModTiers;
 import net.vakror.asm.items.custom.seals.SealItem;
-import net.vakror.asm.seal.ISeal;
-import net.vakror.asm.seal.SealProperty;
-import net.vakror.asm.seal.SealRegistry;
-import net.vakror.asm.seal.SealType;
+import net.vakror.asm.seal.*;
+import net.vakror.asm.seal.function.amplify.damage.DamageAmplifyFunction;
 import net.vakror.asm.seal.tier.sealable.ISealableTier;
+import net.vakror.asm.seal.type.ActivatableSeal;
+import net.vakror.asm.seal.type.amplifying.ItemAmplifyingSeal;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -90,7 +92,7 @@ public class SealableItem extends DiggerItem {
     }
 
     public boolean canAddSeal(ItemStack sealable, SealType type, ItemStack sealItem) {
-        return switch(type) {
+        return switch (type) {
             case PASSIVE -> canAddPassiveSeal(sealable, sealItem);
             case OFFENSIVE -> canAddOffensiveSeal(sealable, sealItem);
             case AMPLIFYING -> canAddAmplifyingSeal(sealable, sealItem);
@@ -101,16 +103,16 @@ public class SealableItem extends DiggerItem {
         AtomicBoolean toReturn = new AtomicBoolean();
         int passiveSlots = tier.getPassiveSlots();
         sealable.getCapability(ItemSealProvider.SEAL).ifPresent(wand -> {
-            String id = ((SealItem) sealItem.getItem()).getId();
-            if (!((SealItem) sealItem.getItem()).canAddMultiple()) {
-                if (!wand.getPassiveSeals().contains(SealRegistry.passiveSeals.get(id))) {
-                    toReturn.set(wand.getPassiveSeals().size() < passiveSlots);
+                String id = ((SealItem) sealItem.getItem()).getId();
+                if (!((SealItem) sealItem.getItem()).canAddMultiple()) {
+                    if (!wand.getPassiveSeals().contains(SealRegistry.passiveSeals.get(id))) {
+                        toReturn.set(wand.getPassiveSeals().size() < passiveSlots);
+                    }
+                } else {
+                    if (wand.getAmountOfTimesThatSealIsPresent(SealType.PASSIVE, ((SealItem) sealItem.getItem()).getId()) < ((SealItem) sealItem.getItem()).getMaxSealStack()) {
+                        toReturn.set(wand.getPassiveSeals().size() < passiveSlots);
+                    }
                 }
-            } else {
-                if (wand.getAmountOfTimesThatSealIsPresent(SealType.PASSIVE, ((SealItem) sealItem.getItem()).getId()) < ((SealItem) sealItem.getItem()).getMaxSealStack()) {
-                    toReturn.set(wand.getPassiveSeals().size() < passiveSlots);
-                }
-            }
         });
         return toReturn.get();
     }
@@ -341,6 +343,20 @@ public class SealableItem extends DiggerItem {
         ));
     }
 
+    private static Style toActiveFont() {
+        return new Style(TextColor.fromLegacyFormat(ChatFormatting.WHITE),
+                false, // bold
+                false, // italic
+                false, // underlined
+                false, // strikethrough
+                false, // obfuscated
+                null, // click event
+                null, // hover event
+                null, // insertion
+                new ResourceLocation(ASMMod.MOD_ID, "wand") // font
+        );
+    }
+
     public static String activeCharacter() {
         return "\uEff1";
     }
@@ -359,5 +375,29 @@ public class SealableItem extends DiggerItem {
             }
         }
         return String.valueOf(chars);
+    }
+
+    public float getDamageFromSeals(ItemSeal wand) {
+        final float[] damage = {0f};
+        if (wand.getActiveSeal() != null) {
+            damage[0] = ((ActivatableSeal) wand.getActiveSeal()).getDamage();
+        }
+        wand.getAmplifyingSeals().forEach((seal -> {
+            if (seal instanceof ItemAmplifyingSeal amplificationSeal) {
+                amplificationSeal.getAmplifyFunctions().forEach((amplifyFunction -> {
+                    if (amplifyFunction.isDamage()) {
+                        DamageAmplifyFunction function = (DamageAmplifyFunction) amplifyFunction;
+                        switch (function.getIncreaseType()) {
+                            case ADD -> damage[0] += function.getAmount();
+                            case SUBTRACT -> damage[0] -= function.getAmount();
+                            case MULTIPLY -> damage[0] *= function.getAmount();
+                            case DIVIDE -> damage[0] /= function.getAmount();
+                            case POW -> damage[0] = (float) Math.pow(damage[0], function.getAmount());
+                        }
+                    }
+                }));
+            }
+        }));
+        return damage[0] + attackDamageBaseline;
     }
 }
