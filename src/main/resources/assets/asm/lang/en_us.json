@@ -4,7 +4,9 @@
   "item.asm.hoeing_seal": "Seal of Farming",
   "item.asm.soul": "Soul",
   "item.asm.dark_soul": "Dark Soul",
-  "item.asm.mining_speed_seal": "Haste Seal",
+  "item.asm.mining_speed_seal": "Haste Seal | Tier One",
+  "item.asm.mining_speed_seal_tier_2": "Haste Seal | Tier Two",
+  "item.asm.mining_speed_seal_tier_3": "Haste Seal | Tier Three",
   "item.asm.wand": "Ancient Oak Wand",
   "item.asm.blank_passive_seal": "Blank Passive Seal",
   "item.asm.blank_attack_seal": "Blank Attack/Defense Seal",
@@ -20,6 +22,7 @@
   "item.asm.sack_row_upgrade_seal_tier_1": "Height Enhancement Seal | Tier One",
   "item.asm.sack_column_upgrade_seal_tier_1": "Width Enhancement Seal | Tier One",
   "item.asm.sack_stack_size_upgrade_seal_tier_1": "Stack Size Enhancement Seal | Tier One",
+  "item.asm.sack_pickup_seal": "Pickup Seal",
 
   "key.category.asm": "ASM Keybinds",
   "key.asm.pickup_mode_switch": "Switch Sack Pickup Mode",
@@ -39,6 +42,8 @@
   "block.asm.soul_catalyst": "Soul Catalyst",
   "block.asm.tungsten_block": "Tungsten Block",
   "block.asm.tungsten_ore": "Tungsten Ore",
+  "block.asm.return_to_overworld_block": "Overworld Return Block",
+  "block.asm.dungeon_border": "Dungeon Bedrock",
 
   "itemGroup.asm": "ASM",
 

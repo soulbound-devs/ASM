@@ -104,6 +104,9 @@ public class ModBlocks {
     public static final RegistryObject<Block> RETURN_TO_OVERWORLD_BLOCK = registerBlock("return_to_overworld_block",
             () -> new ReturnToOverworldBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(3.0F, 3.0F).noLootTable()));
 
+    public static final RegistryObject<Block> DUNGEON_BORDER = registerBlock("dungeon_border",
+            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(-1.0F, 3600000.0F).noLootTable()));
+
     private static <T extends Block> RegistryObject<T> registerBlockWithoutBlockItem(String name, Supplier<T> block) {
         return BLOCKS.register(name, block);
     }
