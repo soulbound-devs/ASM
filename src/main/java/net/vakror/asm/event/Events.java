@@ -214,12 +214,16 @@ public class Events {
         @SubscribeEvent
         public static void forbidPlacingBlocksInDungeon(BlockEvent.EntityPlaceEvent event) {
             //TODO: only forbid placing blocks if this is a stable dungeons where the boss has been beaten
-            if (Objects.requireNonNull(event.getEntity()).level().dimensionTypeId().equals(Dimensions.DUNGEON_TYPE)) {
-                if (event.getEntity() instanceof Player player) {
-                    player.addItem(new ItemStack(event.getPlacedBlock().getBlock()));
-                }
-                event.setCanceled(true);
+            if (!(event.getEntity() instanceof ServerPlayer)) {
+                return;
             }
+            if (event.getEntity().level().dimensionTypeId() != Dimensions.DUNGEON_TYPE) {
+                return;
+            }
+            if (!event.isCancelable()) {
+                return;
+            }
+            event.setCanceled(true);
         }
 
         @SubscribeEvent
