@@ -37,7 +37,8 @@ public class DungeonStructure extends Structure {
     @Override
     public @NotNull Optional<Structure.GenerationStub> findGenerationPoint(Structure.GenerationContext context) {
         ChunkPos chunkPos = context.chunkPos();
-        BlockPos blockPos = new BlockPos(-25 + DungeonUtil.getXOffsetForSize(size), y, -25 + DungeonUtil.getZOffsetForSize(size));
+//        BlockPos blockPos = new BlockPos(-25 + DungeonUtil.getXOffsetForSize(size), y, -25 + DungeonUtil.getZOffsetForSize(size));
+        BlockPos blockPos = DungeonUtil.getGenerationPoint(size, y);
         return Optional.of(new Structure.GenerationStub(blockPos, (builder) -> {
             this.generatePieces(blockPos, Rotation.NONE, context.structureTemplateManager(), builder);
         }));
