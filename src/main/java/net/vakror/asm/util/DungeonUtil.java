@@ -11,20 +11,21 @@ public class DungeonUtil {
             case 75 -> 50;
             case 100 -> 75;
             case 125 -> 100;
-            default -> 20 + randomX(rand);
+            default -> 20  + randomX(rand);
         };
     }
 
     private static int randomX(int rand) {
         return switch (rand) {
-            case 1 -> -20;
-            case 2 -> -14;
-            case 3 -> -32;
-            case 4 -> -23;
-            case 5 -> -18;
-            case 6 -> -33;
-            case 7 -> -4;
-            case 8 -> -11;
+            case 0 -> -20;
+            case 1 -> -14;
+            case 2 -> -32;
+            case 3 -> -23;
+            case 4 -> -18;
+            case 5 -> -33;
+            case 6 -> -4;
+            case 7 -> -11;
+            case 8 -> -42;
             default -> throw new IllegalStateException("Unexpected value: " + rand);
         };
     }
@@ -40,20 +41,22 @@ public class DungeonUtil {
 
     private static int randomZ(int rand) {
         return switch (rand) {
-            case 1 -> -15;
-            case 2 -> -7;
-            case 3 -> -32;
-            case 4 -> -40;
-            case 5 -> 2;
-            case 6 -> -5;
-            case 7 -> -37;
-            case 8 -> -24;
+            case 0 -> -15;
+            case 1 -> -7;
+            case 2 -> -32;
+            case 3 -> -40;
+            case 4 -> 2;
+            case 5 -> -5;
+            case 6 -> -37;
+            case 7 -> -24;
+            case 8 -> -19;
             default -> throw new IllegalStateException("Unexpected value: " + rand);
         };
     }
 
     public static BlockPos getGenerationPoint(int size, int y) {
-        int rand = new Random().nextInt(11);
+        int rand = new Random().nextInt(9);
+        System.out.println("Dungeon Spawn location: " + getXOffsetForSize(size, rand) + ", " + getZOffsetForSize(size, rand));
         return new BlockPos(-25 + getXOffsetForSize(size, rand), y, -25 + getZOffsetForSize(size, rand));
     }
 }
