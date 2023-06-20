@@ -39,7 +39,7 @@ public abstract class HasteSeal extends AmplifyingSeal implements IntegerTiered 
 
         @Override
         public ISeal getNextSeal() {
-            return SealRegistry.amplifyingSeals.get("mining_speed_tier_two");
+            return SealRegistry.amplifyingSeals.get("mining_speed_tier_2");
         }
 
         @Override
@@ -61,7 +61,7 @@ public abstract class HasteSeal extends AmplifyingSeal implements IntegerTiered 
 
         @Override
         public ISeal getNextSeal() {
-            return SealRegistry.amplifyingSeals.get("mining_speed_tier_three");
+            return SealRegistry.amplifyingSeals.get("mining_speed_tier_3");
         }
 
         @Override
