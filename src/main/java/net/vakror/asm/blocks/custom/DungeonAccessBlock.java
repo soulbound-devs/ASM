@@ -47,11 +47,13 @@ public class DungeonAccessBlock extends BaseEntityBlock {
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (!level.isClientSide && player.getItemInHand(hand).getItem().equals(ModItems.KEY.get())) {
+        boolean shouldTeleport = true;
+        if (!level.isClientSide && player.getItemInHand(hand).getItem().equals(ModItems.KEY.get()) && state.getValue(LOCKED)) {
             level.setBlock(pos, state.setValue(LOCKED, false), 35);
-            return super.use(state, level, pos, player, hand, hitResult);
+            player.getItemInHand(hand).shrink(1);
+            shouldTeleport = !shouldTeleport;
         }
-        if (!level.isClientSide && !state.getValue(LOCKED)) {
+        if (!level.isClientSide && !state.getValue(LOCKED) && shouldTeleport) {
             /*
             player teleportation
             */
