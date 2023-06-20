@@ -8,6 +8,7 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
+import net.vakror.asm.util.DungeonUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -17,23 +18,26 @@ public class DungeonStructure extends Structure {
 
     public final int size;
     public final int layer;
+    public final int y;
 
     public DungeonStructure(Structure.StructureSettings settings) {
         super(settings);
         this.size = 50;
         this.layer = 0;
+        this.y = 62;
     }
 
     public DungeonStructure(Structure.StructureSettings settings, int size, int layer) {
         super(settings);
         this.size = size;
         this.layer = layer;
+        this.y = 62 + (layer * 10);
     }
 
     @Override
     public @NotNull Optional<Structure.GenerationStub> findGenerationPoint(Structure.GenerationContext context) {
         ChunkPos chunkPos = context.chunkPos();
-        BlockPos blockPos = new BlockPos(-25, 63, -25);
+        BlockPos blockPos = new BlockPos(-25 + DungeonUtil.getXOffsetForSize(size), y, -25 + DungeonUtil.getZOffsetForSize(size));
         return Optional.of(new Structure.GenerationStub(blockPos, (builder) -> {
             this.generatePieces(blockPos, Rotation.NONE, context.structureTemplateManager(), builder);
         }));

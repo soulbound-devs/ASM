@@ -30,6 +30,7 @@ import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
@@ -197,15 +198,23 @@ public class Events {
             if (!event.getLevel().isClientSide && event.getEntity() instanceof Player) {
                 ServerLevel world = (ServerLevel) event.getLevel();
                 if (world.dimensionType() == world.registryAccess().registryOrThrow(Registries.DIMENSION_TYPE).getHolderOrThrow(Dimensions.DUNGEON_TYPE).get()) {
-                    if ((event.getLevel().getBlockEntity(new BlockPos(0, 63, 0)) instanceof ReturnToOverWorldBlockEntity entity)) {
+                    BlockPos returnPos = new BlockPos(0, 63, 0);
+                    if ((event.getLevel().getBlockEntity(returnPos) instanceof ReturnToOverWorldBlockEntity entity)) {
                         genDungeon(entity, world, event);
                     } else {
-                        world.setBlock(new BlockPos(0, 63, 0), ModBlocks.RETURN_TO_OVERWORLD_BLOCK.get().defaultBlockState(), 3);
-                        if (event.getLevel().getBlockEntity(new BlockPos(0, 63, 0)) instanceof ReturnToOverWorldBlockEntity entity) {
+                        world.setBlock(returnPos, ModBlocks.RETURN_TO_OVERWORLD_BLOCK.get().defaultBlockState(), 3);
+                        if (event.getLevel().getBlockEntity(returnPos) instanceof ReturnToOverWorldBlockEntity entity) {
                             genDungeon(entity, world, event);
                         }
                     }
                 }
+            }
+        }
+
+        @SubscribeEvent
+        public static void forbidPlacingBlocksInDungeon(BlockEvent.EntityPlaceEvent event) {
+            if (Objects.requireNonNull(event.getEntity()).level().dimensionTypeId().equals(Dimensions.DUNGEON_TYPE)) {
+                event.setCanceled(true);
             }
         }
 
@@ -229,8 +238,9 @@ public class Events {
                 ChunkPos.rangeClosed(chunkpos, chunkpos1).forEach((chunkPos) -> {
                     start.placeInChunk(world, world.structureManager(), world.getChunkSource().getGenerator(), world.getRandom(), new BoundingBox(chunkPos.getMinBlockX(), world.getMinBuildHeight(), chunkPos.getMinBlockZ(), chunkPos.getMaxBlockX(), world.getMaxBuildHeight(), chunkPos.getMaxBlockZ()), chunkPos);
                 });
-                world.setBlock(new BlockPos(0, 63, 0), ModBlocks.RETURN_TO_OVERWORLD_BLOCK.get().defaultBlockState(), 3);
-                ((ReturnToOverWorldBlockEntity) Objects.requireNonNull(world.getBlockEntity(new BlockPos(0, 63, 0)))).hasGeneratedDungeon(true);
+                BlockPos returnPos = new BlockPos(0, 63, 0);
+                world.setBlock(returnPos, ModBlocks.RETURN_TO_OVERWORLD_BLOCK.get().defaultBlockState(), 3);
+                ((ReturnToOverWorldBlockEntity) Objects.requireNonNull(world.getBlockEntity(returnPos))).hasGeneratedDungeon(true);
             }
         }
     }
