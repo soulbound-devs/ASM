@@ -15,9 +15,9 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public class LogoMixin {
 
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/LogoRenderer;renderLogo(Lnet/minecraft/client/gui/GuiGraphics;IF)V"))
-    public void renderASMLogo(LogoRenderer instance, GuiGraphics guiGraphics, int p_283270_, float p_282051_) {
+    public void renderASMLogo(LogoRenderer instance, GuiGraphics guiGraphics, int screenWidth, float transparency) {
         CustomLogoRenderer renderer = new CustomLogoRenderer(50, -75, 256, 79, 2047, 631, new ResourceLocation(ASMMod.MOD_ID, "textures/gui/title/asm_logo.png"), AnchorPoint.TITLE);
-        renderer.draw((TitleScreen) (Object) this, guiGraphics);
+        renderer.draw((TitleScreen) (Object) this, guiGraphics, transparency);
     }
 
 }

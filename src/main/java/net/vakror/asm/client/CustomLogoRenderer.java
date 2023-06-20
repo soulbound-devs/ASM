@@ -39,7 +39,8 @@ public class CustomLogoRenderer {
         this.anchor = anchor;
     }
 
-    public void draw(TitleScreen screen, GuiGraphics gui) {
+    public void draw(TitleScreen screen, GuiGraphics gui, float transparency) {
+        gui.setColor(1.0F, 1.0F, 1.0F, transparency);
         gui.pose().pushPose();
         gui.pose().translate(this.anchor.getX(screen), this.anchor.getY(screen), 0);
         gui.pose().scale((float) this.width / this.texWidth, (float) this.height / this.texHeight, 1);
