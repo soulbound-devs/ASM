@@ -2,6 +2,7 @@ package net.vakror.asm.blocks.entity.custom;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -41,8 +42,8 @@ public class DungeonAccessBlockEntity extends BlockEntity{
     }
 
     public ItemStack drops() {
-        CompoundTag droppedBlockNbt;
-        droppedBlockNbt = this.saveWithoutMetadata();
-        return new ItemStack(ModBlocks.DUNGEON_KEY_BLOCK.get(), 1, droppedBlockNbt);
+        ItemStack stack = new ItemStack(ModBlocks.DUNGEON_KEY_BLOCK.get(), 1);
+        BlockItem.setBlockEntityData(stack, ModBlockEntities.DUNGEON_ACCESS_BLOCK_ENTITY.get(), this.saveWithoutMetadata());
+        return stack;
     }
 }

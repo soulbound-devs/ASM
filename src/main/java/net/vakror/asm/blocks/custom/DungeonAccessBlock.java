@@ -1,7 +1,6 @@
 package net.vakror.asm.blocks.custom;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -27,6 +26,8 @@ import net.vakror.asm.items.ModItems;
 import net.vakror.asm.world.dimension.DungeonTeleporter;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -79,10 +80,7 @@ public class DungeonAccessBlock extends BaseEntityBlock {
     @Override
     public List<ItemStack> getDrops(BlockState pState, LootParams.Builder pBuilder) {
         if (pBuilder.getOptionalParameter(LootContextParams.BLOCK_ENTITY) instanceof DungeonAccessBlockEntity blockEntity) {
-            blockEntity.drops();
-            pBuilder.withDynamicDrop(new ResourceLocation("uuid"), ((pStackConsumer) -> {
-                pStackConsumer.accept(blockEntity.drops());
-            }));
+            return new ArrayList<>(Collections.singleton(blockEntity.drops()));
         }
         return super.getDrops(pState, pBuilder);
     }
