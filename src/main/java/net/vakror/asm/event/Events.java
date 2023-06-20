@@ -222,6 +222,13 @@ public class Events {
             }
         }
 
+        @SubscribeEvent
+        public static void forbidBreakingBlocksInDungeon(BlockEvent.BreakEvent event) {
+            if (Objects.requireNonNull(event.getPlayer()).level().dimensionTypeId().equals(Dimensions.DUNGEON_TYPE)) {
+                event.setCanceled(true);
+            }
+        }
+
         private static void genDungeon(ReturnToOverWorldBlockEntity entity, ServerLevel world, EntityJoinLevelEvent event) {
             if (!entity.hasGeneratedDungeon()) {
                 StructureStart start = new DungeonStructure(
