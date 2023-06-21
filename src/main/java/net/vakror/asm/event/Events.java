@@ -43,6 +43,7 @@ import net.vakror.asm.capability.wand.ItemSealProvider;
 import net.vakror.asm.entity.ModEntities;
 import net.vakror.asm.entity.client.BroomModel;
 import net.vakror.asm.entity.client.BroomRenderer;
+import net.vakror.asm.event.custom.GenerateFirstDungeonLayerEvent;
 import net.vakror.asm.items.custom.ActivatableSealableItem;
 import net.vakror.asm.items.custom.SealableItem;
 import net.vakror.asm.packets.ModPackets;
@@ -51,6 +52,7 @@ import net.vakror.asm.seal.tier.seal.IntegerTiered;
 import net.vakror.asm.soul.PlayerSoul;
 import net.vakror.asm.soul.PlayerSoulProvider;
 import net.vakror.asm.world.dimension.Dimensions;
+import net.vakror.asm.world.structure.DungeonPiece;
 import net.vakror.asm.world.structure.DungeonStructure;
 import net.vakror.asm.world.structure.ModStructures;
 
@@ -233,17 +235,19 @@ public class Events {
             }
         }
 
-        private static void genDungeon(ReturnToOverWorldBlockEntity entity, ServerLevel world, EntityJoinLevelEvent event) {
+        private static void genDungeon(ReturnToOverWorldBlockEntity entity, ServerLevel world, EntityJoinLevelEvent joinLevelEvent) {
             if (!entity.hasGeneratedDungeon()) {
+                GenerateFirstDungeonLayerEvent dungeonLayerEvent = new GenerateFirstDungeonLayerEvent((ServerPlayer) joinLevelEvent.getEntity(), world, 0);
+                DungeonPiece result = dungeonLayerEvent.getNewLayer();
                 StructureStart start = new DungeonStructure(
-                        ModStructures.structure(), entity.getDungeonSize(), 0)
+                        ModStructures.structure(), entity.getDungeonSize(), 0, result)
                         .generate(world.registryAccess(),
                                 world.getChunkSource().getGenerator(),
                                 world.getChunkSource().getGenerator().getBiomeSource(),
                                 world.getChunkSource().randomState(),
                                 world.getStructureManager(),
                                 world.getSeed(),
-                                new ChunkPos(event.getEntity().blockPosition().below()),
+                                new ChunkPos(joinLevelEvent.getEntity().blockPosition().below()),
                                 0,
                                 world,
                                 (biomeHolder) -> true);

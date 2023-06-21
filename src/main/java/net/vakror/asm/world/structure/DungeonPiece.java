@@ -19,23 +19,23 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import org.jetbrains.annotations.Nullable;
 
 public class DungeonPiece extends TemplateStructurePiece {
-    DungeonTheme theme;
+    DungeonType type;
     private final StructureTemplateManager manager;
 
-    public DungeonPiece(StructurePieceType pType, int pGenDepth, StructureTemplateManager manager, ResourceLocation pLocation, String pTemplateName, StructurePlaceSettings pPlaceSettings, BlockPos pos, DungeonTheme theme) {
+    public DungeonPiece(StructurePieceType pType, int pGenDepth, StructureTemplateManager manager, ResourceLocation pLocation, String pTemplateName, StructurePlaceSettings pPlaceSettings, BlockPos pos, DungeonType type) {
         super(pType, pGenDepth, manager, pLocation, pTemplateName, pPlaceSettings, pos);
         this.manager = manager;
     }
 
-    private DungeonPiece(StructureTemplateManager manager, DungeonTheme theme, ResourceLocation templateName, BlockPos templatePos, @Nullable ConfiguredFeature<?, ?> tree, Rotation rotation, Mirror mirror) {
+    private DungeonPiece(StructureTemplateManager manager, DungeonType type, ResourceLocation templateName, BlockPos templatePos, @Nullable ConfiguredFeature<?, ?> tree, Rotation rotation, Mirror mirror) {
         super(ModDungeonPieces.DEFAULT_DUNGEON_PIECE.get(), 0, manager, templateName, templateName.toString(), makeSettings(rotation, mirror), templatePos);
-        this.theme = theme;
+        this.type = type;
         this.manager = manager;
     }
 
     public DungeonPiece(StructurePieceSerializationContext context, CompoundTag nbt) {
         super(ModDungeonPieces.DEFAULT_DUNGEON_PIECE.get(), nbt, context.structureTemplateManager(), (con) -> makeSettings(Rotation.valueOf(nbt.getString("Rotation")), Mirror.valueOf(nbt.getString("Mirror"))));
-        this.theme = DungeonTheme.getThemeFromIndex(nbt.getInt("Theme"));
+        this.type = DungeonType.getTypeFromIndex(nbt.getInt("Type"));
         this.manager = context.structureTemplateManager();
     }
 
@@ -43,13 +43,18 @@ public class DungeonPiece extends TemplateStructurePiece {
         return (new StructurePlaceSettings()).setIgnoreEntities(true).addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK).setRotation(rotation).setMirror(mirror);
     }
 
-    public static void generateDungeon(BlockPos pos, Rotation rotation, StructureTemplateManager manager, StructurePiecesBuilder builder, int size, int layer) {
-        DungeonPiece piece = new DungeonPiece(ModDungeonPieces.DEFAULT_DUNGEON_PIECE.get(), 128, manager, new ResourceLocation("asm", "dungeon_" + size + "_" + layer), "dungeon_" + size + "_" + layer, makeSettings(rotation, Mirror.NONE), pos, DungeonTheme.getRandomTheme());
-        builder.addPiece(piece);
+    public static void generateDungeon(BlockPos pos, Rotation rotation, StructureTemplateManager manager, StructurePiecesBuilder builder, int size, int layer, @Nullable DungeonPiece eventPiece) {
+        if (eventPiece == null) {
+            String nbtName = "dungeon_" + size + "_" + layer;
+            DungeonPiece piece = new DungeonPiece(ModDungeonPieces.DEFAULT_DUNGEON_PIECE.get(), 128, manager, new ResourceLocation("asm", nbtName), nbtName, makeSettings(rotation, Mirror.NONE), pos, DungeonType.getRandomType());
+            builder.addPiece(piece);
+        } else {
+            builder.addPiece(eventPiece);
+        }
     }
 
     protected void addAdditionalSaveData(StructurePieceSerializationContext pContext, CompoundTag pTag) {
-        pTag.putString("theme", this.theme.id());
+        pTag.putString("theme", this.type.id());
         super.addAdditionalSaveData(pContext, pTag);
     }
 

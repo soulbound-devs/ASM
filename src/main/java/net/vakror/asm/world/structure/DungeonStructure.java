@@ -19,19 +19,22 @@ public class DungeonStructure extends Structure {
     public final int size;
     public final int layer;
     public final int y;
+    public final DungeonPiece piece;
 
     public DungeonStructure(Structure.StructureSettings settings) {
         super(settings);
         this.size = 50;
         this.layer = 0;
         this.y = 62;
+        this.piece = null;
     }
 
-    public DungeonStructure(Structure.StructureSettings settings, int size, int layer) {
+    public DungeonStructure(Structure.StructureSettings settings, int size, int layer, DungeonPiece piece) {
         super(settings);
         this.size = size;
         this.layer = layer;
         this.y = 62 + (layer * 10);
+        this.piece = piece;
     }
 
     @Override
@@ -45,7 +48,7 @@ public class DungeonStructure extends Structure {
     }
 
     public void generatePieces(BlockPos pos, Rotation rot, StructureTemplateManager manager, StructurePiecesBuilder builder) {
-        DungeonPiece.generateDungeon(pos, rot, manager, builder, this.size, this.layer);
+        DungeonPiece.generateDungeon(pos, rot, manager, builder, this.size, this.layer, this.piece);
     }
 
     @Override
