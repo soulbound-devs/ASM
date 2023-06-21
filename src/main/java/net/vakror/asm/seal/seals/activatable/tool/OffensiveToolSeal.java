@@ -12,7 +12,7 @@ public abstract class OffensiveToolSeal extends AttackSeal {
 
 
 
-    public OffensiveToolSeal(String id, TagKey<Block> mineableBlocks, int swingSpeed) {
+    public OffensiveToolSeal(String id, TagKey<Block> mineableBlocks, float swingSpeed) {
         super(id, swingSpeed);
         this.mineableBlocks = mineableBlocks;
     }
