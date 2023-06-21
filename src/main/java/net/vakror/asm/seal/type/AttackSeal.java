@@ -8,7 +8,7 @@ import java.util.List;
 
 public abstract class AttackSeal extends ActivatableSeal{
 
-    public AttackSeal(String id, int swingSpeed) {
+    public AttackSeal(String id, float swingSpeed) {
         super(id, swingSpeed);
     }
 

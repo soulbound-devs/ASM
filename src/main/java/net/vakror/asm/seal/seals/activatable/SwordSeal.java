@@ -7,7 +7,7 @@ import java.util.List;
 
 public class SwordSeal extends AttackSeal {
     public SwordSeal() {
-        super("swording", 3);
+        super("swording", 3f);
     }
 
     @Override

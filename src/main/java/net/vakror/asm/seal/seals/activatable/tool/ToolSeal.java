@@ -11,7 +11,7 @@ public abstract class ToolSeal extends ActivatableSeal {
     public final TagKey<Block> mineableBlocks;
 
     public ToolSeal(String id, TagKey<Block> mineableBlocks) {
-        super(id, 2);
+        super(id, 2f);
         this.mineableBlocks = mineableBlocks;
     }
 

@@ -10,7 +10,7 @@ import java.util.List;
 
 public class AxingSeal extends OffensiveToolSeal {
     public AxingSeal() {
-        super("axing", BlockTags.MINEABLE_WITH_AXE, 4);
+        super("axing", BlockTags.MINEABLE_WITH_AXE, 3.5f);
     }
 
     @Override

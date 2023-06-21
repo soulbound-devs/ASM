@@ -13,7 +13,7 @@ import java.util.List;
 
 public class ScytheSeal extends OffensiveToolSeal {
     public ScytheSeal() {
-        super("scythe", new TagKey<>(Registries.BLOCK, new ResourceLocation(ASMMod.MOD_ID, "mineable/scythe")), 5);
+        super("scythe", new TagKey<>(Registries.BLOCK, new ResourceLocation(ASMMod.MOD_ID, "mineable/scythe")), 3.5f);
     }
 
     @Override
