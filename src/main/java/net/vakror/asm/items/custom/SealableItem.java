@@ -8,7 +8,6 @@ import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -187,30 +186,23 @@ public class SealableItem extends DiggerItem {
 
         tooltip.add(Component.literal(""));
 
-        if (this instanceof ActivatableSealableItem) {
+        if (stack.getItem() instanceof ActivatableSealableItem) {
             tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("\uEff2: §C" + getDamageFromSeals(itemSeal)).setStyle(toActiveFont()).build().getTooltip());
-            int speed = getDamageSpeed(itemSeal);
+            float speed = getDamageSpeed(itemSeal);
             tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("\uEff3: §E" + speed).setStyle(toActiveFont()).build().getTooltip());
         }
     }
 
-    private int getDamageSpeed(ItemSeal itemSeal) {
-        int[] speed = new int[]{0};
-        if (this instanceof ActivatableSealableItem activatable) {
-            if (activatable.getActiveSeal(itemSeal) != null) {
-                ActivatableSeal seal = (ActivatableSeal) activatable.getActiveSeal(stack);
+    private float getDamageSpeed(ItemSeal itemSeal) {
+        float[] finalSwingSpeed = new float[]{0};
+            if (itemSeal.getActiveSeal() != null) {
+                ActivatableSeal seal = (ActivatableSeal) itemSeal.getActiveSeal();
                 if (seal.getAttributeModifiers() != null && !seal.getAttributeModifiers().isEmpty()) {
-                    seal.getAttributeModifiers().keySet().forEach((attribute -> {
-                        if (attribute.equals(Attributes.ATTACK_SPEED)) {
-                            seal.getAttributeModifiers().get(attribute).forEach((attributeModifier -> {
-                                speed[0] += attributeModifier.getAmount();
-                            }));
-                        }
-                    }));
+                    finalSwingSpeed[0] = finalSwingSpeed[0] - seal.swingSpeed;
+                    System.out.println(seal.swingSpeed);
                 }
             }
-        }
-        return speed[0];
+        return finalSwingSpeed[0];
     }
 
     private void addCompactAmplifyingSealTooltips(List<Component> tooltip, ItemSeal itemSeal, ISeal activeSeal) {
