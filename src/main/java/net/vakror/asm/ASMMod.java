@@ -6,6 +6,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.event.server.ServerStoppedEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -19,6 +20,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.vakror.asm.blocks.ModBlocks;
 import net.vakror.asm.blocks.entity.ModBlockEntities;
 import net.vakror.asm.client.ASMClient;
+import net.vakror.asm.entity.GoblaggerEntity;
 import net.vakror.asm.entity.ModEntities;
 import net.vakror.asm.items.ModItems;
 import net.vakror.asm.model.WandModelLoader;
@@ -33,6 +35,7 @@ import net.vakror.asm.world.dimension.Dimensions;
 import net.vakror.asm.world.structure.ModDungeonPieces;
 import net.vakror.asm.world.structure.ModStructures;
 import org.slf4j.Logger;
+import software.bernie.geckolib.GeckoLib;
 import terrablender.api.Regions;
 
 import static net.vakror.asm.ASMMod.MOD_ID;
@@ -57,6 +60,7 @@ public class ASMMod {
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         ModCreativeModeTabs.register(modEventBus);
+        GeckoLib.initialize();
         SealRegistry.registerSeals();
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
@@ -153,8 +157,13 @@ public class ASMMod {
         public static void onModelsRegistered(ModelEvent.RegisterGeometryLoaders event) {
             event.register("wand", WandModelLoader.INSTANCE);
         }
+        @SubscribeEvent
+        public static void entityAttributeEvent(EntityAttributeCreationEvent event) {
+            event.put(ModEntities.GOBLAGGER.get(), GoblaggerEntity.setAttributes());
+        }
+
 //        @SubscribeEvent
-//        public static void onTextureStitch(TextureStitchEvent. event) {
+//        public static void onTextureStitch(TextureStitchEvent.Pre event) {
 //            if (event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
 //                event.addSprite(new ResourceLocation(ASMMod.MOD_ID, "item/wands/activated/axing"));
 //                event.addSprite(new ResourceLocation(ASMMod.MOD_ID, "item/wands/wand"));

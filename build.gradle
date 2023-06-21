@@ -140,12 +140,15 @@ repositories {
         }
     }
     maven {url = "https://maven.blamejared.com/"}
+
+    maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
 }
 
 dependencies {
     minecraft supportDependencies.forge
 
     annotationProcessor supportDependencies.processor
+    implementation fg.deobf(supportDependencies.geckolib)
     implementation fg.deobf(supportDependencies.terrablender)
 }
 
