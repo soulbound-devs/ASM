@@ -2,13 +2,19 @@ package net.vakror.asm.event;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.Vec3i;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.animal.Animal;
@@ -40,6 +46,7 @@ import net.vakror.asm.blocks.entity.custom.ReturnToOverWorldBlockEntity;
 import net.vakror.asm.blocks.entity.custom.SoulCatalystBlockEntity;
 import net.vakror.asm.capability.wand.ItemSeal;
 import net.vakror.asm.capability.wand.ItemSealProvider;
+import net.vakror.asm.entity.GoblaggerEntity;
 import net.vakror.asm.entity.ModEntities;
 import net.vakror.asm.entity.client.BroomModel;
 import net.vakror.asm.entity.client.BroomRenderer;
@@ -262,6 +269,17 @@ public class Events {
                 ((ReturnToOverWorldBlockEntity) Objects.requireNonNull(world.getBlockEntity(returnPos))).hasGeneratedDungeon(true);
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void onDungeonMobHurt(LivingHurtEvent event) {
+        if (event.getEntity() instanceof GoblaggerEntity && (isDamageType(event.getSource(), DamageTypes.CRAMMING) || isDamageType(event.getSource(), DamageTypes.IN_WALL) || isDamageType(event.getSource(), DamageTypes.FALL))) {
+            event.setCanceled(true);
+        }
+    }
+
+    public static boolean isDamageType(DamageSource source, ResourceKey<DamageType> type) {
+        return source.type().equals(RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY).registryOrThrow(Registries.DAMAGE_TYPE).get(type));
     }
 
     @Mod.EventBusSubscriber(modid = ASMMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
