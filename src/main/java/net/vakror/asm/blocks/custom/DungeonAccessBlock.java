@@ -64,13 +64,18 @@ public class DungeonAccessBlock extends BaseEntityBlock {
                     blockEntity.setChanged();
                 }
                 ServerLevel dimension = createWorld(level, blockEntity);
-                player.setPortalCooldown();
-                player.changeDimension(dimension, new DungeonTeleporter(pos, this));
+                if (canTeleport(level, player, dimension, blockEntity.getDimensionUUID())) {
+                    player.setPortalCooldown();
+                    player.changeDimension(dimension, new DungeonTeleporter(pos, this));
+                }
             }
         }
         return super.use(state, level, pos, player, hand, hitResult);
     }
 
+    private boolean canTeleport(Level level, Player player, ServerLevel dimension, UUID dimensionUUID) {
+        return dimension.players().isEmpty();
+    }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
