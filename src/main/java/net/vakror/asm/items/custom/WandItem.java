@@ -74,7 +74,7 @@ public class WandItem extends ActivatableSealableItem {
             if (getActiveSeal(stack) != null) {
                 ActivatableSeal seal = (ActivatableSeal) getActiveSeal(stack);
                 if (seal.getAttributeModifiers() != null && !seal.getAttributeModifiers().isEmpty()) {
-                    map.putAll(seal.getAttributeModifiers());
+                    map.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "base_attack_speed_mod", -seal.swingSpeed, AttributeModifier.Operation.ADDITION));
                 }
             }
             map.put(Attributes.ATTACK_DAMAGE, new AttributeModifier("damage_modifier_wand", getDamageFromSeals(stack), AttributeModifier.Operation.ADDITION));
