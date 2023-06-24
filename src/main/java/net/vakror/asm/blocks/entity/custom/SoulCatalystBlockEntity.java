@@ -16,7 +16,7 @@ public class SoulCatalystBlockEntity extends BlockEntity {
     private int maxDelay = secondsToTicks(2);
 
     public SoulCatalystBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(ModBlockEntities.WAND_IMBUING_TABLE_BLOCK_ENTITY.get(), pPos, pBlockState);
+        super(ModBlockEntities.SOUL_CATALYST_BLOCK_ENTITY.get(), pPos, pBlockState);
         this.data = new ContainerData() {
             @Override
             public int get(int pIndex) {
