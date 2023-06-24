@@ -15,8 +15,8 @@ public class SyncSoulS2CPacket {
     public SyncSoulS2CPacket(int currentSoulAmount, int currentMaxSoulAmount, int currentDarkSoulAmount, int currentDarkMaxSoulAmount) {
         this.currentSoulAmount = currentSoulAmount;
         this.currentMaxSoulAmount = currentMaxSoulAmount;
-        this.currentDarkSoulAmount = currentSoulAmount;
-        this.currentDarkMaxSoulAmount = currentMaxSoulAmount;
+        this.currentDarkSoulAmount = currentDarkSoulAmount;
+        this.currentDarkMaxSoulAmount = currentDarkMaxSoulAmount;
     }
 
     public SyncSoulS2CPacket(FriendlyByteBuf buffer) {
@@ -35,8 +35,7 @@ public class SyncSoulS2CPacket {
 
     public boolean handle(Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            ClientSoulData.set(currentSoulAmount);
-            ClientSoulData.setMax(currentMaxSoulAmount);
+            ClientSoulData.set(currentSoulAmount, currentDarkSoulAmount, (int) currentMaxSoulAmount, (int) currentDarkMaxSoulAmount);
         });
         return true;
     }
