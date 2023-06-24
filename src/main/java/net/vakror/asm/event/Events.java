@@ -123,11 +123,11 @@ public class Events {
                                     if (event.getEntity() instanceof EnderDragon) {
                                         playerSoul.addDarkSoul(100);
                                         catalystEntity.setDelay(catalystEntity.getMaxDelay());
-                                    } else if (event.getEntity() instanceof Monster) {
-                                        playerSoul.addDarkSoul(10);
+                                    } else if (event.getEntity() instanceof Monster monster) {
+                                        playerSoul.addDarkSoul((int) (monster.getMaxHealth() * 0.3));
                                         catalystEntity.setDelay(catalystEntity.getMaxDelay());
-                                    } else if (event.getEntity() instanceof Animal) {
-                                        playerSoul.addSoul(10);
+                                    } else if (event.getEntity() instanceof Animal animal) {
+                                        playerSoul.addSoul((int) (animal.getMaxHealth() * 0.2));
                                         catalystEntity.setDelay(catalystEntity.getMaxDelay());
                                     }
                                     ModPackets.sendToClient(new SyncSoulS2CPacket(playerSoul.getSoul(), playerSoul.getMaxSoul(), playerSoul.getDarkSoul(), playerSoul.getMaxDarkSoul()), (ServerPlayer) event.getSource().getEntity());
