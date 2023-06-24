@@ -12,6 +12,8 @@ public class SoulHudOverlay {
             "textures/gui/soul.png");
     private static final ResourceLocation SOUL_OVERLAY = new ResourceLocation(ASMMod.MOD_ID,
             "textures/gui/soul_overlay.png");
+    private static final ResourceLocation DARK_SOUL_OVERLAY = new ResourceLocation(ASMMod.MOD_ID,
+            "textures/gui/dark_soul_overlay.png");
     private static final ResourceLocation DARK_SOUL_BAR = new ResourceLocation(ASMMod.MOD_ID,
             "textures/gui/dark_soul.png");
 
@@ -26,17 +28,23 @@ public class SoulHudOverlay {
         double soul = ClientSoulData.getPlayerSoul();
         double maxSoul = (int) ClientSoulData.getPlayerMaxSoul();
 
-        double darkSoul = ClientSoulData.getPlayerSoul();
-        double maxDarkSoul = (int) ClientSoulData.getPlayerMaxSoul();
-        
-        graphics.blit(SOUL_BAR, x - 175, y - 20,0, 0, Long.valueOf(Math.round((soul/maxSoul) * 73)).intValue(), 11,
-                73, 11);
+        float darkSoul = ClientSoulData.getDarkPlayerSoul();
+        float maxDarkSoul = (int) ClientSoulData.getDarkPlayerMaxSoul();
 
-        graphics.blit(DARK_SOUL_BAR, x - 175, y - 40,0, 0, Long.valueOf(Math.round((darkSoul/maxDarkSoul) * 73)).intValue(), 11,
-                73, 11);
+        int darkSoulHeight = (int) (darkSoul/maxDarkSoul * 56);
+        int adjustedDarkSoulHeight = (int)Math.ceil(darkSoul/maxDarkSoul * 56);
+        adjustedDarkSoulHeight = adjustedDarkSoulHeight % 2 == 0 ? adjustedDarkSoulHeight: adjustedDarkSoulHeight + 1;
 
-        graphics.blit(SOUL_OVERLAY, x - 175, y - 20, 0, 0, 73, 11, 73, 11);
-        graphics.blit(SOUL_OVERLAY, x - 175, y - 55, 0, 0, 73, 11, 73, 11);
+        int soulHeight = (int) (soul/maxSoul * 56);
+        int adjustedSoulHeight = (int)Math.ceil(soul/maxSoul * 56);
+        graphics.blit(SOUL_BAR, x - 175, y - 70 + (56 - adjustedSoulHeight),0, 0, 28, soulHeight,
+                28, soulHeight);
+
+        graphics.blit(DARK_SOUL_BAR, x - 125, y - 70 + (56 - adjustedDarkSoulHeight),0, 0, 28, darkSoulHeight,
+                28, darkSoulHeight);
+
+        graphics.blit(SOUL_OVERLAY, x - 175, y - 70, 0, 0, 28, 56, 28, 56);
+        graphics.blit(DARK_SOUL_OVERLAY, x - 125, y - 70, 0, 0, 28, 56, 28, 56);
     });
 
     public static int toColorInt(int R, int G, int B, int A) {
