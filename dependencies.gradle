@@ -5,12 +5,16 @@ ext {
     reflectVersion = "0.10.2"
     terrablenderVersion = "1.20.1-3.0.0.164"
     geckolibVersion = "4.2"
+    jeiVersion = "15.1.0.19"
 
     supportDependencies = [
             forge: "net.minecraftforge:forge:${forgeVersion}",
             processor: "org.spongepowered:mixin:${mixinVersion}:processor",
             terrablender: "com.github.glitchfiend:TerraBlender-forge:${terrablenderVersion}",
             reflect: "org.reflections:reflections:${reflectVersion}",
-            geckolib: "software.bernie.geckolib:geckolib-forge-1.20:${geckolibVersion}"
+            geckolib: "software.bernie.geckolib:geckolib-forge-1.20:${geckolibVersion}",
+            jeiApi: "mezz.jei:jei-1.20.1-forge-api:${jeiVersion}i",
+            jeiCommonApi: "mezz.jei:jei-1.20.1-common-api:${jeiVersion}",
+            jei: "mezz.jei:jei-1.20.1-forge:${jeiVersion}"
     ]
 }

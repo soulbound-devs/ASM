@@ -139,9 +139,24 @@ repositories {
             includeGroup "curse.maven"
         }
     }
-    maven {url = "https://maven.blamejared.com/"}
+    maven { url = "https://maven.blamejared.com/" }
 
     maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
+    maven {
+        // location of the maven that hosts JEI files before January 2023
+        name = "Progwml6's maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
+    }
+    maven {
+        // location of the maven that hosts JEI files since January 2023
+        name = "Jared's maven"
+        url = "https://maven.blamejared.com/"
+    }
+    maven {
+        // location of a maven mirror for JEI files, as a fallback
+        name = "ModMaven"
+        url = "https://modmaven.dev"
+    }
 }
 
 dependencies {
@@ -150,6 +165,11 @@ dependencies {
     annotationProcessor supportDependencies.processor
     implementation fg.deobf(supportDependencies.geckolib)
     implementation fg.deobf(supportDependencies.terrablender)
+
+    compileOnly fg.deobf(supportDependencies.jeiApi)
+    compileOnly fg.deobf(supportDependencies.jeiCommonApi)
+    // at runtime, use the full JEI jar
+    runtimeOnly fg.deobf(supportDependencies.jei)
 }
 
 // Example for how to get properties into the manifest for reading at runtime.
