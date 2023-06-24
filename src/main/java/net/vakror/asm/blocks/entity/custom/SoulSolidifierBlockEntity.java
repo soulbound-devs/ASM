@@ -11,6 +11,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -56,7 +57,7 @@ public class SoulSolidifierBlockEntity extends BlockEntity implements MenuProvid
     private final int amountOfFluidToExtractForSoul = 100;
 
 
-    public final FluidTank FLUID_TANK = new FluidTank(16000) {
+    public final FluidTank FLUID_TANK = new FluidTank(1600) {
         @Override
         protected void onContentsChanged() {
             setChanged();
@@ -175,7 +176,7 @@ public class SoulSolidifierBlockEntity extends BlockEntity implements MenuProvid
     }
 
     public static void tick(Level pLevel, BlockPos pPos, BlockState pState, SoulSolidifierBlockEntity blockEntity) {
-        if (hasNotReachedStackLimit(blockEntity) && hasEnoughFluid(blockEntity) && hasTungsten(blockEntity) && (blockEntity.FLUID_TANK.getFluid().getFluid() == ModSoul.SOURCE_DARK_SOUL.get() || blockEntity.FLUID_TANK.getFluid().getFluid() == ModSoul.SOURCE_SOUL.get())) {
+        if (hasNotReachedStackLimit(blockEntity) && (blockEntity.itemHandler.getStackInSlot(1).isEmpty() || blockEntity.fluidSameAsSoulItem(blockEntity.itemHandler.getStackInSlot(1).getItem())) && hasEnoughFluid(blockEntity) && hasTungsten(blockEntity) && (blockEntity.FLUID_TANK.getFluid().getFluid() == ModSoul.SOURCE_DARK_SOUL.get() || blockEntity.FLUID_TANK.getFluid().getFluid() == ModSoul.SOURCE_SOUL.get())) {
             blockEntity.progress++;
             setChanged(pLevel, pPos, pState);
             if (blockEntity.progress >= blockEntity.maxProgress) {
@@ -200,6 +201,10 @@ public class SoulSolidifierBlockEntity extends BlockEntity implements MenuProvid
         return blockEntity.FLUID_TANK.getFluidAmount() >= blockEntity.amountOfFluidToExtractForSoul;
     }
 
+    public boolean fluidSameAsSoulItem(Item soul) {
+        return soul.equals(ModItems.SOUL.get()) ? this.FLUID_TANK.getFluid().getFluid().equals(ModSoul.SOURCE_SOUL.get()): this.FLUID_TANK.getFluid().getFluid().equals(ModSoul.SOURCE_DARK_SOUL.get());
+    }
+
     private static void transferItemFluidToFluidTank(SoulSolidifierBlockEntity blockEntity) {
         blockEntity.itemHandler.getStackInSlot(2).getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(handler -> {
             int drainAmount = Math.min(blockEntity.FLUID_TANK.getSpace(), 1000);
@@ -215,10 +220,12 @@ public class SoulSolidifierBlockEntity extends BlockEntity implements MenuProvid
     }
 
     private static void fillTankWithFluid(SoulSolidifierBlockEntity blockEntity, FluidStack stack, ItemStack container) {
-        blockEntity.FLUID_TANK.fill(stack, IFluidHandler.FluidAction.EXECUTE);
+        if (stack.getFluid().equals(ModSoul.SOURCE_SOUL.get()) || stack.getFluid().equals(ModSoul.SOURCE_DARK_SOUL.get())) {
+            blockEntity.FLUID_TANK.fill(stack, IFluidHandler.FluidAction.EXECUTE);
 
-        blockEntity.itemHandler.extractItem(2, 1, false);
-        blockEntity.itemHandler.insertItem(2, container, false);
+            blockEntity.itemHandler.extractItem(2, 1, false);
+            blockEntity.itemHandler.insertItem(2, container, false);
+        }
     }
 
     private static boolean hasFluidItemInSourceSlot(SoulSolidifierBlockEntity blockEntity) {
@@ -227,9 +234,16 @@ public class SoulSolidifierBlockEntity extends BlockEntity implements MenuProvid
 
     private static void craftItem(SoulSolidifierBlockEntity entity) {
         int numberOfSoulToAdd = 1;
+        Item typeOfItemToAdd = entity.FLUID_TANK.getFluid().getFluid().equals(ModSoul.SOURCE_SOUL.get()) ? ModItems.SOUL.get(): ModItems.DARK_SOUL.get();
         entity.FLUID_TANK.drain(entity.amountOfFluidToExtractForSoul, IFluidHandler.FluidAction.EXECUTE);
         entity.itemHandler.extractItem(0, 1, false);
-        entity.itemHandler.insertItem(1, new ItemStack(entity.itemHandler.getStackInSlot(1).getItem(), entity.itemHandler.getStackInSlot(1).getCount() + numberOfSoulToAdd), false);
+        ItemStack result;
+        if (entity.itemHandler.getStackInSlot(1).isEmpty()) {
+             result = new ItemStack(typeOfItemToAdd, numberOfSoulToAdd);
+        } else {
+            result = new ItemStack(entity.itemHandler.getStackInSlot(1).getItem(), entity.itemHandler.getStackInSlot(1).getCount() + numberOfSoulToAdd);
+        }
+        entity.itemHandler.insertItem(1, result, false);
         entity.resetProgress();
     }
 
