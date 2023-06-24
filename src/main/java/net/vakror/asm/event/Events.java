@@ -281,13 +281,6 @@ public class Events {
         }
     }
 
-    @SubscribeEvent
-    public static void onDungeonMobHurt(LivingHurtEvent event) {
-        if (event.getEntity() instanceof GoblaggerEntity && (isDamageType(event.getSource(), DamageTypes.CRAMMING) || isDamageType(event.getSource(), DamageTypes.IN_WALL) || isDamageType(event.getSource(), DamageTypes.FALL))) {
-            event.setCanceled(true);
-        }
-    }
-
     public static boolean isDamageType(DamageSource source, ResourceKey<DamageType> type) {
         return source.type().equals(RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY).registryOrThrow(Registries.DAMAGE_TYPE).get(type));
     }
