@@ -15,6 +15,11 @@ public abstract class ToolSeal extends ActivatableSeal {
         this.mineableBlocks = mineableBlocks;
     }
 
+    public ToolSeal(String id, TagKey<Block> mineableBlocks, float swingSpeed) {
+        super(id, swingSpeed);
+        this.mineableBlocks = mineableBlocks;
+    }
+
     @Override
     public List<SealProperty> properties() {
         properties.add(new SealProperty("tool"));
