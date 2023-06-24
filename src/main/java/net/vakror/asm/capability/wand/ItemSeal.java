@@ -192,6 +192,7 @@ public class ItemSeal {
     }
 
     public int getAmountOfTimesThatSealIsPresent(SealType type, String sealId) {
+        createIfNull();
         return switch (type) {
             case PASSIVE -> Collections.frequency(passiveSeals, SealRegistry.passiveSeals.get(sealId));
             case OFFENSIVE -> Collections.frequency(attackSeals, SealRegistry.attackSeals.get(sealId));
