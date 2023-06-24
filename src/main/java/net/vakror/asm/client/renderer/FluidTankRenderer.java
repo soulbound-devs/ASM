@@ -85,7 +85,6 @@ public class FluidTankRenderer {
         int fluidColor = getColorTint(fluidStack);
 
         long amount = fluidStack.getAmount();
-        ASMMod.LOGGER.info("fluid amount renderer: " + amount);
         long scaledAmount = (amount * height) / capacity;
 
         if (amount > 0 && scaledAmount < MIN_FLUID_HEIGHT) {
