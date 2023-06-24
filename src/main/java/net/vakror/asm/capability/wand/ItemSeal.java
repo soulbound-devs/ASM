@@ -127,7 +127,7 @@ public class ItemSeal {
         createIfNull();;
         List<ISeal> toRemove = new BetterArrayList<>();
         passiveSeals.forEach((passive -> {
-            if (passive instanceof Tiered tiered && SealRegistry.passiveSeals.get(id) instanceof Tiered tiered1 && tiered.getTierId().equals(tiered1.getTierId())) {
+            if (passive instanceof Tiered tiered && SealRegistry.passiveSeals.get(id) instanceof Tiered tiered1 && !tiered.getTierId().equals(tiered1.getTierId())) {
                 toRemove.add(passive);
             }
         }));
@@ -139,7 +139,7 @@ public class ItemSeal {
         createIfNull();
         List<ISeal> toRemove = new BetterArrayList<>();
         attackSeals.forEach((attack -> {
-            if (attack instanceof Tiered tiered && SealRegistry.attackSeals.get(id) instanceof Tiered tiered1 && tiered.getTierId().equals(tiered1.getTierId())) {
+            if (attack instanceof Tiered tiered && SealRegistry.attackSeals.get(id) instanceof Tiered tiered1 && !tiered.getTierId().equals(tiered1.getTierId())) {
                 toRemove.add(attack);
             }
         }));
@@ -151,7 +151,7 @@ public class ItemSeal {
         createIfNull();
         List<ISeal> toRemove = new BetterArrayList<>();
         amplifyingSeals.forEach((amplifying -> {
-            if (amplifying instanceof Tiered tiered && SealRegistry.amplifyingSeals.get(id) instanceof Tiered tiered1 && tiered.getTierId().equals(tiered1.getTierId())) {
+            if (amplifying instanceof Tiered tiered && SealRegistry.amplifyingSeals.get(id) instanceof Tiered tiered1 && !tiered.getTierId().equals(tiered1.getTierId())) {
                 toRemove.add(amplifying);
             }
         }));
