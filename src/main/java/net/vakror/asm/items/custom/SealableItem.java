@@ -155,7 +155,7 @@ public class SealableItem extends DiggerItem {
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, tooltip, pIsAdvanced);
         pStack.getCapability(ItemSealProvider.SEAL).ifPresent(itemSeal -> {
-            addCompactTooltips(tooltip, itemSeal, itemSeal.getActiveSeal());
+            addCompactTooltips(tooltip, itemSeal, itemSeal.getActiveSeal(), pStack);
         });
     }
 
@@ -172,7 +172,7 @@ public class SealableItem extends DiggerItem {
         }
     }
 
-    private void addCompactTooltips(List<Component> tooltip, ItemSeal itemSeal, ISeal activeSeal) {
+    private void addCompactTooltips(List<Component> tooltip, ItemSeal itemSeal, ISeal activeSeal, ItemStack stack) {
 
         if (tier.getPassiveSlots() > 0) {
             addCompactPassiveSealTooltips(tooltip, itemSeal, activeSeal);
@@ -199,7 +199,6 @@ public class SealableItem extends DiggerItem {
                 ActivatableSeal seal = (ActivatableSeal) itemSeal.getActiveSeal();
                 if (seal.getAttributeModifiers() != null && !seal.getAttributeModifiers().isEmpty()) {
                     finalSwingSpeed[0] = finalSwingSpeed[0] - seal.swingSpeed;
-                    System.out.println(seal.swingSpeed);
                 }
             }
         return finalSwingSpeed[0];
