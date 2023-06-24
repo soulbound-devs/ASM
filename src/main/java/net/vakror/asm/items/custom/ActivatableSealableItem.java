@@ -64,10 +64,10 @@ public class ActivatableSealableItem extends SealableItem {
             if (wand.getActiveSeal() != null) {
                 wand.setActiveSeal(null, stack);
             } else if (wand.getActiveSeal() == null && wand.isSelectedIsAttack()) {
-                int attackSelectedSlot = wand.getSelectedSealSlot() - wand.getPassiveSeals().size();
+                int attackSelectedSlot = wand.getSelectedSealSlot() - tier.getPassiveSlots();
                 if (attackSelectedSlot >= 0) {
-                    if (wand.getAttackSeals().size() > 0 && wand.getAttackSeals().get(attackSelectedSlot - 1) != null) {
-                        wand.setActiveSeal(wand.getAttackSeals().get(attackSelectedSlot - 1), stack);
+                    if (wand.getAttackSeals().size() > 0 && wand.getAttackSeals().get(attackSelectedSlot - (attackSelectedSlot == 0? 0: 1)) != null) {
+                        wand.setActiveSeal(wand.getAttackSeals().get(attackSelectedSlot - (wand.getSelectedSealSlot() == 0? 0: 1)), stack);
                     }
                 }
             } else if (wand.getActiveSeal() == null && !wand.isSelectedIsAttack()) {
@@ -85,7 +85,7 @@ public class ActivatableSealableItem extends SealableItem {
                 itemWand.setSelectedSealSlot(1);
                 itemWand.setSelectedIsAttack(itemWand.getAllActivatableSeals().get(0).isAttack());
             } else if (itemWand.getSelectedSealSlot() > tier.getPassiveSlots() && itemWand.getSelectedSealSlot() != 0) {
-                itemWand.setSelectedIsAttack(true);
+                itemWand.setSelectedIsAttack(itemWand.getAllActivatableSeals().get(itemWand.getSelectedSealSlot() - (itemWand.getSelectedSealSlot() == 0? 0: 1)).isAttack());
             }
             itemWand.setActiveSeal(null, wand);
             String mode = itemWand.isSelectedIsAttack() ? "Offensive/Defensive" : "Passive";
