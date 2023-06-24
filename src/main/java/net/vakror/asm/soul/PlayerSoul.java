@@ -32,7 +32,7 @@ public class PlayerSoul {
         this.darkSoulRegenPerSecond = darkSoulRegenPerSecond;
     }
     public int getMaxDarkSoul() {
-        return darkSoul;
+        return maxDarkSoul;
     }
     public int getDarkSoulRegenPerSecond() {
         return darkSoulRegenPerSecond;
