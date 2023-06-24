@@ -47,6 +47,9 @@
 
   "itemGroup.asm": "ASM",
 
+  "fluid_type.asm.soul": "Soul Fluid",
+  "fluid_type.asm.dark_soul": "Dark Soul Fluid",
+
   "options.libgui.libgui_settings": "LibGui Settings",
   "option.libgui.darkmode": "Dark Mode",
   "widget.libgui.item_slot.narration.title": "Item slot %s out of %s",
