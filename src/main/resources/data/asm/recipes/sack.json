@@ -1,0 +1,24 @@
+
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PXP",
+    "XIX",
+    "PXP"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:bundle"
+    },
+    "X": {
+      "item": "asm:soul"
+    },
+    "P": {
+      "item": "asm:dark_soul"
+    }
+  },
+  "result": {
+    "item": "asm:sack",
+    "count": 1
+  }
+}

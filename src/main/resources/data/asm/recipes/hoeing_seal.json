@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PPP",
+    "XIP",
+    "PPP"
+  ],
+  "key": {
+    "I": {
+      "item": "asm:blank_passive_seal"
+    },
+    "P": {
+      "item": "asm:soul"
+    },
+    "X": {
+      "item": "minecraft:diamond_hoe"
+    }
+  },
+  "result": {
+    "item": "asm:hoeing_seal",
+    "count": 1
+  }
+}

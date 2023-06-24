@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "LTN",
+    "XIM",
+    "P P"
+  ],
+  "key": {
+    "I": {
+      "item": "asm:wand"
+    },
+    "P": {
+      "item": "asm:ancient_oak_log"
+    },
+    "X": {
+      "item": "asm:soul"
+    },
+    "M": {
+      "item": "asm:dark_soul"
+    },
+    "L": {
+      "item": "asm:blank_passive_seal"
+    },
+    "T": {
+      "item": "asm:blank_attack_seal"
+    },
+    "N": {
+      "item": "asm:blank_amplifying_seal"
+    }
+  },
+  "result": {
+    "item": "asm:wand_imbuing_table",
+    "count": 1
+  }
+}
