@@ -16,10 +16,16 @@ import net.vakror.asm.screen.slot.ModResultSlot;
 import net.vakror.asm.screen.slot.ModSealSlot;
 import net.vakror.asm.screen.slot.ModWandSlot;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class WandImbuingMenu extends AbstractContainerMenu {
     public final WandImbuingTableBlockEntity blockEntity;
     private final Level level;
     private final ContainerData data;
+
+    private final List<Slot> playerInvSlots = new ArrayList<>();
+    private final List<Slot> invSlots = new ArrayList<>();
 
     public WandImbuingMenu(int pContainerId, Inventory inv, FriendlyByteBuf data) {
         this(pContainerId, inv, inv.player.level().getBlockEntity(data.readBlockPos()), new SimpleContainerData(3));
@@ -36,13 +42,28 @@ public class WandImbuingMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-            this.addSlot(new SlotItemHandler(handler, 0, 18, 52));
-            this.addSlot(new ModWandSlot(handler, 1, 56, 33));
-            this.addSlot(new ModSealSlot(handler, 2, 91, 33));
-            this.addSlot(new ModResultSlot(handler, 3, 146, 33));
+            this.addSlot(new SlotItemHandler(handler, 0, 18, 52), true);
+            this.addSlot(new ModWandSlot(handler, 1, 56, 33), true);
+            this.addSlot(new ModSealSlot(handler, 2, 91, 33), true);
+            this.addSlot(new ModResultSlot(handler, 3, 146, 33), true);
         });
 
         addDataSlots(data);
+    }
+
+    public void addSlot(Slot slot, boolean invSlot) {
+        this.addSlot(slot);
+        if (invSlot) {
+            this.invSlots.add(slot);
+        }
+    }
+
+    public List<Slot> getPlayerInvSlots() {
+        return playerInvSlots;
+    }
+
+    public List<Slot> getInvSlots() {
+        return invSlots;
     }
 
     public boolean isCrafting() {
@@ -130,14 +151,18 @@ public class WandImbuingMenu extends AbstractContainerMenu {
     private void addPlayerInventory(Inventory playerInventory) {
         for (int i = 0; i < 3; ++i) {
             for (int l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + i * 9 + 9, 8 + l * 18, 86 + i * 18));
+                Slot slot = new Slot(playerInventory, l + i * 9 + 9, 8 + l * 18, 86 + i * 18);
+                this.addSlot(slot);
+                playerInvSlots.add(slot);
             }
         }
     }
 
     private void addPlayerHotbar(Inventory playerInventory) {
         for (int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 144));
+            Slot slot = new Slot(playerInventory, i, 8 + i * 18, 144);
+            this.addSlot(slot);
+            playerInvSlots.add(slot);
         }
     }
 }
