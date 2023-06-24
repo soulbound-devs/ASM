@@ -75,6 +75,34 @@ public class ItemSeal {
         return seals;
     }
 
+    public List<ISeal> getAllSealsThatAreNotActivated() {
+        List<ISeal> seals = new ArrayList<ISeal>();
+        seals.addAll(passiveSeals);
+        seals.addAll(attackSeals);
+        seals.addAll(amplifyingSeals);
+        seals.remove(activeSeal);
+        return seals;
+    }
+
+    public List<String> getAllSealsIdsThatAreNotActivated() {
+        List<String> seals = new ArrayList<String>();
+        createIfNull();
+        passiveSeals.forEach((passiveSeal -> {
+            seals.add(passiveSeal.getId());
+        }));
+        attackSeals.forEach((attackSeal -> {
+            seals.add(attackSeal.getId());
+        }));
+        amplifyingSeals.forEach((amplifyingSeal -> {
+            seals.add(amplifyingSeal.getId());
+        }));
+        if (activeSeal != null) {
+
+            seals.remove(activeSeal.getId());
+        }
+        return seals;
+    }
+
     public List<ISeal> getAttackSeals() {
         createIfNull();
         return attackSeals;
