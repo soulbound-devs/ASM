@@ -1,6 +1,5 @@
 package net.vakror.asm.event;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.SectionPos;
@@ -38,10 +37,10 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.vakror.asm.ASMMod;
 import net.vakror.asm.blocks.ModBlocks;
+import net.vakror.asm.blocks.custom.SoulCatalystBlock;
 import net.vakror.asm.blocks.entity.custom.ReturnToOverWorldBlockEntity;
 import net.vakror.asm.blocks.entity.custom.SoulCatalystBlockEntity;
 import net.vakror.asm.capability.wand.ItemSeal;
@@ -65,6 +64,7 @@ import net.vakror.asm.world.structure.ModStructures;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class Events {
     @Mod.EventBusSubscriber(modid = ASMMod.MOD_ID)
@@ -106,24 +106,33 @@ public class Events {
 
         @SubscribeEvent
         public static void triggerSoulCatalyst(LivingDeathEvent event) {
-            Player player = Minecraft.getInstance().player;
-            if (player != null) {
-                List<BlockPos> blocksNearby = getNearbyBlockPos(event.getEntity().level(), player.blockPosition(), 3);
-                blocksNearby.forEach((pos -> {
-                    BlockEntity entity = event.getEntity().level().getBlockEntity(pos);
-                    if (entity instanceof SoulCatalystBlockEntity catalystEntity && catalystEntity.getDelay() == 0) {
-                        catalystEntity.setDelay(catalystEntity.getMaxDelay());
-                        player.getCapability(PlayerSoulProvider.PLAYER_SOUL).ifPresent(playerSoul -> {
-                            if (event.getEntity() instanceof EnderDragon) {
-                                playerSoul.addDarkSoul(10);
-                            } else if (event.getEntity() instanceof Monster) {
-                                playerSoul.addDarkSoul(1);
-                            } else if (event.getEntity() instanceof Animal) {
-                                playerSoul.addSoul(1);
+            if (!event.getEntity().level().isClientSide) {
+                if (event.getSource().getEntity() instanceof ServerPlayer player) {
+                    Optional<BlockPos> catalyst = getNearestSoulCatalyst(event.getEntity().level(), player.blockPosition(), 5);
+                    if (catalyst.isPresent()) {
+                        BlockPos pos = catalyst.get();
+                        BlockEntity entity = event.getEntity().level().getBlockEntity(pos);
+                        if (entity instanceof SoulCatalystBlockEntity catalystEntity) {
+                            System.out.println(catalystEntity.getDelay());
+                            if (catalystEntity.getDelay() == 0) {
+                                catalystEntity.setDelay(catalystEntity.getMaxDelay());
+                                player.getCapability(PlayerSoulProvider.PLAYER_SOUL).ifPresent(playerSoul -> {
+                                    if (event.getEntity() instanceof EnderDragon) {
+                                        playerSoul.addDarkSoul(100);
+                                        catalystEntity.setDelay(catalystEntity.getMaxDelay());
+                                    } else if (event.getEntity() instanceof Monster) {
+                                        playerSoul.addDarkSoul(10);
+                                        catalystEntity.setDelay(catalystEntity.getMaxDelay());
+                                    } else if (event.getEntity() instanceof Animal) {
+                                        playerSoul.addSoul(10);
+                                        catalystEntity.setDelay(catalystEntity.getMaxDelay());
+                                    }
+                                    ModPackets.sendToClient(new SyncSoulS2CPacket(playerSoul.getSoul(), playerSoul.getMaxSoul(), playerSoul.getDarkSoul(), playerSoul.getMaxDarkSoul()), (ServerPlayer) event.getSource().getEntity());
+                                });
                             }
-                        });
+                        }
                     }
-                }));
+                }
             }
         }
 
@@ -149,9 +158,8 @@ public class Events {
             return world.getEntitiesOfClass(entityClass, selectBox, entity -> entity.isAlive() && !entity.isSpectator());
         }
 
-        public static List<BlockPos> getNearbyBlockPos(final LevelAccessor world, final Vec3i pos, final float radius) {
-            final AABB selectBox = new AABB(0.0, 0.0, 0.0, 1.0, 1.0, 1.0).move(pos.getX(), pos.getY(), pos.getZ()).inflate(radius);
-            return BlockPos.betweenClosedStream(selectBox).toList();
+        public static Optional<BlockPos> getNearestSoulCatalyst(final LevelAccessor world, BlockPos pos, final int radius) {
+            return BlockPos.findClosestMatch(pos, radius, radius, (blockPos -> world.getBlockState(blockPos).getBlock() instanceof SoulCatalystBlock));
         }
 
         @SubscribeEvent
