@@ -50,4 +50,9 @@
   "fluid_type.asm.soul": "Soul Fluid",
   "fluid_type.asm.dark_soul": "Dark Soul Fluid",
 
+  "asm.compat.jei.wand_imbuing": "Wand Imbuing",
+  "asm.compat.jei.solidifying": "Soul Solidifying",
+  "asm.compat.jei.extracting": "Soul Extracting"
+
+
 }
