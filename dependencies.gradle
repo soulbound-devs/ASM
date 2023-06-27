@@ -15,6 +15,8 @@ ext {
             geckolib: "software.bernie.geckolib:geckolib-forge-1.20:${geckolibVersion}",
             jeiApi: "mezz.jei:jei-1.20.1-forge-api:${jeiVersion}i",
             jeiCommonApi: "mezz.jei:jei-1.20.1-common-api:${jeiVersion}",
-            jei: "mezz.jei:jei-1.20.1-forge:${jeiVersion}"
+            jei: "mezz.jei:jei-1.20.1-forge:${jeiVersion}",
+            patchouliApi: "vazkii.patchouli:Patchouli:1.20.1-80-FORGE-SNAPSHOT:api",
+            patchouli: "vazkii.patchouli:Patchouli:1.20.1-80-FORGE-SNAPSHOT"
     ]
 }

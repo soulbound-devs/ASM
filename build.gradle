@@ -139,8 +139,6 @@ repositories {
             includeGroup "curse.maven"
         }
     }
-    maven { url = "https://maven.blamejared.com/" }
-
     maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
     maven {
         // location of the maven that hosts JEI files before January 2023
@@ -166,6 +164,8 @@ dependencies {
     implementation fg.deobf(supportDependencies.geckolib)
     implementation fg.deobf(supportDependencies.terrablender)
 
+    compileOnly fg.deobf(supportDependencies.patchouliApi)
+    runtimeOnly fg.deobf(supportDependencies.patchouli)
     compileOnly fg.deobf(supportDependencies.jeiApi)
     compileOnly fg.deobf(supportDependencies.jeiCommonApi)
     // at runtime, use the full JEI jar
