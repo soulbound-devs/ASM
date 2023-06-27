@@ -1,0 +1,23 @@
+{
+  "name": "Introduction to Soul",
+  "icon": "asm:soul",
+  "category": "asm:getting_started",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "asm:soul",
+      "link_recipe": true,
+      "title": "Introduction",
+      "anchor": "base_soul",
+      "text": "Soul is the base of all magic in ASM. Two types of soul exist, normal, obtained from passive mobs and used for passive seals, and dark, obtained from hostile mobs and used for offensive seals. Several ways obtain soul exist. The most early-game of which is soul solidifying. Soul Solidifying is the process of turning liquid soul into a condensed blob that can be used for crafting and combining."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "minecraft:diamond_sword",
+      "title": "Obtaining Player Soul",
+      "anchor": "killing_mobs",
+      "link_recipe": false,
+      "text": "Soul on the player is shown in the bottom left corner of the HUD, the left bar being soul, and the right being dark soul. Soul can be obtained in multiple different ways. The one that we will talk about here, is harvesting soul from the corpses of mobs. When a mob is killed around a Soul Catalyst . The amount of soul obtained scales with health. The values being 100 soul for an ender dragon, max health * 0.3 for hostile mobs, and max health * 0.2 for passive mobs."
+    }
+  ]
+}

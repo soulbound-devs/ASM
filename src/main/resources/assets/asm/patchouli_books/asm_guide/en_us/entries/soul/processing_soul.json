@@ -1,0 +1,31 @@
+{
+  "name": "Soul Processing",
+  "icon": "asm:soul_extractor",
+  "category": "asm:getting_started",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "asm:soul_catalyst",
+      "title": "Soul Catalyst",
+      "anchor": "catalyst",
+      "link_recipe": true,
+      "text": "The soul catalyst is a block, which when withing a 5 block are of a mob's death, will give the player a certain amount of soul. It has a delay of 2 seconds between mob kills."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "asm:soul_extractor",
+      "title": "Soul Extractor",
+      "anchor": "extractor",
+      "link_recipe": true,
+      "text": "The soul extractor a block which can turn soul and dark soul on the player into a liquid, more dense version. This liquid can later be solidified."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "asm:soul_solidifier",
+      "title": "Soul Solidifier",
+      "anchor": "solidifier",
+      "link_recipe": true,
+      "text": "The soul solidifier is a block which is used to turn the liquid soul into a solid blob. The soul liquid must be put in with a bucket, a pipe, or a fluid tank. A tungsten ingot then needs to be placed into its slots. 100mB of soul or dark soul fluid and one tungsten ingot will then be combined into one soul item. The bottom slot can be used to drain excess fluid from the fluid part of the solidifier"
+    }
+  ]
+}
