@@ -14,8 +14,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.TierSortingRegistry;
 import net.vakror.asm.capability.wand.ItemSealProvider;
+import net.vakror.asm.client.ModItemAnimations;
 import net.vakror.asm.seal.ISeal;
 import net.vakror.asm.seal.function.amplify.damage.DamageAmplifyFunction;
 import net.vakror.asm.seal.seals.activatable.tool.ToolSeal;
@@ -26,6 +28,7 @@ import net.vakror.asm.seal.type.amplifying.ItemAmplifyingSeal;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 public class WandItem extends ActivatableSealableItem {
 
@@ -46,6 +49,12 @@ public class WandItem extends ActivatableSealableItem {
             }));
         }
         return bool.get();
+    }
+
+    @Override
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(ModItemAnimations.wandAnimation);
+        super.initializeClient(consumer);
     }
 
     @Override
