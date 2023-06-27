@@ -6,18 +6,19 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.vakror.asm.seal.Tooltip;
 import net.vakror.asm.seal.SealType;
+import net.vakror.asm.seal.Tooltip;
+import net.vakror.asm.seal.tier.sealable.ISealableTier;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.function.ToIntFunction;
 
 public class SealItem extends Item {
     private final String id;
     private final SealType type;
-    private final boolean canAddMultiple;
-    private final int maxSealStack;
+    private final ToIntFunction<ISealableTier> maxSealStack;
     private final Tooltip tooltip;
 
     public SealType getType() {
@@ -29,7 +30,7 @@ public class SealItem extends Item {
     }
 
     public SealItem(Properties pProperties, String id, SealType type) {
-        this(pProperties, id, type, false, 1, Tooltip.empty());
+        this(pProperties, id, type, Tooltip.empty());
     }
 
     public SealItem(Properties pProperties, String id, SealType type, Tooltip tooltip) {
@@ -37,11 +38,14 @@ public class SealItem extends Item {
     }
 
     public SealItem(Properties pProperties, String id, SealType type, boolean canAddMultiple, int maxSealStack, Tooltip tooltip) {
+        this(pProperties, id, type, (tier -> canAddMultiple ? maxSealStack: 1),tooltip);
+    }
+
+    public SealItem(Properties pProperties, String id, SealType type, ToIntFunction<ISealableTier> sealableFunction, Tooltip tooltip) {
         super(pProperties);
         this.id = id;
         this.type = type;
-        this.canAddMultiple = canAddMultiple;
-        this.maxSealStack = maxSealStack;
+        this.maxSealStack = sealableFunction;
         this.tooltip = tooltip;
     }
 
@@ -55,11 +59,11 @@ public class SealItem extends Item {
         super.appendHoverText(stack, level, tooltip, tooltipFlag);
     }
 
-    public boolean canAddMultiple() {
-        return canAddMultiple;
+    public boolean canAddMultiple(ISealableTier tier) {
+        return maxSealStack.applyAsInt(tier) > 1;
     }
 
-    public int getMaxSealStack() {
+    public ToIntFunction<ISealableTier> getMaxSealStack() {
         return maxSealStack;
     }
 }

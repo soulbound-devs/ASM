@@ -2,7 +2,10 @@ package net.vakror.asm.seal.tier.sealable;
 
 public enum ModWandTiers implements ISealableTier {
     ANCIENT_OAK(0, 1, 1, 2),
-    SACK(0, 0, 0, 4);
+    SACK(0, 0, 0, 4),
+    BLOOD_SOUL_SACK(1, 0, 0, 8),
+    WARPED_SACK(2, 0, 0, 15),
+    PURPUR_SACK(5, 0, 0, 24);
 
     private final int passiveSlots;
     private final int attackSlots;

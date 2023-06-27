@@ -26,13 +26,13 @@ public class ModItems {
            () -> new SealItem(new Item.Properties(), "axing", SealType.OFFENSIVE, AXING));
 
     public static final RegistryObject<Item> SACK_ROW_UPGRADE_SEAL_TIER_1 = ITEMS_REGISTRY.register("sack_row_upgrade_seal_tier_1",
-           () -> new SealItem(new Item.Properties(), "row_tier_1", SealType.AMPLIFYING, HEIGHT));
+           () -> new SealItem(new Item.Properties(), "row_tier_1", SealType.AMPLIFYING, ((tier -> tier.getTier() > 0 ? ((Math.min(tier.getTier() * 2, 1))): 1)),HEIGHT));
 
     public static final RegistryObject<Item> SACK_COLUMN_UPGRADE_SEAL_TIER_1 = ITEMS_REGISTRY.register("sack_column_upgrade_seal_tier_1",
-           () -> new SealItem(new Item.Properties(), "column_tier_1", SealType.AMPLIFYING, WIDTH));
+           () -> new SealItem(new Item.Properties(), "column_tier_1", SealType.AMPLIFYING, ((tier -> tier.getTier() > 0 ? ((Math.min(tier.getTier() * 2, 1))): 1)), WIDTH));
 
     public static final RegistryObject<Item> SACK_STACK_SIZE_UPGRADE_SEAL_TIER_1 = ITEMS_REGISTRY.register("sack_stack_size_upgrade_seal_tier_1",
-           () -> new SealItem(new Item.Properties(), "stack_size_tier_1", SealType.AMPLIFYING, STACK_SIZE));
+           () -> new SealItem(new Item.Properties(), "stack_size_tier_1", SealType.AMPLIFYING, ((tier -> tier.getTier() > 0 ? ((Math.min(tier.getTier() * 2, 2))): 1)), STACK_SIZE));
 
     public static final RegistryObject<Item> SACK_PICKUP_SEAL = ITEMS_REGISTRY.register("sack_pickup_seal",
            () -> new SealItem(new Item.Properties(), "pickup", SealType.AMPLIFYING, PICKUP));
@@ -87,6 +87,15 @@ public class ModItems {
 
     public static final RegistryObject<Item> SACK = ITEMS_REGISTRY.register("sack",
            () -> new SackItem(new Item.Properties(), ModWandTiers.SACK));
+
+    public static final RegistryObject<Item> BLOOD_SOUL_SACK = ITEMS_REGISTRY.register("blood_soul_sack",
+           () -> new SackItem(new Item.Properties(), ModWandTiers.BLOOD_SOUL_SACK));
+
+    public static final RegistryObject<Item> WARPED_SOUL_SACK = ITEMS_REGISTRY.register("warped_soul_sack",
+           () -> new SackItem(new Item.Properties(), ModWandTiers.WARPED_SACK));
+
+    public static final RegistryObject<Item> PURPUR_SACK = ITEMS_REGISTRY.register("purpur_sack",
+           () -> new SackItem(new Item.Properties(), ModWandTiers.PURPUR_SACK));
 
     public static final RegistryObject<Item> RAW_TUNGSTEN = ITEMS_REGISTRY.register("raw_tungsten",
            () -> new Item(new Item.Properties()));
