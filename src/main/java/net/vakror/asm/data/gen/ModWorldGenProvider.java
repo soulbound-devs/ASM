@@ -7,6 +7,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
 import net.vakror.asm.ASMMod;
 import net.vakror.asm.world.biome.ModBiomes;
+import net.vakror.asm.world.carver.ModCarvers;
 import net.vakror.asm.world.feature.ModConfiguredFeatures;
 import net.vakror.asm.world.structure.ModStructures;
 
@@ -16,6 +17,7 @@ import java.util.concurrent.CompletableFuture;
 public class ModWorldGenProvider extends DatapackBuiltinEntriesProvider {
     public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder().add(Registries.CONFIGURED_FEATURE, ModConfiguredFeatures::bootstrap)
             .add(Registries.PLACED_FEATURE, ModConfiguredFeatures::placedBootstrap)
+            .add(Registries.CONFIGURED_CARVER, ModCarvers::bootstrap)
             .add(Registries.STRUCTURE_SET, ModStructures::bootstrapSets)
             .add(Registries.BIOME, ModBiomes::bootstrap)
             .add(Registries.STRUCTURE, ModStructures::bootstrap);
