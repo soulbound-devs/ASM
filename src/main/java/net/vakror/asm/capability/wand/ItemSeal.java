@@ -204,6 +204,9 @@ public class ItemSeal {
         this.passiveSeals = source.passiveSeals;
         this.attackSeals = source.attackSeals;
         this.amplifyingSeals = source.amplifyingSeals;
+        this.selectedIsAttack = source.selectedIsAttack;
+        this.selectedSealSlot = source.selectedSealSlot;
+        this.activeSeal = source.activeSeal;
     }
 
     public void saveNBTData(CompoundTag nbt) {
@@ -251,5 +254,10 @@ public class ItemSeal {
         activeSeal = SealRegistry.allSeals.get(nbt.getString("active_seal"));
         selectedSealSlot = nbt.getInt("active_slot");
         selectedIsAttack = nbt.getBoolean("active_slot_attack");
+    }
+
+    public boolean hasSeal() {
+        createIfNull();
+        return !passiveSeals.isEmpty() || !attackSeals.isEmpty() || !amplifyingSeals.isEmpty();
     }
 }
