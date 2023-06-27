@@ -1,14 +1,8 @@
 {
   "carvers": {
-    "air": [
-      "minecraft:cave",
-      "minecraft:cave_extra_underground",
-      "minecraft:canyon",
-      "minecraft:cave",
-      "minecraft:cave_extra_underground"
-    ]
+    "air": "asm:huge_cave"
   },
-  "downfall": 0.5,
+  "downfall": 0.4,
   "effects": {
     "fog_color": 12638463,
     "mood_sound": {
@@ -23,16 +17,13 @@
       "replace_current_music": false,
       "sound": "minecraft:music.overworld.deep_dark"
     },
-    "sky_color": 8103167,
+    "sky_color": 7907327,
     "water_color": 4159204,
     "water_fog_color": 329011
   },
   "features": [
     [],
-    [
-      "minecraft:lake_lava_underground",
-      "minecraft:lake_lava_surface"
-    ],
+    [],
     [
       "minecraft:amethyst_geode"
     ],
@@ -51,57 +42,84 @@
       "minecraft:ore_diorite_lower",
       "minecraft:ore_andesite_upper",
       "minecraft:ore_andesite_lower",
-      "minecraft:ore_tuff"
+      "minecraft:ore_tuff",
+      "minecraft:ore_coal_upper",
+      "minecraft:ore_coal_lower",
+      "minecraft:ore_iron_upper",
+      "minecraft:ore_iron_middle",
+      "minecraft:ore_iron_small",
+      "minecraft:ore_gold",
+      "minecraft:ore_gold_lower",
+      "minecraft:ore_redstone",
+      "minecraft:ore_redstone_lower",
+      "minecraft:ore_diamond",
+      "minecraft:ore_diamond_large",
+      "minecraft:ore_diamond_buried",
+      "minecraft:ore_lapis",
+      "minecraft:ore_lapis_buried",
+      "minecraft:ore_copper",
+      "minecraft:underwater_magma",
+      "minecraft:disk_sand",
+      "minecraft:disk_clay",
+      "minecraft:disk_gravel"
+    ],
+    [
+      "minecraft:sculk_vein",
+      "minecraft:sculk_patch_deep_dark"
     ],
     [],
     [
-      "minecraft:spring_water",
-      "minecraft:spring_lava"
-    ],
-    [
-      "minecraft:glow_lichen"
+      "minecraft:glow_lichen",
+      "minecraft:patch_tall_grass_2",
+      "minecraft:trees_plains",
+      "minecraft:flower_plains",
+      "minecraft:patch_grass_plain",
+      "minecraft:brown_mushroom_normal",
+      "minecraft:red_mushroom_normal",
+      "minecraft:patch_sugar_cane",
+      "minecraft:patch_pumpkin",
+      "asm:corrupted_tree_placed"
     ],
     [
       "minecraft:freeze_top_layer"
     ]
   ],
-  "has_precipitation": false,
+  "has_precipitation": true,
   "spawn_costs": {},
   "spawners": {
-    "ambient": [
-      {
-        "type": "minecraft:cave_spider",
-        "maxCount": 6,
-        "minCount": 4,
-        "weight": 10
-      },
-      {
-        "type": "minecraft:evoker",
-        "maxCount": 8,
-        "minCount": 8,
-        "weight": 25
-      },
-      {
-        "type": "minecraft:bat",
-        "maxCount": 8,
-        "minCount": 8,
-        "weight": 10
-      }
-    ],
+    "ambient": [],
     "axolotls": [],
     "creature": [],
     "misc": [],
-    "monster": [],
-    "underground_water_creature": [
+    "monster": [
       {
-        "type": "minecraft:glow_squid",
-        "maxCount": 6,
-        "minCount": 4,
-        "weight": 10
+        "type": "minecraft:evoker",
+        "maxCount": 8,
+        "minCount": 6,
+        "weight": 25
+      },
+      {
+        "type": "minecraft:illusioner",
+        "maxCount": 8,
+        "minCount": 6,
+        "weight": 25
+      },
+      {
+        "type": "minecraft:cave_spider",
+        "maxCount": 8,
+        "minCount": 6,
+        "weight": 25
+      },
+      {
+        "type": "minecraft:phantom",
+        "maxCount": 8,
+        "minCount": 6,
+        "weight": 25
       }
     ],
+    "underground_water_creature": [],
     "water_ambient": [],
     "water_creature": []
   },
-  "temperature": 0.5
+  "temperature": 0.8
 }

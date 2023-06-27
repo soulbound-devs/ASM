@@ -4,7 +4,7 @@
     "default": "asm:corrupted_tree_checked",
     "features": [
       {
-        "chance": 0.005,
+        "chance": 0.05,
         "feature": "asm:corrupted_tree_checked"
       }
     ]

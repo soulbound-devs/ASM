@@ -1,9 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    {
-      "id": "asm:corrupted_cave",
-      "required": false
-    }
-  ]
-}

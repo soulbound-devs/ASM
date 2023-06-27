@@ -1,8 +1,9 @@
-// 1.19.4	2023-04-12T17:06:15.325146	Registries
-87a735f23299ff2bca15f96b9f003c184f083fd8 data/asm/worldgen/biome/corrupted_cave.json
-13d67864a333f38c4fbc487e273f462d9bf509d8 data/asm/worldgen/configured_feature/corrupted_tree.json
-5ac787b06bb89c80ca251fcef51dfc3aaf35380e data/asm/worldgen/configured_feature/corrupted_tree_spawn.json
+// 1.20.1	2023-06-26T18:46:01.246615	Registries
+69ec4fcba6140f65a3b62a5581aadbd7f4d29a4b data/asm/worldgen/biome/corrupted_cave.json
+1ecfaf982548db3ab2220074848e4d5639584130 data/asm/worldgen/configured_carver/huge_cave.json
+0911a08caf180a935dbf939a70688d4dd2b8c3b3 data/asm/worldgen/configured_feature/corrupted_tree.json
+1d3e31fc4a2413390d88567a5e6edb8b93e5a049 data/asm/worldgen/configured_feature/corrupted_tree_spawn.json
 63bc2a8fc070f6b693398fbd362157add8118d56 data/asm/worldgen/placed_feature/corrupted_tree_checked.json
-adf4b90726264651c5da427ec174c48731688e88 data/asm/worldgen/placed_feature/corrupted_tree_placed.json
+ab3ce19dcf8dcbc9ade37d4db3c3d8dfef3feea1 data/asm/worldgen/placed_feature/corrupted_tree_placed.json
 a499d4ca503849991846586e87843c8d3c63fa64 data/asm/worldgen/structure/dungeon.json
 81967230875b9f4b4dd4f591d214cfbd07e6f7b5 data/asm/worldgen/structure_set/dungeon.json
