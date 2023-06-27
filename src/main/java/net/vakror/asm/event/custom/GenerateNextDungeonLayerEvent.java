@@ -41,6 +41,9 @@ public class GenerateNextDungeonLayerEvent extends Event {
         return level;
     }
 
+    /**
+     * @return the current layer count BEFORE the level is generated
+     */
     public int getCurrentLayer() {
         return currentLayer;
     }

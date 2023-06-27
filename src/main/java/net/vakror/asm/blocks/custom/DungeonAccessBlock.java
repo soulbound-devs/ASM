@@ -21,17 +21,17 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
+import net.vakror.asm.ASMMod;
 import net.vakror.asm.blocks.entity.custom.DungeonAccessBlockEntity;
+import net.vakror.asm.dungeon.capability.DungeonProvider;
 import net.vakror.asm.items.ModItems;
 import net.vakror.asm.world.dimension.DungeonTeleporter;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import static net.vakror.asm.world.dimension.DimensionUtils.createWorld;
+import static net.vakror.asm.world.dimension.DimensionUtils.doesLevelExist;
 
 public class DungeonAccessBlock extends BaseEntityBlock {
     public static final BooleanProperty LOCKED = BooleanProperty.create("locked");
@@ -63,8 +63,16 @@ public class DungeonAccessBlock extends BaseEntityBlock {
                     blockEntity.setDimensionUUID(UUID.randomUUID());
                     blockEntity.setChanged();
                 }
+                boolean levelExists = doesLevelExist(ASMMod.instance.server, blockEntity.getDimensionUUID());
+                final boolean[] canEnter = new boolean[]{true};
                 ServerLevel dimension = createWorld(level, blockEntity);
-                if (canTeleport(level, player, dimension, blockEntity.getDimensionUUID())) {
+                    dimension.getCapability(DungeonProvider.DUNGEON).ifPresent((dungeonLevel -> {
+                        if (!levelExists) {
+                            dungeonLevel.setStable(new Random().nextBoolean());
+                        }
+                        canEnter[0] = dungeonLevel.canEnter();
+                    }));
+                if (canTeleport(level, player, dimension, blockEntity.getDimensionUUID()) && canEnter[0]) {
                     player.setPortalCooldown();
                     player.changeDimension(dimension, new DungeonTeleporter(pos, this));
                 }

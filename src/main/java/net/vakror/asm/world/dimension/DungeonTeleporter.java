@@ -11,6 +11,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.ITeleporter;
 import net.vakror.asm.blocks.custom.DungeonAccessBlock;
 import net.vakror.asm.blocks.custom.ReturnToOverworldBlock;
+import net.vakror.asm.dungeon.capability.DungeonProvider;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Function;
@@ -18,10 +19,16 @@ import java.util.function.Function;
 public class DungeonTeleporter implements ITeleporter {
     protected BlockPos pos;
     protected BaseEntityBlock block;
+    protected ServerLevel level;
 
     public DungeonTeleporter(BlockPos pos, BaseEntityBlock block) {
         this.pos = pos;
         this.block = block;
+    }
+    public DungeonTeleporter(BlockPos pos, BaseEntityBlock block, ServerLevel level) {
+        this.pos = pos;
+        this.block = block;
+        this.level = level;
     }
 
     @Override
@@ -30,7 +37,14 @@ public class DungeonTeleporter implements ITeleporter {
             pos = new BlockPos(0, 64, 0);
         }
         if (block instanceof ReturnToOverworldBlock) {
-            pos = new BlockPos(destWorld.getLevelData().getXSpawn(), destWorld.getLevelData().getYSpawn(), destWorld.getLevelData().getZSpawn());;
+            pos = new BlockPos(destWorld.getLevelData().getXSpawn(), destWorld.getLevelData().getYSpawn(), destWorld.getLevelData().getZSpawn());
+            if (this.level != null) {
+                this.level.getCapability(DungeonProvider.DUNGEON).ifPresent((dungeonLevel -> {
+                    if (!dungeonLevel.isStable()) {
+                        dungeonLevel.setCanEnter(false);
+                    }
+                }));
+            }
         }
         return new PortalInfo(pos.getCenter(), Vec3.ZERO, entity.getYRot(), entity.getXRot());
     }

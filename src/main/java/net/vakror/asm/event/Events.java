@@ -22,12 +22,14 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
@@ -46,11 +48,16 @@ import net.vakror.asm.blocks.entity.custom.ReturnToOverWorldBlockEntity;
 import net.vakror.asm.blocks.entity.custom.SoulCatalystBlockEntity;
 import net.vakror.asm.capability.wand.ItemSeal;
 import net.vakror.asm.capability.wand.ItemSealProvider;
+import net.vakror.asm.dungeon.DungeonLevels;
+import net.vakror.asm.dungeon.DungeonText;
+import net.vakror.asm.dungeon.capability.Dungeon;
+import net.vakror.asm.dungeon.capability.DungeonProvider;
 import net.vakror.asm.entity.GoblaggerEntity;
 import net.vakror.asm.entity.ModEntities;
 import net.vakror.asm.entity.client.BroomModel;
 import net.vakror.asm.entity.client.BroomRenderer;
 import net.vakror.asm.event.custom.GenerateFirstDungeonLayerEvent;
+import net.vakror.asm.event.custom.GenerateNextDungeonLayerEvent;
 import net.vakror.asm.items.custom.ActivatableSealableItem;
 import net.vakror.asm.items.custom.SealableItem;
 import net.vakror.asm.packets.ModPackets;
@@ -104,6 +111,17 @@ public class Events {
                         }
                     });
                 }
+            }
+        }
+
+        @SubscribeEvent
+        public static void triggerBossFightIfAllRoomsAreBeaten(TickEvent.LevelTickEvent event) {
+            if (!event.level.isClientSide && event.level.dimensionTypeId().equals(Dimensions.DUNGEON_TYPE)) {
+                event.level.getCapability(DungeonProvider.DUNGEON).ifPresent((dungeonLevel -> {
+                    if (dungeonLevel.getLevelsBeaten() > dungeonLevel.getLevelsGenerated()) {
+                        genNextLevel(dungeonLevel, (ServerLevel) event.level);
+                    }
+                }));
             }
         }
 
@@ -166,9 +184,16 @@ public class Events {
         }
 
         @SubscribeEvent
-        public static void attachCapability(AttachCapabilitiesEvent<ItemStack> event) {
+        public static void attachSealCapability(AttachCapabilitiesEvent<ItemStack> event) {
             if (event.getObject().getItem() instanceof SealableItem) {
                 event.addCapability(new ResourceLocation(ASMMod.MOD_ID, "seals"), new ItemSealProvider());
+            }
+        }
+
+        @SubscribeEvent
+        public static void attachDungeonCapability(AttachCapabilitiesEvent<Level> event) {
+            if (event.getObject().dimensionTypeId().equals(Dimensions.DUNGEON_TYPE)) {
+                event.addCapability(new ResourceLocation(ASMMod.MOD_ID, "dungeon_data"), new DungeonProvider());
             }
         }
 
@@ -215,8 +240,13 @@ public class Events {
 
         @SubscribeEvent
         public static void onPlayerEnterDungeon(EntityJoinLevelEvent event) {
-            if (!event.getLevel().isClientSide && event.getEntity() instanceof Player) {
+            if (!event.getLevel().isClientSide && event.getEntity() instanceof ServerPlayer serverPlayer) {
                 ServerLevel world = (ServerLevel) event.getLevel();
+                world.getCapability(DungeonProvider.DUNGEON).ifPresent((dungeon -> {
+                    if (!dungeon.canEnter()) {
+                        event.setCanceled(true);
+                    }
+                }));
                 if (world.dimensionType() == world.registryAccess().registryOrThrow(Registries.DIMENSION_TYPE).getHolderOrThrow(Dimensions.DUNGEON_TYPE).get()) {
                     BlockPos returnPos = new BlockPos(0, 63, 0);
                     if ((event.getLevel().getBlockEntity(returnPos) instanceof ReturnToOverWorldBlockEntity entity)) {
@@ -256,6 +286,7 @@ public class Events {
         private static void genDungeon(ReturnToOverWorldBlockEntity entity, ServerLevel world, EntityJoinLevelEvent joinLevelEvent) {
             if (!entity.hasGeneratedDungeon()) {
                 GenerateFirstDungeonLayerEvent dungeonLayerEvent = new GenerateFirstDungeonLayerEvent((ServerPlayer) joinLevelEvent.getEntity(), world, 0);
+                MinecraftForge.EVENT_BUS.post(dungeonLayerEvent);
                 DungeonPiece result = dungeonLayerEvent.getNewLayer();
                 StructureStart start = new DungeonStructure(
                         ModStructures.structure(), entity.getDungeonSize(), 0, result)
@@ -275,12 +306,52 @@ public class Events {
                 ChunkPos.rangeClosed(chunkpos, chunkpos1).forEach((chunkPos) -> {
                     start.placeInChunk(world, world.structureManager(), world.getChunkSource().getGenerator(), world.getRandom(), new BoundingBox(chunkPos.getMinBlockX(), world.getMinBuildHeight(), chunkPos.getMinBlockZ(), chunkPos.getMaxBlockX(), world.getMaxBuildHeight(), chunkPos.getMaxBlockZ()), chunkPos);
                 });
+                world.getCapability(DungeonProvider.DUNGEON).ifPresent((dungeon -> {
+                    dungeon.setCurrentLevel(switch (entity.getDungeonSize()) {
+                        default -> DungeonLevels.LABYRINTH_50;
+                    });
+                }));
                 BlockPos returnPos = new BlockPos(0, 63, 0);
                 world.setBlock(returnPos, ModBlocks.RETURN_TO_OVERWORLD_BLOCK.get().defaultBlockState(), 3);
                 ((ReturnToOverWorldBlockEntity) Objects.requireNonNull(world.getBlockEntity(returnPos))).hasGeneratedDungeon(true);
             }
         }
     }
+
+        private static void genNextLevel(Dungeon dungeonLevel, ServerLevel dungeon) {
+            GenerateNextDungeonLayerEvent dungeonLayerEvent = new GenerateNextDungeonLayerEvent(dungeon.players().get(0), dungeon, dungeonLevel.getLevelsGenerated());
+            boolean canceled = MinecraftForge.EVENT_BUS.post(dungeonLayerEvent);
+            if (!canceled) {
+                StructureStart start = new DungeonStructure(
+                        ModStructures.structure(), dungeonLevel.getCurrentLevel().size(), dungeonLevel.getLevelsGenerated() + 1, null)
+                        .generate(dungeon.registryAccess(),
+                                dungeon.getChunkSource().getGenerator(),
+                                dungeon.getChunkSource().getGenerator().getBiomeSource(),
+                                dungeon.getChunkSource().randomState(),
+                                dungeon.getStructureManager(),
+                                dungeon.getSeed(),
+                                new ChunkPos(dungeon.players().get(0).blockPosition().below()),
+                                0,
+                                dungeon,
+                                (biomeHolder) -> true);
+                BoundingBox boundingbox = start.getBoundingBox();
+                ChunkPos chunkpos = new ChunkPos(SectionPos.blockToSectionCoord(boundingbox.minX()), SectionPos.blockToSectionCoord(boundingbox.minZ()));
+                ChunkPos chunkpos1 = new ChunkPos(SectionPos.blockToSectionCoord(boundingbox.maxX()), SectionPos.blockToSectionCoord(boundingbox.maxZ()));
+                ChunkPos.rangeClosed(chunkpos, chunkpos1).forEach((chunkPos) -> {
+                    start.placeInChunk(dungeon, dungeon.structureManager(), dungeon.getChunkSource().getGenerator(), dungeon.getRandom(), new BoundingBox(chunkPos.getMinBlockX(), dungeon.getMinBuildHeight(), chunkPos.getMinBlockZ(), chunkPos.getMaxBlockX(), dungeon.getMaxBuildHeight(), chunkPos.getMaxBlockZ()), chunkPos);
+                });
+                dungeonLevel.setLevelsGenerated(dungeonLevel.getLevelsGenerated() + 1);
+                dungeonLevel.setCurrentLevel(
+                        switch (dungeonLevel.getCurrentLevel().size()) {
+                            default -> switch (dungeonLevel.getLevelsGenerated()) {
+                                default -> DungeonLevels.LABYRINTH_50;
+                            };
+                        });
+                BlockPos returnPos = new BlockPos(0, 63, 0);
+                dungeon.setBlock(returnPos, ModBlocks.RETURN_TO_OVERWORLD_BLOCK.get().defaultBlockState(), 3);
+                ((ReturnToOverWorldBlockEntity) Objects.requireNonNull(dungeon.getBlockEntity(returnPos))).hasGeneratedDungeon(true);
+            }
+        }
 
     public static boolean isDamageType(DamageSource source, ResourceKey<DamageType> type) {
         return source.type().equals(RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY).registryOrThrow(Registries.DAMAGE_TYPE).get(type));

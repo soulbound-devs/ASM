@@ -38,7 +38,7 @@ public class ReturnToOverworldBlock extends BaseEntityBlock {
             if (dimension == null) {
                 throw new IllegalStateException("Hmmm. Server does not contain overworld?");
             }
-            player.changeDimension(dimension, new DungeonTeleporter(pos, this));
+            player.changeDimension(dimension, new DungeonTeleporter(pos, this, (ServerLevel) player.level()));
         }
         return super.use(state, level, pos, player, hand, hitResult);
     }
