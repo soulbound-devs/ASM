@@ -44,6 +44,9 @@ public class ModBlocks {
     public static final RegistryObject<Block> ANCIENT_OAK_LOG = registerBlock("ancient_oak_log",
            () -> new ModFlammableRotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LOG)));
 
+    public static final RegistryObject<Block> SOUL_EXTRACTOR = registerBlock("soul_extractor",
+           () -> new Block(BlockBehaviour.Properties.of().strength(5).requiresCorrectToolForDrops()));
+
     public static final RegistryObject<Block> ANCIENT_OAK_PLANKS = registerBlock("ancient_oak_planks",
            () -> new Block(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)) {
                 @Override
