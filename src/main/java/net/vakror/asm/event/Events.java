@@ -257,6 +257,7 @@ public class Events {
                             genDungeon(entity, world, event);
                         }
                     }
+                    ASMMod.instance.server.getPlayerList().broadcastSystemMessage(DungeonText.JOIN_MESSAGE(serverPlayer, world), false);
                 }
             }
         }
