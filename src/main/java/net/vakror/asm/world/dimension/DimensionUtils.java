@@ -86,6 +86,17 @@ public class DimensionUtils {
         return createAndRegisterWorldAndDimension(server, map, levelKey, dimensionFactory);
     }
 
+    public static boolean doesLevelExist(MinecraftServer server, UUID uuid) {
+        ResourceLocation id = new ResourceLocation(ASMMod.MOD_ID, "dungeon_" + uuid.toString());
+        ResourceKey<Level> levelKey = ResourceKey.create(Registries.DIMENSION, id);
+
+        @SuppressWarnings("deprecation") // forgeGetWorldMap is deprecated because it's a forge-internal-use-only method
+        final Map<ResourceKey<Level>, ServerLevel> map = server.forgeGetWorldMap();
+        // if the level already exists, return true
+        final ServerLevel existingLevel = map.get(levelKey);
+        return existingLevel != null;
+    }
+
     @SuppressWarnings("deprecation") // because we call the forge internal method server#markWorldsDirty
     private static ServerLevel createAndRegisterWorldAndDimension(final MinecraftServer server, final Map<ResourceKey<Level>, ServerLevel> map, final ResourceKey<Level> worldKey, final BiFunction<MinecraftServer, ResourceKey<LevelStem>, LevelStem> dimensionFactory) {
         // get everything we need to create the dimension and the level
