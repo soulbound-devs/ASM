@@ -191,6 +191,24 @@ public class SoulSolidifierBlockEntity extends BlockEntity implements MenuProvid
         if (hasFluidItemInSourceSlot(blockEntity)) {
             transferItemFluidToFluidTank(blockEntity);
         }
+        if (hasFluidItemInDrainSlot(blockEntity)) {
+            transferFluidTankToItem(blockEntity);
+        }
+    }
+
+    private static void transferFluidTankToItem(SoulSolidifierBlockEntity blockEntity) {
+        blockEntity.itemHandler.getStackInSlot(3).getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(handler -> {
+            int drainAmount = Math.min(handler.getTankCapacity(0) - handler.getFluidInTank(0).getAmount(), 1000);
+
+            int amount = handler.fill(new FluidStack(blockEntity.FLUID_TANK.getFluid().getFluid(), drainAmount), IFluidHandler.FluidAction.SIMULATE);
+            if (amount > 0) {
+                handler.fill(new FluidStack(blockEntity.FLUID_TANK.getFluid().getFluid(), drainAmount), IFluidHandler.FluidAction.EXECUTE);
+            }
+        });
+    }
+
+    private static boolean hasFluidItemInDrainSlot(SoulSolidifierBlockEntity blockEntity) {
+        return blockEntity.itemHandler.getStackInSlot(3).getCount() > 0;
     }
 
     private static boolean hasTungsten(SoulSolidifierBlockEntity blockEntity) {
