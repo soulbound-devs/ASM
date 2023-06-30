@@ -2,6 +2,8 @@ package net.vakror.asm.dungeon;
 
 import net.minecraft.nbt.CompoundTag;
 
+import java.util.Arrays;
+
 public class DungeonLevel {
     private int rooms;
     private int[] mobs;
@@ -23,6 +25,7 @@ public class DungeonLevel {
         tag.putIntArray("mobs", this.mobs);
         tag.putInt("level", this.level);
         tag.putInt("size", this.size);
+        tag.putInt("currentRoom", this.currentRoom);
         return tag;
     }
 
