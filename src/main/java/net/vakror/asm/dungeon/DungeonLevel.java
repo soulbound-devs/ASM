@@ -49,6 +49,17 @@ public class DungeonLevel {
         return mobs[index - 1];
     }
 
+    @Override
+    public String toString() {
+        return "DungeonLevel{" +
+                "rooms=" + rooms +
+                ", mobs=" + Arrays.toString(mobs) +
+                ", level=" + level +
+                ", size=" + size +
+                ", currentRoom=" + currentRoom +
+                '}';
+    }
+
     public void setMobs(int[] mobs) {
         this.mobs = mobs;
     }
