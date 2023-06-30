@@ -367,9 +367,6 @@ public class Events {
                                 default -> DungeonLevels.LABYRINTH_50;
                             };
                         });
-                BlockPos returnPos = new BlockPos(0, 63, 0);
-                dungeon.setBlock(returnPos, ModBlocks.RETURN_TO_OVERWORLD_BLOCK.get().defaultBlockState(), 3);
-                ((ReturnToOverWorldBlockEntity) Objects.requireNonNull(dungeon.getBlockEntity(returnPos))).hasGeneratedDungeon(true);
             }
         }
 
