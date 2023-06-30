@@ -74,6 +74,7 @@ import net.vakror.asm.world.structure.ModStructures;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 public class Events {
     @Mod.EventBusSubscriber(modid = ASMMod.MOD_ID)
@@ -126,19 +127,21 @@ public class Events {
             }
         }
 
+        public static UUID lastDungeonMobDeathUUID;
+
         @SubscribeEvent
         public static void onDungeonMobDeath(LivingDeathEvent event) {
             if (!event.getEntity().level().isClientSide && event.getEntity().level().dimensionTypeId().equals(Dimensions.DUNGEON_TYPE)) {
-                if (event.getEntity() instanceof DungeonMonster) {
+                if (event.getEntity() instanceof DungeonMonster && event.getEntity().getUUID() != lastDungeonMobDeathUUID) {
                     event.getEntity().level().getCapability(DungeonProvider.DUNGEON).ifPresent((dungeon -> {
-                        if (dungeon.getCurrentLevel().currentRoom() != 0) {
-                            dungeon.getCurrentLevel().removeOneMobFromRoom(dungeon.getCurrentLevel().currentRoom());
-                            if (dungeon.getCurrentLevel().mobs(dungeon.getCurrentLevel().currentRoom()) <= 0) {
-                                dungeon.getCurrentLevel().setCurrentRoom(dungeon.getCurrentLevel().currentRoom() + 1);
-                            }
-                        } else {
-                            throw new IllegalStateException("Room Cannot be zero when mob is killed");
+                        if (dungeon.getCurrentLevel().currentRoom() == 0) {
+                            dungeon.getCurrentLevel().setCurrentRoom(1);
                         }
+                        dungeon.getCurrentLevel().removeOneMobFromRoom(dungeon.getCurrentLevel().currentRoom());
+                        if (dungeon.getCurrentLevel().mobs(dungeon.getCurrentLevel().currentRoom()) <= 0) {
+                            dungeon.getCurrentLevel().setCurrentRoom(dungeon.getCurrentLevel().currentRoom() + 1);
+                        }
+                        lastDungeonMobDeathUUID = event.getEntity().getUUID();
                     }));
                 }
             }
