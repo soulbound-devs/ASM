@@ -3,34 +3,59 @@ package net.vakror.asm.dungeon;
 import net.minecraft.nbt.CompoundTag;
 
 import java.util.Arrays;
+import java.util.Random;
 
 public class DungeonLevel {
     private int rooms;
+    private int minMobs;
+    private int maxMobs;
     private int[] mobs;
     private int level;
     private int size;
     private int currentRoom;
 
-    public DungeonLevel(int rooms, int[] mobs, int level, int size, int currentRoom) {
+    public DungeonLevel(int rooms, int level, int size, int currentRoom, int minMobs, int maxMobs) {
+        this.rooms = rooms;
+        this.level = level;
+        this.size = size;
+        this.currentRoom = currentRoom;
+        this.minMobs = minMobs;
+        this.maxMobs = maxMobs;
+    }
+
+    public DungeonLevel(int rooms, int[] mobs, int level, int size, int currentRoom, int minMobs, int maxMobs) {
         this.rooms = rooms;
         this.mobs = mobs;
         this.level = level;
         this.size = size;
         this.currentRoom = currentRoom;
+        this.minMobs = minMobs;
+        this.maxMobs = maxMobs;
+    }
+
+    private int[] generateRandomMobCount(int minMobs, int maxMobs, int count) {
+        int[] mobs = new int[count - 1];
+        for (int i = 0; i < count; i++) {
+            mobs[i] = new Random().nextInt(minMobs, maxMobs + 1);
+        }
+        System.out.println(Arrays.toString(mobs));
+        return mobs;
     }
 
     public CompoundTag serializeNbt() {
         CompoundTag tag = new CompoundTag();
         tag.putInt("rooms", this.rooms);
-        tag.putIntArray("mobs", this.mobs);
+        tag.putIntArray("mobs", this.mobs());
         tag.putInt("level", this.level);
         tag.putInt("size", this.size);
         tag.putInt("currentRoom", this.currentRoom);
+        tag.putInt("minMobs", this.minMobs);
+        tag.putInt("maxMobs", this.maxMobs);
         return tag;
     }
 
     public static DungeonLevel deserializeNbt(CompoundTag tag) {
-        return new DungeonLevel(tag.getInt("rooms"), tag.getIntArray("mobs"), tag.getInt("level"), tag.getInt("size"), tag.getInt("currentRoom"));
+        return new DungeonLevel(tag.getInt("rooms"), tag.getIntArray("mobs"), tag.getInt("level"), tag.getInt("size"), tag.getInt("currentRoom"), tag.getInt("minMobs"), tag.getInt("maxMobs"));
     }
 
     public int rooms() {
@@ -42,10 +67,16 @@ public class DungeonLevel {
     }
 
     public int[] mobs() {
+        if (mobs == null) {
+            mobs = generateRandomMobCount(this.minMobs, this.maxMobs, this.rooms);
+        }
         return mobs;
     }
 
     public int mobs(int index) {
+        if (mobs == null) {
+            mobs = generateRandomMobCount(this.minMobs, this.maxMobs, this.rooms);
+        }
         return mobs[index - 1];
     }
 
