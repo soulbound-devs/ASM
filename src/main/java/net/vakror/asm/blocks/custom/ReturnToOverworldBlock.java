@@ -43,7 +43,7 @@ public class ReturnToOverworldBlock extends BaseEntityBlock {
             ServerLevel dimension = ASMMod.instance.server.getLevel(ServerLevel.OVERWORLD);
             player.setPortalCooldown();
             if (dimension == null) {
-                throw new IllegalStateException("Hmmm. Server does not contain overworld?");
+                throwOverworldNotPresentException();
             }
             ReturnToOverWorldBlockEntity entity = ((ReturnToOverWorldBlockEntity) level.getBlockEntity(pos));
             AtomicReference<InteractionResult> result = new AtomicReference<>(InteractionResult.PASS);
@@ -68,6 +68,15 @@ public class ReturnToOverworldBlock extends BaseEntityBlock {
             }));
         }
         return super.use(state, level, pos, player, hand, hitResult);
+    }
+
+
+    /**
+     * THIS SHOULD NEVER OCCUR. I MEAN NEVER
+     * IF THIS EVER HAPPENS, YOUR WORLD FILE IS CORRUPT
+     */
+    private void throwOverworldNotPresentException() {
+        throw new IllegalStateException("Hmm. Server does not contain overworld?");
     }
 
     @Nullable
