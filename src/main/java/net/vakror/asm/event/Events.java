@@ -89,9 +89,9 @@ public class Events {
 
         @SubscribeEvent
         public static void triggerScytheAOE(LivingHurtEvent event) {
-            if (event.getEntity() instanceof GoblaggerEntity && (isDamageType(event.getSource(), DamageTypes.CRAMMING) || isDamageType(event.getSource(), DamageTypes.IN_WALL) || isDamageType(event.getSource(), DamageTypes.FALL))) {
-                event.setCanceled(true);
-            }
+//            if (event.getEntity() instanceof GoblaggerEntity && (isDamageType(event.getSource(), DamageTypes.CRAMMING) || isDamageType(event.getSource(), DamageTypes.IN_WALL) || isDamageType(event.getSource(), DamageTypes.FALL))) {
+//                event.setCanceled(true);
+//            }
             if (event.getSource().getEntity() instanceof ServerPlayer player) {
                 if (player.getMainHandItem().getItem() instanceof SealableItem || player.getOffhandItem().getItem() instanceof SealableItem && event.getSource().getEntity() instanceof Player) {
                     InteractionHand hand;
