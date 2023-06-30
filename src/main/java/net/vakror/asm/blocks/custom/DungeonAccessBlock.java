@@ -29,6 +29,7 @@ import net.vakror.asm.world.dimension.DungeonTeleporter;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static net.vakror.asm.world.dimension.DimensionUtils.createWorld;
 import static net.vakror.asm.world.dimension.DimensionUtils.doesLevelExist;
@@ -81,6 +82,9 @@ public class DungeonAccessBlock extends BaseEntityBlock {
     }
 
     private boolean canTeleport(Level level, Player player, ServerLevel dimension, UUID dimensionUUID) {
+        if (!dimension.players().isEmpty()) {
+            ASMMod.LOGGER.info(player.getDisplayName() + "Cannot Enter" + (isStable(dimension) ? "Stable": "Unstable") + "Dungeon, as " + dimension.players().get(0) + "Is already in it");
+        }
         return dimension.players().isEmpty();
     }
 
@@ -100,6 +104,14 @@ public class DungeonAccessBlock extends BaseEntityBlock {
     @Override
     public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
         return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
+    }
+
+    public boolean isStable(ServerLevel dungeon) {
+        AtomicBoolean toReturn = new AtomicBoolean(true);
+        dungeon.getCapability(DungeonProvider.DUNGEON).ifPresent((dungeon1 -> {
+            toReturn.set(dungeon1.isStable());
+        }));
+        return toReturn.get();
     }
 
     @Nullable
