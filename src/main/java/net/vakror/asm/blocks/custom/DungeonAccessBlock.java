@@ -48,13 +48,11 @@ public class DungeonAccessBlock extends BaseEntityBlock {
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        boolean shouldTeleport = true;
         if (!level.isClientSide && player.getItemInHand(hand).getItem().equals(ModItems.KEY.get()) && state.getValue(LOCKED)) {
             level.setBlock(pos, state.setValue(LOCKED, false), 35);
-            player.getItemInHand(hand).shrink(1);
-            shouldTeleport = !shouldTeleport;
+            return InteractionResult.CONSUME;
         }
-        if (!level.isClientSide && !state.getValue(LOCKED) && shouldTeleport) {
+        if (!level.isClientSide && !state.getValue(LOCKED)) {
             /*
             player teleportation
             */
@@ -75,6 +73,7 @@ public class DungeonAccessBlock extends BaseEntityBlock {
                 if (canTeleport(level, player, dimension, blockEntity.getDimensionUUID()) && canEnter[0]) {
                     player.setPortalCooldown();
                     player.changeDimension(dimension, new DungeonTeleporter(pos, this));
+                    return InteractionResult.SUCCESS;
                 }
             }
         }
