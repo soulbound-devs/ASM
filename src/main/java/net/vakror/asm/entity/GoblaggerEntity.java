@@ -19,7 +19,7 @@ import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInst
 import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
 
-public class GoblaggerEntity extends Monster implements GeoEntity {
+public class GoblaggerEntity extends DungeonMonster implements GeoEntity {
     private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
 
     public GoblaggerEntity(EntityType<GoblaggerEntity> pEntityType, Level pLevel) {
