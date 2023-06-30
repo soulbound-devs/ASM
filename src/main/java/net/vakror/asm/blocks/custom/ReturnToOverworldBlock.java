@@ -9,13 +9,20 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.vakror.asm.ASMMod;
+import net.vakror.asm.blocks.entity.ModBlockEntities;
 import net.vakror.asm.blocks.entity.custom.ReturnToOverWorldBlockEntity;
+import net.vakror.asm.dungeon.DungeonText;
+import net.vakror.asm.dungeon.capability.DungeonProvider;
 import net.vakror.asm.world.dimension.DungeonTeleporter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ReturnToOverworldBlock extends BaseEntityBlock {
     public ReturnToOverworldBlock(Properties properties) {
@@ -38,7 +45,27 @@ public class ReturnToOverworldBlock extends BaseEntityBlock {
             if (dimension == null) {
                 throw new IllegalStateException("Hmmm. Server does not contain overworld?");
             }
-            player.changeDimension(dimension, new DungeonTeleporter(pos, this, (ServerLevel) player.level()));
+            ReturnToOverWorldBlockEntity entity = ((ReturnToOverWorldBlockEntity) level.getBlockEntity(pos));
+            AtomicReference<InteractionResult> result = new AtomicReference<>(InteractionResult.PASS);
+            player.level().getCapability(DungeonProvider.DUNGEON).ifPresent((dungeon -> {
+                if (!dungeon.isStable() ) {
+                    if (dungeon.getLevelsBeaten() == dungeon.getLevelsGenerated() && dungeon.getLevelsGenerated() == dungeon.getMaxLevels()) {
+                        player.changeDimension(dimension, new DungeonTeleporter(pos, this, (ServerLevel) player.level()));
+                        result.set(InteractionResult.SUCCESS);
+                    } else {
+                        assert entity != null;
+                        if (entity.unstableDungeonReturnMessageDelay() <= 0) {
+                            player.sendSystemMessage(DungeonText.CANNOT_EXIT_UNTIL_BEATEN);
+                            entity.setUnstableDungeonReturnMessageDelay(200);
+                        }
+                        result.set(InteractionResult.FAIL);
+                    }
+                }
+                else {
+                    player.changeDimension(dimension, new DungeonTeleporter(pos, this, (ServerLevel) player.level()));
+                    result.set(InteractionResult.SUCCESS);
+                }
+            }));
         }
         return super.use(state, level, pos, player, hand, hitResult);
     }
@@ -47,5 +74,11 @@ public class ReturnToOverworldBlock extends BaseEntityBlock {
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
         return new ReturnToOverWorldBlockEntity(pos, state);
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
+        return createTickerHelper(pBlockEntityType, ModBlockEntities.RETURN_TO_OVERWORLD_BLOCK_ENTITY.get(), ReturnToOverWorldBlockEntity::tick);
     }
 }
