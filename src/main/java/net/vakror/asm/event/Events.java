@@ -370,10 +370,6 @@ public class Events {
             }
         }
 
-    public static boolean isDamageType(DamageSource source, ResourceKey<DamageType> type) {
-        return source.type().equals(RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY).registryOrThrow(Registries.DAMAGE_TYPE).get(type));
-    }
-
     @Mod.EventBusSubscriber(modid = ASMMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ModEvents {
 
