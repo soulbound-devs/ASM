@@ -52,6 +52,7 @@ import net.vakror.asm.dungeon.DungeonLevels;
 import net.vakror.asm.dungeon.DungeonText;
 import net.vakror.asm.dungeon.capability.Dungeon;
 import net.vakror.asm.dungeon.capability.DungeonProvider;
+import net.vakror.asm.entity.DungeonMonster;
 import net.vakror.asm.entity.GoblaggerEntity;
 import net.vakror.asm.entity.ModEntities;
 import net.vakror.asm.entity.client.BroomModel;
@@ -122,6 +123,24 @@ public class Events {
                         genNextLevel(dungeonLevel, (ServerLevel) event.level);
                     }
                 }));
+            }
+        }
+
+        @SubscribeEvent
+        public static void onDungeonMobDeath(LivingDeathEvent event) {
+            if (!event.getEntity().level().isClientSide && event.getEntity().level().dimensionTypeId().equals(Dimensions.DUNGEON_TYPE)) {
+                if (event.getEntity() instanceof DungeonMonster) {
+                    event.getEntity().level().getCapability(DungeonProvider.DUNGEON).ifPresent((dungeon -> {
+                        if (dungeon.getCurrentLevel().currentRoom() != 0) {
+                            dungeon.getCurrentLevel().removeOneMobFromRoom(dungeon.getCurrentLevel().currentRoom());
+                            if (dungeon.getCurrentLevel().mobs(dungeon.getCurrentLevel().currentRoom()) <= 0) {
+                                dungeon.getCurrentLevel().setCurrentRoom(dungeon.getCurrentLevel().currentRoom() + 1);
+                            }
+                        } else {
+                            throw new IllegalStateException("Room Cannot be zero when mob is killed");
+                        }
+                    }));
+                }
             }
         }
 
@@ -274,7 +293,11 @@ public class Events {
             if (!event.isCancelable()) {
                 return;
             }
-            event.setCanceled(true);
+            ((ServerLevel)event.getLevel()).getCapability(DungeonProvider.DUNGEON).ifPresent((dungeon -> {
+                if (dungeon.isStable() && dungeon.getLevelsBeaten() == dungeon.getMaxLevels()) {
+                    return;
+                } event.setCanceled(true);
+            }));
         }
 
         @SubscribeEvent
