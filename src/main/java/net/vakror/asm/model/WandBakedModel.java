@@ -66,6 +66,13 @@ public class WandBakedModel extends BakedItemModel {
 		this.transform = originalModel.transform;
 	}
 
+	/**
+	 *
+	 * When I wrote this god and me knew what it does
+	 * Now, only god knows
+	 *
+	 * @return the quads
+	 */
 	private ImmutableList<BakedQuad> genQuads() {
 		String cacheKey = this.getCacheKeyString();
 
