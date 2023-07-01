@@ -1,7 +1,7 @@
 package net.vakror.asm.dungeon.capability;
 
 import net.minecraft.nbt.CompoundTag;
-import net.vakror.asm.dungeon.DungeonLevel;
+import net.vakror.asm.dungeon.level.DungeonLevel;
 
 public class Dungeon {
     private boolean isStable;
@@ -64,7 +64,7 @@ public class Dungeon {
         canEnter = nbt.getBoolean("canEnter");
         levelsBeaten = nbt.getInt("levelsBeaten");
         if (nbt.contains("currentLevel")) {
-            currentLevel = DungeonLevel.deserializeNbt(nbt.getCompound("currentLevel"));
+            currentLevel = new DungeonLevel(0, 0).deserializeNbt(nbt.getCompound("currentLevel"));
         }
         maxLevels = nbt.getInt("maxLevels");
         levelsGenerated = nbt.getInt("levelsGenerated");

@@ -42,10 +42,11 @@ import net.vakror.asm.blocks.entity.custom.ReturnToOverWorldBlockEntity;
 import net.vakror.asm.blocks.entity.custom.SoulCatalystBlockEntity;
 import net.vakror.asm.capability.wand.ItemSeal;
 import net.vakror.asm.capability.wand.ItemSealProvider;
-import net.vakror.asm.dungeon.DungeonLevels;
+import net.vakror.asm.dungeon.level.DungeonLevels;
 import net.vakror.asm.dungeon.DungeonText;
 import net.vakror.asm.dungeon.capability.Dungeon;
 import net.vakror.asm.dungeon.capability.DungeonProvider;
+import net.vakror.asm.dungeon.level.room.multi.MultiRoomDungeonLevel;
 import net.vakror.asm.entity.DungeonMonster;
 import net.vakror.asm.entity.ModEntities;
 import net.vakror.asm.entity.client.BroomModel;
@@ -64,10 +65,7 @@ import net.vakror.asm.world.structure.DungeonPiece;
 import net.vakror.asm.world.structure.DungeonStructure;
 import net.vakror.asm.world.structure.ModStructures;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class Events {
     @Mod.EventBusSubscriber(modid = ASMMod.MOD_ID)
@@ -127,14 +125,16 @@ public class Events {
             if (!event.getEntity().level().isClientSide && event.getEntity().level().dimensionTypeId().equals(Dimensions.DUNGEON_TYPE)) {
                 if (event.getEntity() instanceof DungeonMonster && event.getEntity().getUUID() != lastDungeonMobDeathUUID) {
                     event.getEntity().level().getCapability(DungeonProvider.DUNGEON).ifPresent((dungeon -> {
-                        if (dungeon.getCurrentLevel().currentRoom() == 0) {
-                            dungeon.getCurrentLevel().setCurrentRoom(1);
+                        if (dungeon.getCurrentLevel() instanceof MultiRoomDungeonLevel level) {
+                            if (level.currentRoom() == 0) {
+                                level.setCurrentRoom(1);
+                            }
+                            level.removeOneMobFromRoom(level.currentRoom());
+                            if (level.mobs(level.currentRoom()) <= 0) {
+                                level.setCurrentRoom(level.currentRoom() + 1);
+                            }
+                            lastDungeonMobDeathUUID = event.getEntity().getUUID();
                         }
-                        dungeon.getCurrentLevel().removeOneMobFromRoom(dungeon.getCurrentLevel().currentRoom());
-                        if (dungeon.getCurrentLevel().mobs(dungeon.getCurrentLevel().currentRoom()) <= 0) {
-                            dungeon.getCurrentLevel().setCurrentRoom(dungeon.getCurrentLevel().currentRoom() + 1);
-                        }
-                        lastDungeonMobDeathUUID = event.getEntity().getUUID();
                     }));
                 }
             }
@@ -261,19 +261,19 @@ public class Events {
                     if (!dungeon.canEnter()) {
                         event.setCanceled(true);
                     }
-                }));
-                if (world.dimensionType() == world.registryAccess().registryOrThrow(Registries.DIMENSION_TYPE).getHolderOrThrow(Dimensions.DUNGEON_TYPE).get()) {
-                    BlockPos returnPos = new BlockPos(0, 63, 0);
-                    if ((event.getLevel().getBlockEntity(returnPos) instanceof ReturnToOverWorldBlockEntity entity)) {
-                        genDungeon(entity, world, event);
-                    } else {
-                        world.setBlock(returnPos, ModBlocks.RETURN_TO_OVERWORLD_BLOCK.get().defaultBlockState(), 3);
-                        if (event.getLevel().getBlockEntity(returnPos) instanceof ReturnToOverWorldBlockEntity entity) {
+                    if (world.dimensionType() == world.registryAccess().registryOrThrow(Registries.DIMENSION_TYPE).getHolderOrThrow(Dimensions.DUNGEON_TYPE).get()) {
+                        BlockPos returnPos = new BlockPos(0, 63, 0);
+                        if ((event.getLevel().getBlockEntity(returnPos) instanceof ReturnToOverWorldBlockEntity entity)) {
                             genDungeon(entity, world, event);
+                        } else {
+                            world.setBlock(returnPos, ModBlocks.RETURN_TO_OVERWORLD_BLOCK.get().defaultBlockState(), 3);
+                            if (event.getLevel().getBlockEntity(returnPos) instanceof ReturnToOverWorldBlockEntity entity) {
+                                genDungeon(entity, world, event);
+                            }
                         }
+                        ASMMod.instance.server.getPlayerList().broadcastSystemMessage(DungeonText.JOIN_MESSAGE(serverPlayer, world), false);
                     }
-                    ASMMod.instance.server.getPlayerList().broadcastSystemMessage(DungeonText.JOIN_MESSAGE(serverPlayer, world), false);
-                }
+                }));
             }
         }
 
@@ -327,9 +327,7 @@ public class Events {
                     start.placeInChunk(world, world.structureManager(), world.getChunkSource().getGenerator(), world.getRandom(), new BoundingBox(chunkPos.getMinBlockX(), world.getMinBuildHeight(), chunkPos.getMinBlockZ(), chunkPos.getMaxBlockX(), world.getMaxBuildHeight(), chunkPos.getMaxBlockZ()), chunkPos);
                 });
                 world.getCapability(DungeonProvider.DUNGEON).ifPresent((dungeon -> {
-                    dungeon.setCurrentLevel(switch (entity.getDungeonSize()) {
-                        default -> DungeonLevels.LABYRINTH_50;
-                    });
+                    dungeon.setCurrentLevel(DungeonLevels.LABYRINTH_50);
                 }));
                 BlockPos returnPos = new BlockPos(0, 63, 0);
                 world.setBlock(returnPos, ModBlocks.RETURN_TO_OVERWORLD_BLOCK.get().defaultBlockState(), 3);
