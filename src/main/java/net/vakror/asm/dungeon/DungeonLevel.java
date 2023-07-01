@@ -9,7 +9,7 @@ public class DungeonLevel {
     private int rooms;
     private int minMobs;
     private int maxMobs;
-    private int[] mobs;
+    private int[] mobs = new int[0];
     private int level;
     private int size;
     private int currentRoom;
@@ -67,14 +67,14 @@ public class DungeonLevel {
     }
 
     public int[] mobs() {
-        if (mobs == null) {
+        if (mobs.length == 0) {
             mobs = generateRandomMobCount(this.minMobs, this.maxMobs, this.rooms);
         }
         return mobs;
     }
 
     public int mobs(int index) {
-        if (mobs == null) {
+        if (mobs.length == 0) {
             mobs = generateRandomMobCount(this.minMobs, this.maxMobs, this.rooms);
         }
         return mobs[index - 1];
