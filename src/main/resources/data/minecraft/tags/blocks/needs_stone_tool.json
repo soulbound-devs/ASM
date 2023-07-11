@@ -1,8 +1,8 @@
 {
   "replace": false,
   "values": [
-    "asm:dungeon_key_block",
-    "asm:wand_imbuing_table",
-    "asm:soul_solidifier"
+    "soulbound:dungeon_key_block",
+    "soulbound:wand_imbuing_table",
+    "soulbound:soul_solidifier"
   ]
 }

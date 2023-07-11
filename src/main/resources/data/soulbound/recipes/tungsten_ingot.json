@@ -1,0 +1,16 @@
+
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "I"
+  ],
+  "key": {
+    "I": {
+      "item": "soulbound:tungsten_block"
+    }
+  },
+  "result": {
+    "item": "soulbound:tungsten_ingot",
+    "count": 9
+  }
+}

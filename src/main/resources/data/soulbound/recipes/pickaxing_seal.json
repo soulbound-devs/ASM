@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PPP",
+    "XIP",
+    "PPP"
+  ],
+  "key": {
+    "I": {
+      "item": "soulbound:blank_passive_seal"
+    },
+    "P": {
+      "item": "soulbound:soul"
+    },
+    "X": {
+      "item": "minecraft:diamond_pickaxe"
+    }
+  },
+  "result": {
+    "item": "soulbound:pickaxing_seal",
+    "count": 1
+  }
+}

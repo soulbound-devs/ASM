@@ -1,0 +1,23 @@
+{
+  "name": "Introduction To Seals",
+  "icon": "soulbound:axing_seal",
+  "category": "soulbound:seals",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "soulbound:blank_passive_seal",
+      "link_recipe": true,
+      "title": "Introduction",
+      "anchor": "base_seal",
+      "text": "Seals are craftable items that can be \"Imbued\" onto other items to give them a seperate function. There are currently two items that seals can be imbued upon, sacks and wands. Some seals can be \"activated\", meaning that the wand they are on switches textures and gains buffs and debuffs from it. There are 3 different types of seals, passive, offensive, and amplifying. Passive seals can be activated and are tools, such as pickaxes, axes, hoes, and shovels. Offensive Seals can be activated and are weapons, such as swords, axes, and scythes. Amplifying seals cannot be activated and are used to amplify other amplifying seals or the currently active seal. Some amplifying seals include damage, looting, broom speed, and stack size."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "soulbound:wand_imbuing_table",
+      "title": "Seal Imbuing",
+      "anchor": "imbuing",
+      "link_recipe": true,
+      "text": "All seal imbuing is done in the wand imbuing station. Soul needs to be placed in the soul slot, a wand with a free slot of the type of seal that you want to add, and the seal item. The soul will be consumed and, over 5.4 seconds, the wand/sack will imbue."
+    }
+  ]
+}

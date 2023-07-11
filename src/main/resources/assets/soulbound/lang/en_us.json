@@ -1,0 +1,58 @@
+{
+  "item.soulbound.axing_seal": "Axing Seal",
+  "item.soulbound.pickaxing_seal": "Pickaxing Seal",
+  "item.soulbound.hoeing_seal": "Seal of Farming",
+  "item.soulbound.soul": "Soul",
+  "item.soulbound.dark_soul": "Dark Soul",
+  "item.soulbound.mining_speed_seal": "Haste Seal | Tier One",
+  "item.soulbound.mining_speed_seal_tier_2": "Haste Seal | Tier Two",
+  "item.soulbound.mining_speed_seal_tier_3": "Haste Seal | Tier Three",
+  "item.soulbound.wand": "Ancient Oak Wand",
+  "item.soulbound.blank_passive_seal": "Blank Passive Seal",
+  "item.soulbound.blank_attack_seal": "Blank Attack/Defense Seal",
+  "item.soulbound.blank_amplifying_seal": "Blank Amplifying Seal",
+  "item.soulbound.swording_seal": "Swording Seal",
+  "item.soulbound.soul_bucket": "Bucket of Soul",
+  "item.soulbound.dark_soul_bucket": "Bucket of Dark Soul",
+  "item.soulbound.tungsten_ingot": "Tungsten Ingot",
+  "item.soulbound.key": "Keystone Key",
+  "item.soulbound.sack": "Sack",
+  "item.soulbound.raw_tungsten": "Raw Tungsten",
+  "item.soulbound.corrupted_berries": "Corrupted Berries",
+  "item.soulbound.sack_row_upgrade_seal_tier_1": "Height Enhancement Seal | Tier One",
+  "item.soulbound.sack_column_upgrade_seal_tier_1": "Width Enhancement Seal | Tier One",
+  "item.soulbound.sack_stack_size_upgrade_seal_tier_1": "Stack Size Enhancement Seal | Tier One",
+  "item.soulbound.sack_pickup_seal": "Pickup Seal",
+
+  "key.category.soulbound": "soulbound Keybinds",
+  "key.soulbound.pickup_mode_switch": "Switch Sack Pickup Mode",
+
+  "soulbound.tooltip.fluid.amount_with_capacity": "%s / %s mB",
+  "soulbound.tooltip.fluid.amount": "%s mB",
+  "soulbound.fluid.empty": "Fluid Tank is Empty",
+
+  "block.soulbound.wand_imbuing_table": "Wand Imbuing Table",
+  "block.soulbound.ancient_oak_log": "Ancient Oak Log",
+  "block.soulbound.ancient_oak_planks": "Ancient Oak Planks",
+  "block.soulbound.corrupted_log": "Corrupted Log",
+  "block.soulbound.corrupted_planks": "Corrupted Planks",
+  "block.soulbound.corrupted_leaves": "Corrupted Leaves",
+  "block.soulbound.dungeon_key_block": "Dungeon Keystone",
+  "block.soulbound.soul_solidifier": "Soul Soldifier",
+  "block.soulbound.soul_catalyst": "Soul Catalyst",
+  "block.soulbound.tungsten_block": "Tungsten Block",
+  "block.soulbound.tungsten_ore": "Tungsten Ore",
+  "block.soulbound.return_to_overworld_block": "Overworld Return Block",
+  "block.soulbound.dungeon_border": "Dungeon Bedrock",
+
+  "itemGroup.soulbound": "soulbound",
+
+  "fluid_type.soulbound.soul": "Soul Fluid",
+  "fluid_type.soulbound.dark_soul": "Dark Soul Fluid",
+
+  "soulbound.compat.jei.wand_imbuing": "Wand Imbuing",
+  "soulbound.compat.jei.solidifying": "Soul Solidifying",
+  "soulbound.compat.jei.extracting": "Soul Extracting"
+
+
+}

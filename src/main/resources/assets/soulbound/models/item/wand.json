@@ -1,0 +1,20 @@
+{
+  "parent": "item/generated",
+  "loader": "soulbound:wand",
+  "textures": {
+    "particle": "soulbound:item/wands/ancient_oak_wand"
+  },
+  "wand": {
+    "wand": "soulbound:item/wands/ancient_oak_wand",
+    "seals": [
+      {
+        "pickaxing": "soulbound:item/wands/activated/pickaxing",
+        "hoeing": "soulbound:item/wands/activated/hoeing",
+        "shoveling": "soulbound:item/wands/activated/shovelling",
+        "swording": "soulbound:item/wands/activated/swording",
+        "axing": "soulbound:item/wands/activated/axing",
+        "scythe": "soulbound:item/wands/activated/scythe"
+      }
+    ]
+  }
+}

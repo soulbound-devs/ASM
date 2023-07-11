@@ -1,0 +1,22 @@
+{
+  "required": true,
+  "package": "net.vakror.soulbound.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "soulbound.refmap.json",
+  "mixins": [
+    "CapabilityProviderInvoker",
+    "FixSealTooltipMixin",
+    "IMinecraftServerAccessor",
+    "LivingEntityMixin",
+    "MappedRegistryMixin",
+    "OverworldBiomesInvoker",
+    "PlayerInventoryMixin",
+    "SerializationFixin"
+  ],
+  "client": [
+    "LocalPlayerMixin",
+    "MinecraftClientAccessor",
+    "RenderItemCountFixin"
+  ],
+  "minVersion": "0.8"
+}

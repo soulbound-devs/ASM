@@ -2,7 +2,7 @@
   "replace": false,
   "values": [
     {
-      "id": "asm:corrupted_cave",
+      "id": "soulbound:corrupted_cave",
       "required": true
     }
   ]

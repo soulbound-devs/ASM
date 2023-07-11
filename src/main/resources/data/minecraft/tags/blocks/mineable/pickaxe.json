@@ -1,8 +1,8 @@
 {
   "replace": false,
   "values": [
-    "asm:dungeon_key_block",
-    "asm:tungsten_ore",
-    "asm:soul_solidifier"
+    "soulbound:dungeon_key_block",
+    "soulbound:tungsten_ore",
+    "soulbound:soul_solidifier"
   ]
 }

@@ -1,9 +1,9 @@
-// 1.20.1	2023-06-26T18:46:01.246615	Registries
-69ec4fcba6140f65a3b62a5581aadbd7f4d29a4b data/asm/worldgen/biome/corrupted_cave.json
-1ecfaf982548db3ab2220074848e4d5639584130 data/asm/worldgen/configured_carver/huge_cave.json
-0911a08caf180a935dbf939a70688d4dd2b8c3b3 data/asm/worldgen/configured_feature/corrupted_tree.json
-1d3e31fc4a2413390d88567a5e6edb8b93e5a049 data/asm/worldgen/configured_feature/corrupted_tree_spawn.json
-63bc2a8fc070f6b693398fbd362157add8118d56 data/asm/worldgen/placed_feature/corrupted_tree_checked.json
-ab3ce19dcf8dcbc9ade37d4db3c3d8dfef3feea1 data/asm/worldgen/placed_feature/corrupted_tree_placed.json
-a499d4ca503849991846586e87843c8d3c63fa64 data/asm/worldgen/structure/dungeon.json
-81967230875b9f4b4dd4f591d214cfbd07e6f7b5 data/asm/worldgen/structure_set/dungeon.json
+// 1.20.1	2023-07-01T15:34:27.426485	Registries
+a729e80b760fbfaf69cba4c9f63c40094098fc84 data/soulbound/worldgen/biome/corrupted_cave.json
+1ecfaf982548db3ab2220074848e4d5639584130 data/soulbound/worldgen/configured_carver/huge_cave.json
+dec50bd476be61e572d1367a467bdb4b6e39186d data/soulbound/worldgen/configured_feature/corrupted_tree.json
+173d1e6da51c767e14d677015ad2850cd5fa58ef data/soulbound/worldgen/configured_feature/corrupted_tree_spawn.json
+a173a0b39e87bee0aa7a46d5f97fc530ec2c604e data/soulbound/worldgen/placed_feature/corrupted_tree_checked.json
+01873ed9f189d2a778c095c2a069640d0f477d3a data/soulbound/worldgen/placed_feature/corrupted_tree_placed.json
+f68e7b79bbf364f0766748a924b89c487fb4d77d data/soulbound/worldgen/structure/dungeon.json
+34b9ef3592bec8adbadd22a4a2d3fbc049e0681b data/soulbound/worldgen/structure_set/dungeon.json

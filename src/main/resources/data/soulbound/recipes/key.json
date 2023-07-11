@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " XI",
+    "XPL",
+    " XI"
+  ],
+  "key": {
+    "I": {
+      "item": "soulbound:dark_soul"
+    },
+    "P": {
+      "item": "soulbound:soul"
+    },
+    "X": {
+      "item": "minecraft:cobblestone"
+    },
+    "L": {
+      "item": "soulbound:corrupted_planks"
+    }
+  },
+  "result": {
+    "item": "soulbound:key",
+    "count": 1
+  }
+}

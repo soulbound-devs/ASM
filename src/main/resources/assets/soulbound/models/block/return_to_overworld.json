@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "soulbound:block/keystone_side",
+    "east": "soulbound:block/keystone_side",
+    "north": "soulbound:block/keystone_side",
+    "particle": "soulbound:block/keystone_side",
+    "south": "soulbound:block/keystone_side",
+    "up": "soulbound:block/unlocked_keystone",
+    "west": "soulbound:block/keystone_side"
+  }
+}

@@ -1,10 +1,10 @@
 {
   "replace": false,
   "values": [
-    "asm:wand_imbuing_table",
-    "asm:ancient_oak_log",
-    "asm:ancient_oak_planks",
-    "asm:corrupted_log",
-    "asm:corrupted_planks"
+    "soulbound:wand_imbuing_table",
+    "soulbound:ancient_oak_log",
+    "soulbound:ancient_oak_planks",
+    "soulbound:corrupted_log",
+    "soulbound:corrupted_planks"
   ]
 }

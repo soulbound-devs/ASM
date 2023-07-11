@@ -1,6 +1,0 @@
-{
-  "type": "asm:dungeon",
-  "biomes": [],
-  "spawn_overrides": {},
-  "step": "surface_structures"
-}
