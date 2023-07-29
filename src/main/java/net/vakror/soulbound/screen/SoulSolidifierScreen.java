@@ -1,7 +1,9 @@
 package net.vakror.soulbound.screen;
 
-import net.minecraft.client.gui.GuiGraphics;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -30,37 +32,39 @@ public class SoulSolidifierScreen extends AbstractContainerScreen<SoulSolidifier
     }
 
     @Override
-    protected void renderBg(GuiGraphics graphics, float p_97788_, int p_97789_, int p_97790_) {
+    protected void renderBg(PoseStack matrices, float p_97788_, int p_97789_, int p_97790_) {
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
-        graphics.blit(BACKGROUND_TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
+        blit(matrices, x, y, 0, 0, imageWidth, imageHeight);
 
         if (menu.isCrafting()) {
-            graphics.blit(BACKGROUND_TEXTURE, x + 118, y + 37, 177, 38, menu.getScaledProgress(), 8);
+            blit(matrices, x + 118, y + 37, 177, 38, menu.getScaledProgress(), 8);
         }
-        renderer.render(graphics.pose(), x + 50, y + 8, menu.getStack());
+        renderer.render(matrices, x + 50, y + 8, menu.getStack());
     }
 
     @Override
-    public void render(GuiGraphics graphics, int pMouseX, int pMouseY, float pPartialTick) {
-        renderBackground(graphics);
-        super.render(graphics, pMouseX, pMouseY, pPartialTick);
-        renderTooltip(graphics, pMouseX, pMouseY);
+    public void render(PoseStack matrices, int pMouseX, int pMouseY, float pPartialTick) {
+        renderBackground(matrices);
+        super.render(matrices, pMouseX, pMouseY, pPartialTick);
+        renderTooltip(matrices, pMouseX, pMouseY);
     }
 
 
     @Override
-    protected void renderLabels(GuiGraphics graphics, int pMouseX, int pMouseY) {
+    protected void renderLabels(PoseStack matrices, int pMouseX, int pMouseY) {
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
-        renderFluidTooltips(graphics, pMouseX, pMouseY, x, y);
+        renderFluidTooltips(matrices, pMouseX, pMouseY, x, y);
     }
 
-    private void renderFluidTooltips(GuiGraphics graphics, int pMouseX, int pMouseY, int x, int y) {
+    private void renderFluidTooltips(PoseStack matrices, int pMouseX, int pMouseY, int x, int y) {
         if(isMouseAboveArea(pMouseX, pMouseY, x, y, 50, 8)) {
-            graphics.renderTooltip(this.font, renderer.getTooltip(menu.getStack(), TooltipFlag.Default.NORMAL),
+            renderTooltip(matrices, renderer.getTooltip(menu.getStack(), TooltipFlag.Default.NORMAL),
                     Optional.empty(), pMouseX - x, pMouseY - y);
         }
     }

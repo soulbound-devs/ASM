@@ -71,7 +71,7 @@ public class Events {
                         hand = InteractionHand.OFF_HAND;
                     }
                     player.getItemInHand(hand).getCapability(ItemSealProvider.SEAL).ifPresent(wand -> {
-                        List<Mob> nearbyMobs = getNearbyEntities(event.getEntity().level(), player.blockPosition(), (float) 3, Mob.class);
+                        List<Mob> nearbyMobs = getNearbyEntities(event.getEntity().level, player.blockPosition(), (float) 3, Mob.class);
                         int i = 1;
                         for (Mob mob : nearbyMobs) {
                             mob.hurt(event.getSource(), event.getAmount());
@@ -87,12 +87,12 @@ public class Events {
 
         @SubscribeEvent
         public static void triggerSoulCatalyst(LivingDeathEvent event) {
-            if (!event.getEntity().level().isClientSide) {
+            if (!event.getEntity().level.isClientSide) {
                 if (event.getSource().getEntity() instanceof ServerPlayer player) {
-                    Optional<BlockPos> catalyst = getNearestSoulCatalyst(event.getEntity().level(), player.blockPosition(), 5);
+                    Optional<BlockPos> catalyst = getNearestSoulCatalyst(event.getEntity().level, player.blockPosition(), 5);
                     if (catalyst.isPresent()) {
                         BlockPos pos = catalyst.get();
-                        BlockEntity entity = event.getEntity().level().getBlockEntity(pos);
+                        BlockEntity entity = event.getEntity().level.getBlockEntity(pos);
                         if (entity instanceof SoulCatalystBlockEntity catalystEntity) {
                             System.out.println(catalystEntity.getDelay());
                             if (catalystEntity.getDelay() == 0) {

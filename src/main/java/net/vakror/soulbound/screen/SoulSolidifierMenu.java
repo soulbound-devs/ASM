@@ -28,14 +28,14 @@ public class SoulSolidifierMenu extends AbstractContainerMenu {
     private final List<Slot> invSlots = new ArrayList<>();
 
     public SoulSolidifierMenu(int pContainerId, Inventory inv, FriendlyByteBuf data) {
-        this(pContainerId, inv, inv.player.level().getBlockEntity(data.readBlockPos()), new SimpleContainerData(4));
+        this(pContainerId, inv, inv.player.level.getBlockEntity(data.readBlockPos()), new SimpleContainerData(4));
     }
 
     public SoulSolidifierMenu(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
         super(ModMenuTypes.SOUL_SOLIDIFIER_MENU.get(), pContainerId);
         checkContainerSize(inv, 4);
         this.blockEntity = ((SoulSolidifierBlockEntity) entity);
-        this.level = inv.player.level();
+        this.level = inv.player.level;
         this.data = data;
         this.stack = blockEntity.getFluidStack();
 

@@ -6,11 +6,11 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Transformation;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.block.model.ItemTransform;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.*;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraftforge.client.model.SimpleModelState;
 import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
 import net.minecraftforge.client.model.geometry.IUnbakedGeometry;
@@ -32,14 +32,14 @@ public class WandModel implements IUnbakedGeometry<WandModel> {
 	}
 
 	@Override
-	public BakedModel bake(IGeometryBakingContext owner, ModelBaker bakery
+	public BakedModel bake(IGeometryBakingContext owner, ModelBakery bakery
 			, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelTransform
 			, ItemOverrides overrides, ResourceLocation modelLocation){
 
 		TextureAtlasSprite particle = spriteGetter.apply(owner.getMaterial("particle"));
 
 		ModelState transformsFromModel = new SimpleModelState(owner.getRootTransform(), modelTransform.isUvLocked());
-		ImmutableMap<ItemDisplayContext, ItemTransform> transformMap = transformsFromModel != null ?
+		ImmutableMap<ItemTransforms.TransformType, ItemTransform> transformMap = transformsFromModel != null ?
 				getTransforms(owner, new CompositeModelState(transformsFromModel, modelTransform)) :
 				getTransforms(owner, modelTransform);
 
@@ -64,10 +64,10 @@ public class WandModel implements IUnbakedGeometry<WandModel> {
 		).collect(Collectors.toList());
 	}
 
-	public static ImmutableMap<ItemDisplayContext, ItemTransform> getTransforms(IGeometryBakingContext owner, ModelState state)
+	public static ImmutableMap<ItemTransforms.TransformType, ItemTransform> getTransforms(IGeometryBakingContext owner, ModelState state)
 	{
-		EnumMap<ItemDisplayContext, ItemTransform> map = new EnumMap<>(ItemDisplayContext.class);
-		for(ItemDisplayContext type : ItemDisplayContext.values())
+		EnumMap<ItemTransforms.TransformType, ItemTransform> map = new EnumMap<>(ItemTransforms.TransformType.class);
+		for(ItemTransforms.TransformType type : ItemTransforms.TransformType.values())
 		{
 			ItemTransform tr = owner.getTransforms().getTransform(type);
 			map.put(type, tr);

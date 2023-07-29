@@ -1,22 +1,22 @@
 ext {
     //-- DEPENDENCIES
-    forgeVersion = "1.20.1-47.0.35"
+    forgeVersion = "1.19.2-43.2.21"
     mixinVersion = "0.8.5"
     reflectVersion = "0.10.2"
-    terrablenderVersion = "1.20.1-3.0.0.164"
-    geckolibVersion = "4.2"
-    jeiVersion = "15.1.0.19"
+    terrablenderVersion = "1.19.2-2.0.1.128"
+    geckolibVersion = "3.1.40"
+    jeiVersion = "11.6.0.1016"
 
     supportDependencies = [
             forge: "net.minecraftforge:forge:${forgeVersion}",
             processor: "org.spongepowered:mixin:${mixinVersion}:processor",
             terrablender: "com.github.glitchfiend:TerraBlender-forge:${terrablenderVersion}",
             reflect: "org.reflections:reflections:${reflectVersion}",
-            geckolib: "software.bernie.geckolib:geckolib-forge-1.20:${geckolibVersion}",
-            jeiApi: "mezz.jei:jei-1.20.1-forge-api:${jeiVersion}i",
-            jeiCommonApi: "mezz.jei:jei-1.20.1-common-api:${jeiVersion}",
-            jei: "mezz.jei:jei-1.20.1-forge:${jeiVersion}",
-            patchouliApi: "vazkii.patchouli:Patchouli:1.20.1-80-FORGE-SNAPSHOT:api",
-            patchouli: "vazkii.patchouli:Patchouli:1.20.1-80-FORGE-SNAPSHOT"
+            geckolib: 'software.bernie.geckolib:geckolib-forge-1.19:3.1.40',
+            jeiApi: "mezz.jei:jei-1.19.2-forge-api:${jeiVersion}i",
+            jeiCommonApi: "mezz.jei:jei-1.19.2-common-api:${jeiVersion}",
+            jei: "mezz.jei:jei-1.19.2-forge:${jeiVersion}",
+            patchouliApi: "vazkii.patchouli:Patchouli:1.19.2-77:api",
+            patchouli: "vazkii.patchouli:Patchouli:1.19.2-77"
     ]
 }

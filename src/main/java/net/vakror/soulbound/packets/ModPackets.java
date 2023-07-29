@@ -38,12 +38,6 @@ public class ModPackets {
                 .consumerMainThread(SoulFluidSyncS2CPacket::handle)
                 .add();
 
-        net.messageBuilder(PacketSyncDimensionListChanges.class, id(), NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(PacketSyncDimensionListChanges::new)
-                .encoder(PacketSyncDimensionListChanges::encode)
-                .consumerMainThread(PacketSyncDimensionListChanges::handle)
-                .add();
-
         net.messageBuilder(SyncPickupModeC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
                 .decoder(SyncPickupModeC2SPacket::new)
                 .encoder(SyncPickupModeC2SPacket::encode)

@@ -1,8 +1,15 @@
 package net.vakror.soulbound.compat.hammerspace.dungeon.level;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.nbt.CompoundTag;
 
 public class DungeonLevel {
+
+    public static final Codec<DungeonLevel> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            Codec.INT.fieldOf("size").forGetter(DungeonLevel::size),
+            Codec.INT.fieldOf("level").forGetter(DungeonLevel::level)
+    ).apply(instance, DungeonLevel::new));
     protected int size;
     protected int level;
 

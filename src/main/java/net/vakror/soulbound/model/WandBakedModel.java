@@ -7,6 +7,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Transformation;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemTransform;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -14,7 +15,6 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.model.pipeline.QuadBakingVertexConsumer;
 import net.minecraftforge.client.model.pipeline.TransformingVertexPipeline;
@@ -46,14 +46,14 @@ public class WandBakedModel extends BakedItemModel {
 			ResourceLocation baseMateriallocaiton
 			, ImmutableList<WandModelLoader.TypedTextures> materials
 			, Function<Material, TextureAtlasSprite> spriteGetter, TextureAtlasSprite particle
-			, ImmutableMap<ItemDisplayContext, ItemTransform> transformMap
+			, ImmutableMap<ItemTransforms.TransformType, ItemTransform> transformMap
 			, Transformation transformIn, boolean isSideLit) {
 		super(ImmutableList.of(), particle, transformMap, new WandItemOverrideList(materials, spriteGetter), transformIn.isIdentity(), isSideLit);
 
 		this.transform = transformIn;
 
 		TextureAtlasSprite sprite = spriteGetter.apply(new Material(TextureAtlas.LOCATION_BLOCKS, baseMateriallocaiton));
-		if (!sprite.atlasLocation().equals(MissingTextureAtlasSprite.getLocation())) {
+		if (!sprite.getName().equals(MissingTextureAtlasSprite.getLocation())) {
 			this.baseSprite = sprite;
 		}
 	}
@@ -265,7 +265,7 @@ public class WandBakedModel extends BakedItemModel {
 	}
 
 	@Override
-	public BakedModel applyTransform(ItemDisplayContext type, PoseStack poseStack, boolean applyLeftHandTransform) {
+	public BakedModel applyTransform(ItemTransforms.TransformType type, PoseStack poseStack, boolean applyLeftHandTransform) {
 		return super.applyTransform(type, poseStack, applyLeftHandTransform);
 	}
 
@@ -275,7 +275,7 @@ public class WandBakedModel extends BakedItemModel {
 		for(int spriteIndex = sprites.size() - 1; spriteIndex >= 0; spriteIndex--){
 			TextureAtlasSprite sprite = sprites.get(spriteIndex);
 			if (sprite != null) {
-				if (!sprite.contents().isTransparent(0, x, y)) {
+				if (!sprite.isTransparent(0, x, y)) {
 					return sprite;
 				}
 			}
@@ -297,11 +297,11 @@ public class WandBakedModel extends BakedItemModel {
 	private String getCacheKeyString(){
 		List<String> locations = new ArrayList<String>();
 		if(this.baseSprite != null)
-			locations.add(this.baseSprite.contents().name().toString());
+			locations.add(this.baseSprite.getName().toString());
 
 		for(TextureAtlasSprite sprite : this.ingredientSprites) {
 			if (sprite != null) {
-				locations.add(sprite.contents().name().toString());
+				locations.add(sprite.getName().toString());
 			}
 		}
 

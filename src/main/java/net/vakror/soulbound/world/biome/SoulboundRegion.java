@@ -19,8 +19,6 @@ public class SoulboundRegion extends Region {
         super(name, RegionType.OVERWORLD, weight);
     }
 
-    private final Climate.Parameter FULL_RANGE = Climate.Parameter.span(-1.0F, 1.0f);
-
     @Override
     @SuppressWarnings("all")
     public void addBiomes(Registry<Biome> registry, Consumer<Pair<ParameterPoint, ResourceKey<Biome>>> mapper) {

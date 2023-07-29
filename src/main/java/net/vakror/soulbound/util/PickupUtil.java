@@ -22,7 +22,7 @@ public class PickupUtil {
      */
     public static boolean interceptItem(Inventory inv, ItemStack incoming) {
         Player player = inv.player;
-        if (player.level().isClientSide || incoming.isEmpty()) {//thanks Hookshot
+        if (player.level.isClientSide || incoming.isEmpty()) {//thanks Hookshot
             return false;
         }
         for (int i = 0; i < inv.getContainerSize(); i++) {
@@ -84,13 +84,13 @@ public class PickupUtil {
         //leftovers
         if (pickStack.getCount() != count) {
             sack.setPopTime(5);
-            player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, 0.2F, ((player.getRandom().nextFloat() - player.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
+            player.level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, 0.2F, ((player.getRandom().nextFloat() - player.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
         }
         return pickStack.isEmpty();
     }
 
     private static boolean areItemStacksCompatible(ItemStack stack, ItemStack stack1) {
-        return ItemStack.isSameItemSameTags(stack, stack1) && ItemStack.isSameItem(stack, stack1);
+        return ItemStack.isSameItemSameTags(stack, stack1) && ItemStack.isSame(stack, stack1);
     }
 
     public enum PickupMode {

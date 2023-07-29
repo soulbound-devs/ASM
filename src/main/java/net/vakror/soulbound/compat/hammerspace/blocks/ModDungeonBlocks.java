@@ -8,8 +8,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
-import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.Material;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -27,15 +26,14 @@ import java.util.function.Supplier;
 public class ModDungeonBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, SoulboundMod.MOD_ID);
 
-
     public static final RegistryObject<Block> RETURN_TO_OVERWORLD_BLOCK = registerBlock("return_to_overworld_block",
-            () -> new ReturnToOverworldBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(3.0F, 3.0F).noLootTable()));
+            () -> new ReturnToOverworldBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(3.0F, 3.0F).noLootTable()));
 
     public static final RegistryObject<Block> DUNGEON_BORDER = registerBlock("dungeon_border",
-            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(-1.0F, 3600000.0F).noLootTable()));
+            () -> new Block(BlockBehaviour.Properties.of(Material.WOOD).strength(-1.0F, 3600000.0F).noLootTable()));
 
     public static final RegistryObject<Block> DUNGEON_KEY_BLOCK = registerBlock("dungeon_key_block",
-            () -> new DungeonAccessBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).strength(1.5F, 6.0F).requiresCorrectToolForDrops()));
+            () -> new DungeonAccessBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(1.5F, 6.0F).requiresCorrectToolForDrops()));
 
     private static <T extends Block> RegistryObject<T> registerBlockWithoutBlockItem(String name, Supplier<T> block) {
         return BLOCKS.register(name, block);

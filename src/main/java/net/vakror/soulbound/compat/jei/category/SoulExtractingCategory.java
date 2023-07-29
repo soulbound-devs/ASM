@@ -1,5 +1,6 @@
 package net.vakror.soulbound.compat.jei.category;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
@@ -12,7 +13,7 @@ import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -47,7 +48,7 @@ public class SoulExtractingCategory implements IRecipeCategory<ISoulExtractingRe
     }
 
     @Override
-    public void draw(ISoulExtractingRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+    public void draw(ISoulExtractingRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack guiGraphics, double mouseX, double mouseY) {
         arrow.draw(guiGraphics, 24, 18);
         arrow.draw(guiGraphics, 104, 18);
 
@@ -78,14 +79,14 @@ public class SoulExtractingCategory implements IRecipeCategory<ISoulExtractingRe
         builder.addSlot(RecipeIngredientRole.OUTPUT, 136, 1).setFluidRenderer(1000, true, 16, 46).setSlotName("Dark Soul Output").addFluidStack(recipe.getDarkSoulFluid().getFluid(), 1000);
     }
 
-    protected void drawSoul(GuiGraphics guiGraphics, int x, int amount, boolean isDarkSoul) {
+    protected void drawSoul(PoseStack guiGraphics, int x, int amount, boolean isDarkSoul) {
         if (amount > 0) {
             Component soulString = Component.literal(amount + (isDarkSoul ? " Dark ": " ") + "Soul");
             Minecraft minecraft = Minecraft.getInstance();
             Font fontRenderer = minecraft.font;
-            guiGraphics.pose().last().pose().scale(0.5f, 0.5f, 0.5f);
-            guiGraphics.drawString(fontRenderer, soulString, x * 2 - 2, 38, 0xFF808080, false);
-            guiGraphics.pose().last().pose().scale(2, 2, 2);
+            guiGraphics.scale(0.5f, 0.5f, 0.5f);
+            GuiComponent.drawString(guiGraphics, fontRenderer, soulString, x * 2 - 2, 38, 0xFF808080);
+            guiGraphics.scale(2, 2, 2);
         }
     }
 }

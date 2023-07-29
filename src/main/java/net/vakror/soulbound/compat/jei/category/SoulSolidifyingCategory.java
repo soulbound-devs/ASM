@@ -1,5 +1,6 @@
 package net.vakror.soulbound.compat.jei.category;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
@@ -10,7 +11,6 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -49,7 +49,7 @@ public class SoulSolidifyingCategory implements IRecipeCategory<ISoulSolidifying
     }
 
     @Override
-    public void draw(ISoulSolidifyingRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+    public void draw(ISoulSolidifyingRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack guiGraphics, double mouseX, double mouseY) {
         arrow.draw(guiGraphics, 65, 41);
 
         IRecipeCategory.super.draw(recipe, recipeSlotsView, guiGraphics, mouseX, mouseY);

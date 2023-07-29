@@ -3,9 +3,9 @@ package net.vakror.soulbound.compat.hammerspace.entity.client;
 import net.minecraft.resources.ResourceLocation;
 import net.vakror.soulbound.SoulboundMod;
 import net.vakror.soulbound.compat.hammerspace.entity.GoblaggerEntity;
-import software.bernie.geckolib.model.GeoModel;
+import software.bernie.geckolib3.model.AnimatedGeoModel;
 
-public class GoblaggerModel extends GeoModel<GoblaggerEntity> {
+public class GoblaggerModel extends AnimatedGeoModel<GoblaggerEntity> {
     @Override
     public ResourceLocation getModelResource(GoblaggerEntity object) {
         return new ResourceLocation(SoulboundMod.MOD_ID, "geo/goblagger.geo.json");

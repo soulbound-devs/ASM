@@ -1,5 +1,6 @@
 package net.vakror.soulbound.soul;
 
+import com.mojang.math.Vector3f;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraftforge.common.SoundAction;
@@ -9,7 +10,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.vakror.soulbound.SoulboundMod;
-import org.joml.Vector3f;
 
 public class ModSoulTypes {
     public static ResourceLocation SOUL_STILL = new ResourceLocation(SoulboundMod.MOD_ID, "block/soul_still");

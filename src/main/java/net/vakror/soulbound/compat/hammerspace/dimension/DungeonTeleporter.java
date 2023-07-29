@@ -46,7 +46,7 @@ public class DungeonTeleporter implements ITeleporter {
                 }));
             }
         }
-        return new PortalInfo(pos.getCenter(), Vec3.ZERO, entity.getYRot(), entity.getXRot());
+        return new PortalInfo(new Vec3(pos.getX(), pos.getY(), pos.getZ()), Vec3.ZERO, entity.getYRot(), entity.getXRot());
     }
 
     public static boolean loaded(ServerLevel pLevel, ChunkPos pStart, ChunkPos pEnd) {

@@ -61,7 +61,7 @@ public class SackMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        if (player.level().isClientSide) return true;
+        if (player.level.isClientSide) return true;
 
         var stack = inv.getHolderStack();
         var uuidMatch = SackItem.isUUIDMatch(stack, this.uuid);
@@ -196,9 +196,9 @@ public class SackMenu extends AbstractContainerMenu {
                 ItemStack itemstack1 = slot1.getItem();
                 if (itemstack1.isEmpty() && slot1.mayPlace(stack)) {
                     if (stack.getCount() > slot1.getMaxStackSize()) {
-                        slot1.setByPlayer(stack.split(slot1.getMaxStackSize()));
+                        slot1.set(stack.split(slot1.getMaxStackSize()));
                     } else {
-                        slot1.setByPlayer(stack.split(stack.getCount()));
+                        slot1.set(stack.split(stack.getCount()));
                     }
 
                     slot1.setChanged();

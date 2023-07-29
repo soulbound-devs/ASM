@@ -11,11 +11,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.block.model.ItemTransform;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.BakedModelWrapper;
 
@@ -26,12 +26,12 @@ public class BakedItemModel implements BakedModel
 {
     protected final ImmutableList<BakedQuad> quads;
     protected final TextureAtlasSprite particle;
-    protected final ImmutableMap<ItemDisplayContext, ItemTransform> transforms;
+    protected final ImmutableMap<ItemTransforms.TransformType, ItemTransform> transforms;
     protected final ItemOverrides overrides;
     protected final BakedModel guiModel;
     protected final boolean isSideLit;
 
-    public BakedItemModel(ImmutableList<BakedQuad> quads, TextureAtlasSprite particle, ImmutableMap<ItemDisplayContext, ItemTransform> transforms, ItemOverrides overrides, boolean untransformed, boolean isSideLit)
+    public BakedItemModel(ImmutableList<BakedQuad> quads, TextureAtlasSprite particle, ImmutableMap<ItemTransforms.TransformType, ItemTransform> transforms, ItemOverrides overrides, boolean untransformed, boolean isSideLit)
     {
         this.quads = quads;
         this.particle = particle;
@@ -41,9 +41,9 @@ public class BakedItemModel implements BakedModel
         this.guiModel = untransformed && hasGuiIdentity(transforms) ? new BakedGuiItemModel<>(this) : null;
     }
 
-    private static boolean hasGuiIdentity(ImmutableMap<ItemDisplayContext, ItemTransform> transforms)
+    private static boolean hasGuiIdentity(ImmutableMap<ItemTransforms.TransformType, ItemTransform> transforms)
     {
-        ItemTransform guiTransform = transforms.get(ItemDisplayContext.GUI);
+        ItemTransform guiTransform = transforms.get(ItemTransforms.TransformType.GUI);
         return guiTransform == null || guiTransform.equals(ItemTransform.NO_TRANSFORM);
     }
 
@@ -65,8 +65,8 @@ public class BakedItemModel implements BakedModel
     }
 
     @Override
-    public BakedModel applyTransform(ItemDisplayContext type, PoseStack poseStack, boolean applyLeftHandTransform) {
-        if (type == ItemDisplayContext.GUI && this.guiModel != null)
+    public BakedModel applyTransform(ItemTransforms.TransformType type, PoseStack poseStack, boolean applyLeftHandTransform) {
+        if (type == ItemTransforms.TransformType.GUI && this.guiModel != null)
     {
         return this.guiModel.applyTransform(type, poseStack, applyLeftHandTransform);
     }
@@ -74,7 +74,7 @@ public class BakedItemModel implements BakedModel
     }
 
     @SuppressWarnings("all")
-    public static BakedModel handlePerspective(BakedModel model, ImmutableMap<ItemDisplayContext, ItemTransform> transforms, ItemDisplayContext cameraTransformType, PoseStack mat, boolean leftHand)
+    public static BakedModel handlePerspective(BakedModel model, ImmutableMap<ItemTransforms.TransformType, ItemTransform> transforms, ItemTransforms.TransformType cameraTransformType, PoseStack mat, boolean leftHand)
     {
         ItemTransform tr = transforms.getOrDefault(cameraTransformType, ItemTransform.NO_TRANSFORM);
         if (!tr.equals(tr.NO_TRANSFORM)) {
@@ -112,9 +112,9 @@ public class BakedItemModel implements BakedModel
         }
 
         @Override
-        public BakedModel applyTransform(ItemDisplayContext type, PoseStack poseStack, boolean doLeftHandTransformation)
+        public BakedModel applyTransform(ItemTransforms.TransformType type, PoseStack poseStack, boolean doLeftHandTransformation)
         {
-            if (type == ItemDisplayContext.GUI)
+            if (type == ItemTransforms.TransformType.GUI)
             {
                 return handlePerspective(this, originalModel.transforms, type, poseStack, doLeftHandTransformation);
             }

@@ -47,10 +47,10 @@ public class ReturnToOverworldBlock extends BaseEntityBlock {
             }
             ReturnToOverWorldBlockEntity entity = ((ReturnToOverWorldBlockEntity) level.getBlockEntity(pos));
             AtomicReference<InteractionResult> result = new AtomicReference<>(InteractionResult.PASS);
-            player.level().getCapability(DungeonProvider.DUNGEON).ifPresent((dungeon -> {
+            player.level.getCapability(DungeonProvider.DUNGEON).ifPresent((dungeon -> {
                 if (!dungeon.isStable() ) {
                     if (dungeon.getLevelsBeaten() == dungeon.getLevelsGenerated() && dungeon.getLevelsGenerated() == dungeon.getMaxLevels()) {
-                        player.changeDimension(dimension, new DungeonTeleporter(pos, this, (ServerLevel) player.level()));
+                        player.changeDimension(dimension, new DungeonTeleporter(pos, this, (ServerLevel) player.level));
                         result.set(InteractionResult.SUCCESS);
                     } else {
                         assert entity != null;
@@ -62,7 +62,7 @@ public class ReturnToOverworldBlock extends BaseEntityBlock {
                     }
                 }
                 else {
-                    player.changeDimension(dimension, new DungeonTeleporter(pos, this, (ServerLevel) player.level()));
+                    player.changeDimension(dimension, new DungeonTeleporter(pos, this, (ServerLevel) player.level));
                     result.set(InteractionResult.SUCCESS);
                 }
             }));

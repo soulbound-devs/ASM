@@ -1,32 +1,28 @@
 buildscript {
-    repositories {
-        // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
-        maven { url = 'https://maven.minecraftforge.net' }
-        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1+', changing: true
-        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7.+'
-    }
     apply from: 'dependencies.gradle'
 }
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 plugins {
     id 'eclipse'
+    id 'idea'
     id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '5.1+'
+    id 'org.spongepowered.mixin' version '0.7.+'
+    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
 }
+
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.spongepowered.mixin'
 
 mixin {
-    add sourceSets.main, 'soulbound.refmap.json'
+    add sourceSets.main, 'mixins.soulbound.refmap.json'
     config "soulbound.mixins.json"
 
     debug.verbose = true
     debug.export = true
 }
 
-version = '1.3.1-ALPHA'
+version = '1.4.2-ALPHA'
 group = 'net.vakror.' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'soulbound'
 // Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
@@ -34,7 +30,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 minecraft {
-    mappings channel: 'official', version: '1.20.1'
+    mappings channel: 'parchment', version: '2022.11.27-1.19.2'
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
@@ -140,6 +136,8 @@ repositories {
             includeGroup "curse.maven"
         }
     }
+
+    maven { url "https://cubicinterpolation.net/maven/" }
     maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
     maven {
         // location of the maven that hosts JEI files before January 2023
@@ -170,12 +168,13 @@ dependencies {
     compileOnly fg.deobf(supportDependencies.jeiApi)
     compileOnly fg.deobf(supportDependencies.jeiCommonApi)
     // at runtime, use the full JEI jar
+    implementation fg.deobf("commoble.infiniverse:${infiniverse_branch}:${infiniverse_version}")
     runtimeOnly fg.deobf(supportDependencies.jei)
 }
 
 // Example for how to get properties into the manifest for reading at runtime.
 jar {
-    duplicatesStrategy = 'include'
+//    duplicatesStrategy = 'include'
     manifest {
         attributes([
                 "Specification-Title"     : "soulbound",
@@ -211,4 +210,3 @@ publishing {
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
 }
-//apply from: "https://moddingtutorials.org/applesilicon.gradle"

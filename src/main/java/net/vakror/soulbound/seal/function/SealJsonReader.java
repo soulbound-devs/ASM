@@ -4,7 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Tiers;
@@ -78,7 +78,7 @@ public class SealJsonReader {
             }
         } if (seal.get("mining") instanceof JsonObject miningObject) {
             miningSpeed = miningObject.get("miningSpeed").getAsInt();
-            mineableBlocks = TagKey.create(Registries.BLOCK, getResourceLocation(miningObject.get("miningLevel").getAsString()));
+            mineableBlocks = TagKey.create(Registry.BLOCK_REGISTRY, getResourceLocation(miningObject.get("miningLevel").getAsString()));
             miningSpeed = miningObject.get("miningSpeed").getAsInt();
             JsonElement veinMineElement = miningObject.get("veinMine");
             veinMine = (veinMineElement == null? 0: veinMineElement.getAsInt());

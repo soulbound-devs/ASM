@@ -1,6 +1,6 @@
 package net.vakror.soulbound.seal.seals.activatable.tool;
 
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionResult;
@@ -13,7 +13,7 @@ import java.util.List;
 
 public class ScytheSeal extends OffensiveToolSeal {
     public ScytheSeal() {
-        super("scythe", new TagKey<>(Registries.BLOCK, new ResourceLocation(SoulboundMod.MOD_ID, "mineable/scythe")), 3.5f);
+        super("scythe", TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation(SoulboundMod.MOD_ID, "mineable/scythe")), 3.5f);
     }
 
     @Override

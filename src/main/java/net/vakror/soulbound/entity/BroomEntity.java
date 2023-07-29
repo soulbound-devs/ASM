@@ -3,6 +3,8 @@ package net.vakror.soulbound.entity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -60,7 +62,7 @@ public class BroomEntity extends Entity {
     public boolean hurt(DamageSource source, float p_19947_) {
         if (this.isInvulnerableTo(source)) {
             return false;
-        } else if (!this.level().isClientSide && !this.isRemoved()) {
+        } else if (!this.level.isClientSide && !this.isRemoved()) {
             this.discard();
         }
         return true;
@@ -94,7 +96,7 @@ public class BroomEntity extends Entity {
             }));
         }
         if (this.isControlledByLocalInstance()) {
-            if (this.level().isClientSide()) {
+            if (this.level.isClientSide()) {
                 LivingEntity controller = this.getControllingPassenger();
                 assert controller != null;
                 this.handleMove(new Vec3(controller.xxa, controller.yya, controller.zza), 0.3f, this.getYRot());
@@ -115,7 +117,7 @@ public class BroomEntity extends Entity {
             return InteractionResult.PASS;
         }
         else {
-            if (!this.level().isClientSide) {
+            if (!this.level.isClientSide) {
                 return player.startRiding(this) ? InteractionResult.CONSUME: InteractionResult.PASS;
             } else {
                 return InteractionResult.SUCCESS;
@@ -138,7 +140,12 @@ public class BroomEntity extends Entity {
     public LivingEntity getControllingPassenger() {
         if (this.getFirstPassenger() instanceof LivingEntity entity) {
             return entity;
-        } else return super.getControllingPassenger();
+        } else return null;
+    }
+
+    @Override
+    public Packet<?> getAddEntityPacket() {
+        return new ClientboundAddEntityPacket(this);
     }
 
     private void handleMove(Vec3 movement, float speed, float angle) {

@@ -2,7 +2,6 @@ package net.vakror.soulbound.compat.hammerspace;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -48,18 +47,7 @@ public class DungeonEvents {
                     if (!dungeon.canEnter()) {
                         event.setCanceled(true);
                     }
-                    if (world.dimensionType() == world.registryAccess().registryOrThrow(Registries.DIMENSION_TYPE).getHolderOrThrow(Dimensions.DUNGEON_TYPE).get()) {
-                        BlockPos returnPos = new BlockPos(0, 63, 0);
-                        if ((event.getLevel().getBlockEntity(returnPos) instanceof ReturnToOverWorldBlockEntity entity)) {
-                            genDungeon(entity, world, event);
-                        } else {
-                            world.setBlock(returnPos, ModDungeonBlocks.RETURN_TO_OVERWORLD_BLOCK.get().defaultBlockState(), 3);
-                            if (event.getLevel().getBlockEntity(returnPos) instanceof ReturnToOverWorldBlockEntity entity) {
-                                genDungeon(entity, world, event);
-                            }
-                        }
-                        SoulboundMod.instance.server.getPlayerList().broadcastSystemMessage(DungeonText.JOIN_MESSAGE(serverPlayer, world), false);
-                    }
+                    SoulboundMod.instance.server.getPlayerList().broadcastSystemMessage(DungeonText.JOIN_MESSAGE(serverPlayer, world), false);
                 }));
             }
         }
@@ -82,13 +70,35 @@ public class DungeonEvents {
             }
         }
 
+        public static void dungeonTickEvent(TickEvent.LevelTickEvent event) {
+            if (event.phase.equals(TickEvent.Phase.START)) {
+                if (!event.level.isClientSide && event.level.dimensionTypeId().equals(Dimensions.DUNGEON_TYPE)) {
+                    ServerLevel world = (ServerLevel) event.level;
+                    world.getCapability(DungeonProvider.DUNGEON).ifPresent((dungeon -> {
+                        if (!dungeon.canEnter()) {
+                            event.setCanceled(true);
+                        }
+                        BlockPos returnPos = new BlockPos(0, 63, 0);
+                        if ((event.level.getBlockEntity(returnPos) instanceof ReturnToOverWorldBlockEntity entity)) {
+                            genDungeon(entity, world, event);
+                        } else {
+                            world.setBlock(returnPos, ModDungeonBlocks.RETURN_TO_OVERWORLD_BLOCK.get().defaultBlockState(), 3);
+                            if (event.level.getBlockEntity(returnPos) instanceof ReturnToOverWorldBlockEntity entity) {
+                                genDungeon(entity, world, event);
+                            }
+                        }
+                    }));
+                }
+            }
+        }
+
         public static UUID lastDungeonMobDeathUUID;
 
         @SubscribeEvent
         public static void onDungeonMobDeath(LivingDeathEvent event) {
-            if (!event.getEntity().level().isClientSide && event.getEntity().level().dimensionTypeId().equals(Dimensions.DUNGEON_TYPE)) {
+            if (!event.getEntity().level.isClientSide && event.getEntity().level.dimensionTypeId().equals(Dimensions.DUNGEON_TYPE)) {
                 if (event.getEntity() instanceof DungeonMonster && event.getEntity().getUUID() != lastDungeonMobDeathUUID) {
-                    event.getEntity().level().getCapability(DungeonProvider.DUNGEON).ifPresent((dungeon -> {
+                    event.getEntity().level.getCapability(DungeonProvider.DUNGEON).ifPresent((dungeon -> {
                         if (dungeon.getCurrentLevel() instanceof MultiRoomDungeonLevel level) {
                             if (level.currentRoom() == 0) {
                                 level.setCurrentRoom(1);
@@ -110,7 +120,7 @@ public class DungeonEvents {
             if (!(event.getEntity() instanceof ServerPlayer)) {
                 return;
             }
-            if (event.getEntity().level().dimensionTypeId() != Dimensions.DUNGEON_TYPE) {
+            if (event.getEntity().level.dimensionTypeId() != Dimensions.DUNGEON_TYPE) {
                 return;
             }
             if (!event.isCancelable()) {
@@ -126,14 +136,14 @@ public class DungeonEvents {
 
         @SubscribeEvent
         public static void forbidBreakingBlocksInDungeon(BlockEvent.BreakEvent event) {
-            if (Objects.requireNonNull(event.getPlayer()).level().dimensionTypeId().equals(Dimensions.DUNGEON_TYPE)) {
+            if (Objects.requireNonNull(event.getPlayer()).level.dimensionTypeId().equals(Dimensions.DUNGEON_TYPE)) {
                 event.setCanceled(true);
             }
         }
 
-        private static void genDungeon(ReturnToOverWorldBlockEntity entity, ServerLevel world, EntityJoinLevelEvent joinLevelEvent) {
-            if (!entity.hasGeneratedDungeon()) {
-                GenerateFirstDungeonLayerEvent dungeonLayerEvent = new GenerateFirstDungeonLayerEvent((ServerPlayer) joinLevelEvent.getEntity(), world, 0);
+        private static void genDungeon(ReturnToOverWorldBlockEntity entity, ServerLevel world, TickEvent.LevelTickEvent joinLevelEvent) {
+            if (!joinLevelEvent.level.players().isEmpty() && !entity.hasGeneratedDungeon()) {
+                GenerateFirstDungeonLayerEvent dungeonLayerEvent = new GenerateFirstDungeonLayerEvent((ServerPlayer) joinLevelEvent.level.players().get(0), world, 0);
                 MinecraftForge.EVENT_BUS.post(dungeonLayerEvent);
                 DungeonPiece result = dungeonLayerEvent.getNewLayer();
                 StructureStart start = new DungeonStructure(
@@ -144,7 +154,7 @@ public class DungeonEvents {
                                 world.getChunkSource().randomState(),
                                 world.getStructureManager(),
                                 world.getSeed(),
-                                new ChunkPos(joinLevelEvent.getEntity().blockPosition().below()),
+                                new ChunkPos(joinLevelEvent.level.players().get(0).blockPosition().below()),
                                 0,
                                 world,
                                 (biomeHolder) -> true);

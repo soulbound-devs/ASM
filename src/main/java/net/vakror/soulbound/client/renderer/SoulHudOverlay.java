@@ -2,6 +2,7 @@ package net.vakror.soulbound.client.renderer;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
@@ -19,7 +20,7 @@ public class SoulHudOverlay {
     private static final ResourceLocation DARK_SOUL_BAR = new ResourceLocation(SoulboundMod.MOD_ID,
             "textures/gui/dark_soul.png");
 
-    public static final IGuiOverlay HUD_SOUL = ((gui, graphics, partialTick, width, height) -> {
+    public static final IGuiOverlay HUD_SOUL = ((gui, matrices, partialTick, width, height) -> {
         if (gui.shouldDrawSurvivalElements()) {
             int x = width / 2;
             int y = height;
@@ -39,19 +40,24 @@ public class SoulHudOverlay {
 
             int soulHeight = (int) (soul / maxSoul * 56);
             int adjustedSoulHeight = (int) Math.floor(soul / maxSoul * 56);
-            graphics.blit(SOUL_BAR, x - 175, y - 70 + (56 - adjustedSoulHeight), 0, 0, 28, soulHeight,
+            RenderSystem.setShaderTexture(0, SOUL_BAR);
+            GuiComponent.blit(matrices, x - 175, y - 70 + (56 - adjustedSoulHeight), 0, 0, 28, soulHeight,
                     28, soulHeight);
 
             int soulWidth = Minecraft.getInstance().font.width((int) soul + "/" + (int) maxSoul);
             int darkSoulWidth = Minecraft.getInstance().font.width((int) darkSoul + "/" + (int) maxDarkSoul);
-            graphics.drawString(Minecraft.getInstance().font, (int) soul + "/" + (int) maxSoul, x - 145 - soulWidth, y - 80, ColorUtil.toColorInt(255, 255, 255, 255), false);
-            graphics.drawString(Minecraft.getInstance().font, (int) darkSoul + "/" + (int) maxDarkSoul, x - 98 - darkSoulWidth, y - 80, ColorUtil.toColorInt(255, 255, 255, 255), false);
+            GuiComponent.drawString(matrices, Minecraft.getInstance().font, (int) soul + "/" + (int) maxSoul, x - 145 - soulWidth, y - 80, ColorUtil.toColorInt(255, 255, 255, 255));
+            GuiComponent.drawString(matrices, Minecraft.getInstance().font, (int) darkSoul + "/" + (int) maxDarkSoul, x - 98 - darkSoulWidth, y - 80, ColorUtil.toColorInt(255, 255, 255, 255));
 
-            graphics.blit(DARK_SOUL_BAR, x - 130, y - 70 + (56 - adjustedDarkSoulHeight), 0, 0, 28, darkSoulHeight,
+            RenderSystem.setShaderTexture(0, DARK_SOUL_BAR);
+            GuiComponent.blit(matrices, x - 130, y - 70 + (56 - adjustedDarkSoulHeight), 0, 0, 28, darkSoulHeight,
                     28, darkSoulHeight);
 
-            graphics.blit(SOUL_OVERLAY, x - 175, y - 70, 0, 0, 28, 56, 28, 56);
-            graphics.blit(DARK_SOUL_OVERLAY, x - 130, y - 70, 0, 0, 28, 56, 28, 56);
+            RenderSystem.setShaderTexture(0, SOUL_OVERLAY);
+            GuiComponent.blit(matrices, x - 175, y - 70, 0, 0, 28, 56, 28, 56);
+
+            RenderSystem.setShaderTexture(0, DARK_SOUL_OVERLAY);
+            GuiComponent.blit(matrices, x - 130, y - 70, 0, 0, 28, 56, 28, 56);
         }
     });
 }

@@ -2,14 +2,15 @@
   "required": true,
   "package": "net.vakror.soulbound.mixin",
   "compatibilityLevel": "JAVA_17",
-  "refmap": "soulbound.refmap.json",
+  "refmap": "mixins.soulbound.refmap.json",
   "mixins": [
     "CapabilityProviderInvoker",
     "FixSealTooltipMixin",
     "IMinecraftServerAccessor",
+    "IOWorkerMixin",
+    "LinearPaletteMixin",
     "LivingEntityMixin",
     "MappedRegistryMixin",
-    "OverworldBiomesInvoker",
     "PlayerInventoryMixin",
     "SerializationFixin"
   ],

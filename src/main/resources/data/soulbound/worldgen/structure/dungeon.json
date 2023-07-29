@@ -1,6 +1,8 @@
 {
   "type": "soulbound:dungeon",
-  "biomes": [],
+  "biomes": [
+  "minecraft:plains"
+  ],
   "spawn_overrides": {},
   "step": "surface_structures"
 }

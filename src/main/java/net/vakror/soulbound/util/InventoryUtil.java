@@ -13,7 +13,7 @@ public class InventoryUtil {
         public static boolean hasPlayerStackInInventory(Player player, Item item) {
             for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
                 ItemStack currentStack = player.getInventory().getItem(i);
-                if (!currentStack.isEmpty() && ItemStack.isSameItem(currentStack, new ItemStack(item))) {
+                if (!currentStack.isEmpty() && ItemStack.isSame(currentStack, new ItemStack(item))) {
                     return true;
                 }
             }
@@ -24,7 +24,7 @@ public class InventoryUtil {
         public static int getFirstInventoryIndex(Player player, Item item) {
             for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
                 ItemStack currentStack = player.getInventory().getItem(i);
-                if (!currentStack.isEmpty() && ItemStack.isSameItem(currentStack, new ItemStack(item))) {
+                if (!currentStack.isEmpty() && ItemStack.isSame(currentStack, new ItemStack(item))) {
                     return i;
                 }
             }
@@ -36,7 +36,7 @@ public class InventoryUtil {
             List<Integer> indexes = new ArrayList<>();
             for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
                 ItemStack currentStack = player.getInventory().getItem(i);
-                if (!currentStack.isEmpty() && ItemStack.isSameItem(currentStack, new ItemStack(item))) {
+                if (!currentStack.isEmpty() && ItemStack.isSame(currentStack, new ItemStack(item))) {
                     indexes.add(i);
                 }
             }

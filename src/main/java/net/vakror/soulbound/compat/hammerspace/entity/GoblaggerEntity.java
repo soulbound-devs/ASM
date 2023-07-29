@@ -16,14 +16,19 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.*;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib3.core.AnimationState;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType;
+import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.core.manager.SingletonAnimationFactory;
 
-public class GoblaggerEntity extends DungeonMonster implements GeoEntity {
-    private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+public class GoblaggerEntity extends DungeonMonster implements IAnimatable {
+    private AnimationFactory factory = new SingletonAnimationFactory(this);
 
     public GoblaggerEntity(EntityType<GoblaggerEntity> pEntityType, Level pLevel) {
         super(ModDungeonEntities.GOBLAGGER.get(), pLevel);
@@ -48,37 +53,23 @@ public class GoblaggerEntity extends DungeonMonster implements GeoEntity {
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
 
-    private PlayState predicate(AnimationState animationState) {
+    private PlayState predicate(AnimationEvent<GoblaggerEntity> animationState) {
         if(animationState.isMoving()) {
-            animationState.getController().setAnimation(RawAnimation.begin().then("animation.goblagger.walk", Animation.LoopType.LOOP));
+            animationState.getController().setAnimation(new AnimationBuilder().addAnimation("animation.goblagger.walk", ILoopType.EDefaultLoopTypes.LOOP));
             return PlayState.CONTINUE;
         }
 
-        animationState.getController().setAnimation(RawAnimation.begin().then("animation.goblagger.idle", Animation.LoopType.LOOP));
+        animationState.getController().setAnimation(new AnimationBuilder().addAnimation("animation.goblagger.idle", ILoopType.EDefaultLoopTypes.LOOP));
         return PlayState.CONTINUE;
     }
 
-    private PlayState attackPredicate(AnimationState state) {
-        if(this.swinging && state.getController().getAnimationState().equals(AnimationController.State.STOPPED)) {
-            state.getController().forceAnimationReset();
-            state.getController().setAnimation(RawAnimation.begin().then("animation.goblagger.attack", Animation.LoopType.PLAY_ONCE));
+    private PlayState attackPredicate(AnimationEvent<GoblaggerEntity> state) {
+        if(this.swinging && state.getController().getAnimationState().equals(AnimationState.Stopped)) {
+            state.getController().setAnimation(new AnimationBuilder().addAnimation("animation.goblagger.attack", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
             this.swinging = false;
         }
 
         return PlayState.CONTINUE;
-    }
-
-    @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController(this, "controller",
-                0, this::predicate));
-        controllers.add(new AnimationController(this, "attackController",
-                0, this::attackPredicate));
-    }
-
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return factory;
     }
 
     protected void playStepSound(BlockPos pos, BlockState blockIn) {
@@ -99,5 +90,18 @@ public class GoblaggerEntity extends DungeonMonster implements GeoEntity {
 
     protected float getSoundVolume() {
         return 0.2F;
+    }
+
+    @Override
+    public void registerControllers(AnimationData data) {
+        data.addAnimationController(new AnimationController<GoblaggerEntity>(this, "controller",
+                0, this::predicate));
+        data.addAnimationController(new AnimationController<GoblaggerEntity>(this, "attackController",
+                0, this::attackPredicate));
+    }
+
+    @Override
+    public AnimationFactory getFactory() {
+        return factory;
     }
 }

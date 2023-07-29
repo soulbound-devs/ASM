@@ -1,9 +1,0 @@
-// 1.20.1	2023-07-01T15:34:27.426485	Registries
-a729e80b760fbfaf69cba4c9f63c40094098fc84 data/soulbound/worldgen/biome/corrupted_cave.json
-1ecfaf982548db3ab2220074848e4d5639584130 data/soulbound/worldgen/configured_carver/huge_cave.json
-dec50bd476be61e572d1367a467bdb4b6e39186d data/soulbound/worldgen/configured_feature/corrupted_tree.json
-173d1e6da51c767e14d677015ad2850cd5fa58ef data/soulbound/worldgen/configured_feature/corrupted_tree_spawn.json
-a173a0b39e87bee0aa7a46d5f97fc530ec2c604e data/soulbound/worldgen/placed_feature/corrupted_tree_checked.json
-01873ed9f189d2a778c095c2a069640d0f477d3a data/soulbound/worldgen/placed_feature/corrupted_tree_placed.json
-f68e7b79bbf364f0766748a924b89c487fb4d77d data/soulbound/worldgen/structure/dungeon.json
-34b9ef3592bec8adbadd22a4a2d3fbc049e0681b data/soulbound/worldgen/structure_set/dungeon.json

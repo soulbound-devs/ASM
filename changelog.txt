@@ -258,8 +258,8 @@
            EX: Registry name `examplemod:shoe`, tag name `blue_shoes` would be `data/<namespace>/tags/examplemod/shoe/blue_shoes.json`
            RegistryEvent.NewRegistry has been moved and renamed to NewRegistryEvent.
            RegistryBuilder#create has been made private. See NewRegistryEvent#create
-           Created new ITagManager system for looking up Forge tags. See IForgeRegistry#tags.
-           Add lookup methods for Holders from forge registries. See IForgeRegistry#getHolder.
+           Created new ITagManager system for looking up Forge tags. See IForgeRegistries#tags.
+           Add lookup methods for Holders from forge registries. See IForgeRegistries#getHolder.
  - 40.0.17 Lower custom item entity replacement from highest to high so mods can cancel it during a specific tick (#8417)
  - 40.0.16 Fix MC-176559 related to the Mending enchantment (#7606)
  - 40.0.15 [1.18.x] Allow blocks to hide faces on a neighboring block (#8300)
@@ -329,7 +329,7 @@
  - 39.0.74 Add support for tagging StructureFeatures (#8408)
  - 39.0.73 Re-added the patch for LivingExperienceDropEvent and enable it for dragons (#8388)
  - 39.0.72 Implement getPickupSound on ForgeFlowingFluid (#8374)
- - 39.0.71 Add getCodec method in ForgeRegistry (#8333)
+ - 39.0.71 Add getCodec method in ForgeRegistries (#8333)
  - 39.0.70 Fix #8298 (MobBucketItem) and add test mod (#8313)
  - 39.0.69 Deprecate IForgeAbstractMinecart::getCartItem (#8283)
  - 39.0.68 Fix HoeItem patch incorrectly applied during migration. (#8384)

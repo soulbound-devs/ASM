@@ -24,6 +24,6 @@ public class ModResultSlot extends SlotItemHandler {
     @Override
     public void onTake(Player pPlayer, ItemStack pStack) {
         super.onTake(pPlayer, pStack);
-        pStack.onCraftedBy(pPlayer.level(), pPlayer, 1);
+        pStack.onCraftedBy(pPlayer.level, pPlayer, 1);
     }
 }
