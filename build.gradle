@@ -160,6 +160,8 @@ repositories {
         name = "ModMaven"
         url = "https://modmaven.dev"
     }
+
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -169,6 +171,7 @@ dependencies {
     implementation fg.deobf(supportDependencies.geckolib)
     implementation fg.deobf(supportDependencies.terrablender)
 
+    implementation fg.deobf('com.github.soulbound-devs:better-spawner:92f6f5e593')
 
     implementation fg.deobf("curse.maven:cataclysm-551586:4668865")
     implementation fg.deobf("curse.maven:citadel-331936:4556677")
