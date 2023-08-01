@@ -4,39 +4,27 @@ import net.minecraft.nbt.CompoundTag;
 import net.vakror.soulbound.compat.hammerspace.dungeon.level.DungeonLevel;
 
 import java.util.Arrays;
-import java.util.Random;
 
 public class MultiRoomDungeonLevel extends DungeonLevel {
     private int rooms;
-    private int minMobs;
-    private int maxMobs;
     private int[] mobs = new int[0];
+    /**
+     * Value from 1 - {@link #rooms}
+     */
     private int currentRoom;
 
-    public MultiRoomDungeonLevel(int rooms, int level, int size, int currentRoom, int minMobs, int maxMobs) {
+    public MultiRoomDungeonLevel(int rooms, int level, int size, int currentRoom) {
         super(size, level);
         this.rooms = rooms;
+        this.mobs = new int[rooms];
         this.currentRoom = currentRoom;
-        this.minMobs = minMobs;
-        this.maxMobs = maxMobs;
     }
 
-    public MultiRoomDungeonLevel(int rooms, int[] mobs, int level, int size, int currentRoom, int minMobs, int maxMobs) {
+    public MultiRoomDungeonLevel(int rooms, int[] mobs, int level, int size, int currentRoom) {
         super(size, level);
         this.rooms = rooms;
         this.mobs = mobs;
         this.currentRoom = currentRoom;
-        this.minMobs = minMobs;
-        this.maxMobs = maxMobs;
-    }
-
-    private int[] generateRandomMobCount(int minMobs, int maxMobs, int count) {
-        int[] mobs = new int[count];
-        for (int i = 0; i < count; i++) {
-            mobs[i] = new Random().nextInt(minMobs, maxMobs + 1);
-        }
-        System.out.println("HAD TO GENERATE MOB COUNT");
-        return mobs;
     }
 
     @Override
@@ -45,8 +33,6 @@ public class MultiRoomDungeonLevel extends DungeonLevel {
         tag.putInt("rooms", this.rooms);
         tag.putIntArray("mobs", this.mobs());
         tag.putInt("currentRoom", this.currentRoom);
-        tag.putInt("minMobs", this.minMobs);
-        tag.putInt("maxMobs", this.maxMobs);
         return tag;
     }
 
@@ -55,8 +41,6 @@ public class MultiRoomDungeonLevel extends DungeonLevel {
         this.rooms = tag.getInt("rooms");
         this.mobs = tag.getIntArray("mobs");
         this.currentRoom = tag.getInt("currentRoom");
-        this.minMobs = tag.getInt("minMobs");
-        this.maxMobs = tag.getInt("maxMobs");
         return this;
     }
 
@@ -69,20 +53,10 @@ public class MultiRoomDungeonLevel extends DungeonLevel {
     }
 
     public int[] mobs() {
-        if (mobs.length == 0 || mobs.length != rooms) {
-            mobs = generateRandomMobCount(this.minMobs, this.maxMobs, this.rooms);
-        } else {
-            System.out.println("DID NOT HAVE TO GENERATE MOB COUNT");
-        }
         return mobs;
     }
 
     public int mobs(int index) {
-        if (mobs.length == 0 || mobs.length != rooms) {
-            mobs = generateRandomMobCount(this.minMobs, this.maxMobs, this.rooms);
-        } else {
-            System.out.println("DID NOT HAVE TO GENERATE MOB COUNT");
-        }
         return mobs[index - 1];
     }
 
