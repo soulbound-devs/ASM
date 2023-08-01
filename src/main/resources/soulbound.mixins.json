@@ -7,12 +7,13 @@
     "CapabilityProviderInvoker",
     "FixSealTooltipMixin",
     "IMinecraftServerAccessor",
-    "IOWorkerMixin",
     "LinearPaletteMixin",
     "LivingEntityMixin",
+    "LocateCommandMixin",
     "MappedRegistryMixin",
     "PlayerInventoryMixin",
-    "SerializationFixin"
+    "SerializationFixin",
+    "StructureMixin"
   ],
   "client": [
     "LocalPlayerMixin",
