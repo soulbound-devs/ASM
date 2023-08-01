@@ -117,6 +117,12 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
     maven {
+        url 'https://www.cursemaven.com'
+         content {
+             includeGroup "curse.maven"
+         }
+    }
+    maven {
         url = "https://maven.theillusivec4.top/"
     }
     maven { url = 'https://maven.minecraftforge.net/' }
@@ -163,6 +169,9 @@ dependencies {
     implementation fg.deobf(supportDependencies.geckolib)
     implementation fg.deobf(supportDependencies.terrablender)
 
+
+    implementation fg.deobf("curse.maven:cataclysm-551586:4668865")
+    implementation fg.deobf("curse.maven:citadel-331936:4556677")
     compileOnly fg.deobf(supportDependencies.patchouliApi)
     runtimeOnly fg.deobf(supportDependencies.patchouli)
     compileOnly fg.deobf(supportDependencies.jeiApi)
