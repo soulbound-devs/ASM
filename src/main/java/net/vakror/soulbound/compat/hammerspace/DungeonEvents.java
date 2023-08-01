@@ -143,6 +143,8 @@ public class DungeonEvents {
             }
             if (!event.isCancelable()) {
                 return;
+            } if (((ServerPlayer) event.getEntity()).isCreative()) {
+                return;
             }
             ((ServerLevel) event.getLevel()).getCapability(DungeonProvider.DUNGEON).ifPresent((dungeon -> {
                 if (dungeon.isStable() && dungeon.getLevelsBeaten() == dungeon.getMaxLevels()) {
