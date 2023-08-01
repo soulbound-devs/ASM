@@ -9,8 +9,6 @@ import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.portal.PortalInfo;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.ITeleporter;
-import net.vakror.soulbound.compat.hammerspace.blocks.custom.DungeonAccessBlock;
-import net.vakror.soulbound.compat.hammerspace.blocks.custom.ReturnToOverworldBlock;
 import net.vakror.soulbound.compat.hammerspace.dungeon.capability.DungeonProvider;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,10 +31,9 @@ public class DungeonTeleporter implements ITeleporter {
 
     @Override
     public @Nullable PortalInfo getPortalInfo(Entity entity, ServerLevel destWorld, Function<ServerLevel, PortalInfo> defaultPortalInfo) {
-        if (block instanceof DungeonAccessBlock) {
-            pos = new BlockPos(0, 64, 0);
-        }
-        if (block instanceof ReturnToOverworldBlock) {
+        if (destWorld.dimensionTypeId().equals(Dimensions.DUNGEON_TYPE)) {
+            pos = new BlockPos(0.5, 64, 0.5);
+        } else {
             pos = new BlockPos(destWorld.getLevelData().getXSpawn(), destWorld.getLevelData().getYSpawn(), destWorld.getLevelData().getZSpawn());
             if (this.level != null) {
                 this.level.getCapability(DungeonProvider.DUNGEON).ifPresent((dungeonLevel -> {
