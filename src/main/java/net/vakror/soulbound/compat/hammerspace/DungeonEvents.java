@@ -47,6 +47,9 @@ public class DungeonEvents {
                     if (!dungeon.canEnter()) {
                         event.setCanceled(true);
                     }
+                    if (dungeon.isStable()) {
+                        dungeon.setMaxLevels(1);
+                    }
                     SoulboundMod.instance.server.getPlayerList().broadcastSystemMessage(DungeonText.JOIN_MESSAGE(serverPlayer, world), false);
                 }));
             }
