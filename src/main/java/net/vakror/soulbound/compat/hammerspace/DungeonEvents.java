@@ -198,35 +198,37 @@ public class DungeonEvents {
         }
     }
 
-    private static void genNextLevel(Dungeon dungeonLevel, ServerLevel dungeon) {
-        GenerateNextDungeonLayerEvent dungeonLayerEvent = new GenerateNextDungeonLayerEvent(dungeon.players().get(0), dungeon, dungeonLevel.getLevelsGenerated());
-        boolean canceled = MinecraftForge.EVENT_BUS.post(dungeonLayerEvent);
-        if (!canceled) {
-            StructureStart start = new DungeonStructure(
-                    ModStructures.structure(), dungeonLevel.getCurrentLevel().size(), dungeonLevel.getLevelsGenerated() + 1, null)
-                    .generate(dungeon.registryAccess(),
-                            dungeon.getChunkSource().getGenerator(),
-                            dungeon.getChunkSource().getGenerator().getBiomeSource(),
-                            dungeon.getChunkSource().randomState(),
-                            dungeon.getStructureManager(),
-                            dungeon.getSeed(),
-                            new ChunkPos(dungeon.players().get(0).blockPosition().below()),
-                            0,
-                            dungeon,
-                            (biomeHolder) -> true);
-            BoundingBox boundingbox = start.getBoundingBox();
-            ChunkPos chunkpos = new ChunkPos(SectionPos.blockToSectionCoord(boundingbox.minX()), SectionPos.blockToSectionCoord(boundingbox.minZ()));
-            ChunkPos chunkpos1 = new ChunkPos(SectionPos.blockToSectionCoord(boundingbox.maxX()), SectionPos.blockToSectionCoord(boundingbox.maxZ()));
-            ChunkPos.rangeClosed(chunkpos, chunkpos1).forEach((chunkPos) -> {
-                start.placeInChunk(dungeon, dungeon.structureManager(), dungeon.getChunkSource().getGenerator(), dungeon.getRandom(), new BoundingBox(chunkPos.getMinBlockX(), dungeon.getMinBuildHeight(), chunkPos.getMinBlockZ(), chunkPos.getMaxBlockX(), dungeon.getMaxBuildHeight(), chunkPos.getMaxBlockZ()), chunkPos);
-            });
-            dungeonLevel.setLevelsGenerated(dungeonLevel.getLevelsGenerated() + 1);
-            dungeonLevel.setCurrentLevel(
-                    switch (dungeonLevel.getCurrentLevel().size()) {
-                        default -> switch (dungeonLevel.getLevelsGenerated()) {
-                            default -> DungeonLevels.LABYRINTH_50;
-                        };
-                    });
+    private static void genNextLevel(Dungeon dungeon, ServerLevel dungeonLevel) {
+        if (dungeon.getLevelsBeaten() + 1 <= dungeon.getMaxLevels()) {
+            GenerateNextDungeonLayerEvent dungeonLayerEvent = new GenerateNextDungeonLayerEvent(dungeonLevel.players().get(0), dungeonLevel, dungeon.getLevelsGenerated());
+            boolean canceled = MinecraftForge.EVENT_BUS.post(dungeonLayerEvent);
+            if (!canceled) {
+                StructureStart start = new DungeonStructure(
+                        ModStructures.structure(), dungeon.getCurrentLevel().size(), dungeon.getLevelsGenerated() + 1, null)
+                        .generate(dungeonLevel.registryAccess(),
+                                dungeonLevel.getChunkSource().getGenerator(),
+                                dungeonLevel.getChunkSource().getGenerator().getBiomeSource(),
+                                dungeonLevel.getChunkSource().randomState(),
+                                dungeonLevel.getStructureManager(),
+                                dungeonLevel.getSeed(),
+                                new ChunkPos(dungeonLevel.players().get(0).blockPosition().below()),
+                                0,
+                                dungeonLevel,
+                                (biomeHolder) -> true);
+                BoundingBox boundingbox = start.getBoundingBox();
+                ChunkPos chunkpos = new ChunkPos(SectionPos.blockToSectionCoord(boundingbox.minX()), SectionPos.blockToSectionCoord(boundingbox.minZ()));
+                ChunkPos chunkpos1 = new ChunkPos(SectionPos.blockToSectionCoord(boundingbox.maxX()), SectionPos.blockToSectionCoord(boundingbox.maxZ()));
+                ChunkPos.rangeClosed(chunkpos, chunkpos1).forEach((chunkPos) -> {
+                    start.placeInChunk(dungeonLevel, dungeonLevel.structureManager(), dungeonLevel.getChunkSource().getGenerator(), dungeonLevel.getRandom(), new BoundingBox(chunkPos.getMinBlockX(), dungeonLevel.getMinBuildHeight(), chunkPos.getMinBlockZ(), chunkPos.getMaxBlockX(), dungeonLevel.getMaxBuildHeight(), chunkPos.getMaxBlockZ()), chunkPos);
+                });
+                dungeon.beatCurrentLevel();
+                dungeon.setCurrentLevel(
+                        switch (dungeon.getCurrentLevel().size()) {
+                            default -> switch (dungeon.getLevelsGenerated()) {
+                                default -> DungeonLevels.LABYRINTH_50;
+                            };
+                        });
+            }
         }
     }
 }
