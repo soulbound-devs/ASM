@@ -87,7 +87,7 @@ public class DungeonAccessBlock extends BaseEntityBlock {
                 }));
                 if (canTeleport(level, player, dimension, blockEntity.getDimensionUUID()) && canEnter[0]) {
                     player.setPortalCooldown();
-                    player.changeDimension(dimension, new DungeonTeleporter(pos, this));
+                    Objects.requireNonNull(player.changeDimension(dimension, new DungeonTeleporter(pos, this))).setPos(0.5, 64, 0.5);
                     return InteractionResult.SUCCESS;
                 }
             }
