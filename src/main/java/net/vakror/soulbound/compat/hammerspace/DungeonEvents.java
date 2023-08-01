@@ -17,6 +17,7 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.vakror.betterspawner.event.SpawnBatchEvent;
 import net.vakror.soulbound.SoulboundMod;
 import net.vakror.soulbound.compat.hammerspace.blocks.ModDungeonBlocks;
 import net.vakror.soulbound.compat.hammerspace.blocks.entity.ReturnToOverWorldBlockEntity;
@@ -114,6 +115,20 @@ public class DungeonEvents {
                         }
                     }));
                 }
+            }
+        }
+
+        @SubscribeEvent
+        public static void onBatchSummon(SpawnBatchEvent event) {
+            if (!event.level.isClientSide && event.level.dimensionTypeId().equals(Dimensions.DUNGEON_TYPE)) {
+                event.level.getCapability(DungeonProvider.DUNGEON).ifPresent((dungeon -> {
+                    if (dungeon.getCurrentLevel() instanceof MultiRoomDungeonLevel multiRoomDungeonLevel) {
+                        if (multiRoomDungeonLevel.currentRoom() == 0) {
+                            multiRoomDungeonLevel.setCurrentRoom(1);
+                        }
+                        multiRoomDungeonLevel.setMobAmount(multiRoomDungeonLevel.currentRoom() - 1, event.count);
+                    }
+                }));
             }
         }
 
