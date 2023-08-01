@@ -5,6 +5,7 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -156,6 +157,9 @@ public class DungeonEvents {
 
         @SubscribeEvent
         public static void forbidBreakingBlocksInDungeon(BlockEvent.BreakEvent event) {
+            if (event.getPlayer().isCreative()) {
+                return;
+            }
             if (Objects.requireNonNull(event.getPlayer()).level.dimensionTypeId().equals(Dimensions.DUNGEON_TYPE)) {
                 event.setCanceled(true);
             }
