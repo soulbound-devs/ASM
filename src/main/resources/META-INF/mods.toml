@@ -55,4 +55,46 @@ description='''
 # This version range declares a minimum of the current minecraft version up to but not including the next major version
     versionRange="[1.19.2,1.19.3)"
     ordering="NONE"
+    side="BOTH"# Here's another dependency
+[[dependencies.soulbound]]
+    modId="infiniverse"
+    mandatory=true
+    # This version range declares a minimum of the current minecraft version up to but not including the next major version
+    versionRange="[1.0.0.4,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.soulbound]]
+    modId="terrablender"
+    mandatory=true
+    # This version range declares a minimum of the current minecraft version up to but not including the next major version
+    versionRange="[2.0.1.123,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.soulbound]]
+    modId="geckolib3"
+    mandatory=true
+    # This version range declares a minimum of the current minecraft version up to but not including the next major version
+    versionRange="[3.1.40,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.soulbound]]
+    modId="citadel"
+    mandatory=true
+    # This version range declares a minimum of the current minecraft version up to but not including the next major version
+    versionRange="[2.1.0,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.soulbound]]
+    modId="cataclysm"
+    mandatory=true
+    # This version range declares a minimum of the current minecraft version up to but not including the next major version
+    versionRange="[1.0,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.soulbound]]
+    modId="betterspawner"
+    mandatory=true
+    # This version range declares a minimum of the current minecraft version up to but not including the next major version
+    versionRange="[1.1,)"
+    ordering="NONE"
     side="BOTH"
