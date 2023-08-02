@@ -13,7 +13,7 @@ public class DungeonFileLocations {
 
     public static void init() {
         ImmutableMultimap.Builder<Pair<Integer, Integer>, ResourceLocation> fileBuilder = new ImmutableMultimap.Builder<>();
-//        fileBuilder.put(new Pair<>(50, 0), new ResourceLocation(SoulboundMod.MOD_ID, "dungeon_50_0"));
+        fileBuilder.put(new Pair<>(50, 0), new ResourceLocation(SoulboundMod.MOD_ID, "dungeon_50_0"));
         fileBuilder.put(new Pair<>(50, 0), new ResourceLocation(SoulboundMod.MOD_ID, "dungeon_50_1"));
         FILES = fileBuilder.build();
     }
