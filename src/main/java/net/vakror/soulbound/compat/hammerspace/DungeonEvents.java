@@ -16,6 +16,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.level.BlockEvent;
+import net.minecraftforge.event.level.ExplosionEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.vakror.betterspawner.event.SpawnBatchEvent;
@@ -29,9 +30,9 @@ import net.vakror.soulbound.compat.hammerspace.dungeon.capability.DungeonProvide
 import net.vakror.soulbound.compat.hammerspace.dungeon.level.DungeonLevels;
 import net.vakror.soulbound.compat.hammerspace.dungeon.level.room.multi.MultiRoomDungeonLevel;
 import net.vakror.soulbound.compat.hammerspace.entity.DungeonMonster;
-import net.vakror.soulbound.compat.hammerspace.structure.piece.DungeonPiece;
 import net.vakror.soulbound.compat.hammerspace.structure.DungeonStructure;
 import net.vakror.soulbound.compat.hammerspace.structure.ModStructures;
+import net.vakror.soulbound.compat.hammerspace.structure.piece.DungeonPiece;
 import net.vakror.soulbound.compat.hammerspace.structure.type.DungeonType;
 import net.vakror.soulbound.event.custom.GenerateFirstDungeonLayerEvent;
 import net.vakror.soulbound.event.custom.GenerateNextDungeonLayerEvent;
@@ -204,6 +205,23 @@ public class DungeonEvents {
                 ((ReturnToOverWorldBlockEntity) Objects.requireNonNull(world.getBlockEntity(returnPos))).hasGeneratedDungeon(true);
             }
         }
+    }
+
+    @SubscribeEvent
+    public void explosionModify(ExplosionEvent.Detonate event)
+    {
+        // I only care about explosions in the Dungeon Dimension
+        if (!event.getLevel().dimensionTypeId().equals(Dimensions.DUNGEON_TYPE)) {
+            return;
+        }
+        if (event.getLevel().isClientSide) {
+            return;
+        }
+        if (event.getLevel().getCapability(DungeonProvider.DUNGEON).orElse(new Dungeon()).isStable() && event.getLevel().getCapability(DungeonProvider.DUNGEON).orElse(new Dungeon()).getLevelsBeaten() >=1) {
+            return;
+        }
+
+        event.getExplosion().clearToBlow();
     }
 
     private static void genNextLevel(Dungeon dungeon, ServerLevel dungeonLevel) {
