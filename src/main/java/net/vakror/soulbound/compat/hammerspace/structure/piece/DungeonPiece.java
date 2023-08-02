@@ -1,9 +1,10 @@
-package net.vakror.soulbound.compat.hammerspace.structure;
+package net.vakror.soulbound.compat.hammerspace.structure.piece;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
@@ -13,9 +14,9 @@ import net.minecraft.world.level.levelgen.structure.TemplateStructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
-import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.*;
+import net.vakror.soulbound.compat.hammerspace.structure.type.DungeonType;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class DungeonPiece extends TemplateStructurePiece {
@@ -28,25 +29,25 @@ public class DungeonPiece extends TemplateStructurePiece {
     }
 
     private DungeonPiece(StructureTemplateManager manager, DungeonType type, ResourceLocation templateName, BlockPos templatePos, @Nullable ConfiguredFeature<?, ?> tree, Rotation rotation, Mirror mirror) {
-        super(ModDungeonPieces.DEFAULT_DUNGEON_PIECE.get(), 0, manager, templateName, templateName.toString(), makeSettings(rotation, mirror), templatePos);
+        super(ModDungeonPieces.DEFAULT_DUNGEON_PIECE.get(), 0, manager, templateName, templateName.toString(), makeSettings(rotation, mirror, BlockIgnoreProcessor.STRUCTURE_BLOCK), templatePos);
         this.type = type;
         this.manager = manager;
     }
 
     public DungeonPiece(StructurePieceSerializationContext context, CompoundTag nbt) {
-        super(ModDungeonPieces.DEFAULT_DUNGEON_PIECE.get(), nbt, context.structureTemplateManager(), (con) -> makeSettings(Rotation.valueOf(nbt.getString("Rotation")), Mirror.valueOf(nbt.getString("Mirror"))));
+        super(ModDungeonPieces.DEFAULT_DUNGEON_PIECE.get(), nbt, context.structureTemplateManager(), (con) -> makeSettings(Rotation.valueOf(nbt.getString("Rotation")), Mirror.valueOf(nbt.getString("Mirror")), BlockIgnoreProcessor.STRUCTURE_BLOCK));
         this.type = DungeonType.getTypeFromIndex(nbt.getInt("Type"));
         this.manager = context.structureTemplateManager();
     }
 
-    private static StructurePlaceSettings makeSettings(Rotation rotation, Mirror mirror) {
-        return (new StructurePlaceSettings()).setIgnoreEntities(true).addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK).setRotation(rotation).setMirror(mirror);
+    private static StructurePlaceSettings makeSettings(Rotation rotation, Mirror mirror, StructureProcessor processor) {
+        return new StructurePlaceSettings().setIgnoreEntities(true).addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK).addProcessor(processor).setRotation(rotation).setMirror(mirror);
     }
 
-    public static void generateDungeon(BlockPos pos, Rotation rotation, StructureTemplateManager manager, StructurePiecesBuilder builder, int size, int layer, @Nullable DungeonPiece eventPiece) {
+    public static void generateDungeon(BlockPos pos, Rotation rotation, StructureTemplateManager manager, StructurePiecesBuilder builder, int size, int layer, @Nullable DungeonPiece eventPiece, @NotNull DungeonType type, Level level, ResourceLocation file) {
         if (eventPiece == null) {
-            String nbtName = "dungeon_" + size + "_" + layer;
-            DungeonPiece piece = new DungeonPiece(ModDungeonPieces.DEFAULT_DUNGEON_PIECE.get(), 128, manager, new ResourceLocation("soulbound", nbtName), nbtName, makeSettings(rotation, Mirror.NONE), pos, DungeonType.getRandomType());
+            StructurePlaceSettings settings = makeSettings(rotation, Mirror.NONE, new RuleProcessor(type.rules()));
+            DungeonPiece piece = new DungeonPiece(type.structurePiece(), 128, manager, file, file.getPath(), settings, pos, type);
             builder.addPiece(piece);
         } else {
             builder.addPiece(eventPiece);

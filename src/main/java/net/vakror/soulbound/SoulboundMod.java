@@ -27,8 +27,10 @@ import net.vakror.soulbound.compat.hammerspace.dimension.Dimensions;
 import net.vakror.soulbound.compat.hammerspace.entity.GoblaggerEntity;
 import net.vakror.soulbound.compat.hammerspace.entity.ModDungeonEntities;
 import net.vakror.soulbound.compat.hammerspace.items.ModDungeonItems;
-import net.vakror.soulbound.compat.hammerspace.structure.ModDungeonPieces;
+import net.vakror.soulbound.compat.hammerspace.structure.util.DungeonFileLocations;
 import net.vakror.soulbound.compat.hammerspace.structure.ModStructures;
+import net.vakror.soulbound.compat.hammerspace.structure.piece.ModDungeonPieces;
+import net.vakror.soulbound.compat.hammerspace.structure.util.DungeonSpawnPointUtils;
 import net.vakror.soulbound.entity.ModEntities;
 import net.vakror.soulbound.items.ModItems;
 import net.vakror.soulbound.model.WandModelLoader;
@@ -56,6 +58,8 @@ public class SoulboundMod {
     public SoulboundMod() {
         instance = this;
 
+        DungeonFileLocations.init();
+        DungeonSpawnPointUtils.init();
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
 

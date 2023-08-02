@@ -29,9 +29,10 @@ import net.vakror.soulbound.compat.hammerspace.dungeon.capability.DungeonProvide
 import net.vakror.soulbound.compat.hammerspace.dungeon.level.DungeonLevels;
 import net.vakror.soulbound.compat.hammerspace.dungeon.level.room.multi.MultiRoomDungeonLevel;
 import net.vakror.soulbound.compat.hammerspace.entity.DungeonMonster;
-import net.vakror.soulbound.compat.hammerspace.structure.DungeonPiece;
+import net.vakror.soulbound.compat.hammerspace.structure.piece.DungeonPiece;
 import net.vakror.soulbound.compat.hammerspace.structure.DungeonStructure;
 import net.vakror.soulbound.compat.hammerspace.structure.ModStructures;
+import net.vakror.soulbound.compat.hammerspace.structure.type.DungeonType;
 import net.vakror.soulbound.event.custom.GenerateFirstDungeonLayerEvent;
 import net.vakror.soulbound.event.custom.GenerateNextDungeonLayerEvent;
 
@@ -129,6 +130,10 @@ public class DungeonEvents {
                         }
                         multiRoomDungeonLevel.setMobAmount(multiRoomDungeonLevel.currentRoom() - 1, event.count);
                     }
+                    System.out.println("count: " + event.count);
+                    for (Entity entity : event.entities) {
+                        System.out.println("entity: " + entity.getType());
+                    }
                 }));
             }
         }
@@ -167,11 +172,12 @@ public class DungeonEvents {
 
         private static void genDungeon(ReturnToOverWorldBlockEntity entity, ServerLevel world, TickEvent.LevelTickEvent joinLevelEvent) {
             if (!joinLevelEvent.level.players().isEmpty() && !entity.hasGeneratedDungeon()) {
+                DungeonType type = DungeonType.getRandomType();
                 GenerateFirstDungeonLayerEvent dungeonLayerEvent = new GenerateFirstDungeonLayerEvent((ServerPlayer) joinLevelEvent.level.players().get(0), world, 0);
                 MinecraftForge.EVENT_BUS.post(dungeonLayerEvent);
                 DungeonPiece result = dungeonLayerEvent.getNewLayer();
                 StructureStart start = new DungeonStructure(
-                        ModStructures.structure(), entity.getDungeonSize(), 0, result)
+                        ModStructures.structure(), entity.getDungeonSize(), 0, result, type, world)
                         .generate(world.registryAccess(),
                                 world.getChunkSource().getGenerator(),
                                 world.getChunkSource().getGenerator().getBiomeSource(),
@@ -189,7 +195,9 @@ public class DungeonEvents {
                     start.placeInChunk(world, world.structureManager(), world.getChunkSource().getGenerator(), world.getRandom(), new BoundingBox(chunkPos.getMinBlockX(), world.getMinBuildHeight(), chunkPos.getMinBlockZ(), chunkPos.getMaxBlockX(), world.getMaxBuildHeight(), chunkPos.getMaxBlockZ()), chunkPos);
                 });
                 world.getCapability(DungeonProvider.DUNGEON).ifPresent((dungeon -> {
+                    //TODO: allow random current levels
                     dungeon.setCurrentLevel(DungeonLevels.LABYRINTH_50);
+                    dungeon.setType(type);
                 }));
                 BlockPos returnPos = new BlockPos(0, 63, 0);
                 world.setBlock(returnPos, ModDungeonBlocks.RETURN_TO_OVERWORLD_BLOCK.get().defaultBlockState(), 3);
@@ -204,7 +212,7 @@ public class DungeonEvents {
             boolean canceled = MinecraftForge.EVENT_BUS.post(dungeonLayerEvent);
             if (!canceled) {
                 StructureStart start = new DungeonStructure(
-                        ModStructures.structure(), dungeon.getCurrentLevel().size(), dungeon.getLevelsGenerated() + 1, null)
+                        ModStructures.structure(), dungeon.getCurrentLevel().size(), dungeon.getLevelsGenerated() + 1, null, dungeon.getType(), dungeonLevel)
                         .generate(dungeonLevel.registryAccess(),
                                 dungeonLevel.getChunkSource().getGenerator(),
                                 dungeonLevel.getChunkSource().getGenerator().getBiomeSource(),

@@ -1,7 +1,10 @@
 package net.vakror.soulbound.compat.hammerspace.dungeon.capability;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.vakror.soulbound.compat.hammerspace.dungeon.level.DungeonLevel;
+import net.vakror.soulbound.compat.hammerspace.structure.type.DungeonType;
 
 public class Dungeon {
     private boolean isStable;
@@ -10,6 +13,8 @@ public class Dungeon {
     private int maxLevels;
     private boolean canEnter = true;
     private int levelsGenerated = 1;
+    public DungeonType type;
+    public BlockPos pos;
     public void copyFrom(Dungeon source) {
         this.isStable = source.isStable;
         this.levelsBeaten = source.levelsBeaten;
@@ -48,6 +53,15 @@ public class Dungeon {
         this.levelsBeaten = levelsBeaten;
     }
 
+    public DungeonType getType() {
+        return type;
+    }
+
+    public Dungeon setType(DungeonType type) {
+        this.type = type;
+        return this;
+    }
+
     public void saveNBTData(CompoundTag nbt) {
         nbt.putBoolean("stable", isStable);
         nbt.putBoolean("canEnter", canEnter);
@@ -57,6 +71,11 @@ public class Dungeon {
         }
         nbt.putInt("maxLevels", maxLevels);
         nbt.putInt("levelsGenerated", levelsGenerated);
+        if (type != null) {
+            nbt.putInt("type", type.getIndex());
+        } if (pos != null) {
+            nbt.put("pos", BlockPos.CODEC.encodeStart(NbtOps.INSTANCE, pos).resultOrPartial((error) -> {throw new IllegalStateException(error);}).get());
+        }
     }
 
     public void loadNBTData(CompoundTag nbt) {
@@ -68,6 +87,11 @@ public class Dungeon {
         }
         maxLevels = nbt.getInt("maxLevels");
         levelsGenerated = nbt.getInt("levelsGenerated");
+        if (nbt.contains("type")) {
+            type = DungeonType.getTypeFromIndex(nbt.getInt("type"));
+        } if (nbt.contains("pos")) {
+            pos = BlockPos.CODEC.parse(NbtOps.INSTANCE, nbt.getCompound("pos")).resultOrPartial((error) -> {throw new IllegalStateException(error);}).get();
+        }
     }
 
     public DungeonLevel getCurrentLevel() {
@@ -87,5 +111,14 @@ public class Dungeon {
     }
     public void setCanEnter(boolean canEnter) {
         this.canEnter = canEnter;
+    }
+
+    public BlockPos getPos() {
+        return pos;
+    }
+
+    public Dungeon setPos(BlockPos pos) {
+        this.pos = pos;
+        return this;
     }
 }

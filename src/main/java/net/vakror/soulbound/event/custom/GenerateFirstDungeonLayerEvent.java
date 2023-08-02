@@ -6,7 +6,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.Event.HasResult;
-import net.vakror.soulbound.compat.hammerspace.structure.DungeonPiece;
+import net.vakror.soulbound.compat.hammerspace.structure.piece.DungeonPiece;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

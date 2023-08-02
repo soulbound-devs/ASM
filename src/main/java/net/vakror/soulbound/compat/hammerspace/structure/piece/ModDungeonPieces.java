@@ -1,4 +1,4 @@
-package net.vakror.soulbound.compat.hammerspace.structure;
+package net.vakror.soulbound.compat.hammerspace.structure.piece;
 
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
