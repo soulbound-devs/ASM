@@ -15,6 +15,8 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.player.FillBucketEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.level.ExplosionEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -154,7 +156,7 @@ public class DungeonEvents {
                 return;
             }
             ((ServerLevel) event.getLevel()).getCapability(DungeonProvider.DUNGEON).ifPresent((dungeon -> {
-                if (dungeon.isStable() && dungeon.getLevelsBeaten() == dungeon.getMaxLevels()) {
+                if (dungeon.isStable() && dungeon.getLevelsBeaten() >= 1) {
                     return;
                 }
                 event.setCanceled(true);
@@ -162,10 +164,63 @@ public class DungeonEvents {
         }
 
         @SubscribeEvent
+        public void fillBucket(FillBucketEvent event) {
+            if (event.getLevel().isClientSide) {
+                return;
+            }
+            if (event.getEntity().isCreative()) {
+                return;
+            }
+
+            // I only care about taking liquids in the Dungeon Dimension
+            if (!event.getLevel().dimensionTypeId().equals(Dimensions.DUNGEON_TYPE)) {
+                return;
+            }
+
+            event.getLevel().getCapability(DungeonProvider.DUNGEON).ifPresent((dungeon -> {
+                if (dungeon.isStable() && dungeon.getLevelsBeaten() >= 1) {
+                    return;
+                }
+                event.setCanceled(true);
+            }));
+            event.setCanceled(true);
+        }
+
+        @SubscribeEvent
+        public void rightClickBlock(PlayerInteractEvent.RightClickBlock event) {
+            if (event.getLevel().isClientSide) {
+                return;
+            }
+            if (event.getEntity().isCreative()) {
+                return;
+            }
+
+            // I only care about taking liquids in the Dungeon Dimension
+            if (!event.getLevel().dimensionTypeId().equals(Dimensions.DUNGEON_TYPE)) {
+                return;
+            }
+
+            event.getLevel().getCapability(DungeonProvider.DUNGEON).ifPresent((dungeon -> {
+                if (dungeon.isStable() && dungeon.getLevelsBeaten() >= 1) {
+                    return;
+                }
+                event.setCanceled(true);
+            }));
+            event.setCanceled(true);
+        }
+
+
+        @SubscribeEvent
         public static void forbidBreakingBlocksInDungeon(BlockEvent.BreakEvent event) {
             if (event.getPlayer().isCreative()) {
                 return;
             }
+            ((ServerLevel) event.getLevel()).getCapability(DungeonProvider.DUNGEON).ifPresent((dungeon -> {
+                if (dungeon.isStable() && dungeon.getLevelsBeaten() >= 1) {
+                    return;
+                }
+                event.setCanceled(true);
+            }));
             if (Objects.requireNonNull(event.getPlayer()).level.dimensionTypeId().equals(Dimensions.DUNGEON_TYPE)) {
                 event.setCanceled(true);
             }
