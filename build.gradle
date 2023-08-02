@@ -171,7 +171,7 @@ dependencies {
     implementation fg.deobf(supportDependencies.geckolib)
     implementation fg.deobf(supportDependencies.terrablender)
 
-    implementation fg.deobf('com.github.soulbound-devs:better-spawner:92f6f5e593')
+    implementation fg.deobf('com.github.soulbound-devs:better-spawner:74a7c44c66')
 
     implementation fg.deobf("curse.maven:cataclysm-551586:4668865")
     implementation fg.deobf("curse.maven:citadel-331936:4556677")
