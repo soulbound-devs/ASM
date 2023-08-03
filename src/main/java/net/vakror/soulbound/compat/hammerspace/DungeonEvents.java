@@ -88,7 +88,9 @@ public class DungeonEvents {
                         }
                         BlockPos returnPos = new BlockPos(0, 63, 0);
                         if ((event.level.getBlockEntity(returnPos) instanceof ReturnToOverWorldBlockEntity entity)) {
-                            genDungeon(entity, world, event);
+                            if (!entity.hasGeneratedDungeon()) {
+                                genDungeon(entity, world, event);
+                            }
                         } else {
                             world.setBlock(returnPos, ModDungeonBlocks.RETURN_TO_OVERWORLD_BLOCK.get().defaultBlockState(), 3);
                             if (event.level.getBlockEntity(returnPos) instanceof ReturnToOverWorldBlockEntity entity) {
@@ -151,7 +153,8 @@ public class DungeonEvents {
             }
             if (!event.isCancelable()) {
                 return;
-            } if (((ServerPlayer) event.getEntity()).isCreative()) {
+            }
+            if (((ServerPlayer) event.getEntity()).isCreative()) {
                 return;
             }
             ((ServerLevel) event.getLevel()).getCapability(DungeonProvider.DUNGEON).ifPresent((dungeon -> {
@@ -203,7 +206,7 @@ public class DungeonEvents {
         }
 
         private static void genDungeon(ReturnToOverWorldBlockEntity entity, ServerLevel world, TickEvent.LevelTickEvent joinLevelEvent) {
-            if (!joinLevelEvent.level.players().isEmpty() && !entity.hasGeneratedDungeon()) {
+            if (!entity.hasGeneratedDungeon()) {
                 DungeonType type = DungeonType.getRandomType();
                 GenerateFirstDungeonLayerEvent dungeonLayerEvent = new GenerateFirstDungeonLayerEvent((ServerPlayer) joinLevelEvent.level.players().get(0), world, 0);
                 MinecraftForge.EVENT_BUS.post(dungeonLayerEvent);
@@ -231,9 +234,8 @@ public class DungeonEvents {
                     dungeon.setCurrentLevel(DungeonLevels.LABYRINTH_50);
                     dungeon.setType(type);
                 }));
-                BlockPos returnPos = new BlockPos(0, 63, 0);
-                world.setBlock(returnPos, ModDungeonBlocks.RETURN_TO_OVERWORLD_BLOCK.get().defaultBlockState(), 3);
-                ((ReturnToOverWorldBlockEntity) Objects.requireNonNull(world.getBlockEntity(returnPos))).hasGeneratedDungeon(true);
+                world.setBlock(new BlockPos(0, 63, 0), ModDungeonBlocks.RETURN_TO_OVERWORLD_BLOCK.get().defaultBlockState(), 3);
+                ((ReturnToOverWorldBlockEntity) Objects.requireNonNull(world.getBlockEntity(new BlockPos(0, 63, 0)))).hasGeneratedDungeon(true);
             }
         }
     }
