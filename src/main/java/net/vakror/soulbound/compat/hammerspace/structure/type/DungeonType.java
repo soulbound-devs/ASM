@@ -14,7 +14,12 @@ import java.util.*;
 
 public enum DungeonType {
     DEFAULT("default", 0, new ArrayList<>(), ModDungeonPieces.DEFAULT_DUNGEON_PIECE.get()),
-    LABYRINTH("labyrinth", 1, DungeonProcessorRules.CREEPY_DEEPSLATE, ModDungeonPieces.DEFAULT_DUNGEON_PIECE.get());
+    DARK_CREEPY("dark_creepy", 1, DungeonProcessorRules.CREEPY_DEEPSLATE, ModDungeonPieces.DEFAULT_DUNGEON_PIECE.get()),
+    DEEP_BLOOD("deep_blood", 2, DungeonProcessorRules.DEEP_BLOOD, ModDungeonPieces.DEFAULT_DUNGEON_PIECE.get()),
+    OLD_RUINS("old_ruins", 3, DungeonProcessorRules.OLD_RUINS, ModDungeonPieces.DEFAULT_DUNGEON_PIECE.get()),
+    AMETHYST_VOID("amethyst_void", 4, DungeonProcessorRules.AMETHYST_VOID, ModDungeonPieces.DEFAULT_DUNGEON_PIECE.get()),
+    GILDED_HOARD("gilded_hoard", 5, DungeonProcessorRules.GILDED_HOARD, ModDungeonPieces.DEFAULT_DUNGEON_PIECE.get()),
+    ANCIENT_ENDER("ancient_ender", 6, DungeonProcessorRules.ANCIENT_ENDER, ModDungeonPieces.DEFAULT_DUNGEON_PIECE.get());
 
     String name;
     int index;
