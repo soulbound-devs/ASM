@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.vakror.soulbound.SoulboundMod;
 
 import java.util.List;
 
@@ -21,6 +22,11 @@ public class DungeonUtil {
                 xOffset = offsets.get(0).getFirst();
                 zOffset = offsets.get(0).getSecond();
             }
+            if (nbtFile.equals(new ResourceLocation(SoulboundMod.MOD_ID, "dungeon_50_0"))) {
+                xOffset += 17;
+                zOffset += 17;
+            }
+            System.out.println("spawn: " + xOffset + ", " + zOffset);
             return new BlockPos(-25 + xOffset, y, -25 + zOffset);
         }
         return BlockPos.ZERO;
