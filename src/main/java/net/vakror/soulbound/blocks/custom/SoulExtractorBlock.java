@@ -37,9 +37,4 @@ public class SoulExtractorBlock extends Block {
     public boolean propagatesSkylightDown(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
         return true;
     }
-
-    @Override
-    public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
-        return 15;
-    }
 }
