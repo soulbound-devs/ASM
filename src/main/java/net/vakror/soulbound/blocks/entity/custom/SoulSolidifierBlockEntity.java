@@ -52,7 +52,7 @@ public class SoulSolidifierBlockEntity extends BlockEntity implements MenuProvid
     };
     protected final ContainerData data;
     private int progress = 0;
-    private int maxProgress = 61;
+    private int maxProgress = 156;
     // For upgrades that will be added in the future
     private final int amountOfFluidToExtractForSoul = 100;
 
