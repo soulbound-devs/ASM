@@ -48,7 +48,7 @@ public class ModBlocks {
            () -> new ModFlammableRotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LOG)));
 
     public static final RegistryObject<Block> SOUL_EXTRACTOR = registerBlock("soul_extractor",
-           () -> new SoulExtractorBlock(BlockBehaviour.Properties.of(Material.WOOD).lightLevel(state -> 15).strength(5).requiresCorrectToolForDrops()));
+           () -> new SoulExtractorBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(5).requiresCorrectToolForDrops().noOcclusion()));
 
     public static final RegistryObject<Block> ANCIENT_OAK_PLANKS = registerBlock("ancient_oak_planks",
            () -> new Block(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)) {
