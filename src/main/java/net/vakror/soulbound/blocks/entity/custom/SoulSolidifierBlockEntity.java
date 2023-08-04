@@ -259,7 +259,7 @@ public class SoulSolidifierBlockEntity extends BlockEntity implements MenuProvid
         if (entity.itemHandler.getStackInSlot(1).isEmpty()) {
              result = new ItemStack(typeOfItemToAdd, numberOfSoulToAdd);
         } else {
-            result = new ItemStack(entity.itemHandler.getStackInSlot(1).getItem(), entity.itemHandler.getStackInSlot(1).getCount() + numberOfSoulToAdd);
+            result = new ItemStack(entity.itemHandler.getStackInSlot(1).getItem(), 1);
         }
         entity.itemHandler.insertItem(1, result, false);
         entity.resetProgress();
