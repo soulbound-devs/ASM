@@ -48,14 +48,14 @@ public class SoulExtractingCategory implements IRecipeCategory<ISoulExtractingRe
     }
 
     @Override
-    public void draw(ISoulExtractingRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack guiGraphics, double mouseX, double mouseY) {
-        arrow.draw(guiGraphics, 24, 18);
-        arrow.draw(guiGraphics, 104, 18);
+    public void draw(ISoulExtractingRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack matrices, double mouseX, double mouseY) {
+        arrow.draw(matrices, 24, 41);
+        arrow.draw(matrices, 104, 42);
 
         drawSoul(guiGraphics, 2, 100, false);
         drawSoul(guiGraphics, 76, 100, true);
 
-        IRecipeCategory.super.draw(recipe, recipeSlotsView, guiGraphics, mouseX, mouseY);
+        IRecipeCategory.super.draw(recipe, recipeSlotsView, matrices, mouseX, mouseY);
     }
 
     @Override
