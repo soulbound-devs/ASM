@@ -18,6 +18,9 @@ public class ModBlockEntities {
     public static final RegistryObject<BlockEntityType<SoulCatalystBlockEntity>> SOUL_CATALYST_BLOCK_ENTITY =
             BLOCK_ENTITIES.register("soul_catalyst_block_entity", () -> BlockEntityType.Builder.of(SoulCatalystBlockEntity::new, ModBlocks.SOUL_CATALYST.get()).build(null));
 
+    public static final RegistryObject<BlockEntityType<SoulExtractorBlockEntity>> SOUL_EXTRACTOR_BLOCK_ENTITY =
+            BLOCK_ENTITIES.register("soul_extractor_block_entity", () -> BlockEntityType.Builder.of(SoulExtractorBlockEntity::new, ModBlocks.SOUL_EXTRACTOR.get()).build(null));
+
     public static final RegistryObject<BlockEntityType<SoulSolidifierBlockEntity>> SOUL_SOLIDIFIER_BLOCK_ENTITY =
             BLOCK_ENTITIES.register("soul_solidifier_block_entity", () -> BlockEntityType.Builder.of(SoulSolidifierBlockEntity::new, ModBlocks.SOUL_SOLIDIFIER.get()).build(null));
 

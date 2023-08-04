@@ -17,6 +17,8 @@ public class ModMenuTypes {
 
     public static final RegistryObject<MenuType<SoulSolidifierMenu>> SOUL_SOLIDIFIER_MENU = registerMenuType(SoulSolidifierMenu::new, "soul_solidifier_menu");
 
+    public static final RegistryObject<MenuType<SoulExtractorMenu>> SOUL_EXTRACTOR_MENU = registerMenuType(SoulExtractorMenu::new, "soul_extractor_menu");
+
     public static final RegistryObject<MenuType<SackMenu>> SACK_MENU = registerMenuType(SackMenu::new, "sack_menu");
 
     private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> registerMenuType(IContainerFactory<T> factory, String name) {

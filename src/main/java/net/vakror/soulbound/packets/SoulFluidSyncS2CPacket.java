@@ -5,7 +5,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.network.NetworkEvent;
+import net.vakror.soulbound.blocks.entity.custom.SoulExtractorBlockEntity;
 import net.vakror.soulbound.blocks.entity.custom.SoulSolidifierBlockEntity;
+import net.vakror.soulbound.screen.SoulExtractorMenu;
 import net.vakror.soulbound.screen.SoulSolidifierMenu;
 
 import java.util.function.Supplier;
@@ -36,6 +38,13 @@ public class SoulFluidSyncS2CPacket {
                 blockEntity.setFluid(stack);
 
                 if (Minecraft.getInstance().player.containerMenu instanceof SoulSolidifierMenu menu && menu.getBlockEntity().getBlockPos().equals(pos)) {
+                    menu.setFluid(stack);
+                }
+            }
+            if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof SoulExtractorBlockEntity blockEntity) {
+                blockEntity.setFluid(stack);
+
+                if (Minecraft.getInstance().player.containerMenu instanceof SoulExtractorMenu menu && menu.getBlockEntity().getBlockPos().equals(pos)) {
                     menu.setFluid(stack);
                 }
             }

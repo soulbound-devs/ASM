@@ -1,16 +1,29 @@
 package net.vakror.soulbound.blocks.custom;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.network.NetworkHooks;
+import net.vakror.soulbound.blocks.entity.custom.SoulExtractorBlockEntity;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class SoulExtractorBlock extends Block {
+public class SoulExtractorBlock extends BaseEntityBlock {
     public SoulExtractorBlock(Properties pProperties) {
         super(pProperties);
     }
@@ -29,12 +42,46 @@ public class SoulExtractorBlock extends Block {
     }
 
     @Override
+    public RenderShape getRenderShape(BlockState pState) {
+        return RenderShape.MODEL;
+    }
+
+    @Override
+    public InteractionResult use(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult result) {
+        if (!level.isClientSide()) {
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if (blockEntity instanceof SoulExtractorBlockEntity entity) {
+                if (!player.getItemInHand(hand).getItem().equals(Items.BUCKET)) {
+                    NetworkHooks.openScreen(((ServerPlayer) player), entity, pos);
+                }
+            } else {
+                throw new IllegalStateException("Soul Extractor Container Provider Missing!");
+            }
+        }
+        return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    @Override
     public @NotNull VoxelShape getShape(BlockState p_60555_, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_) {
         return shape();
     }
 
     @Override
+    public void stepOn(Level pLevel, BlockPos pPos, BlockState pState, Entity pEntity) {
+        if (pEntity instanceof Player player && pLevel.getBlockEntity(pPos) instanceof SoulExtractorBlockEntity entity) {
+            SoulExtractorBlockEntity.stepOnTick(pLevel, pPos, pState, entity, player);
+        }
+        super.stepOn(pLevel, pPos, pState, pEntity);
+    }
+
+    @Override
     public boolean propagatesSkylightDown(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
         return true;
+    }
+
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
+        return new SoulExtractorBlockEntity(pPos, pState);
     }
 }

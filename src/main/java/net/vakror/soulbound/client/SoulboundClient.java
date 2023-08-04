@@ -8,10 +8,7 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.vakror.soulbound.compat.hammerspace.entity.ModDungeonEntities;
 import net.vakror.soulbound.compat.hammerspace.entity.client.GoblaggerRenderer;
-import net.vakror.soulbound.screen.ModMenuTypes;
-import net.vakror.soulbound.screen.SackScreen;
-import net.vakror.soulbound.screen.SoulSolidifierScreen;
-import net.vakror.soulbound.screen.WandImbuingScreen;
+import net.vakror.soulbound.screen.*;
 import net.vakror.soulbound.soul.ModSoul;
 
 public class SoulboundClient {
@@ -19,6 +16,7 @@ public class SoulboundClient {
         MenuScreens.register(ModMenuTypes.WAND_IMBUING_MENU.get(), WandImbuingScreen::new);
         MenuScreens.register(ModMenuTypes.SOUL_SOLIDIFIER_MENU.get(), SoulSolidifierScreen::new);
         MenuScreens.register(ModMenuTypes.SACK_MENU.get(), SackScreen::new);
+        MenuScreens.register(ModMenuTypes.SOUL_EXTRACTOR_MENU.get(), SoulExtractorScreen::new);
 
         ItemBlockRenderTypes.setRenderLayer(ModSoul.SOURCE_SOUL.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(ModSoul.FLOWING_SOUL.get(), RenderType.translucent());
