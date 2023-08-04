@@ -44,7 +44,7 @@ public class SoulSolidifierBlockEntity extends BlockEntity implements MenuProvid
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
             return switch (slot) {
                 case 0 -> stack.getItem() == ModItems.TUNGSTEN_INGOT.get();
-                case 1 -> false;
+                case 1 -> true;
                 case 2, 3 -> stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent();
                 default -> super.isItemValid(slot, stack);
             };
