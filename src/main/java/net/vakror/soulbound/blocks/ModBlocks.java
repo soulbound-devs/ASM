@@ -22,10 +22,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.vakror.soulbound.SoulboundMod;
-import net.vakror.soulbound.blocks.custom.ModFlammableRotatedPillarBlock;
-import net.vakror.soulbound.blocks.custom.SoulCatalystBlock;
-import net.vakror.soulbound.blocks.custom.SoulSolidifierBlock;
-import net.vakror.soulbound.blocks.custom.WandImbuingTableBlock;
+import net.vakror.soulbound.blocks.custom.*;
 import net.vakror.soulbound.items.ModItems;
 import net.vakror.soulbound.soul.ModSoul;
 import net.vakror.soulbound.tab.ModCreativeModeTabs;
@@ -51,7 +48,7 @@ public class ModBlocks {
            () -> new ModFlammableRotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LOG)));
 
     public static final RegistryObject<Block> SOUL_EXTRACTOR = registerBlock("soul_extractor",
-           () -> new Block(BlockBehaviour.Properties.of(Material.WOOD).strength(5).requiresCorrectToolForDrops()));
+           () -> new SoulExtractorBlock(BlockBehaviour.Properties.of(Material.WOOD).lightLevel(state -> 15).strength(5).requiresCorrectToolForDrops()));
 
     public static final RegistryObject<Block> ANCIENT_OAK_PLANKS = registerBlock("ancient_oak_planks",
            () -> new Block(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)) {
