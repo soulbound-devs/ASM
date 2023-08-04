@@ -11,9 +11,6 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -22,6 +19,8 @@ import net.vakror.soulbound.blocks.ModBlocks;
 import net.vakror.soulbound.compat.jei.recipe.ModJEIRecipes;
 import net.vakror.soulbound.compat.jei.recipe.extracting.ISoulExtractingRecipe;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public class SoulExtractingCategory implements IRecipeCategory<ISoulExtractingRecipe> {
     private final IGuiHelper helper;
@@ -98,14 +97,18 @@ public class SoulExtractingCategory implements IRecipeCategory<ISoulExtractingRe
         builder.addSlot(RecipeIngredientRole.OUTPUT, 136, 26).setFluidRenderer(1000, true, 16, 46).setSlotName("Dark Soul Output").addFluidStack(recipe.getDarkSoulFluid().getFluid(), 1000);
     }
 
-    protected void drawSoul(PoseStack guiGraphics, int x, int amount, boolean isDarkSoul) {
-        if (amount > 0) {
-            Component soulString = Component.literal(amount + (isDarkSoul ? " Dark ": " ") + "Soul");
-            Minecraft minecraft = Minecraft.getInstance();
-            Font fontRenderer = minecraft.font;
-            guiGraphics.scale(0.5f, 0.5f, 0.5f);
-            GuiComponent.drawString(guiGraphics, fontRenderer, soulString, x * 2 - 2, 38, 0xFF808080);
-            guiGraphics.scale(2, 2, 2);
+    @Override
+    public List<Component> getTooltipStrings(ISoulExtractingRecipe recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
+        if (isMouseOver(0, 35, mouseX, mouseY, soulBarFull.getWidth() / 2, soulBarFull.getHeight() / 2)) {
+            return List.of(Component.literal("100 Soul"));
         }
+        if (isMouseOver(85, 35, mouseX, mouseY, darkSoulBarFull.getWidth() / 2, darkSoulBarFull.getHeight() / 2)) {
+            return List.of(Component.literal("100 Dark Soul"));
+        }
+        return IRecipeCategory.super.getTooltipStrings(recipe, recipeSlotsView, mouseX, mouseY);
+    }
+
+    public boolean isMouseOver(int x, int y, double mouseX, double mouseY, int width, int height) {
+        return mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height;
     }
 }
