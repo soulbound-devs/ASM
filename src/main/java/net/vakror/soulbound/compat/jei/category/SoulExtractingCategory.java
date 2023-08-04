@@ -3,7 +3,6 @@ package net.vakror.soulbound.compat.jei.category;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
-import mezz.jei.api.gui.drawable.IDrawableAnimated;
 import mezz.jei.api.gui.drawable.IDrawableStatic;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -29,8 +28,6 @@ public class SoulExtractingCategory implements IRecipeCategory<ISoulExtractingRe
     private final IDrawable darkSoulBarFull;
     private final IDrawableStatic staticArrow;
 
-    private final IDrawableAnimated arrow;
-
     public static final ResourceLocation EXTRACTOR_TEXTURE_BG = new ResourceLocation(SoulboundMod.MOD_ID, "textures/gui/soul_extractor.png");
 
     public static final ResourceLocation SOUL_BAR_FULL = new ResourceLocation(SoulboundMod.MOD_ID, "textures/gui/soul_bar_full.png");
@@ -55,7 +52,6 @@ public class SoulExtractingCategory implements IRecipeCategory<ISoulExtractingRe
                 .build();
 
         staticArrow = helper.createDrawable(EXTRACTOR_TEXTURE_BG, 177, 0, 26, 8);
-        arrow = helper.createAnimatedDrawable(staticArrow, 13, IDrawableAnimated.StartDirection.LEFT, false);
     }
     @Override
     public RecipeType<ISoulExtractingRecipe> getRecipeType() {
@@ -64,8 +60,8 @@ public class SoulExtractingCategory implements IRecipeCategory<ISoulExtractingRe
 
     @Override
     public void draw(ISoulExtractingRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack matrices, double mouseX, double mouseY) {
-        arrow.draw(matrices, 24, 41);
-        arrow.draw(matrices, 104, 42);
+        staticArrow.draw(matrices, 24, 41);
+        staticArrow.draw(matrices, 104, 42);
 
         matrices.pushPose();
         matrices.scale(0.75f, 0.75f, 0.75f);
