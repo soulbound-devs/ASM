@@ -77,7 +77,7 @@ public class SoulSolidifierMenu extends AbstractContainerMenu {
         int maxProgress = this.data.get(1);
         int arrowSize = 26;
 
-        return maxProgress !=0 && progress != 0 ? progress * arrowSize / maxProgress: 0;
+        return maxProgress != 0 && progress != 0 ? progress * arrowSize / maxProgress: 0;
     }
 
     public SoulSolidifierBlockEntity getBlockEntity() {
