@@ -17,6 +17,7 @@ import net.vakror.soulbound.SoulboundMod;
 import net.vakror.soulbound.compat.hammerspace.blocks.custom.DungeonAccessBlock;
 import net.vakror.soulbound.compat.hammerspace.blocks.custom.ReturnToOverworldBlock;
 import net.vakror.soulbound.items.ModItems;
+import net.vakror.soulbound.tab.ModCreativeModeTabs;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -62,7 +63,7 @@ public class ModDungeonBlocks {
 
     private static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block) {
         return ModItems.ITEMS_REGISTRY.register(name, () -> new BlockItem(block.get(),
-                new Item.Properties()));
+                new Item.Properties().tab(ModCreativeModeTabs.SOULBOUND_TAB)));
     }
 
     public static void register(IEventBus eventBus) {
