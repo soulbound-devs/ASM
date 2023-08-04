@@ -18,7 +18,7 @@ public class ModResultSlot extends SlotItemHandler {
 
     @Override
     public int getMaxStackSize() {
-        return 1;
+        return 64;
     }
 
     @Override
