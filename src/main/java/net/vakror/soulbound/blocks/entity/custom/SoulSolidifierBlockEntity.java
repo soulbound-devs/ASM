@@ -176,7 +176,7 @@ public class SoulSolidifierBlockEntity extends BlockEntity implements MenuProvid
     }
 
     public static void tick(Level pLevel, BlockPos pPos, BlockState pState, SoulSolidifierBlockEntity blockEntity) {
-        if (hasNotReachedStackLimit(blockEntity) && (blockEntity.itemHandler.getStackInSlot(1).isEmpty() || blockEntity.fluidSameAsSoulItem(blockEntity.itemHandler.getStackInSlot(1).getItem())) && hasEnoughFluid(blockEntity) && hasTungsten(blockEntity) && (blockEntity.FLUID_TANK.getFluid().getFluid() == ModSoul.SOURCE_DARK_SOUL.get() || blockEntity.FLUID_TANK.getFluid().getFluid() == ModSoul.SOURCE_SOUL.get())) {
+        if (!pLevel.isClientSide && hasNotReachedStackLimit(blockEntity) && (blockEntity.itemHandler.getStackInSlot(1).isEmpty() || blockEntity.fluidSameAsSoulItem(blockEntity.itemHandler.getStackInSlot(1).getItem())) && hasEnoughFluid(blockEntity) && hasTungsten(blockEntity) && (blockEntity.FLUID_TANK.getFluid().getFluid() == ModSoul.SOURCE_DARK_SOUL.get() || blockEntity.FLUID_TANK.getFluid().getFluid() == ModSoul.SOURCE_SOUL.get())) {
             blockEntity.progress++;
             setChanged(pLevel, pPos, pState);
             if (blockEntity.progress >= blockEntity.maxProgress) {
