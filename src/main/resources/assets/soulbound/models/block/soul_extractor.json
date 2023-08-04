@@ -4,6 +4,7 @@
 		"1": "soulbound:block/tungsten_plate",
 		"2": "soulbound:block/soul_extractor"
 	},
+	"render_type": "transparent",
 	"elements": [
 		{
 			"from": [0, 0, 0],
