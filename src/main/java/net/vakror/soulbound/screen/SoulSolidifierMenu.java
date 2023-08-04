@@ -28,7 +28,7 @@ public class SoulSolidifierMenu extends AbstractContainerMenu {
     private final List<Slot> invSlots = new ArrayList<>();
 
     public SoulSolidifierMenu(int pContainerId, Inventory inv, FriendlyByteBuf data) {
-        this(pContainerId, inv, inv.player.level.getBlockEntity(data.readBlockPos()), new SimpleContainerData(4));
+        this(pContainerId, inv, inv.player.level.getBlockEntity(data.readBlockPos()), new SimpleContainerData(2));
     }
 
     public SoulSolidifierMenu(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
