@@ -41,7 +41,7 @@ public class SoulSolidifierScreen extends AbstractContainerScreen<SoulSolidifier
         blit(matrices, x, y, 0, 0, imageWidth, imageHeight);
 
         if (menu.isCrafting()) {
-            blit(matrices, x + 118, y + 37, 177, 38, menu.getScaledProgress(), 8);
+            blit(matrices, x + 118, y + 37, 177, 0, menu.getScaledProgress(), 8);
         }
         renderer.render(matrices, x + 50, y + 8, menu.getStack());
     }
