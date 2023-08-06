@@ -56,7 +56,7 @@ public class ItemSeal {
     public void setActiveSeal(ISeal seal, ItemStack stack) {
         activeSeal = seal;
         CompoundTag tag = stack.getTag().copy();
-        tag.putString("activeSeal", activeSeal == null? "": activeSeal.getId());
+        tag.putString("activeSeal", activeSeal == null ? "": activeSeal.getId());
         stack.setTag(tag);
     }
 

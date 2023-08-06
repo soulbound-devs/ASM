@@ -31,7 +31,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SealableItem extends DiggerItem {
 
-    protected final ISealableTier tier;
+    public final ISealableTier tier;
     protected ItemStack stack;
 
     public SealableItem(Properties properties, ISealableTier tier) {
