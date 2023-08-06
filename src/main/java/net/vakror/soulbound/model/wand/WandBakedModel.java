@@ -1,4 +1,4 @@
-package net.vakror.soulbound.model;
+package net.vakror.soulbound.model.wand;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -20,6 +20,7 @@ import net.minecraft.util.FastColor;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.model.pipeline.QuadBakingVertexConsumer;
 import net.minecraftforge.client.model.pipeline.TransformingVertexPipeline;
+import net.vakror.soulbound.model.model.BakedItemModel;
 
 import javax.annotation.Nullable;
 import java.util.*;

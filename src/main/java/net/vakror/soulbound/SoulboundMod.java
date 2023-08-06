@@ -1,9 +1,11 @@
 package net.vakror.soulbound;
 
 import com.mojang.logging.LogUtils;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.client.event.ModelEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
@@ -27,14 +29,16 @@ import net.vakror.soulbound.compat.hammerspace.dimension.Dimensions;
 import net.vakror.soulbound.compat.hammerspace.entity.GoblaggerEntity;
 import net.vakror.soulbound.compat.hammerspace.entity.ModDungeonEntities;
 import net.vakror.soulbound.compat.hammerspace.items.ModDungeonItems;
-import net.vakror.soulbound.compat.hammerspace.structure.util.DungeonFileLocations;
 import net.vakror.soulbound.compat.hammerspace.structure.ModStructures;
 import net.vakror.soulbound.compat.hammerspace.structure.piece.ModDungeonPieces;
+import net.vakror.soulbound.compat.hammerspace.structure.util.DungeonFileLocations;
 import net.vakror.soulbound.compat.hammerspace.structure.util.DungeonProcessorRules;
 import net.vakror.soulbound.compat.hammerspace.structure.util.DungeonSpawnPointUtils;
 import net.vakror.soulbound.entity.ModEntities;
 import net.vakror.soulbound.items.ModItems;
-import net.vakror.soulbound.model.WandModelLoader;
+import net.vakror.soulbound.model.models.ActiveSealModels;
+import net.vakror.soulbound.model.models.WandModels;
+import net.vakror.soulbound.model.wand.WandModelLoader;
 import net.vakror.soulbound.packets.ModPackets;
 import net.vakror.soulbound.screen.ModMenuTypes;
 import net.vakror.soulbound.seal.SealRegistry;
@@ -63,6 +67,8 @@ public class SoulboundMod {
         DungeonSpawnPointUtils.init();
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
+        WandModels.init();
+        ActiveSealModels.init();
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         GeckoLib.initialize();
@@ -135,14 +141,16 @@ public class SoulboundMod {
                 event.put(ModDungeonEntities.GOBLAGGER.get(), GoblaggerEntity.setAttributes());
             }
         }
-//        @SubscribeEvent
-//        public static void onTextureStitch(TextureStitchEvent.Pre event) {
-//            if (event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
-//                event.addSprite(new ResourceLocation(ASMMod.MOD_ID, "item/wands/activated/axing"));
-//                event.addSprite(new ResourceLocation(ASMMod.MOD_ID, "item/wands/wand"));
-//                event.addSprite(new ResourceLocation(ASMMod.MOD_ID, "item/wands/activated/pickaxing"));
-//                event.addSprite(new ResourceLocation(ASMMod.MOD_ID, "item/wands/activated/scythe"));
-//            }
-//        }
+
+        @SubscribeEvent
+        public static void onTextureStitch(TextureStitchEvent.Pre event) {
+            if (event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
+                for (ResourceLocation texture : WandModels.MODELS.values()) {
+                    event.addSprite(texture);
+                } for (ResourceLocation texture : ActiveSealModels.MODELS.values()) {
+                    event.addSprite(texture);
+                }
+            }
+        }
     }
 }

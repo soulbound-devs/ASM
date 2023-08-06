@@ -1,4 +1,4 @@
-package net.vakror.soulbound.model;
+package net.vakror.soulbound.model.wand;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -51,7 +51,7 @@ public class WandItemOverrideList extends ItemOverrides {
 				if (!stack.getTag().getString("activeSeal").equals("")) {
 					for (WandModelLoader.TypedTextures typedTextures : mutableTypedTextures1) {
 						String activeSeal = stack.getTag().getString("activeSeal");
-						TextureAtlasSprite sprite = typedTextures.getSprite(activeSeal, this.spriteGetter);
+						TextureAtlasSprite sprite = typedTextures.getSprite(activeSeal, this.spriteGetter, false);
 						if (sprite != null) {
 							mutableTypedTextures1.remove(typedTextures);
 							sprites.add(sprite);

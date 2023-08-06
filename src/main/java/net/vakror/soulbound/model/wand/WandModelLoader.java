@@ -1,9 +1,8 @@
-package net.vakror.soulbound.model;
+package net.vakror.soulbound.model.wand;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureAtlas;
@@ -11,6 +10,8 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.geometry.IGeometryLoader;
+import net.vakror.soulbound.model.models.ActiveSealModels;
+import net.vakror.soulbound.model.models.WandModels;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -47,25 +48,18 @@ public enum WandModelLoader implements IGeometryLoader<WandModel> {
 
 		return new WandModel(wandLocation, ImmutableList.copyOf(typedTexturesList));
 	}
-	
-	public static class TypedTextures{
+
+	public static class TypedTextures {
 		private final ImmutableMap<String, ResourceLocation> textures;
-		
-		private TypedTextures(JsonObject wandObject){
+
+		private TypedTextures(JsonObject wandObject) {
 
 			Map<String, ResourceLocation> map = new HashMap<>();
 			map.put("wand", new ResourceLocation(wandObject.get("wand").getAsString()));
-			for (JsonElement element: wandObject.getAsJsonArray("seals")) {
-				JsonObject elementIn = (JsonObject) element;
-				for (Entry<String, JsonElement> entry : elementIn.entrySet()) {
-					ResourceLocation location = new ResourceLocation(entry.getValue().getAsString());
-					map.put(entry.getKey(), location);
-				}
-			}
 			this.textures = ImmutableMap.copyOf(map);
 		}
 
-		public ImmutableMap<String, ResourceLocation> getTextures(){
+		public ImmutableMap<String, ResourceLocation> getTextures() {
 			return textures;
 		}
 
@@ -75,10 +69,24 @@ public enum WandModelLoader implements IGeometryLoader<WandModel> {
 			assert location != null;
 			@SuppressWarnings("deprecation")
 			Material material = new Material(TextureAtlas.LOCATION_BLOCKS, location);
-            TextureAtlasSprite sprite = spriteGetter.apply(material);
-            if(sprite != null && !sprite.getName().equals(MissingTextureAtlasSprite.getLocation())){
-                return sprite;
-            }
+			TextureAtlasSprite sprite = spriteGetter.apply(material);
+			if (sprite != null && !sprite.getName().equals(MissingTextureAtlasSprite.getLocation())) {
+				return sprite;
+			}
+			return null;
+		}
+
+		@Nullable
+		public TextureAtlasSprite getSprite(String name, Function<Material, TextureAtlasSprite> spriteGetter, boolean isWandModel) {
+			ResourceLocation location = isWandModel ? WandModels.MODELS.get(name): ActiveSealModels.MODELS.get(name);
+			if (location != null) {
+				@SuppressWarnings("deprecation")
+				Material material = new Material(TextureAtlas.LOCATION_BLOCKS, location);
+				TextureAtlasSprite sprite = spriteGetter.apply(material);
+				if (sprite != null && !sprite.getName().equals(MissingTextureAtlasSprite.getLocation())) {
+					return sprite;
+				}
+			}
 			return null;
 		}
 	}

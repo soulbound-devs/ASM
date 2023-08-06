@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-only
  */
 
-package net.vakror.soulbound.model;
+package net.vakror.soulbound.model.model;
 
 import com.google.common.base.Objects;
 import com.mojang.math.Transformation;

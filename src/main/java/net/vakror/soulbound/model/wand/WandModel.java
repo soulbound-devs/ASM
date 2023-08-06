@@ -1,4 +1,4 @@
-package net.vakror.soulbound.model;
+package net.vakror.soulbound.model.wand;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -14,6 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.SimpleModelState;
 import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
 import net.minecraftforge.client.model.geometry.IUnbakedGeometry;
+import net.vakror.soulbound.model.model.CompositeModelState;
 
 import java.util.Collection;
 import java.util.EnumMap;
