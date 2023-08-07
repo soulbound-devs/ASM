@@ -17,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
@@ -52,7 +53,8 @@ public class WandItemOverrideList extends ItemOverrides {
 				if (!stack.getTag().getString("activeSeal").equals("")) {
 					for (WandModelLoader.TypedTextures typedTextures : mutableTypedTextures1) {
 						String activeSeal = stack.getTag().getString("activeSeal");
-						TextureAtlasSprite sprite = typedTextures.getSprite(activeSeal, this.spriteGetter, false);
+						Map<String, String> activeSealModels = wand.deserializeCustomActiveSealModels(stack.getTag());
+						TextureAtlasSprite sprite = typedTextures.getSprite(activeSealModels.getOrDefault(activeSeal, activeSeal), this.spriteGetter, false);
 						if (sprite != null) {
 							mutableTypedTextures1.remove(typedTextures);
 							sprites.add(sprite);
