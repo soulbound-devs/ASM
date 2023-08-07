@@ -13,6 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.vakror.soulbound.capability.wand.ItemSealProvider;
 import net.vakror.soulbound.items.custom.SealableItem;
 import net.vakror.soulbound.items.custom.WandItem;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,7 @@ public class WandItemOverrideList extends ItemOverrides {
 
 	/* Read NBT data from stack and choose what textures in use and merge them */
 	@Override
-	public BakedModel resolve(BakedModel model, ItemStack stack, ClientLevel worldIn, LivingEntity entityIn, int seed) {
+	public BakedModel resolve(@NotNull BakedModel model, ItemStack stack, ClientLevel worldIn, LivingEntity entityIn, int seed) {
 		if (stack.getItem() instanceof WandItem && model instanceof WandBakedModel mealModel) {
 			AtomicReference<WandBakedModel> finalWandModel = new AtomicReference<>(mealModel);
 			List<TextureAtlasSprite> sprites = new ArrayList<TextureAtlasSprite>();
