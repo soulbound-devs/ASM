@@ -39,14 +39,14 @@ public class WandItemOverrideList extends ItemOverrides {
 			List<TextureAtlasSprite> sprites = new ArrayList<TextureAtlasSprite>();
 
 			List<WandModelLoader.TypedTextures> mutableTypedTextures = Lists.newArrayList(this.materials);
-			for (WandModelLoader.TypedTextures typedTextures : mutableTypedTextures) {
-				TextureAtlasSprite sprite = typedTextures.getSprite("wand", this.spriteGetter);
-				mutableTypedTextures.remove(typedTextures);
-				sprites.add(sprite);
-				finalWandModel.set(finalWandModel.get().setIngredientSprites(sprites));
-				break;
-			}
 			stack.getCapability(ItemSealProvider.SEAL).ifPresent(wand -> {
+				for (WandModelLoader.TypedTextures typedTextures : mutableTypedTextures) {
+					TextureAtlasSprite sprite = (stack.getTag().contains("customModel") && !stack.getTag().getString("customModel").isBlank()) ? typedTextures.getSprite(stack.getTag().getString("customModel"), this.spriteGetter, true) : typedTextures.getSprite("wand", this.spriteGetter);
+					mutableTypedTextures.remove(typedTextures);
+					sprites.add(sprite);
+					finalWandModel.set(finalWandModel.get().setIngredientSprites(sprites));
+					break;
+				}
 				List<WandModelLoader.TypedTextures> mutableTypedTextures1 = Lists.newArrayList(this.materials);
 				if (!stack.getTag().getString("activeSeal").equals("")) {
 					for (WandModelLoader.TypedTextures typedTextures : mutableTypedTextures1) {
