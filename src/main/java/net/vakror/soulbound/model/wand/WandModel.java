@@ -26,16 +26,18 @@ import java.util.stream.Collectors;
 public class WandModel implements IUnbakedGeometry<WandModel> {
 	private ResourceLocation baseMaterial;
 	private ImmutableList<WandModelLoader.TypedTextures> typedTexturesList;
+	private final int defaultWandTint;
 
-	public WandModel(ResourceLocation baseMaterialIn, ImmutableList<WandModelLoader.TypedTextures> typedTexturesListIn){
+	public WandModel(ResourceLocation baseMaterialIn, ImmutableList<WandModelLoader.TypedTextures> typedTexturesListIn, int defaultWandTint) {
 		this.typedTexturesList = typedTexturesListIn;
 		this.baseMaterial = baseMaterialIn;
+		this.defaultWandTint = defaultWandTint;
 	}
 
 	@Override
 	public BakedModel bake(IGeometryBakingContext owner, ModelBakery bakery
 			, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelTransform
-			, ItemOverrides overrides, ResourceLocation modelLocation){
+			, ItemOverrides overrides, ResourceLocation modelLocation) {
 
 		TextureAtlasSprite particle = spriteGetter.apply(owner.getMaterial("particle"));
 
@@ -49,12 +51,12 @@ public class WandModel implements IUnbakedGeometry<WandModel> {
 		Transformation transform = modelTransform.getRotation();
 
 		/* Vanillad BakedItemModel but with custom MealItemOverrideList, used in store data, it'll display nothing */
-		return new WandBakedModel(this.baseMaterial, this.typedTexturesList, spriteGetter, particle, transformMap, transform, owner.useBlockLight());
+		return new WandBakedModel(this.baseMaterial, this.typedTexturesList, spriteGetter, particle, transformMap, transform, owner.useBlockLight(), defaultWandTint);
 	}
 
 	public Collection<Material> getMaterials(IGeometryBakingContext owner
 			, Function<ResourceLocation, UnbakedModel> modelGetter
-			, Set<Pair<String, String>> missingTextureErrors){
+			, Set<Pair<String, String>> missingTextureErrors) {
 
 		return this.typedTexturesList.stream().map(
 				typedTexture -> typedTexture.getTextures()
@@ -65,11 +67,9 @@ public class WandModel implements IUnbakedGeometry<WandModel> {
 		).collect(Collectors.toList());
 	}
 
-	public static ImmutableMap<ItemTransforms.TransformType, ItemTransform> getTransforms(IGeometryBakingContext owner, ModelState state)
-	{
+	public static ImmutableMap<ItemTransforms.TransformType, ItemTransform> getTransforms(IGeometryBakingContext owner, ModelState state) {
 		EnumMap<ItemTransforms.TransformType, ItemTransform> map = new EnumMap<>(ItemTransforms.TransformType.class);
-		for(ItemTransforms.TransformType type : ItemTransforms.TransformType.values())
-		{
+		for (ItemTransforms.TransformType type : ItemTransforms.TransformType.values()) {
 			ItemTransform tr = owner.getTransforms().getTransform(type);
 			map.put(type, tr);
 		}

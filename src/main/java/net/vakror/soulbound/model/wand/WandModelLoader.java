@@ -32,11 +32,13 @@ public enum WandModelLoader implements IGeometryLoader<WandModel> {
 	public WandModel read(JsonObject modelContents, JsonDeserializationContext deserializationContext) {
 		List<TypedTextures> typedTexturesList = new ArrayList<>();
 		ResourceLocation wandLocation = new ResourceLocation("");
+		int defaultTint = 0;
 
 		if (modelContents.has("wand")) {
 			JsonObject wandJsonObject = modelContents.getAsJsonObject("wand");
 			wandLocation = new ResourceLocation(wandJsonObject.get("wand").getAsString());
 			WandModelLoader.textures.add(wandLocation);
+			defaultTint = wandJsonObject.get("default_tint") == null ? 0: wandJsonObject.get("default_tint").getAsInt();
 
 			TypedTextures typedTextures = new TypedTextures(wandJsonObject);
 			typedTexturesList.add(typedTextures);
@@ -46,7 +48,7 @@ public enum WandModelLoader implements IGeometryLoader<WandModel> {
 			}
 		}
 
-		return new WandModel(wandLocation, ImmutableList.copyOf(typedTexturesList));
+		return new WandModel(wandLocation, ImmutableList.copyOf(typedTexturesList), defaultTint);
 	}
 
 	public static class TypedTextures {

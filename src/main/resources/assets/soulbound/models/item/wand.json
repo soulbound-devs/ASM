@@ -5,6 +5,7 @@
     "particle": "soulbound:item/wands/ancient_oak_wand"
   },
   "wand": {
+    "default_tint": 44634,
     "wand": "soulbound:item/wands/ancient_oak_wand"
   }
 }

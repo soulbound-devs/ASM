@@ -50,7 +50,8 @@ public class WandBakedModel extends BakedItemModel {
 			, ImmutableList<WandModelLoader.TypedTextures> materials
 			, Function<Material, TextureAtlasSprite> spriteGetter, TextureAtlasSprite particle
 			, ImmutableMap<ItemTransforms.TransformType, ItemTransform> transformMap
-			, Transformation transformIn, boolean isSideLit) {
+			, Transformation transformIn, boolean isSideLit
+	, int defaultTint) {
 		super(ImmutableList.of(), particle, transformMap, new WandItemOverrideList(materials, spriteGetter), transformIn.isIdentity(), isSideLit);
 
 		this.transform = transformIn;
@@ -59,6 +60,7 @@ public class WandBakedModel extends BakedItemModel {
 		if (!sprite.getName().equals(MissingTextureAtlasSprite.getLocation())) {
 			this.baseSprite = sprite;
 		}
+		this.baseWandColor = defaultTint;
 	}
 
 	private WandBakedModel(WandBakedModel originalModel, List<TextureAtlasSprite> spritesIn) {
@@ -267,6 +269,12 @@ public class WandBakedModel extends BakedItemModel {
 		float redOverride = 0;
 		float greenOverride = 0;
 		float blueOverride = 0;
+
+		if (sprite.equals(this.baseSprite)) {
+			redOverride = (float) FastColor.ARGB32.red(baseWandColor) / 255;
+			greenOverride = (float) FastColor.ARGB32.green(baseWandColor) / 255;
+			blueOverride = (float) FastColor.ARGB32.blue(baseWandColor) / 255;
+		}
 
 		if (colorOverrides.containsKey(new Pair<>(xStart, yStart))) {
 			int color = colorOverrides.get(new Pair<>(xStart, yStart));

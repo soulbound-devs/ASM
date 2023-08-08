@@ -64,7 +64,6 @@ public class WandItemOverrideList extends ItemOverrides {
 				}
 				SealableItem sealableItem = (SealableItem) stack.getItem();
 				finalWandModel.set(finalWandModel.get().setSealPairs(List.of(new Pair<>(wand.getPassiveSeals().size(), sealableItem.tier.getPassiveSlots()), new Pair<>(wand.getAttackSeals().size(), sealableItem.tier.getAttackSlots()), new Pair<>(wand.getAmplifyingSeals().size(), sealableItem.tier.getAmplificationSlots()))));
-				finalWandModel.set(finalWandModel.get().setBaseWandColor(sealableItem.tier.getColor()));
 //				finalWandModel.set(finalWandModel.get().setColorOverrides(wand.getColorOverrides()));
 				finalWandModel.set(finalWandModel.get().setIngredientSprites(sprites));
 			});
