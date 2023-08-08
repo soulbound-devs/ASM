@@ -13,6 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.vakror.soulbound.capability.wand.ItemSealProvider;
 import net.vakror.soulbound.items.custom.SealableItem;
 import net.vakror.soulbound.items.custom.WandItem;
+import net.vakror.soulbound.model.models.WandModels;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class WandItemOverrideList extends ItemOverrides {
 	/* Read NBT data from stack and choose what textures in use and merge them */
 	@Override
 	public BakedModel resolve(@NotNull BakedModel model, ItemStack stack, ClientLevel worldIn, LivingEntity entityIn, int seed) {
-		if (stack.getItem() instanceof WandItem && model instanceof WandBakedModel mealModel) {
+		if (stack.getItem() instanceof WandItem item && model instanceof WandBakedModel mealModel) {
 			AtomicReference<WandBakedModel> finalWandModel = new AtomicReference<>(mealModel);
 			List<TextureAtlasSprite> sprites = new ArrayList<TextureAtlasSprite>();
 
@@ -44,6 +45,11 @@ public class WandItemOverrideList extends ItemOverrides {
 			stack.getCapability(ItemSealProvider.SEAL).ifPresent(wand -> {
 				for (WandModelLoader.TypedTextures typedTextures : mutableTypedTextures) {
 					TextureAtlasSprite sprite = (stack.getTag().contains("customModel") && !stack.getTag().getString("customModel").isBlank()) ? typedTextures.getSprite(stack.getTag().getString("customModel"), this.spriteGetter, true) : typedTextures.getSprite("wand", this.spriteGetter);
+					finalWandModel.set(finalWandModel.get().setBaseWand(sprite));
+					int customDefaultModelColor = (stack.getTag().contains("customModel") && !stack.getTag().getString("customModel").isBlank()) ? (WandModels.COLORS.get(stack.getTag().getString("customModel")) == null ? 0: WandModels.COLORS.get(stack.getTag().getString("customModel"))): 0;
+					if (customDefaultModelColor != 0) {
+						finalWandModel.set(finalWandModel.get().setBaseWandColor(customDefaultModelColor));
+					}
 					mutableTypedTextures.remove(typedTextures);
 					sprites.add(sprite);
 					finalWandModel.set(finalWandModel.get().setIngredientSprites(sprites));
@@ -64,6 +70,9 @@ public class WandItemOverrideList extends ItemOverrides {
 				}
 				SealableItem sealableItem = (SealableItem) stack.getItem();
 				finalWandModel.set(finalWandModel.get().setSealPairs(List.of(new Pair<>(wand.getPassiveSeals().size(), sealableItem.tier.getPassiveSlots()), new Pair<>(wand.getAttackSeals().size(), sealableItem.tier.getAttackSlots()), new Pair<>(wand.getAmplifyingSeals().size(), sealableItem.tier.getAmplificationSlots()))));
+				if (item.getColor(stack) != 0) {
+					finalWandModel.set(finalWandModel.get().setBaseWandColor(item.getColor(stack)));
+				}
 //				finalWandModel.set(finalWandModel.get().setColorOverrides(wand.getColorOverrides()));
 				finalWandModel.set(finalWandModel.get().setIngredientSprites(sprites));
 			});

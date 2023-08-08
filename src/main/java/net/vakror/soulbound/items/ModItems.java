@@ -1,6 +1,7 @@
 package net.vakror.soulbound.items;
 
 import net.minecraft.world.item.BucketItem;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -8,6 +9,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.vakror.soulbound.SoulboundMod;
+import net.vakror.soulbound.items.custom.BarkItem;
 import net.vakror.soulbound.items.custom.SackItem;
 import net.vakror.soulbound.items.custom.WandItem;
 import net.vakror.soulbound.items.custom.seals.SealItem;
@@ -100,6 +102,54 @@ public class ModItems {
 
     public static final RegistryObject<Item> CORRUPTED_BERRIES = ITEMS_REGISTRY.register("corrupted_berries",
            () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.SOULBOUND_TAB).food(ModFoodProperties.CORRUPTED_BERRY)));
+
+    public static final RegistryObject<Item> WHITE_BARK = ITEMS_REGISTRY.register("white_bark",
+           () -> new BarkItem(DyeColor.WHITE, new Item.Properties().tab(ModCreativeModeTabs.SOULBOUND_TAB).food(ModFoodProperties.CORRUPTED_BERRY)));
+
+    public static final RegistryObject<Item> ORANGE_BARK = ITEMS_REGISTRY.register("orange_bark",
+           () -> new BarkItem(DyeColor.ORANGE, new Item.Properties().tab(ModCreativeModeTabs.SOULBOUND_TAB).food(ModFoodProperties.CORRUPTED_BERRY)));
+
+    public static final RegistryObject<Item> MAGENTA_BARK = ITEMS_REGISTRY.register("magenta_bark",
+           () -> new BarkItem(DyeColor.MAGENTA, new Item.Properties().tab(ModCreativeModeTabs.SOULBOUND_TAB).food(ModFoodProperties.CORRUPTED_BERRY)));
+
+    public static final RegistryObject<Item> LIGHT_BLUE_BARK = ITEMS_REGISTRY.register("light_blue_bark",
+           () -> new BarkItem(DyeColor.LIGHT_BLUE, new Item.Properties().tab(ModCreativeModeTabs.SOULBOUND_TAB).food(ModFoodProperties.CORRUPTED_BERRY)));
+
+    public static final RegistryObject<Item> YELLOW_BARK = ITEMS_REGISTRY.register("yellow_bark",
+           () -> new BarkItem(DyeColor.YELLOW, new Item.Properties().tab(ModCreativeModeTabs.SOULBOUND_TAB).food(ModFoodProperties.CORRUPTED_BERRY)));
+
+    public static final RegistryObject<Item> LIME_BARK = ITEMS_REGISTRY.register("lime_bark",
+           () -> new BarkItem(DyeColor.LIME, new Item.Properties().tab(ModCreativeModeTabs.SOULBOUND_TAB).food(ModFoodProperties.CORRUPTED_BERRY)));
+
+    public static final RegistryObject<Item> PINK_BARK = ITEMS_REGISTRY.register("pink_bark",
+           () -> new BarkItem(DyeColor.PINK, new Item.Properties().tab(ModCreativeModeTabs.SOULBOUND_TAB).food(ModFoodProperties.CORRUPTED_BERRY)));
+
+    public static final RegistryObject<Item> GRAY_BARK = ITEMS_REGISTRY.register("gray_bark",
+           () -> new BarkItem(DyeColor.GRAY, new Item.Properties().tab(ModCreativeModeTabs.SOULBOUND_TAB).food(ModFoodProperties.CORRUPTED_BERRY)));
+
+    public static final RegistryObject<Item> LIGHT_GRAY_BARK = ITEMS_REGISTRY.register("light_gray_bark",
+           () -> new BarkItem(DyeColor.LIGHT_GRAY, new Item.Properties().tab(ModCreativeModeTabs.SOULBOUND_TAB).food(ModFoodProperties.CORRUPTED_BERRY)));
+
+    public static final RegistryObject<Item> CYAN_BARK = ITEMS_REGISTRY.register("cyan_bark",
+           () -> new BarkItem(DyeColor.CYAN, new Item.Properties().tab(ModCreativeModeTabs.SOULBOUND_TAB).food(ModFoodProperties.CORRUPTED_BERRY)));
+
+    public static final RegistryObject<Item> PURPLE_BARK = ITEMS_REGISTRY.register("purple_bark",
+           () -> new BarkItem(DyeColor.PURPLE, new Item.Properties().tab(ModCreativeModeTabs.SOULBOUND_TAB).food(ModFoodProperties.CORRUPTED_BERRY)));
+
+    public static final RegistryObject<Item> BLUE_BARK = ITEMS_REGISTRY.register("blue_bark",
+           () -> new BarkItem(DyeColor.BLUE, new Item.Properties().tab(ModCreativeModeTabs.SOULBOUND_TAB).food(ModFoodProperties.CORRUPTED_BERRY)));
+
+    public static final RegistryObject<Item> BROWN_BARK = ITEMS_REGISTRY.register("brown_bark",
+           () -> new BarkItem(DyeColor.BROWN, new Item.Properties().tab(ModCreativeModeTabs.SOULBOUND_TAB).food(ModFoodProperties.CORRUPTED_BERRY)));
+
+    public static final RegistryObject<Item> GREEN_BARK = ITEMS_REGISTRY.register("green_bark",
+           () -> new BarkItem(DyeColor.GREEN, new Item.Properties().tab(ModCreativeModeTabs.SOULBOUND_TAB).food(ModFoodProperties.CORRUPTED_BERRY)));
+
+    public static final RegistryObject<Item> RED_BARK = ITEMS_REGISTRY.register("red_bark",
+           () -> new BarkItem(DyeColor.RED, new Item.Properties().tab(ModCreativeModeTabs.SOULBOUND_TAB).food(ModFoodProperties.CORRUPTED_BERRY)));
+
+    public static final RegistryObject<Item> BLACK_BARK = ITEMS_REGISTRY.register("black_bark",
+           () -> new BarkItem(DyeColor.BLACK, new Item.Properties().tab(ModCreativeModeTabs.SOULBOUND_TAB).food(ModFoodProperties.CORRUPTED_BERRY)));
 
     public static void register(IEventBus eventBus) {
         ITEMS_REGISTRY.register(eventBus);

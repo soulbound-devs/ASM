@@ -60,7 +60,9 @@ public class WandBakedModel extends BakedItemModel {
 		if (!sprite.getName().equals(MissingTextureAtlasSprite.getLocation())) {
 			this.baseSprite = sprite;
 		}
-		this.baseWandColor = defaultTint;
+		if (this.baseWandColor == 0) {
+			this.baseWandColor = defaultTint;
+		}
 	}
 
 	private WandBakedModel(WandBakedModel originalModel, List<TextureAtlasSprite> spritesIn) {
@@ -366,7 +368,14 @@ public class WandBakedModel extends BakedItemModel {
 			}
 		}
 
-		String str = String.join(",", locations);
-		return str;
+		locations.add("BaseColor:" + String.valueOf(baseWandColor));
+		colorOverrides.forEach((coords, color) -> locations.add("colorOverride:" + coords.getFirst() + " | " + coords.getSecond() + color));
+
+		return String.join(", ", locations);
+	}
+
+	public WandBakedModel setBaseWand(TextureAtlasSprite wand) {
+		this.baseSprite = wand;
+		return this;
 	}
 }

@@ -8,10 +8,12 @@ import java.util.Map;
 
 public class WandModels {
     public static Map<String, ResourceLocation> MODELS;
+    public static Map<String, Integer> COLORS;
 
     public static void init() {
         ImmutableMap.Builder<String, ResourceLocation> builder = new ImmutableMap.Builder<>();
         builder.put("ancient_oak", new ResourceLocation(SoulboundMod.MOD_ID, "item/wands/ancient_oak_wand"));
         MODELS = builder.build();
+        COLORS = new ImmutableMap.Builder<String, Integer>().build();
     }
 }

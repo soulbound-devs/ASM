@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
@@ -34,8 +35,7 @@ import net.vakror.soulbound.capability.wand.ItemSealProvider;
 import net.vakror.soulbound.entity.ModEntities;
 import net.vakror.soulbound.entity.client.BroomModel;
 import net.vakror.soulbound.entity.client.BroomRenderer;
-import net.vakror.soulbound.items.custom.ActivatableSealableItem;
-import net.vakror.soulbound.items.custom.SealableItem;
+import net.vakror.soulbound.items.custom.*;
 import net.vakror.soulbound.packets.ModPackets;
 import net.vakror.soulbound.packets.SyncSoulS2CPacket;
 import net.vakror.soulbound.seal.tier.seal.IntegerTiered;
@@ -54,6 +54,15 @@ public class Events {
                 if (!event.getObject().getCapability(PlayerSoulProvider.PLAYER_SOUL).isPresent()) {
                     event.addCapability(new ResourceLocation(SoulboundMod.MOD_ID, "soul_provider"), new PlayerSoulProvider());
                 }
+            }
+        }
+
+        @SubscribeEvent
+        public static void addCustomAnvilRecipes(AnvilUpdateEvent event) {
+            if (event.getLeft().getItem() instanceof WandItem && event.getRight().getItem() instanceof BarkItem) {
+                event.setMaterialCost(1);
+                event.setCost(1);
+                event.setOutput(DyeableWandItem.dyeWand(event.getLeft().copy(), (BarkItem) event.getRight().copy().getItem()));
             }
         }
 

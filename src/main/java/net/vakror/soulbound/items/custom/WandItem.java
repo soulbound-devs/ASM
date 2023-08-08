@@ -30,7 +30,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-public class WandItem extends ActivatableSealableItem {
+public class WandItem extends ActivatableSealableItem implements DyeableWandItem {
 
     public WandItem(Properties properties, ISealableTier tier) {
         super(properties, tier);
