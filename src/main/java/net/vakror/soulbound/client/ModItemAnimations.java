@@ -25,7 +25,8 @@ public class ModItemAnimations {
         @Override
         public HumanoidModel.@Nullable ArmPose getArmPose(LivingEntity entityLiving, InteractionHand hand, ItemStack itemStack) {
             if (itemStack.getItem() instanceof SealableItem) {
-                return WAND_POSE;
+//                return WAND_POSE;
+                return HumanoidModel.ArmPose.ITEM;
             }
             return HumanoidModel.ArmPose.ITEM;
         }

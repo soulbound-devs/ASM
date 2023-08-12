@@ -11,12 +11,12 @@ public class ActiveSealModels {
 
     public static void init() {
         ImmutableMap.Builder<String, ResourceLocation> builder = new ImmutableMap.Builder<>();
-        builder.put("pickaxing", new ResourceLocation(SoulboundMod.MOD_ID, "item/wands/activated/pickaxing"));
-        builder.put("hoeing", new ResourceLocation(SoulboundMod.MOD_ID, "item/wands/activated/pickaxing"));
-        builder.put("shoveling", new ResourceLocation(SoulboundMod.MOD_ID, "item/wands/activated/hoeing"));
-        builder.put("swording", new ResourceLocation(SoulboundMod.MOD_ID, "item/wands/activated/shovelling"));
-        builder.put("axing", new ResourceLocation(SoulboundMod.MOD_ID, "item/wands/activated/swording"));
-        builder.put("scythe", new ResourceLocation(SoulboundMod.MOD_ID, "item/wands/activated/scythe"));
+        builder.put("pickaxing", new ResourceLocation(SoulboundMod.MOD_ID, "models/obj/active_seal/pickaxing/base.obj"));
+        builder.put("hoeing", new ResourceLocation(SoulboundMod.MOD_ID, "models/obj/active_seal/pickaxing/base.obj"));
+        builder.put("shoveling", new ResourceLocation(SoulboundMod.MOD_ID, "models/obj/active_seal/pickaxing/base.obj"));
+        builder.put("swording", new ResourceLocation(SoulboundMod.MOD_ID, "models/obj/active_seal/pickaxing/base.obj"));
+        builder.put("axing", new ResourceLocation(SoulboundMod.MOD_ID, "models/obj/active_seal/pickaxing/base.obj"));
+        builder.put("scythe", new ResourceLocation(SoulboundMod.MOD_ID, "models/obj/active_seal/pickaxing/base.obj"));
         MODELS = builder.build();
     }
 }
