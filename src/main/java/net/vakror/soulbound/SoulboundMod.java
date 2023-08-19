@@ -1,9 +1,11 @@
 package net.vakror.soulbound;
 
 import com.mojang.logging.LogUtils;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.client.event.ModelEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
@@ -137,6 +139,15 @@ public class SoulboundMod {
         public static void entityAttributeEvent(EntityAttributeCreationEvent event) {
             if (ModList.get().isLoaded("hammerspace")) {
                 event.put(ModDungeonEntities.GOBLAGGER.get(), GoblaggerEntity.setAttributes());
+            }
+        }
+
+
+        @SubscribeEvent
+        public static void onTextureStitch(TextureStitchEvent.Pre event) {
+            if (event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
+                event.addSprite(new ResourceLocation(MOD_ID, "item/passive_activated"));
+                event.addSprite(new ResourceLocation(MOD_ID, "item/offensive_activated"));
             }
         }
     }
