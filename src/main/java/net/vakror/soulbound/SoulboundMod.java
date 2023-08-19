@@ -30,6 +30,7 @@ import net.vakror.soulbound.compat.hammerspace.items.ModDungeonItems;
 import net.vakror.soulbound.compat.hammerspace.structure.ModStructures;
 import net.vakror.soulbound.compat.hammerspace.structure.piece.ModDungeonPieces;
 import net.vakror.soulbound.compat.hammerspace.structure.util.DungeonFileLocations;
+import net.vakror.soulbound.compat.hammerspace.structure.util.DungeonProcessorRules;
 import net.vakror.soulbound.compat.hammerspace.structure.util.DungeonSpawnPointUtils;
 import net.vakror.soulbound.entity.ModEntities;
 import net.vakror.soulbound.items.ModItems;
@@ -80,6 +81,7 @@ public class SoulboundMod {
 
 
         if (ModList.get().isLoaded("hammerspace")) {
+            DungeonProcessorRules.init();
             ModDungeonItems.register(modEventBus);
             ModDungeonBlocks.register(modEventBus);
             ModDungeonBlockEntities.register(modEventBus);
