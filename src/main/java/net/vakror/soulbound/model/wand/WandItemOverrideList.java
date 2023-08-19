@@ -93,7 +93,7 @@ public class WandItemOverrideList extends ItemOverrides {
 			}
             if (sealResource != null) {
 				try (ObjTokenizer tokenizer = new ObjTokenizer(sealResource.open())) {
-					ObjModel model = ObjModel.parse(tokenizer, new ObjModel.ModelSettings(wand, false, false, false, false, null));
+					ObjModel model = ObjModel.parse(tokenizer, new ObjModel.ModelSettings(activeSeal, false, false, false, false, null));
 					((AddQuadsInvoker) model).invokeAddQuads(owner, builder, bakery, spriteGetter, modelTransform, modelLocation);
 				}
 			}
