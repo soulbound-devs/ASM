@@ -47,6 +47,10 @@ public enum DungeonType {
         return name;
     }
 
+    public void setRules(List<ProcessorRule> rules) {
+        this.rules = rules;
+    }
+
     public List<ProcessorRule> rules() {
         if (rules == null) {
             DungeonProcessorRules.init();

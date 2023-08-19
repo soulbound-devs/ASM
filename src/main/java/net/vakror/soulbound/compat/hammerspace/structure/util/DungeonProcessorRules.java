@@ -7,6 +7,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.AlwaysTrueTes
 import net.minecraft.world.level.levelgen.structure.templatesystem.ProcessorRule;
 import net.minecraft.world.level.levelgen.structure.templatesystem.RandomBlockMatchTest;
 import net.vakror.soulbound.compat.hammerspace.blocks.ModDungeonBlocks;
+import net.vakror.soulbound.compat.hammerspace.structure.type.DungeonType;
 
 import java.util.List;
 
@@ -86,5 +87,13 @@ public class DungeonProcessorRules {
                 .add(new ProcessorRule(new RandomBlockMatchTest(ModDungeonBlocks.DUNGEON_BORDER.get(), 0.2f), AlwaysTrueTest.INSTANCE, Blocks.END_STONE.defaultBlockState()))
                 .add(new ProcessorRule(new RandomBlockMatchTest(ModDungeonBlocks.DUNGEON_BORDER.get(), 0.2f), AlwaysTrueTest.INSTANCE, Blocks.END_STONE_BRICKS.defaultBlockState()))
                 .add(new ProcessorRule(new RandomBlockMatchTest(ModDungeonBlocks.DUNGEON_BORDER.get(), 1f), AlwaysTrueTest.INSTANCE, Blocks.END_STONE.defaultBlockState())).build();
+
+
+        DungeonType.DARK_CREEPY.setRules(CREEPY_DEEPSLATE);
+        DungeonType.DEEP_BLOOD.setRules(DEEP_BLOOD);
+        DungeonType.OLD_RUINS.setRules(OLD_RUINS);
+        DungeonType.AMETHYST_VOID.setRules(AMETHYST_VOID);
+        DungeonType.GILDED_HOARD.setRules(GILDED_HOARD);
+        DungeonType.ANCIENT_ENDER.setRules(ANCIENT_ENDER);
     }
 }
