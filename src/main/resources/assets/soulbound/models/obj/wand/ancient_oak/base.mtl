@@ -1,4 +1,4 @@
-# Made in Blockbench 4.8.1
-newmtl ancient_oak
-map_Kd soulbound:item/wand/ancient_oak_wand
+# Made in Blockbench 4.7.4
+newmtl wand
+map_Kd soulbound:block/ancient_oak_log
 newmtl none

@@ -53,7 +53,7 @@ public class WandModel implements IUnbakedGeometry<WandModel> {
 		wandOverrides.setBuilder((IModelBuilder.Simple) builder);
 		Resource wand = Minecraft.getInstance().getResourceManager().getResource(this.baseMaterial).orElseThrow();
 		try (ObjTokenizer tokenizer = new ObjTokenizer(wand.open())){
-			ObjModel model = ObjModel.parse(tokenizer, new ObjModel.ModelSettings(this.baseMaterial, false, false, false, false, null));
+			ObjModel model = ObjModel.parse(tokenizer, new ObjModel.ModelSettings(this.baseMaterial, false, true, false, false, null));
 			((AddQuadsInvoker) model).invokeAddQuads(owner, builder, bakery, spriteGetter, modelTransform, modelLocation);
 		} catch (IOException e) {
 			throw new IllegalStateException(e);
