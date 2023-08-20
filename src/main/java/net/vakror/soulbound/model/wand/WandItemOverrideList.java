@@ -79,10 +79,10 @@ public class WandItemOverrideList extends ItemOverrides {
 	private BakedModel getBakedModel(ResourceLocation wand, @Nullable ResourceLocation activeSeal) {
 		builder = (IModelBuilder.Simple) IModelBuilder.of(owner.useAmbientOcclusion(), owner.useBlockLight(), owner.isGui3d(),
 				owner.getTransforms(), this, particle, renderTypes);
-		Resource wandResource = Minecraft.getInstance().getResourceManager().getResource(wand).orElseThrow();
+		Resource wandResource = Minecraft.getInstance().getResourceManager().getResource(wand).orElseThrow(() -> new IllegalStateException("Wand Model File Not found: " + activeSeal));
 		Resource sealResource = null;
 		if (activeSeal != null) {
-			sealResource = Minecraft.getInstance().getResourceManager().getResource(activeSeal).orElseThrow();
+			sealResource = Minecraft.getInstance().getResourceManager().getResource(activeSeal).orElseThrow(() -> new IllegalStateException("Active Seal Model File Not found: " + activeSeal));
 		}
 		try {
             if (!wand.equals(MissingTextureAtlasSprite.getLocation())) {
@@ -93,7 +93,7 @@ public class WandItemOverrideList extends ItemOverrides {
 			}
             if (sealResource != null) {
 				try (ObjTokenizer tokenizer = new ObjTokenizer(sealResource.open())) {
-					ObjModel model = ObjModel.parse(tokenizer, new ObjModel.ModelSettings(activeSeal, false, false, false, false, null));
+					ObjModel model = ObjModel.parse(tokenizer, new ObjModel.ModelSettings(activeSeal, false, false, false, true, null));
 					((AddQuadsInvoker) model).invokeAddQuads(owner, builder, bakery, spriteGetter, modelTransform, modelLocation);
 				}
 			}
