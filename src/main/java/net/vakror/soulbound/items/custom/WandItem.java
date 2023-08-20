@@ -54,6 +54,7 @@ public class WandItem extends ActivatableSealableItem {
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         consumer.accept(ModItemAnimations.wandAnimation);
+
         super.initializeClient(consumer);
     }
 

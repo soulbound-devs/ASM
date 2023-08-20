@@ -8,10 +8,7 @@ import net.vakror.soulbound.seal.SealType;
 import net.vakror.soulbound.seal.tier.seal.Tiered;
 import net.vakror.soulbound.util.BetterArrayList;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class ItemSeal {
     private List<ISeal> passiveSeals = null;
@@ -19,6 +16,8 @@ public class ItemSeal {
     private List<ISeal> amplifyingSeals = null;
     private int selectedSealSlot = 1;
     private boolean selectedIsAttack = false;
+    String customWandModel = "";
+    private Map<String, String> activeSealModels = new HashMap<>();
 
     public boolean isSelectedIsAttack() {
         return selectedIsAttack;
@@ -223,9 +222,32 @@ public class ItemSeal {
             if (activeSeal != null) {
                 nbt.putString("active_seal", activeSeal.getId());
             }
+            nbt.putString("customModel", customWandModel == null ? "": customWandModel);
             nbt.putInt("active_slot", selectedSealSlot);
             nbt.putBoolean("active_slot_attack", selectedIsAttack);
+            saveCustomActiveSealModels(nbt, activeSealModels == null? new HashMap<>(): activeSealModels);
         }
+    }
+
+    public void saveCustomActiveSealModels(CompoundTag nbt, Map<String, String> activeSealModels) {
+        CompoundTag modelsTag = new CompoundTag();
+        activeSealModels.forEach((seal, name) -> {
+            if (!modelsTag.contains(seal)) {
+                modelsTag.putString(seal, name);
+            }
+        });
+        nbt.put("activeModels", modelsTag);
+    }
+
+    public Map<String, String> deserializeCustomActiveSealModels(CompoundTag nbt) {
+        Map<String, String> models = new HashMap<>();
+        if (nbt.contains("activeModels")) {
+            CompoundTag modelsTag = nbt.getCompound("activeModels");
+            for (String key : modelsTag.getAllKeys()) {
+               models.put(key, modelsTag.getString(key));
+            }
+        }
+        return models;
     }
 
     public void loadNBTData(CompoundTag nbt) {
@@ -254,10 +276,52 @@ public class ItemSeal {
         activeSeal = SealRegistry.allSeals.get(nbt.getString("active_seal"));
         selectedSealSlot = nbt.getInt("active_slot");
         selectedIsAttack = nbt.getBoolean("active_slot_attack");
+        customWandModel = nbt.getString("customModel");
+        activeSealModels = deserializeCustomActiveSealModels(nbt);
     }
 
     public boolean hasSeal() {
         createIfNull();
         return !passiveSeals.isEmpty() || !attackSeals.isEmpty() || !amplifyingSeals.isEmpty();
+    }
+
+    public String getCustomWandModel() {
+        return customWandModel;
+    }
+
+    public void setCustomWandModel(String customWandModel, ItemStack stack) {
+        this.customWandModel = customWandModel;
+        CompoundTag tag = stack.getTag().copy();
+        tag.putString("customModel", hasCustomWandModel() ? customWandModel: "");
+        stack.setTag(tag);
+    }
+
+    public boolean hasCustomWandModel() {
+        return customWandModel != null && !customWandModel.isBlank();
+    }
+
+    public boolean hasCustomActiveSealModel(String activeSeal) {
+        return activeSealModels != null && activeSealModels.containsKey(activeSeal);
+    }
+
+    public Map<String, String> getActiveSealModels() {
+        return activeSealModels;
+    }
+
+    public void setActiveSealModels(Map<String, String> activeSealModels, ItemStack stack) {
+        this.activeSealModels = activeSealModels;
+        CompoundTag tag = stack.getTag().copy();
+        saveCustomActiveSealModels(tag, activeSealModels == null ? new HashMap<>(): activeSealModels);
+        stack.setTag(tag);
+    }
+
+    public void addActiveSealModel(String seal, String model, ItemStack stack) {
+        if (activeSealModels == null) {
+            activeSealModels = new HashMap<>();
+        }
+        this.activeSealModels.put(seal, model);
+        CompoundTag tag = stack.getTag().copy();
+        saveCustomActiveSealModels(tag, activeSealModels == null ? new HashMap<>(): activeSealModels);
+        stack.setTag(tag);
     }
 }

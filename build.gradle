@@ -175,6 +175,7 @@ dependencies {
 
     implementation fg.deobf("curse.maven:cataclysm-551586:4668865")
     implementation fg.deobf("curse.maven:citadel-331936:4556677")
+    implementation fg.deobf("curse.maven:atlasviewer-633577:4420382")
     compileOnly fg.deobf(supportDependencies.patchouliApi)
     runtimeOnly fg.deobf(supportDependencies.patchouli)
     compileOnly fg.deobf(supportDependencies.jeiApi)
