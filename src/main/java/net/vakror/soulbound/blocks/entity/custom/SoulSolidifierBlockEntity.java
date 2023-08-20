@@ -176,6 +176,10 @@ public class SoulSolidifierBlockEntity extends BlockEntity implements MenuProvid
     }
 
     public static void tick(Level pLevel, BlockPos pPos, BlockState pState, SoulSolidifierBlockEntity blockEntity) {
+        for (Direction direction : Direction.values()) {
+            blockEntity.pullFluidFromInv(pLevel, pPos.relative(direction), direction);
+        }
+
         if (!pLevel.isClientSide && hasNotReachedStackLimit(blockEntity) && (blockEntity.itemHandler.getStackInSlot(1).isEmpty() || blockEntity.fluidSameAsSoulItem(blockEntity.itemHandler.getStackInSlot(1).getItem())) && hasEnoughFluid(blockEntity) && hasTungsten(blockEntity) && (blockEntity.FLUID_TANK.getFluid().getFluid() == ModSoul.SOURCE_DARK_SOUL.get() || blockEntity.FLUID_TANK.getFluid().getFluid() == ModSoul.SOURCE_SOUL.get())) {
             blockEntity.progress++;
             setChanged(pLevel, pPos, pState);
@@ -193,6 +197,25 @@ public class SoulSolidifierBlockEntity extends BlockEntity implements MenuProvid
         }
         if (hasFluidItemInDrainSlot(blockEntity)) {
             transferFluidTankToItem(blockEntity);
+        }
+    }
+
+    public void pullFluidFromInv(Level level, BlockPos pos, Direction direction) {
+        if (level.getBlockEntity(pos) != null) {
+            level.getBlockEntity(pos).getCapability(ForgeCapabilities.FLUID_HANDLER, direction).ifPresent((iFluidHandler -> {
+                for (int i = 0; i < iFluidHandler.getTanks(); i++) {
+                    if (iFluidHandler.getFluidInTank(i).getFluid().equals(ModSoul.SOURCE_SOUL.get()) || iFluidHandler.getFluidInTank(i).getFluid().equals(ModSoul.SOURCE_DARK_SOUL.get())) {
+                        int amountToDrain = Math.min(1000, iFluidHandler.getFluidInTank(i).getAmount());
+                        if (amountToDrain > FLUID_TANK.getSpace()) {
+                            amountToDrain = FLUID_TANK.getSpace();
+                        }
+                        if (amountToDrain > 0 && FLUID_TANK.isFluidValid(iFluidHandler.getFluidInTank(i))) {
+                            FLUID_TANK.fill(new FluidStack(iFluidHandler.getFluidInTank(i), amountToDrain), IFluidHandler.FluidAction.EXECUTE);
+                            iFluidHandler.drain(amountToDrain, IFluidHandler.FluidAction.EXECUTE);
+                        }
+                    }
+                }
+            }));
         }
     }
 
