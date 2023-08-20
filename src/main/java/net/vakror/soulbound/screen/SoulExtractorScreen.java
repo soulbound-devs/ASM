@@ -8,6 +8,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.vakror.soulbound.SoulboundMod;
 import net.vakror.soulbound.client.renderer.FluidTankRenderer;
 
@@ -29,8 +30,8 @@ public class SoulExtractorScreen extends AbstractContainerScreen<SoulExtractorMe
     }
 
     private void assignFluidRenderer() {
-        soulRenderer = new FluidTankRenderer(menu.blockEntity.SOUL_TANK.getCapacity(), true, 16, 46);
-        darkSoulRenderer = new FluidTankRenderer(menu.blockEntity.DARK_SOUL_TANK.getCapacity(), true, 16, 46);
+        soulRenderer = new FluidTankRenderer(((FluidTank) menu.blockEntity.SOUL_HANDLER.orElse(new FluidTank(0))).getCapacity(), true, 16, 46);
+        darkSoulRenderer = new FluidTankRenderer(((FluidTank) menu.blockEntity.DARK_SOUL_HANDLER.orElse(new FluidTank(0))).getCapacity(), true, 16, 46);
     }
 
     @Override

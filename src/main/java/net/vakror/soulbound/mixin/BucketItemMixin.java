@@ -6,6 +6,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.vakror.soulbound.blocks.entity.custom.SoulExtractorBlockEntity;
 import net.vakror.soulbound.items.ModItems;
 import org.spongepowered.asm.mixin.Mixin;
@@ -23,12 +24,12 @@ public abstract class BucketItemMixin {
     @Inject(method = "useOn", at = @At("HEAD"))
     public void getContentsOfSoulExtractor(UseOnContext context, CallbackInfoReturnable<InteractionResult> cir) {
         if (asItem().equals(Items.BUCKET) && !context.getLevel().isClientSide && context.getLevel().getBlockEntity(context.getClickedPos()) instanceof SoulExtractorBlockEntity entity) {
-            if (Objects.requireNonNull(context.getPlayer()).isCrouching() && entity.DARK_SOUL_TANK.getFluid().getAmount() >= 1000) {
+            if (Objects.requireNonNull(context.getPlayer()).isCrouching() && ((FluidTank) entity.DARK_SOUL_HANDLER.orElse(new FluidTank(0))).getFluid().getAmount() >= 1000) {
                 context.getPlayer().addItem(new ItemStack(ModItems.DARK_SOUL_BUCKET.get(), 1));
-                entity.DARK_SOUL_TANK.drain(1000, IFluidHandler.FluidAction.EXECUTE);
-            } else if (!context.getPlayer().isCrouching() && entity.SOUL_TANK.getFluid().getAmount() >= 1000) {
+                entity.DARK_SOUL_HANDLER.orElse(new FluidTank(0)).drain(1000, IFluidHandler.FluidAction.EXECUTE);
+            } else if (!context.getPlayer().isCrouching() && ((FluidTank) entity.SOUL_HANDLER.orElse(new FluidTank(0))).getFluid().getAmount() >= 1000) {
                 context.getPlayer().addItem(new ItemStack(ModItems.SOUL_BUCKET.get(), 1));
-                entity.SOUL_TANK.drain(1000, IFluidHandler.FluidAction.EXECUTE);
+                entity.SOUL_HANDLER.orElse(new FluidTank(0)).drain(1000, IFluidHandler.FluidAction.EXECUTE);
             }
         }
     }

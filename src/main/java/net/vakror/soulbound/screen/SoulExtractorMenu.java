@@ -8,6 +8,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.vakror.soulbound.SoulboundMod;
 import net.vakror.soulbound.blocks.ModBlocks;
 import net.vakror.soulbound.blocks.entity.custom.SoulExtractorBlockEntity;
@@ -36,8 +37,8 @@ public class SoulExtractorMenu extends AbstractContainerMenu {
         this.blockEntity = ((SoulExtractorBlockEntity) entity);
         this.level = inv.player.level;
         this.data = data;
-        this.soulStack = blockEntity.SOUL_TANK.getFluid();
-        this.darkSoulStack = blockEntity.DARK_SOUL_TANK.getFluid();
+        this.soulStack = ((FluidTank) blockEntity.SOUL_HANDLER.orElse(new FluidTank(0))).getFluid();
+        this.darkSoulStack = ((FluidTank) blockEntity.DARK_SOUL_HANDLER.orElse(new FluidTank(0))).getFluid();
 
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
