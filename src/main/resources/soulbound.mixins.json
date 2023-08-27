@@ -13,6 +13,8 @@
     "LivingEntityMixin",
     "LocateCommandMixin",
     "MappedRegistryMixin",
+    "ModelMeshMixin",
+    "ObjModelMixin",
     "PlayerInventoryMixin",
     "SerializationFixin",
     "SimpleIModelBuilderMixin",
@@ -22,6 +24,7 @@
     "LocalPlayerMixin",
     "MinecraftClientAccessor",
     "RenderItemCountFixin",
+    "SimpleBakedModelMixin",
     "SimpleModelBuilderMixin"
   ],
   "minVersion": "0.8"

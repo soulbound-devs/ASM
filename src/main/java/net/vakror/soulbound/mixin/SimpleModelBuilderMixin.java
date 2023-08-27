@@ -27,6 +27,8 @@ public interface SimpleModelBuilderMixin {
     public boolean isIsGui3d();
     @Accessor
     public ItemTransforms getTransforms();
+    @Accessor
+    public List<BakedQuad> getUnculledFaces();
 
     @Accessor
     @Mutable

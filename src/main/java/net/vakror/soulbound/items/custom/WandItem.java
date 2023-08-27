@@ -2,6 +2,8 @@ package net.vakror.soulbound.items.custom;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -18,6 +20,7 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.TierSortingRegistry;
 import net.vakror.soulbound.capability.wand.ItemSealProvider;
 import net.vakror.soulbound.client.ModItemAnimations;
+import net.vakror.soulbound.model.WandBewlr;
 import net.vakror.soulbound.seal.ISeal;
 import net.vakror.soulbound.seal.function.amplify.damage.DamageAmplifyFunction;
 import net.vakror.soulbound.seal.seals.activatable.tool.ToolSeal;
@@ -54,7 +57,15 @@ public class WandItem extends ActivatableSealableItem {
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         consumer.accept(ModItemAnimations.wandAnimation);
-
+        consumer.accept(new IClientItemExtensions() {
+            @Override
+            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+                if (WandBewlr.INSTANCE == null) {
+                    WandBewlr.INSTANCE = new WandBewlr(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
+                }
+                return WandBewlr.INSTANCE;
+            }
+        });
         super.initializeClient(consumer);
     }
 
@@ -77,6 +88,7 @@ public class WandItem extends ActivatableSealableItem {
     public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected) {
         super.inventoryTick(pStack, pLevel, pEntity, pSlotId, pIsSelected);
     }
+
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
         if (slot == EquipmentSlot.MAINHAND) {

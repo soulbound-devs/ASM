@@ -18,3 +18,4 @@ public interface AddQuadsInvoker {
     @Invoker("addQuads")
     public void invokeAddQuads(IGeometryBakingContext owner, IModelBuilder<?> modelBuilder, ModelBakery bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelTransform, ResourceLocation modelLocation);
 }
+

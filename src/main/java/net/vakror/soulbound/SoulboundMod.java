@@ -146,6 +146,7 @@ public class SoulboundMod {
             if (event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
                 event.addSprite(new ResourceLocation(MOD_ID, "item/passive_activated"));
                 event.addSprite(new ResourceLocation(MOD_ID, "item/offensive_activated"));
+                event.addSprite(new ResourceLocation(MOD_ID, "item/white_outline"));
             }
         }
     }

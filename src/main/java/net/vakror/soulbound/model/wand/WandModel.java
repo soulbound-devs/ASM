@@ -18,6 +18,7 @@ import net.minecraftforge.client.model.geometry.IUnbakedGeometry;
 import net.minecraftforge.client.model.obj.ObjModel;
 import net.minecraftforge.client.model.obj.ObjTokenizer;
 import net.vakror.soulbound.mixin.AddQuadsInvoker;
+import net.vakror.soulbound.model.WandBakedModel;
 import net.vakror.soulbound.model.model.CompositeModelState;
 
 import java.io.IOException;
@@ -53,14 +54,14 @@ public class WandModel implements IUnbakedGeometry<WandModel> {
 		wandOverrides.setBuilder((IModelBuilder.Simple) builder);
 		Resource wand = Minecraft.getInstance().getResourceManager().getResource(this.baseMaterial).orElseThrow();
 		try (ObjTokenizer tokenizer = new ObjTokenizer(wand.open())){
-			ObjModel model = ObjModel.parse(tokenizer, new ObjModel.ModelSettings(this.baseMaterial, false, true, false, false, null));
+			ObjModel model = ObjModel.parse(tokenizer, new ObjModel.ModelSettings(this.baseMaterial, true, true, false, false, null));
 			((AddQuadsInvoker) model).invokeAddQuads(owner, builder, bakery, spriteGetter, modelTransform, modelLocation);
 		} catch (IOException e) {
 			throw new IllegalStateException(e);
 		}
 
 		/* Vanillad BakedItemModel but with custom MealItemOverrideList, used in store data, it'll display nothing */
-		return builder.build();
+		return new WandBakedModel((SimpleBakedModel) builder.build(), renderTypes, owner.getRootTransform());
 	}
 
 	@Override
