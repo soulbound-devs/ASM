@@ -17,7 +17,6 @@ import java.util.UUID;
 public class SackMenu extends AbstractContainerMenu {
 
     private final SackInventory inv;
-    private final Inventory playerInv;
     private final int width;
     public final NonNullList<Slot> playerInvSlots = NonNullList.create();
     private final int height;
@@ -32,7 +31,6 @@ public class SackMenu extends AbstractContainerMenu {
     public SackMenu(int syncId, Inventory playerInv, int width, int height, int stackLimit, UUID uuid, ItemStack stack) {
         super(ModMenuTypes.SACK_MENU.get(), syncId);
         this.inv = new SackInventory(stack, width * height, stackLimit);
-        this.playerInv = playerInv;
         this.width = width;
         this.height = height;
         this.stackLimit = stackLimit;
