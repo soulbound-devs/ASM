@@ -28,7 +28,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.core.manager.SingletonAnimationFactory;
 
 public class GoblaggerEntity extends DungeonMonster implements IAnimatable {
-    private AnimationFactory factory = new SingletonAnimationFactory(this);
+    private final AnimationFactory factory = new SingletonAnimationFactory(this);
 
     public GoblaggerEntity(EntityType<GoblaggerEntity> pEntityType, Level pLevel) {
         super(ModDungeonEntities.GOBLAGGER.get(), pLevel);
