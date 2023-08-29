@@ -5,5 +5,5 @@ public enum ArithmeticActionType {
     SUBTRACT,
     MULTIPLY,
     DIVIDE,
-    POW;
+    POW
 }
