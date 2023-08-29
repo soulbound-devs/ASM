@@ -36,7 +36,7 @@ import java.util.function.Function;
 import static net.minecraft.client.renderer.texture.TextureAtlas.LOCATION_BLOCKS;
 
 public class WandItemOverrideList extends ItemOverrides {
-	private Function<Material, TextureAtlasSprite> spriteGetter;
+	private final Function<Material, TextureAtlasSprite> spriteGetter;
 	private final IGeometryBakingContext owner;
 	private final ModelBakery bakery;
 	private final ModelState modelTransform;
