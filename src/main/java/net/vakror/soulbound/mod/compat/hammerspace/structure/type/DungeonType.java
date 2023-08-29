@@ -21,10 +21,10 @@ public enum DungeonType {
     GILDED_HOARD("gilded_hoard", 5, DungeonProcessorRules.GILDED_HOARD, ModDungeonPieces.DEFAULT_DUNGEON_PIECE.get()),
     ANCIENT_ENDER("ancient_ender", 6, DungeonProcessorRules.ANCIENT_ENDER, ModDungeonPieces.DEFAULT_DUNGEON_PIECE.get());
 
-    String name;
-    int index;
+    final String name;
+    final int index;
     List<ProcessorRule> rules;
-    StructurePieceType structurePiece;
+    final StructurePieceType structurePiece;
 
     private DungeonType(String name, int index, List<ProcessorRule> rules, StructurePieceType structurePiece) {
         this.name = name;
