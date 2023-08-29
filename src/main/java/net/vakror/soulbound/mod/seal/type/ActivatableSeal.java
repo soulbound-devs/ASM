@@ -13,7 +13,7 @@ import java.util.List;
 
 public abstract class ActivatableSeal extends BaseSeal implements AttributeModifiying {
 
-    public float swingSpeed;
+    public final float swingSpeed;
 
     public ActivatableSeal(String id, float swingSpeed) {
         super(id, true);
