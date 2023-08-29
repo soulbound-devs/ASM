@@ -16,7 +16,7 @@ import java.util.function.Function;
 
 public class DungeonTeleporter implements ITeleporter {
     protected BlockPos pos;
-    protected BaseEntityBlock block;
+    protected final BaseEntityBlock block;
     protected ServerLevel level;
 
     public DungeonTeleporter(BlockPos pos, BaseEntityBlock block) {
