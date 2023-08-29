@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class DungeonProvider implements ICapabilitySerializable<CompoundTag> {
-    public static Capability<Dungeon> DUNGEON = CapabilityManager.get(new CapabilityToken<Dungeon>() { });
+    public static final Capability<Dungeon> DUNGEON = CapabilityManager.get(new CapabilityToken<Dungeon>() { });
 
     private Dungeon dungeon = null;
     private final LazyOptional<Dungeon> optional = LazyOptional.of(this::createSeal);
