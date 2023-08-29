@@ -1,0 +1,18 @@
+package net.vakror.soulbound.mod.model.models;
+
+import net.minecraft.resources.ResourceLocation;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class ActiveSealModels {
+    private static final Map<String, ResourceLocation> MODELS = new HashMap<>();
+
+    public static void registerModel(String name, ResourceLocation location) {
+        MODELS.put(name, location);
+    }
+
+    public static Map<String, ResourceLocation> getModels() {
+        return MODELS;
+    }
+}
