@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class ItemSealProvider implements ICapabilitySerializable<CompoundTag> {
-    public static Capability<ItemSeal> SEAL = CapabilityManager.get(new CapabilityToken<ItemSeal>() { });
+    public static final Capability<ItemSeal> SEAL = CapabilityManager.get(new CapabilityToken<ItemSeal>() { });
 
     private ItemSeal itemSeal = null;
     private final LazyOptional<ItemSeal> optional = LazyOptional.of(this::createSeal);
