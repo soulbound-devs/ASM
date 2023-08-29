@@ -5,10 +5,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FastColor;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import net.vakror.soulbound.mod.SoulboundMod;
 import net.vakror.soulbound.mod.client.ClientSoulData;
-import net.vakror.soulbound.mod.util.ColorUtil;
 
 public class SoulHudOverlay {
     private static final ResourceLocation SOUL_BAR = new ResourceLocation(SoulboundMod.MOD_ID,
@@ -46,8 +46,8 @@ public class SoulHudOverlay {
 
             int soulWidth = Minecraft.getInstance().font.width((int) soul + "/" + (int) maxSoul);
             int darkSoulWidth = Minecraft.getInstance().font.width((int) darkSoul + "/" + (int) maxDarkSoul);
-            GuiComponent.drawString(matrices, Minecraft.getInstance().font, (int) soul + "/" + (int) maxSoul, x - 145 - soulWidth, y - 80, ColorUtil.toColorInt(255, 255, 255, 255));
-            GuiComponent.drawString(matrices, Minecraft.getInstance().font, (int) darkSoul + "/" + (int) maxDarkSoul, x - 98 - darkSoulWidth, y - 80, ColorUtil.toColorInt(255, 255, 255, 255));
+            GuiComponent.drawString(matrices, Minecraft.getInstance().font, (int) soul + "/" + (int) maxSoul, x - 145 - soulWidth, y - 80, FastColor.ARGB32.color(255, 255, 255, 255));
+            GuiComponent.drawString(matrices, Minecraft.getInstance().font, (int) darkSoul + "/" + (int) maxDarkSoul, x - 98 - darkSoulWidth, y - 80, FastColor.ARGB32.color(255, 255, 255, 255));
 
             RenderSystem.setShaderTexture(0, DARK_SOUL_BAR);
             GuiComponent.blit(matrices, x - 130, y - 70 + (56 - adjustedDarkSoulHeight), 0, 0, 28, darkSoulHeight,
