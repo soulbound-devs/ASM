@@ -64,10 +64,8 @@ public enum DungeonType {
 
     public static DungeonType getTypeFromIndex(int index) {
         DungeonType[] var1 = values();
-        int var2 = var1.length;
 
-        for(int var3 = 0; var3 < var2; ++var3) {
-            DungeonType theme = var1[var3];
+        for (DungeonType theme : var1) {
             if (theme.getIndex() == index) {
                 return theme;
             }
