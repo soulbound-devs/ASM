@@ -21,7 +21,7 @@ public class ModItemAnimations {
             model.leftArm.yRot = model.head.yRot + 0.2617994F;
         }
     });
-    public static IClientItemExtensions wandAnimation = new IClientItemExtensions() {
+    public static final IClientItemExtensions wandAnimation = new IClientItemExtensions() {
         @Override
         public HumanoidModel.@Nullable ArmPose getArmPose(LivingEntity entityLiving, InteractionHand hand, ItemStack itemStack) {
             if (itemStack.getItem() instanceof SealableItem) {
