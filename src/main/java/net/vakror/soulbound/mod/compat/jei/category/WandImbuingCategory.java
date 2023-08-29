@@ -25,7 +25,6 @@ public class WandImbuingCategory implements IRecipeCategory<IWandImbuingRecipe> 
     private final IGuiHelper helper;
     private final IDrawable background;
     private final IDrawableStatic staticArrow;
-    private final IDrawableStatic staticSoul;
 
     private final IDrawableAnimated arrow;
     private final IDrawableAnimated soul;
@@ -42,7 +41,7 @@ public class WandImbuingCategory implements IRecipeCategory<IWandImbuingRecipe> 
         staticArrow = helper.createDrawable(IMBUER_TEXTURE, 177, 38, 18, 8);
         arrow = helper.createAnimatedDrawable(staticArrow, 108, IDrawableAnimated.StartDirection.LEFT, false);
 
-        staticSoul = helper.createDrawable(IMBUER_TEXTURE, 177, 0, 13, 16);
+        IDrawableStatic staticSoul = helper.createDrawable(IMBUER_TEXTURE, 177, 0, 13, 16);
         soul = helper.createAnimatedDrawable(staticSoul, 200, IDrawableAnimated.StartDirection.TOP, true);
     }
     @Override
