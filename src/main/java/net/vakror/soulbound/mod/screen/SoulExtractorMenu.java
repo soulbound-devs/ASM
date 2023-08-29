@@ -20,7 +20,6 @@ import java.util.List;
 public class SoulExtractorMenu extends AbstractContainerMenu {
     public final SoulExtractorBlockEntity blockEntity;
     private final Level level;
-    private final ContainerData data;
     private FluidStack soulStack;
     private FluidStack darkSoulStack;
 
@@ -36,7 +35,6 @@ public class SoulExtractorMenu extends AbstractContainerMenu {
         checkContainerSize(inv, 4);
         this.blockEntity = ((SoulExtractorBlockEntity) entity);
         this.level = inv.player.level;
-        this.data = data;
         this.soulStack = ((FluidTank) blockEntity.SOUL_HANDLER.orElse(new FluidTank(0))).getFluid();
         this.darkSoulStack = ((FluidTank) blockEntity.DARK_SOUL_HANDLER.orElse(new FluidTank(0))).getFluid();
 
