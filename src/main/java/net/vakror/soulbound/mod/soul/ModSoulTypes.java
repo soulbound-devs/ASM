@@ -12,12 +12,12 @@ import net.minecraftforge.registries.RegistryObject;
 import net.vakror.soulbound.mod.SoulboundMod;
 
 public class ModSoulTypes {
-    public static ResourceLocation SOUL_STILL = new ResourceLocation(SoulboundMod.MOD_ID, "block/soul_still");
-    public static ResourceLocation SOUL_FLOWING = new ResourceLocation(SoulboundMod.MOD_ID, "block/soul_flowing");
-    public static ResourceLocation DARK_SOUL_STILL = new ResourceLocation(SoulboundMod.MOD_ID, "block/dark_soul_still");
-    public static ResourceLocation DARK_SOUL_FLOWING = new ResourceLocation(SoulboundMod.MOD_ID, "block/dark_soul_flowing");
-    public static ResourceLocation SOUL_OVERLAY = new ResourceLocation(SoulboundMod.MOD_ID, "gui/in_soul_overlay");
-    public static ResourceLocation DARK_SOUL_OVERLAY = new ResourceLocation(SoulboundMod.MOD_ID, "gui/in_dark_soul_overlay");
+    public static final ResourceLocation SOUL_STILL = new ResourceLocation(SoulboundMod.MOD_ID, "block/soul_still");
+    public static final ResourceLocation SOUL_FLOWING = new ResourceLocation(SoulboundMod.MOD_ID, "block/soul_flowing");
+    public static final ResourceLocation DARK_SOUL_STILL = new ResourceLocation(SoulboundMod.MOD_ID, "block/dark_soul_still");
+    public static final ResourceLocation DARK_SOUL_FLOWING = new ResourceLocation(SoulboundMod.MOD_ID, "block/dark_soul_flowing");
+    public static final ResourceLocation SOUL_OVERLAY = new ResourceLocation(SoulboundMod.MOD_ID, "gui/in_soul_overlay");
+    public static final ResourceLocation DARK_SOUL_OVERLAY = new ResourceLocation(SoulboundMod.MOD_ID, "gui/in_dark_soul_overlay");
 
     public static final DeferredRegister<FluidType> SOUL_TYPES = DeferredRegister.create(ForgeRegistries.Keys.FLUID_TYPES, SoulboundMod.MOD_ID);
 
