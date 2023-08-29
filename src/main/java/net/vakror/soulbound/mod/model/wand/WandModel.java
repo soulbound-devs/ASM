@@ -47,7 +47,7 @@ public class WandModel implements IUnbakedGeometry<WandModel> {
 
 		var renderTypeHint = owner.getRenderTypeHint();
 		var renderTypes = renderTypeHint != null ? owner.getRenderType(renderTypeHint) : RenderTypeGroup.EMPTY;
-		WandItemOverrideList wandOverrides = new WandItemOverrideList(spriteGetter, owner, bakery, modelTransform, particle, modelLocation, this.baseMaterial, renderTypes);
+		WandItemOverrideList wandOverrides = new WandItemOverrideList(spriteGetter, owner, bakery, modelTransform, particle, modelLocation, this.baseMaterial);
 		IModelBuilder<?> builder = IModelBuilder.of(owner.useAmbientOcclusion(), owner.useBlockLight(), owner.isGui3d(),
 				owner.getTransforms(), wandOverrides, particle, renderTypes);
 		wandOverrides.setBuilder((IModelBuilder.Simple) builder);

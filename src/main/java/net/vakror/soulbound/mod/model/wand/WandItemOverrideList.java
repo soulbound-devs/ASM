@@ -46,7 +46,7 @@ public class WandItemOverrideList extends ItemOverrides {
 	private final ResourceLocation modelLocation;
 	private final ResourceLocation baseWand;
 
-	public WandItemOverrideList(Function<Material, TextureAtlasSprite> spriteGetter, IGeometryBakingContext owner, ModelBakery bakery, ModelState modelTransform, TextureAtlasSprite particle, ResourceLocation modelLocation, ResourceLocation baseWand, RenderTypeGroup renderTypes) {
+	public WandItemOverrideList(Function<Material, TextureAtlasSprite> spriteGetter, IGeometryBakingContext owner, ModelBakery bakery, ModelState modelTransform, TextureAtlasSprite particle, ResourceLocation modelLocation, ResourceLocation baseWand) {
 		this.spriteGetter = spriteGetter;
 		this.owner = owner;
 		this.bakery = bakery;
