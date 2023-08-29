@@ -14,7 +14,7 @@ public class DungeonText {
         dungeon.getCapability(DungeonProvider.DUNGEON).ifPresent((dungeonLevel -> {
             isStable[0] = dungeonLevel.isStable();
         }));
-        tooltip.addPart(new StringBuilder().append(" Has Joined ").append(isStable[0] ? "a " : "an ").append(isStable[0] ? "Stable" : "Unstable").append(" Dungeon").toString());
+        tooltip.addPart(" Has Joined " + (isStable[0] ? "a " : "an ") + (isStable[0] ? "Stable" : "Unstable") + " Dungeon");
         return tooltip.build().getTooltip();
     }
 
