@@ -21,8 +21,8 @@ public enum AnchorPoint {
 	JAVAED(s -> s.width / 2 - 137 + 88, s -> 67),
 	FORGE(s -> 0, s -> 0);
 
-	private Function<TitleScreen, Integer> xFunc;
-	private Function<TitleScreen, Integer> yFunc;
+	private final Function<TitleScreen, Integer> xFunc;
+	private final Function<TitleScreen, Integer> yFunc;
 
 	private AnchorPoint(Function<TitleScreen, Integer> xFunc, Function<TitleScreen, Integer> yFunc) {
 		this.xFunc = xFunc;
