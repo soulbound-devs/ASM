@@ -15,7 +15,7 @@ public interface ISeal {
 
     default boolean isAttack() {
         return this instanceof AttackSeal;
-    };
+    }
 
     List<SealProperty> properties();
 
