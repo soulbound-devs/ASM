@@ -18,6 +18,6 @@ public class DungeonText {
         return tooltip.build().getTooltip();
     }
 
-    public static Component CANNOT_EXIT_UNTIL_BEATEN = new Tooltip.TooltipComponentBuilder()
+    public static final Component CANNOT_EXIT_UNTIL_BEATEN = new Tooltip.TooltipComponentBuilder()
             .addPart("You cannot exit this Unstable Dungeon, As It Has Not Been Beaten Yet").build().getTooltip();
 }
