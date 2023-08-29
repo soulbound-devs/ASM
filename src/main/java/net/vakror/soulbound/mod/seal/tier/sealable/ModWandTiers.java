@@ -28,11 +28,6 @@ public enum ModWandTiers implements ISealableTier {
     }
 
     @Override
-    public int getColor() {
-        return color;
-    }
-
-    @Override
     public int getActivatableSlots() {
         return passiveSlots + attackSlots;
     }

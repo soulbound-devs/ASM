@@ -6,6 +6,4 @@ public interface ISealableTier {
     int getAmplificationSlots();
     int getActivatableSlots();
     int getTier();
-
-    int getColor();
 }
