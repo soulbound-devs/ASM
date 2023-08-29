@@ -1,7 +1,5 @@
 package net.vakror.soulbound.mod.util;
 
-import java.awt.*;
-
 public class ColorUtil {
 
     public static int toColorInt(int R, int G, int B, int A) {
