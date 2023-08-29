@@ -25,7 +25,6 @@ import org.jetbrains.annotations.NotNull;
 public class SoulSolidifyingCategory implements IRecipeCategory<ISoulSolidifyingRecipe> {
     private final IGuiHelper helper;
     private final IDrawable background;
-    private final IDrawableStatic staticArrow;
 
     private final IDrawableAnimated arrow;
 
@@ -40,7 +39,7 @@ public class SoulSolidifyingCategory implements IRecipeCategory<ISoulSolidifying
                 .build();
 
 
-        staticArrow = helper.createDrawable(SOLIDIFIER_TEXTURE, 177, 0, 26, 8);
+        IDrawableStatic staticArrow = helper.createDrawable(SOLIDIFIER_TEXTURE, 177, 0, 26, 8);
         arrow = helper.createAnimatedDrawable(staticArrow, 61, IDrawableAnimated.StartDirection.LEFT, false);
     }
     @Override
