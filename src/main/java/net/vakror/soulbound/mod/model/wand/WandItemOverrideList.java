@@ -44,7 +44,6 @@ public class WandItemOverrideList extends ItemOverrides {
 	private IModelBuilder.Simple builder;
 	private final ResourceLocation modelLocation;
 	private final ResourceLocation baseWand;
-	private final RenderTypeGroup renderTypes;
 
 	public WandItemOverrideList(Function<Material, TextureAtlasSprite> spriteGetter, IGeometryBakingContext owner, ModelBakery bakery, ModelState modelTransform, TextureAtlasSprite particle, ResourceLocation modelLocation, ResourceLocation baseWand, RenderTypeGroup renderTypes) {
 		this.spriteGetter = spriteGetter;
@@ -54,7 +53,6 @@ public class WandItemOverrideList extends ItemOverrides {
 		this.particle = particle;
 		this.modelLocation = modelLocation;
 		this.baseWand = baseWand;
-		this.renderTypes = renderTypes;
 	}
 
 	/* Read NBT data from stack and choose what textures in use and merge them */
