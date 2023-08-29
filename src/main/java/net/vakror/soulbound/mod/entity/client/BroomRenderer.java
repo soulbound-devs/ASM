@@ -19,8 +19,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class BroomRenderer<T extends BroomEntity> extends EntityRenderer<T> {
-    EntityRendererProvider.Context context;
-    ResourceLocation TEXTURE = new ResourceLocation(SoulboundMod.MOD_ID, "textures/entity/broom_basic.png");
+    public final EntityRendererProvider.Context context;
+    public static final ResourceLocation TEXTURE = new ResourceLocation(SoulboundMod.MOD_ID, "textures/entity/broom_basic.png");
 
     public BroomRenderer(EntityRendererProvider.Context context) {
         super(context);
