@@ -5,11 +5,11 @@ import net.vakror.soulbound.mod.seal.type.AttackSeal;
 import java.util.List;
 
 public interface ISeal {
-    public default String getId() {
+    default String getId() {
         return "error";
     }
 
-    public default boolean canBeActivated() {
+    default boolean canBeActivated() {
         return false;
     }
 
@@ -19,5 +19,5 @@ public interface ISeal {
 
     List<SealProperty> properties();
 
-    public SealType getType();
+    SealType getType();
 }
