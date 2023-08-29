@@ -33,7 +33,8 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
-import static net.minecraft.client.renderer.texture.TextureAtlas.LOCATION_BLOCKS;
+import static net.minecraft.world.inventory.InventoryMenu.BLOCK_ATLAS;
+
 
 public class WandItemOverrideList extends ItemOverrides {
 	private final Function<Material, TextureAtlasSprite> spriteGetter;
@@ -81,7 +82,7 @@ public class WandItemOverrideList extends ItemOverrides {
 	@SuppressWarnings("deprecation")
 	private BakedModel getBakedModel(ResourceLocation wand, @Nullable ResourceLocation activeSeal) {
 		builder = (IModelBuilder.Simple) IModelBuilder.of(owner.useAmbientOcclusion(), owner.useBlockLight(), owner.isGui3d(),
-				owner.getTransforms(), this, particle, new RenderTypeGroup(RenderType.solid(), RenderType.itemEntityTranslucentCull(LOCATION_BLOCKS)));
+				owner.getTransforms(), this, particle, new RenderTypeGroup(RenderType.solid(), RenderType.itemEntityTranslucentCull(BLOCK_ATLAS)));
 		Resource wandResource = Minecraft.getInstance().getResourceManager().getResource(wand).orElseThrow(() -> new IllegalStateException("Wand Model File Not found: " + activeSeal));
 		ResourceLocation outlineLocation;
 		Resource sealResource = null;
@@ -101,7 +102,7 @@ public class WandItemOverrideList extends ItemOverrides {
 				try (ObjTokenizer tokenizer = new ObjTokenizer(wandResource.open())) {
 					ObjModel model = ObjModel.parse(tokenizer, new ObjModel.ModelSettings(wand, true, false, false, false, null));
 					IModelBuilder.Simple builder1 = (IModelBuilder.Simple) IModelBuilder.of(owner.useAmbientOcclusion(), owner.useBlockLight(), owner.isGui3d(),
-							owner.getTransforms(), this, particle, new RenderTypeGroup(RenderType.solid(), RenderType.itemEntityTranslucentCull(LOCATION_BLOCKS)));
+							owner.getTransforms(), this, particle, new RenderTypeGroup(RenderType.solid(), RenderType.itemEntityTranslucentCull(BLOCK_ATLAS)));
 					((AddQuadsInvoker) model).invokeAddQuads(owner, builder1, bakery, spriteGetter, modelTransform, modelLocation);
 					wands = ((SimpleBakedModelMixin) builder1.build()).getUnculledFaces();
 				}
@@ -110,7 +111,7 @@ public class WandItemOverrideList extends ItemOverrides {
 				try (ObjTokenizer tokenizer = new ObjTokenizer(sealOutlineResource.open())) {
 					ObjModel model = ObjModel.parse(tokenizer, new ObjModel.ModelSettings(outlineLocation, true, false, false, true, null));
 					IModelBuilder.Simple builder1 = (IModelBuilder.Simple) IModelBuilder.of(owner.useAmbientOcclusion(), owner.useBlockLight(), owner.isGui3d(),
-							owner.getTransforms(), this, particle, new RenderTypeGroup(RenderType.solid(), RenderType.itemEntityTranslucentCull(LOCATION_BLOCKS)));
+							owner.getTransforms(), this, particle, new RenderTypeGroup(RenderType.solid(), RenderType.itemEntityTranslucentCull(BLOCK_ATLAS)));
 					((AddQuadsInvoker) model).invokeAddQuads(owner, builder1, bakery, spriteGetter, modelTransform, modelLocation);
 					outline = ((SimpleBakedModelMixin) builder1.build()).getUnculledFaces();
 				}
@@ -119,7 +120,7 @@ public class WandItemOverrideList extends ItemOverrides {
 				try (ObjTokenizer tokenizer = new ObjTokenizer(sealResource.open())) {
 					ObjModel model = ObjModel.parse(tokenizer, new ObjModel.ModelSettings(activeSeal, true, false, false, true, null));
 					IModelBuilder.Simple builder1 = (IModelBuilder.Simple) IModelBuilder.of(owner.useAmbientOcclusion(), owner.useBlockLight(), owner.isGui3d(),
-							owner.getTransforms(), this, particle, new RenderTypeGroup(RenderType.solid(), RenderType.itemEntityTranslucentCull(LOCATION_BLOCKS)));
+							owner.getTransforms(), this, particle, new RenderTypeGroup(RenderType.solid(), RenderType.itemEntityTranslucentCull(BLOCK_ATLAS)));
 					((AddQuadsInvoker) model).invokeAddQuads(owner, builder1, bakery, spriteGetter, modelTransform, modelLocation);
 					spell = ((SimpleBakedModelMixin) builder1.build()).getUnculledFaces();
 				}
@@ -128,7 +129,7 @@ public class WandItemOverrideList extends ItemOverrides {
 			throw new IllegalStateException(e);
 		}
 		((SimpleBakedModelMixin) builder.build()).getUnculledFaces().sort((Comparator.comparingInt(BakedQuad::getTintIndex)));
-		WandBakedModel model = new WandBakedModel((SimpleBakedModel) builder.build(), new RenderTypeGroup(RenderType.solid(), RenderType.itemEntityTranslucentCull(LOCATION_BLOCKS)), owner.getRootTransform());
+		WandBakedModel model = new WandBakedModel((SimpleBakedModel) builder.build(), new RenderTypeGroup(RenderType.solid(), RenderType.itemEntityTranslucentCull(BLOCK_ATLAS)), owner.getRootTransform());
 		model.addWand(wands);
 		if (spell != null) {
 			model.addSpell(spell);
