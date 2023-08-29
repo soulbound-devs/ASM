@@ -24,7 +24,6 @@ import org.jetbrains.annotations.NotNull;
 public class WandImbuingCategory implements IRecipeCategory<IWandImbuingRecipe> {
     private final IGuiHelper helper;
     private final IDrawable background;
-    private final IDrawableStatic staticArrow;
 
     private final IDrawableAnimated arrow;
     private final IDrawableAnimated soul;
@@ -38,7 +37,7 @@ public class WandImbuingCategory implements IRecipeCategory<IWandImbuingRecipe> 
                 .build();
 
 
-        staticArrow = helper.createDrawable(IMBUER_TEXTURE, 177, 38, 18, 8);
+        IDrawableStatic staticArrow = helper.createDrawable(IMBUER_TEXTURE, 177, 38, 18, 8);
         arrow = helper.createAnimatedDrawable(staticArrow, 108, IDrawableAnimated.StartDirection.LEFT, false);
 
         IDrawableStatic staticSoul = helper.createDrawable(IMBUER_TEXTURE, 177, 0, 13, 16);
