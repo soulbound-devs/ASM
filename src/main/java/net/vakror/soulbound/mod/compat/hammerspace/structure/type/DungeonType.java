@@ -26,7 +26,7 @@ public enum DungeonType {
     List<ProcessorRule> rules;
     final StructurePieceType structurePiece;
 
-    private DungeonType(String name, int index, List<ProcessorRule> rules, StructurePieceType structurePiece) {
+    DungeonType(String name, int index, List<ProcessorRule> rules, StructurePieceType structurePiece) {
         this.name = name;
         this.index = index;
         this.rules = rules;
