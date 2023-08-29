@@ -64,8 +64,9 @@ public class WandItemOverrideList extends ItemOverrides {
 			AtomicReference<ResourceLocation> activeSeal = new AtomicReference<>();
 			AtomicReference<ResourceLocation> wandModel = new AtomicReference<>();
 			stack.getCapability(ItemSealProvider.SEAL).ifPresent(wand -> {
-				wandModel.set((stack.getTag().contains("customModel") && !stack.getTag().getString("customModel").isBlank()) ? WandModels.getModels().get(stack.getTag().getString("customModel")): baseWand);
-				if (!stack.getTag().getString("activeSeal").equals("")) {
+                assert stack.getTag() != null;
+                wandModel.set((stack.getTag().contains("customModel") && !stack.getTag().getString("customModel").isBlank()) ? WandModels.getModels().get(stack.getTag().getString("customModel")): baseWand);
+				if (!stack.getTag().getString("activeSeal").isEmpty()) {
 					activeSeal.set(ActiveSealModels.getModels().get(stack.getTag().getString("activeSeal")));
 				}
 			});
