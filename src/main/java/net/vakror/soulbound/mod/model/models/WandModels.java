@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class WandModels {
-    private static final Map<String, ResourceLocation> MODELS = new HashMap<>();
+    public static Map<String, ResourceLocation> MODELS = new HashMap<>();
 
     public static void registerModel(String name, ResourceLocation location) {
         MODELS.put(name, location);
