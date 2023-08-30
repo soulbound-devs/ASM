@@ -26,6 +26,9 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegisterEvent;
+import net.vakror.soulbound.api.SoulboundApi;
 import net.vakror.soulbound.mod.SoulboundMod;
 import net.vakror.soulbound.mod.blocks.custom.SoulCatalystBlock;
 import net.vakror.soulbound.mod.blocks.entity.custom.SoulCatalystBlockEntity;
@@ -43,6 +46,7 @@ import net.vakror.soulbound.mod.soul.PlayerSoul;
 import net.vakror.soulbound.mod.soul.PlayerSoulProvider;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class Events {
@@ -194,6 +198,13 @@ public class Events {
         @Mod.EventBusSubscriber(modid = SoulboundMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
         public static class ModEvents {
 
+            @SubscribeEvent
+            public static void registerExtension(RegisterEvent event) {
+                if (Objects.equals(event.getForgeRegistry(), ForgeRegistries.ITEMS)) {
+                    SoulboundApi.onSealsRegister();
+                    SoulboundApi.onModelsRegister();
+                }
+            }
             @SubscribeEvent
             public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
                 event.registerEntityRenderer(ModEntities.BROOM.get(), BroomRenderer::new);

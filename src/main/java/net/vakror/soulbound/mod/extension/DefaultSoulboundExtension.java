@@ -1,7 +1,8 @@
 package net.vakror.soulbound.mod.extension;
 
 import net.minecraft.resources.ResourceLocation;
-import net.vakror.soulbound.api.SoulboundExtension;
+import net.vakror.soulbound.api.Extension;
+import net.vakror.soulbound.api.ISoulboundExtension;
 import net.vakror.soulbound.api.context.ModelRegistrationContext;
 import net.vakror.soulbound.api.context.SealRegistrationContext;
 import net.vakror.soulbound.mod.SoulboundMod;
@@ -17,7 +18,8 @@ import net.vakror.soulbound.mod.seal.seals.amplifying.sack.StackSizeUpgradeSeal;
 import net.vakror.soulbound.mod.seal.seals.amplifying.wand.haste.HasteSeal;
 import net.vakror.soulbound.mod.util.ArithmeticActionType;
 
-public class DefaultSoulboundExtension extends SoulboundExtension {
+@Extension
+public class DefaultSoulboundExtension implements ISoulboundExtension {
     @Override
     public void registerModels(ModelRegistrationContext context) {
         context.registerSpellModel("pickaxing", new ResourceLocation(SoulboundMod.MOD_ID, "models/obj/active_seal/pickaxing/base.obj"));
@@ -44,5 +46,10 @@ public class DefaultSoulboundExtension extends SoulboundExtension {
         context.registerSealWithCustomItem(new ColumnUpgradeSeal(1, 2, ArithmeticActionType.ADD), ModItems.SACK_COLUMN_UPGRADE_SEAL_TIER_1);
         context.registerSealWithCustomItem(new RowUpgradeSeal(1, 2, ArithmeticActionType.ADD), ModItems.SACK_ROW_UPGRADE_SEAL_TIER_1);
         context.registerSealWithCustomItem(new SwordSeal(), ModItems.SWORDING_SEAL);
+    }
+
+    @Override
+    public ResourceLocation getExtensionName() {
+        return new ResourceLocation(SoulboundMod.MOD_ID, "default");
     }
 }

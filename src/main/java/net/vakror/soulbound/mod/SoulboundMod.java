@@ -35,7 +35,6 @@ import net.vakror.soulbound.mod.compat.hammerspace.structure.piece.ModDungeonPie
 import net.vakror.soulbound.mod.compat.hammerspace.structure.util.DungeonFileLocations;
 import net.vakror.soulbound.mod.compat.hammerspace.structure.util.DungeonSpawnPointUtils;
 import net.vakror.soulbound.mod.entity.ModEntities;
-import net.vakror.soulbound.mod.extension.DefaultSoulboundExtension;
 import net.vakror.soulbound.mod.items.ModItems;
 import net.vakror.soulbound.mod.model.wand.WandModelLoader;
 import net.vakror.soulbound.mod.packets.ModPackets;
@@ -60,7 +59,8 @@ public class SoulboundMod {
 
     public SoulboundMod() {
         instance = this;
-        SoulboundApi.registerExtension(new DefaultSoulboundExtension());
+        SoulboundApi.registerAnnotatedExtensions();
+        SoulboundApi.addDefaultContexts();
 
         DungeonFileLocations.init();
         DungeonSpawnPointUtils.init();
@@ -92,10 +92,6 @@ public class SoulboundMod {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
         MinecraftForge.EVENT_BUS.addListener(DungeonEvents.ForgeEvents::dungeonTickEvent);
         MinecraftForge.EVENT_BUS.register(this);
-
-        SoulboundApi.addDefaultContexts();
-        SoulboundApi.onSealsRegister();
-        SoulboundApi.onModelsRegister();
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {

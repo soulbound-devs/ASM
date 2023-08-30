@@ -12,9 +12,16 @@ import net.vakror.soulbound.mod.seal.tier.sealable.ISealableTier;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.function.ToIntFunction;
 
 public class SealRegistrationContext implements IRegistrationContext {
+    /**
+     * Stores deferred registers by mod id so that we don't have to reuse them all the time in {@link #registerSeal}
+     */
+    public static final Map<String, DeferredRegister<Item>> REGISTRIES = new LinkedHashMap<>();
+
     /**
      * This method is used to register a seal. This method will <B>AUTOMATICIALLY</B> create an item. If you want to use your own item, see {@link #registerSealWithCustomItem}
      *
@@ -26,13 +33,21 @@ public class SealRegistrationContext implements IRegistrationContext {
      */
     public void registerSeal(@NotNull String modId, @NotNull ISeal seal, @NotNull Item.Properties properties, @Nullable ToIntFunction<ISealableTier> maxStack, @Nullable Tooltip tooltip) {
         SealRegistry.addSeal(seal, seal.getType());
-        RegistryObject<Item> sealItem = DeferredRegister.create(Registry.ITEM_REGISTRY, modId).register(seal.getId(), () -> new SealItem(
+        DeferredRegister<Item> register;
+        if (!REGISTRIES.containsKey(modId)) {
+            register = DeferredRegister.create(Registry.ITEM_REGISTRY, modId);;
+        } else {
+            register = REGISTRIES.get(modId);
+        }
+
+        RegistryObject<Item> sealItem = register.register(seal.getId(), () -> new SealItem(
                 properties,
                 seal.getId(),
                 seal.getType(),
                 maxStack == null ? (tier) -> 1: maxStack,
                 tooltip == null ? Tooltip.empty(): tooltip
         ));
+        REGISTRIES.put(modId, register);
 
         SealRegistry.sealItems.put(seal.getId(), sealItem);
     }

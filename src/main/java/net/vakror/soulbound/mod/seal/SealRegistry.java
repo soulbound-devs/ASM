@@ -1,6 +1,7 @@
 package net.vakror.soulbound.mod.seal;
 
 
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -39,5 +40,16 @@ public class SealRegistry {
         amplifyingSeals.put(seal.getId(), seal);
         allSeals.put(seal.getId(), seal);
         sealItems.put(seal.getId(), sealItem);
+    }
+
+    /**
+     * Called when done registering. Makes all maps immutable.
+     */
+    public static void doneRegistering() {
+        allSeals = ImmutableMap.copyOf(allSeals);
+        passiveSeals = ImmutableMap.copyOf(passiveSeals);
+        attackSeals = ImmutableMap.copyOf(attackSeals);
+        amplifyingSeals = ImmutableMap.copyOf(amplifyingSeals);
+        sealItems = ImmutableMap.copyOf(sealItems);
     }
 }
