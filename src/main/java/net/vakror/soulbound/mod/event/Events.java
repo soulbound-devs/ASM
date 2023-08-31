@@ -1,5 +1,6 @@
 package net.vakror.soulbound.mod.event;
 
+import com.google.common.base.Stopwatch;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceLocation;
@@ -201,8 +202,13 @@ public class Events {
             @SubscribeEvent
             public static void registerExtension(RegisterEvent event) {
                 if (Objects.equals(event.getForgeRegistry(), ForgeRegistries.ITEMS)) {
+                    Stopwatch apiStopwatch = Stopwatch.createStarted();
+                    SoulboundApi.addDefaultContexts();
+                    SoulboundApi.registerAnnotatedExtensions();
                     SoulboundApi.onSealsRegister();
                     SoulboundApi.onModelsRegister();
+                    apiStopwatch.stop();
+                    SoulboundMod.LOGGER.info("Finished All Registration, \033[0;31mTook {}\033[0;0m", apiStopwatch);
                 }
             }
             @SubscribeEvent

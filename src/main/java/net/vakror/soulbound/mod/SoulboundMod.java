@@ -59,8 +59,6 @@ public class SoulboundMod {
 
     public SoulboundMod() {
         instance = this;
-        SoulboundApi.registerAnnotatedExtensions();
-        SoulboundApi.addDefaultContexts();
 
         DungeonFileLocations.init();
         DungeonSpawnPointUtils.init();

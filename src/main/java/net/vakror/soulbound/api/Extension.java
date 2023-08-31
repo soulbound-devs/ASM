@@ -10,6 +10,7 @@ import java.lang.annotation.Target;
  * <br>
  * <br>
  * Annotated classes <b>MUST</b> implement {@link ISoulboundExtension}
+ * Multiple extensions can be loaded per mod
  */
 @Target(value = ElementType.TYPE)
 public @interface Extension {}
