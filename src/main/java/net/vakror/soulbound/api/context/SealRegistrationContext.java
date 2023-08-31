@@ -20,6 +20,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.ToIntFunction;
 
+/**
+ * The Context Which Is Passed Into {@link net.vakror.soulbound.api.ISoulboundExtension#registerSeals  registerSeals}
+ * Used to register/unregister/modify seals
+ */
 public class SealRegistrationContext implements IRegistrationContext {
     /**
      * Stores deferred registers by mod id so that we don't have to reuse them all the time in {@link #registerSeal}
