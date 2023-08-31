@@ -19,7 +19,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.vakror.soulbound.api.SoulboundApi;
 import net.vakror.soulbound.mod.blocks.ModBlocks;
 import net.vakror.soulbound.mod.blocks.entity.ModBlockEntities;
 import net.vakror.soulbound.mod.client.SoulboundClient;
