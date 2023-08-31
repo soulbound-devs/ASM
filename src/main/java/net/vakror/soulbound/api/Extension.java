@@ -1,8 +1,5 @@
 package net.vakror.soulbound.api;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Target;
-
 /**
  * Soulbound extensions can annotate their extension class with this to automatically register it to the API. This method of registration is useful because it allows for soft dependencies
  * <br>
@@ -11,6 +8,7 @@ import java.lang.annotation.Target;
  * <br>
  * Annotated classes <b>MUST</b> implement {@link ISoulboundExtension}
  * Multiple extensions can be loaded per mod
+ * Only classes can be annotated with this
  */
-@Target(value = ElementType.TYPE)
+@java.lang.annotation.Target(value = java.lang.annotation.ElementType.TYPE)
 public @interface Extension {}
