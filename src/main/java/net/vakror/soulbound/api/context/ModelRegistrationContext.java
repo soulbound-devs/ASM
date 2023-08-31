@@ -7,6 +7,10 @@ import net.vakror.soulbound.mod.SoulboundMod;
 import net.vakror.soulbound.mod.model.models.ActiveSealModels;
 import net.vakror.soulbound.mod.model.models.WandModels;
 
+/**
+ * The Context Which Is Passed Into {@link net.vakror.soulbound.api.ISoulboundExtension#registerModels registerModels}
+ * Used to register/unregister/modify wand/spell models
+ */
 public class ModelRegistrationContext implements IRegistrationContext {
     /**
      * Registers a CUSTOM model for a wand. Base models are registered in your model JSON
