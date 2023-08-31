@@ -24,10 +24,29 @@ import java.util.*;
 
 /**
  * This is the main API class to soulbound that all extensions are stored in and all direct API calls are made through
+ * All the methods annotated with {@link ApiStatus.Internal} should never be called
+ * The only methods you should call are {@link #registerExtension}, {@link #addRegistrationContext(ModelRegistrationContext)}, and {@link #addRegistrationContext(SealRegistrationContext)}
+ * All other calls may be unstable and result in crashes, glitches, or permanent corruption!
  */
 public class SoulboundApi {
+    /**
+     * May be accessed, but never directly updated
+     */
+    @ApiStatus.Internal
     private static final List<ISoulboundExtension> EXTENSIONS = new ArrayList<>();
+
+
+    /**
+     * May be accessed, but never directly updated
+     */
+    @ApiStatus.Internal
     private static final List<SealRegistrationContext> SEAL_CONTEXT = new ArrayList<>();
+
+
+    /**
+     * May be accessed, but never directly updated
+     */
+    @ApiStatus.Internal
     private static final List<ModelRegistrationContext> MODEL_CONTEXT = new ArrayList<>();
 
     /**
