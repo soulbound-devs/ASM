@@ -33,6 +33,11 @@ public abstract class ActivatableSeal extends BaseSeal implements AttributeModif
     }
 
     @Override
+    public boolean canBeActivated() {
+        return true;
+    }
+
+    @Override
     public List<SealProperty> properties() {
         properties.add(new SealProperty("activatable"));
         return super.properties();
