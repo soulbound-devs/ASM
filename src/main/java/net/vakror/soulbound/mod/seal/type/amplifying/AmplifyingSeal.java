@@ -22,6 +22,11 @@ public abstract class AmplifyingSeal extends BaseSeal {
     }
 
     @Override
+    public boolean canBeActivated() {
+        return false;
+    }
+
+    @Override
     public SealType getType() {
         return SealType.AMPLIFYING;
     }
