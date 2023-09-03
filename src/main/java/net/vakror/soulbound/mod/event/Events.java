@@ -26,6 +26,7 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
@@ -189,9 +190,9 @@ public class Events {
                     SoulboundApi.registerAnnotatedExtensions();
                     SoulboundApi.onSealsRegister();
                     SoulboundApi.onModelsRegister();
-//                    if (ModList.get().isLoaded("hammerspace")) {
+                    if (ModList.get().isLoaded("hammerspace")) {
                         SoulboundApi.onDungeonRegister();
-//                    }
+                    }
                     apiStopwatch.stop();
                     SoulboundMod.LOGGER.info("Finished All Registration, \033[0;31mTook {}\033[0;0m", apiStopwatch);
                 }

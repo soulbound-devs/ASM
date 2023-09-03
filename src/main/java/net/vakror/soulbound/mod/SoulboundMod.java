@@ -12,6 +12,7 @@ import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.event.server.ServerStoppedEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -71,13 +72,13 @@ public class SoulboundMod {
         ModDungeonPieces.register(modEventBus);
 
 
-//        if (ModList.get().isLoaded("hammerspace")) {
+        if (ModList.get().isLoaded("hammerspace")) {
             ModDungeonItems.register(modEventBus);
             ModDungeonBlocks.register(modEventBus);
             ModDungeonBlockEntities.register(modEventBus);
             ModDungeonEntities.register(modEventBus);
             Dimensions.register();
-//        }
+        }
 
         ModSoul.register(modEventBus);
         ModSoulTypes.register(modEventBus);
@@ -125,9 +126,9 @@ public class SoulboundMod {
         }
         @SubscribeEvent
         public static void entityAttributeEvent(EntityAttributeCreationEvent event) {
-//            if (ModList.get().isLoaded("hammerspace")) {
+            if (ModList.get().isLoaded("hammerspace")) {
                 event.put(ModDungeonEntities.GOBLAGGER.get(), GoblaggerEntity.setAttributes());
-//            }
+            }
         }
 
 

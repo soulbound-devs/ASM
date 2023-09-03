@@ -4,6 +4,7 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.vakror.soulbound.mod.compat.hammerspace.entity.ModDungeonEntities;
 import net.vakror.soulbound.mod.compat.hammerspace.entity.client.GoblaggerRenderer;
@@ -22,8 +23,8 @@ public class SoulboundClient {
         ItemBlockRenderTypes.setRenderLayer(ModSoul.SOURCE_DARK_SOUL.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(ModSoul.FLOWING_DARK_SOUL.get(), RenderType.translucent());
 
-//        if (ModList.get().isLoaded("hammerspace")) {
+        if (ModList.get().isLoaded("hammerspace")) {
             EntityRenderers.register(ModDungeonEntities.GOBLAGGER.get(), GoblaggerRenderer::new);
-//        }
+        }
     }
 }

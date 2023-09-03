@@ -10,6 +10,7 @@ import mezz.jei.api.registration.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.RegistryObject;
 import net.vakror.soulbound.mod.SoulboundMod;
 import net.vakror.soulbound.mod.blocks.ModBlocks;
@@ -49,10 +50,10 @@ public class SoulboundJEIPlugin implements IModPlugin {
         registration.addRecipes(ModJEIRecipes.WAND_IMBUING, getAllWandImbuingRecipes());
         registration.addRecipes(ModJEIRecipes.SOUL_SOLIDIFYING, getSoulSolidifyingRecipes());
         registration.addRecipes(ModJEIRecipes.SOUL_EXTRACTING, getSoulExtractingRecipes());
-//        if (ModList.get().isLoaded("hammerspace")) {
+        if (ModList.get().isLoaded("hammerspace")) {
             registration.addItemStackInfo(ModDungeonItems.KEY.get().getDefaultInstance(), new Tooltip.TooltipComponentBuilder().addPartWithNewline("The key is an item important in the progression of ASM. It is used for only one purpose, that being the unlocking of a Keystone", Tooltip.TooltipComponentBuilder.ColorCode.GREEN).build().getTooltip());
             registration.addItemStackInfo(ModDungeonBlocks.DUNGEON_KEY_BLOCK.get().asItem().getDefaultInstance(), new Tooltip.TooltipComponentBuilder().addPartWithNewline("The keystone is vital to finishing ASM. When right-clicked with a key, it will unlock and teleport you to a dangerous, but rewarding dimension known as the dungeon. Blocks cannot be placed and broken (except for chests and their variants) in dungeons. Dungeons come in two forms, as shown by the keystone block texture. Stable and Unstable. Stable dungeons are easier and have worse loot, but once beaten, the player can enter again. Once a stable dungeon is fully beaten, the player will be able to place and break blocks inside it. Unstable dungeons are harder and have better loot. Once an unstable dungeon is beaten, the player will be teleported out and cannot enter again. There are eight spawning locations in a dungeon. When entering a dungeon, one will have a random size. The maximum depends on how many dungeons a player has finished before. These sizes are: 50, 75, 100, and 125. In addition to this. Each dungeon has a different amount of \"Layers\", depending on the amount of dungeons of the same size a player has beaten, the dungeon will have more layers. Each new layer can be accessed by killing the boss and all of his minions of the layer below. In a stable dungeon the player can exit by returning at lowest level of the dungeon, where there is a \"Return\" block. Right-Clicking this will teleport the player to the world spawn of the overworld. Each dungeon size and layer will have different challenges and rewards. Each one will have \"Rooms\". These are where the loot and dangerous mobs are found.         All rooms need to be beaten to start the boss fight.", Tooltip.TooltipComponentBuilder.ColorCode.GREEN).build().getTooltip());
-//        }
+        }
         IModPlugin.super.registerRecipes(registration);
     }
 
