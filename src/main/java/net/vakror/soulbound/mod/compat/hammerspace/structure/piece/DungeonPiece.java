@@ -15,6 +15,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.levelgen.structure.templatesystem.*;
+import net.vakror.soulbound.mod.compat.hammerspace.structure.type.DefaultDungeonTypes;
 import net.vakror.soulbound.mod.compat.hammerspace.structure.type.DungeonType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -36,7 +37,7 @@ public class DungeonPiece extends TemplateStructurePiece {
 
     public DungeonPiece(StructurePieceSerializationContext context, CompoundTag nbt) {
         super(ModDungeonPieces.DEFAULT_DUNGEON_PIECE.get(), nbt, context.structureTemplateManager(), (con) -> makeSettings(Rotation.valueOf(nbt.getString("Rotation")), Mirror.valueOf(nbt.getString("Mirror")), BlockIgnoreProcessor.STRUCTURE_BLOCK));
-        this.type = DungeonType.getTypeFromIndex(nbt.getInt("Type"));
+        this.type = DungeonType.getTypeFromId(nbt.getString("Type"));
         this.manager = context.structureTemplateManager();
     }
 

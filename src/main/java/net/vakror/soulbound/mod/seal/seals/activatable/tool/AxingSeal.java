@@ -4,9 +4,6 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.UseOnContext;
-import net.vakror.soulbound.mod.seal.SealProperty;
-
-import java.util.List;
 
 public class AxingSeal extends OffensiveToolSeal {
     public AxingSeal() {
@@ -21,11 +18,5 @@ public class AxingSeal extends OffensiveToolSeal {
     @Override
     public InteractionResult useAction(UseOnContext context) {
         return Items.DIAMOND_AXE.useOn(context);
-    }
-
-    @Override
-    public List<SealProperty> properties() {
-        properties.add(new SealProperty("weapon"));
-        return super.properties();
     }
 }

@@ -1,5 +1,6 @@
 package net.vakror.soulbound.mod.compat.hammerspace;
 
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.resources.ResourceLocation;
@@ -28,6 +29,7 @@ import net.vakror.soulbound.mod.compat.hammerspace.dimension.Dimensions;
 import net.vakror.soulbound.mod.compat.hammerspace.dungeon.DungeonText;
 import net.vakror.soulbound.mod.compat.hammerspace.dungeon.capability.Dungeon;
 import net.vakror.soulbound.mod.compat.hammerspace.dungeon.capability.DungeonProvider;
+import net.vakror.soulbound.mod.compat.hammerspace.dungeon.level.DungeonLevel;
 import net.vakror.soulbound.mod.compat.hammerspace.dungeon.level.DungeonLevels;
 import net.vakror.soulbound.mod.compat.hammerspace.dungeon.level.room.multi.MultiRoomDungeonLevel;
 import net.vakror.soulbound.mod.compat.hammerspace.entity.DungeonMonster;
@@ -38,7 +40,9 @@ import net.vakror.soulbound.mod.compat.hammerspace.structure.type.DungeonType;
 import net.vakror.soulbound.mod.event.custom.GenerateFirstDungeonLayerEvent;
 import net.vakror.soulbound.mod.event.custom.GenerateNextDungeonLayerEvent;
 
+import java.util.Collection;
 import java.util.Objects;
+import java.util.Random;
 import java.util.UUID;
 
 public class DungeonEvents {
@@ -86,7 +90,7 @@ public class DungeonEvents {
                         if (!dungeon.canEnter()) {
                             event.setCanceled(true);
                         }
-                        BlockPos returnPos = new BlockPos(0, 63, 0);
+                        BlockPos returnPos = new BlockPos(0, 62, 0);
                         if ((event.level.getBlockEntity(returnPos) instanceof ReturnToOverWorldBlockEntity entity)) {
                             if (!entity.hasGeneratedDungeon()) {
                                 genDungeon(entity, world, event);
@@ -96,6 +100,23 @@ public class DungeonEvents {
                             if (event.level.getBlockEntity(returnPos) instanceof ReturnToOverWorldBlockEntity entity) {
                                 genDungeon(entity, world, event);
                             }
+                        }
+                        if (world.getBlockEntity(new BlockPos(0, 62, 0)) instanceof ReturnToOverWorldBlockEntity returnToOverWorldBlockEntity && returnToOverWorldBlockEntity.needsToModifySpawnPos()) {
+                            BlockPos pos = new BlockPos(0, 62, 0);
+                            while (world.getBlockState(pos).isSuffocating(world, pos)) {
+                                int random = new Random().nextInt(dungeon.getCurrentLevel().size() / 2);
+                                int random1 = new Random().nextInt(dungeon.getCurrentLevel().size() / 2);
+
+                                random = new Random().nextBoolean() ? -random : random;
+                                random1 = new Random().nextBoolean() ? -random1 : random1;
+
+                                pos = new BlockPos(random, 65, random1);
+                            }
+                            returnToOverWorldBlockEntity.setSpawnPos(pos.below(2));
+                            world.setBlock(pos.below(2), ModDungeonBlocks.RETURN_TO_OVERWORLD_BLOCK.get().defaultBlockState(), 3);
+                            returnToOverWorldBlockEntity.setNeedsToModifySpawnPos(false);
+                            assert returnToOverWorldBlockEntity.getSpawnPos() != null;
+                            world.players().get(0).teleportTo(returnToOverWorldBlockEntity.getSpawnPos().getX(), returnToOverWorldBlockEntity.getSpawnPos().above(2).getY(), returnToOverWorldBlockEntity.getSpawnPos().getZ());
                         }
                     }));
                 }
@@ -144,7 +165,6 @@ public class DungeonEvents {
 
         @SubscribeEvent
         public static void forbidPlacingBlocksInDungeon(BlockEvent.EntityPlaceEvent event) {
-            //TODO: only forbid placing blocks if this is a stable dungeons where the boss has been beaten
             if (!(event.getEntity() instanceof ServerPlayer)) {
                 return;
             }
@@ -234,15 +254,14 @@ public class DungeonEvents {
                     dungeon.setCurrentLevel(DungeonLevels.LABYRINTH_50);
                     dungeon.setType(type);
                 }));
-                world.setBlock(new BlockPos(0, 63, 0), ModDungeonBlocks.RETURN_TO_OVERWORLD_BLOCK.get().defaultBlockState(), 3);
-                ((ReturnToOverWorldBlockEntity) Objects.requireNonNull(world.getBlockEntity(new BlockPos(0, 63, 0)))).hasGeneratedDungeon(true);
+                world.setBlock(new BlockPos(0, 62, 0), ModDungeonBlocks.RETURN_TO_OVERWORLD_BLOCK.get().defaultBlockState(), 3);
+                ((ReturnToOverWorldBlockEntity) Objects.requireNonNull(world.getBlockEntity(new BlockPos(0, 62, 0)))).hasGeneratedDungeon(true);
             }
         }
     }
 
     @SubscribeEvent
-    public void explosionModify(ExplosionEvent.Detonate event)
-    {
+    public void explosionModify(ExplosionEvent.Detonate event) {
         // I only care about explosions in the Dungeon Dimension
         if (!event.getLevel().dimensionTypeId().equals(Dimensions.DUNGEON_TYPE)) {
             return;
@@ -250,7 +269,7 @@ public class DungeonEvents {
         if (event.getLevel().isClientSide) {
             return;
         }
-        if (event.getLevel().getCapability(DungeonProvider.DUNGEON).orElse(new Dungeon()).isStable() && event.getLevel().getCapability(DungeonProvider.DUNGEON).orElse(new Dungeon()).getLevelsBeaten() >=1) {
+        if (event.getLevel().getCapability(DungeonProvider.DUNGEON).orElse(new Dungeon()).isStable() && event.getLevel().getCapability(DungeonProvider.DUNGEON).orElse(new Dungeon()).getLevelsBeaten() >= 1) {
             return;
         }
 
@@ -281,12 +300,17 @@ public class DungeonEvents {
                     start.placeInChunk(dungeonLevel, dungeonLevel.structureManager(), dungeonLevel.getChunkSource().getGenerator(), dungeonLevel.getRandom(), new BoundingBox(chunkPos.getMinBlockX(), dungeonLevel.getMinBuildHeight(), chunkPos.getMinBlockZ(), chunkPos.getMaxBlockX(), dungeonLevel.getMaxBuildHeight(), chunkPos.getMaxBlockZ()), chunkPos);
                 });
                 dungeon.beatCurrentLevel();
-                dungeon.setCurrentLevel(
-                        switch (dungeon.getCurrentLevel().size()) {
-                            default -> switch (dungeon.getLevelsGenerated()) {
-                                default -> DungeonLevels.LABYRINTH_50;
-                            };
-                        });
+                Pair<Integer, Integer> sizeLevelPair = new Pair<>(dungeon.getCurrentLevel().size(), dungeon.getLevelsGenerated());
+                if (DungeonLevel.ALL_LEVELS.containsKey(sizeLevelPair)) {
+                    DungeonLevel level = null;
+                    Collection<DungeonLevel> levels = DungeonLevel.ALL_LEVELS.get(sizeLevelPair);
+                    if (!levels.isEmpty()) {
+                        level = levels.stream().toList().get(new Random().nextInt(levels.size()));
+                    }
+                    if (level != null) {
+                        dungeon.setCurrentLevel(level);
+                    }
+                }
             }
         }
     }

@@ -15,7 +15,6 @@ import net.vakror.soulbound.mod.compat.hammerspace.dungeon.capability.Dungeon;
 import net.vakror.soulbound.mod.compat.hammerspace.dungeon.capability.DungeonProvider;
 import net.vakror.soulbound.mod.compat.hammerspace.structure.piece.DungeonPiece;
 import net.vakror.soulbound.mod.compat.hammerspace.structure.type.DungeonType;
-import net.vakror.soulbound.mod.compat.hammerspace.structure.util.DungeonUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -57,7 +56,7 @@ public class DungeonStructure extends Structure {
     public @NotNull Optional<Structure.GenerationStub> findGenerationPoint(Structure.GenerationContext context) {
         ChunkPos chunkPos = context.chunkPos();
 //        BlockPos blockPos = new BlockPos(-25 + DungeonUtil.getXOffsetForSize(size), y, -25 + DungeonUtil.getZOffsetForSize(size));
-        BlockPos blockPos = this.layer == 0 ? DungeonUtil.getGenerationPoint(file, y): this.level == null ? BlockPos.ZERO: this.level.getCapability(DungeonProvider.DUNGEON).orElse(new Dungeon()).getPos();
+        BlockPos blockPos = this.layer == 0 ? new BlockPos(0, y, 0): this.level == null ? BlockPos.ZERO: this.level.getCapability(DungeonProvider.DUNGEON).orElse(new Dungeon()).getPos();
         return Optional.of(new Structure.GenerationStub(blockPos, (builder) -> {
             this.generatePieces(blockPos, Rotation.NONE, context.structureTemplateManager(), builder);
         }));

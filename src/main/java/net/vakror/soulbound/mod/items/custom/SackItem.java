@@ -6,6 +6,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -23,6 +24,7 @@ import net.vakror.soulbound.mod.seal.tier.sealable.ISealableTier;
 import net.vakror.soulbound.mod.util.PickupUtil;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -156,12 +158,10 @@ public class SackItem extends SealableItem {
         stack.getCapability(ItemSealProvider.SEAL).ifPresent((itemSeal -> {
             itemSeal.getAmplifyingSeals().forEach((seal -> {
                 if (seal instanceof ColumnUpgradeSeal upgradeSeal) {
-                    switch (upgradeSeal.actionType) {
-                        case ADD -> width[0] += upgradeSeal.amount;
-                        case SUBTRACT -> width[0] -= upgradeSeal.amount;
-                        case MULTIPLY -> width[0] *= upgradeSeal.amount;
-                        case DIVIDE -> width[0] /= upgradeSeal.amount;
-                        case POW -> width[0] = (int) Math.pow(width[0], upgradeSeal.amount);
+                    if (Objects.requireNonNull(upgradeSeal.actionType) == AttributeModifier.Operation.ADDITION) {
+                        width[0] += upgradeSeal.amount;
+                    } else {
+                        width[0] *= upgradeSeal.amount;
                     }
                 }
             }));
@@ -174,12 +174,10 @@ public class SackItem extends SealableItem {
         stack.getCapability(ItemSealProvider.SEAL).ifPresent((itemSeal -> {
             itemSeal.getAmplifyingSeals().forEach((seal -> {
                 if (seal instanceof RowUpgradeSeal upgradeSeal) {
-                    switch (upgradeSeal.actionType) {
-                        case ADD -> height[0] += upgradeSeal.amount;
-                        case SUBTRACT -> height[0] -= upgradeSeal.amount;
-                        case MULTIPLY -> height[0] *= upgradeSeal.amount;
-                        case DIVIDE -> height[0] /= upgradeSeal.amount;
-                        case POW -> height[0] = (int) Math.pow(height[0], upgradeSeal.amount);
+                    if (Objects.requireNonNull(upgradeSeal.actionType) == AttributeModifier.Operation.ADDITION) {
+                        height[0] += upgradeSeal.amount;
+                    } else {
+                        height[0] *= upgradeSeal.amount;
                     }
                 }
             }));
@@ -192,12 +190,10 @@ public class SackItem extends SealableItem {
         stack.getCapability(ItemSealProvider.SEAL).ifPresent((itemSeal -> {
             itemSeal.getAmplifyingSeals().forEach((seal -> {
                 if (seal instanceof StackSizeUpgradeSeal upgradeSeal) {
-                    switch (upgradeSeal.actionType) {
-                        case ADD -> stackSize[0] += upgradeSeal.amount;
-                        case SUBTRACT -> stackSize[0] -= upgradeSeal.amount;
-                        case MULTIPLY -> stackSize[0] *= upgradeSeal.amount;
-                        case DIVIDE -> stackSize[0] /= upgradeSeal.amount;
-                        case POW -> stackSize[0] = (int) Math.pow(stackSize[0], upgradeSeal.amount);
+                    if (Objects.requireNonNull(upgradeSeal.actionType) == AttributeModifier.Operation.ADDITION) {
+                        stackSize[0] += upgradeSeal.amount;
+                    } else {
+                        stackSize[0] *= upgradeSeal.amount;
                     }
                 }
             }));

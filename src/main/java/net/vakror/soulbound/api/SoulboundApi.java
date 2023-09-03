@@ -1,7 +1,9 @@
 package net.vakror.soulbound.api;
 
 import com.google.common.base.Stopwatch;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.fml.ModList;
@@ -9,9 +11,14 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.forgespi.language.ModFileScanData;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegisterEvent;
+import net.vakror.soulbound.api.context.DungeonRegistrationContext;
 import net.vakror.soulbound.api.context.ModelRegistrationContext;
 import net.vakror.soulbound.api.context.SealRegistrationContext;
 import net.vakror.soulbound.mod.SoulboundMod;
+import net.vakror.soulbound.mod.compat.hammerspace.dungeon.level.DungeonLevel;
+import net.vakror.soulbound.mod.compat.hammerspace.structure.type.DefaultDungeonTypes;
+import net.vakror.soulbound.mod.compat.hammerspace.structure.type.DungeonType;
+import net.vakror.soulbound.mod.compat.hammerspace.structure.util.DungeonFileLocations;
 import net.vakror.soulbound.mod.model.models.ActiveSealModels;
 import net.vakror.soulbound.mod.model.models.WandModels;
 import net.vakror.soulbound.mod.seal.ISeal;
@@ -35,19 +42,23 @@ public class SoulboundApi {
     @ApiStatus.Internal
     private static final List<ISoulboundExtension> EXTENSIONS = new ArrayList<>();
 
-
     /**
      * May be accessed, but never directly updated
      */
     @ApiStatus.Internal
     private static final List<SealRegistrationContext> SEAL_CONTEXT = new ArrayList<>();
 
-
     /**
      * May be accessed, but never directly updated
      */
     @ApiStatus.Internal
     private static final List<ModelRegistrationContext> MODEL_CONTEXT = new ArrayList<>();
+
+    /**
+     * May be accessed, but never directly updated
+     */
+    @ApiStatus.Internal
+    private static final List<DungeonRegistrationContext> DUNGEON_CONTEXT = new ArrayList<>();
 
     /**
      * Registers a soulbound extension manually; this method is not recommended, instead opt for the annotation method
@@ -75,6 +86,10 @@ public class SoulboundApi {
         Stopwatch stopwatch2 = Stopwatch.createStarted();
         addRegistrationContext(new ModelRegistrationContext());
         SoulboundMod.LOGGER.info("Finished Registering Default Seal Registration Context, \033[0;31mTook {}\033[0;0m", stopwatch2);
+        SoulboundMod.LOGGER.info("Registering Default Dungeon Registration Context");
+        Stopwatch stopwatch3 = Stopwatch.createStarted();
+        addRegistrationContext(new DungeonRegistrationContext());
+        SoulboundMod.LOGGER.info("Finished Registering Default Dungeon Registration Context, \033[0;31mTook {}\033[0;0m", stopwatch3);
         SoulboundMod.LOGGER.info("Finished Registering Default Soulbound Context, \033[0;31mTook {}\033[0;0m", stopwatch);
     }
 
@@ -86,6 +101,16 @@ public class SoulboundApi {
      */
     protected static <T extends ModelRegistrationContext> void addRegistrationContext(T context) {
         MODEL_CONTEXT.add(context);
+    }
+
+    /**
+     * used to add a new dungeon context for whatever advanced things you need to do
+     * <br>
+     * This must be called before {@link net.minecraftforge.registries.RegisterEvent registration} has fired as that is when seals are registered and!
+     * @param context the context to add
+     */
+    protected static <T extends DungeonRegistrationContext> void addRegistrationContext(T context) {
+        DUNGEON_CONTEXT.add(context);
     }
 
     /**
@@ -117,7 +142,10 @@ public class SoulboundApi {
             SoulboundMod.LOGGER.info("Finished Seal Registration using Context {}, \033[0;31mTook {}\033[0;0m", sealRegistrationContext.getContextName(), stopwatch1);
         }));
         onSealRegistrationDone();
+        SoulboundMod.LOGGER.info("Making Seal Registries Immutable");
+        Stopwatch stopwatch1 = Stopwatch.createStarted();
         SealRegistry.doneRegistering();
+        SoulboundMod.LOGGER.info("Finished Making Seal Registries Immutable, \033[0;31mTook {}\033[0;0m", stopwatch1);
         SoulboundMod.LOGGER.info("Finished Registering Seals, \033[0;31mTook {}\033[0;0m", stopwatch);
     }
 
@@ -142,13 +170,88 @@ public class SoulboundApi {
             SoulboundMod.LOGGER.info("Finished Model Registration using Context {}, \033[0;31mTook {}\033[0;0m", modelRegistrationContext.getContextName(), stopwatch1);
         }));
         onModelRegistrationDone();
+
+        SoulboundMod.LOGGER.info("Making Spell Models Registry Immutable");
+        Stopwatch stopwatch1 = Stopwatch.createStarted();
         ActiveSealModels.MODELS = ImmutableMap.copyOf(ActiveSealModels.getModels());
+        SoulboundMod.LOGGER.info("Finished Making Spell Models Registry Immutable, \033[0;31mTook {}\033[0;0m", stopwatch1);
+
+        SoulboundMod.LOGGER.info("Making Wand Models Registry Immutable");
+        Stopwatch stopwatch2 = Stopwatch.createStarted();
         WandModels.MODELS = ImmutableMap.copyOf(WandModels.getModels());
+        SoulboundMod.LOGGER.info("Finished Making Wand Models Registry Immutable, \033[0;31mTook {}\033[0;0m", stopwatch2);
+
         SoulboundMod.LOGGER.info("Finished Registering Models, \033[0;31mTook {}\033[0;0m", stopwatch);
     }
 
     /**
-     * This is called after seal registration is done and before the seal map is made unmodifiable. DO NOT CALL. This calls {@link ISoulboundExtension#onSealRegistrationDone() onSealRegistrationDone}
+     * <b><h2><i>INTERNAL USE ONLY! DO NOT CALL</i></h2></b>
+     */
+    @ApiStatus.Internal
+    public static void onDungeonRegister() {
+        SoulboundMod.LOGGER.info("Registering Dungeons");
+        Stopwatch stopwatch = Stopwatch.createStarted();
+        DUNGEON_CONTEXT.forEach((dungeonRegistrationContext -> {
+            SoulboundMod.LOGGER.info("Starting Dungeon Registration Using Context {}", dungeonRegistrationContext.getContextName());
+            Stopwatch stopwatch1 = Stopwatch.createStarted();
+            EXTENSIONS.forEach((soulboundExtension -> {
+                onDungeonLevelRegister(soulboundExtension, dungeonRegistrationContext);
+                onDungeonFileLocationRegister(soulboundExtension, dungeonRegistrationContext);
+                onDungeonTypeRegister(soulboundExtension, dungeonRegistrationContext);
+            }));
+            SoulboundMod.LOGGER.info("Finished Dungeon Registration using Context {}, \033[0;31mTook {}\033[0;0m", dungeonRegistrationContext.getContextName(), stopwatch1);
+        }));
+        onDungeonLevelRegistrationDone();
+        onDungeonFileLocationRegistrationDone();
+        onDungeonTypeRegistrationDone();
+        SoulboundMod.LOGGER.info("Making Dungeon Levels Registry Immutable");
+        Stopwatch stopwatch1 = Stopwatch.createStarted();
+        DungeonLevel.ALL_LEVELS = ImmutableMultimap.copyOf(DungeonLevel.ALL_LEVELS);
+        SoulboundMod.LOGGER.info("Finished Making Dungeon Levels Registry Immutable, \033[0;31mTook {}\033[0;0m", stopwatch1);
+
+        SoulboundMod.LOGGER.info("Making Dungeon File Locations Registry Immutable");
+        Stopwatch stopwatch2 = Stopwatch.createStarted();
+        DungeonFileLocations.FILES = ImmutableMultimap.copyOf(DungeonFileLocations.FILES);
+        SoulboundMod.LOGGER.info("Finished Making Dungeon File Locations Registry Immutable, \033[0;31mTook {}\033[0;0m", stopwatch2);
+
+        SoulboundMod.LOGGER.info("Making Dungeon Types Registry Immutable");
+        Stopwatch stopwatch4 = Stopwatch.createStarted();
+        DefaultDungeonTypes.ALL_DUNGEON_TYPES = ImmutableList.copyOf(DefaultDungeonTypes.ALL_DUNGEON_TYPES);
+        SoulboundMod.LOGGER.info("Finished Making Dungeon Types Registry Immutable, \033[0;31mTook {}\033[0;0m", stopwatch4);
+        SoulboundMod.LOGGER.info("Finished Registering Dungeons, \033[0;31mTook {}\033[0;0m", stopwatch);
+    }
+
+    private static void onDungeonLevelRegister(ISoulboundExtension soulboundExtension, DungeonRegistrationContext dungeonRegistrationContext) {
+        SoulboundMod.LOGGER.info("Starting Registration Of Dungeon Levels using Extension {} and Context {}", soulboundExtension.getExtensionName(), dungeonRegistrationContext.getContextName());
+        Stopwatch stopwatch2 = Stopwatch.createStarted();
+        if (Arrays.stream(soulboundExtension.getSealContextTypes().split(", ")).anyMatch((s) -> s.equals(dungeonRegistrationContext.getContextName()))) {
+            soulboundExtension.registerDungeonLevels(dungeonRegistrationContext);
+        }
+        SoulboundMod.LOGGER.info("Finished Registration Of Dungeon Levels using Extension {} and Context {}, \033[0;31mTook {}\033[0;0m", soulboundExtension.getExtensionName(), dungeonRegistrationContext.getContextName(), stopwatch2);
+    }
+
+    private static void onDungeonFileLocationRegister(ISoulboundExtension soulboundExtension, DungeonRegistrationContext dungeonRegistrationContext) {
+        SoulboundMod.LOGGER.info("Starting Registration Of Dungeon File Locations using Extension {} and Context {}", soulboundExtension.getExtensionName(), dungeonRegistrationContext.getContextName());
+        Stopwatch stopwatch2 = Stopwatch.createStarted();
+        if (Arrays.stream(soulboundExtension.getSealContextTypes().split(", ")).anyMatch((s) -> s.equals(dungeonRegistrationContext.getContextName()))) {
+            soulboundExtension.registerDungeonFileLocations(dungeonRegistrationContext);
+        }
+        SoulboundMod.LOGGER.info("Finished Registration Of Dungeon File Locations using Extension {} and Context {}, \033[0;31mTook {}\033[0;0m", soulboundExtension.getExtensionName(), dungeonRegistrationContext.getContextName(), stopwatch2);
+    }
+
+    private static void onDungeonTypeRegister(ISoulboundExtension soulboundExtension, DungeonRegistrationContext dungeonRegistrationContext) {
+        SoulboundMod.LOGGER.info("Starting Registration Of Dungeon Types using Extension {} and Context {}", soulboundExtension.getExtensionName(), dungeonRegistrationContext.getContextName());
+        Stopwatch stopwatch2 = Stopwatch.createStarted();
+        if (Arrays.stream(soulboundExtension.getSealContextTypes().split(", ")).anyMatch((s) -> s.equals(dungeonRegistrationContext.getContextName()))) {
+            soulboundExtension.registerDungeonTypes(dungeonRegistrationContext);
+        }
+        SoulboundMod.LOGGER.info("Finished Registration Of Dungeon Types using Extension {} and Context {}, \033[0;31mTook {}\033[0;0m", soulboundExtension.getExtensionName(), dungeonRegistrationContext.getContextName(), stopwatch2);
+    }
+
+    /**
+     * This is called after seal registration is done and before the seal map is made unmodifiable.
+     * DO NOT CALL.
+     * This calls {@link ISoulboundExtension#onSealRegistrationDone() onSealRegistrationDone}
      */
     @ApiStatus.Internal
     public static void onSealRegistrationDone() {
@@ -162,12 +265,14 @@ public class SoulboundApi {
             SoulboundMod.LOGGER.info("Starting After Seal Registration Tasks For Extension {}", extension.getExtensionName());
             Stopwatch stopwatch = Stopwatch.createStarted();
             extension.onSealRegistrationDone();
-            SoulboundMod.LOGGER.info("Starting After Seal Registration Tasks For Extension {}, \033[0;31mTook {}\033[0;0m", extension.getExtensionName(), stopwatch);
+            SoulboundMod.LOGGER.info("Finished After Seal Registration Tasks For Extension {}, \033[0;31mTook {}\033[0;0m", extension.getExtensionName(), stopwatch);
         }
     }
 
     /**
-     * This is called after model registration is done and before the model map is made unmodifiable. DO NOT CALL. This calls {@link ISoulboundExtension#onModelRegistrationDone() onModelRegistrationDone}
+     * This is called after model registration is done and before the model map is made unmodifiable.
+     * DO NOT CALL.
+     * This calls {@link ISoulboundExtension#onModelRegistrationDone() onModelRegistrationDone}
      */
     @ApiStatus.Internal
     public static void onModelRegistrationDone() {
@@ -175,7 +280,50 @@ public class SoulboundApi {
             SoulboundMod.LOGGER.info("Starting After Model Registration Tasks For Extension {}", extension.getExtensionName());
             Stopwatch stopwatch = Stopwatch.createStarted();
             extension.onModelRegistrationDone();
-            SoulboundMod.LOGGER.info("Starting After Model Registration Tasks For Extension {}, \033[0;31mTook {}\033[0;0m", extension.getExtensionName(), stopwatch);
+            SoulboundMod.LOGGER.info("Finished After Model Registration Tasks For Extension {}, \033[0;31mTook {}\033[0;0m", extension.getExtensionName(), stopwatch);
+        }
+    }
+
+    /**
+     * This is called after dungeon level registration is done and before the dungeon level map is made unmodifiable.
+     * DO NOT CALL.
+     * This calls {@link ISoulboundExtension#onDungeonLevelRegistrationDone() onDungeonLevelRegistrationDone}
+     */
+    public static void onDungeonLevelRegistrationDone() {
+        for (ISoulboundExtension extension : EXTENSIONS) {
+            SoulboundMod.LOGGER.info("Starting After Dungeon Level Registration Tasks For Extension {}", extension.getExtensionName());
+            Stopwatch stopwatch = Stopwatch.createStarted();
+            extension.onDungeonLevelRegistrationDone();
+            SoulboundMod.LOGGER.info("Finished After Dungeon Level Registration Tasks For Extension {}, \033[0;31mTook {}\033[0;0m", extension.getExtensionName(), stopwatch);
+        }
+    }
+
+    /**
+     * This is called after dungeon file location registration is done and before the dungeon file location map is made unmodifiable.
+     * DO NOT CALL.
+     * This calls {@link ISoulboundExtension#onDungeonFileLocationRegistrationDone() onDungeonFileLocationRegistrationDone}
+     */
+    public static void onDungeonFileLocationRegistrationDone() {
+        for (ISoulboundExtension extension : EXTENSIONS) {
+            SoulboundMod.LOGGER.info("Starting After Dungeon File Location Registration Tasks For Extension {}", extension.getExtensionName());
+            Stopwatch stopwatch = Stopwatch.createStarted();
+            extension.onDungeonFileLocationRegistrationDone();
+            SoulboundMod.LOGGER.info("Finished After Dungeon File Location Registration Tasks For Extension {}, \033[0;31mTook {}\033[0;0m", extension.getExtensionName(), stopwatch);
+        }
+    }
+
+
+    /**
+     * This is called after dungeon type registration is done and before the dungeon type map is made unmodifiable.
+     * DO NOT CALL.
+     * This calls {@link ISoulboundExtension#onDungeonTypeRegistrationDone() onDungeonTypeRegistrationDone}
+     */
+    public static void onDungeonTypeRegistrationDone() {
+        for (ISoulboundExtension extension : EXTENSIONS) {
+            SoulboundMod.LOGGER.info("Starting After Dungeon Type Registration Tasks For Extension {}", extension.getExtensionName());
+            Stopwatch stopwatch = Stopwatch.createStarted();
+            extension.onDungeonTypeRegistrationDone();
+            SoulboundMod.LOGGER.info("Finished After Dungeon Type Registration Tasks For Extension {}, \033[0;31mTook {}\033[0;0m", extension.getExtensionName(), stopwatch);
         }
     }
 
@@ -189,6 +337,58 @@ public class SoulboundApi {
         for (ISoulboundExtension extension : EXTENSIONS) {
             if (!extension.canRegisterSeal(seal)) {
                 SoulboundMod.LOGGER.info("Cannot Register Seal {}, Extension {} Forbids It", seal.getId(), extension.getExtensionName());
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Internal method that calls {@link ISoulboundExtension#canRegisterDungeonType}
+     * @param type the type that is being registered
+     * @return whether the dungeon type will be registered
+     */
+    @ApiStatus.Internal
+    public static boolean canRegisterDungeonType(DungeonType type) {
+        for (ISoulboundExtension extension : EXTENSIONS) {
+            if (!extension.canRegisterDungeonType(type)) {
+                SoulboundMod.LOGGER.info("Cannot Register Dungeon Type {}, Extension {} Forbids It", type.id(), extension.getExtensionName());
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Internal method that calls {@link ISoulboundExtension#canRegisterDungeonLevel}
+     * @param dungeonLevel the level that is being registered
+     * @param size the size of the level
+     * @param level the level of the dungeon level
+     * @return whether the dungeon level will be registered
+     */
+    @ApiStatus.Internal
+    public static boolean canRegisterDungeonLevel(DungeonLevel dungeonLevel, int size, int level) {
+        for (ISoulboundExtension extension : EXTENSIONS) {
+            if (!extension.canRegisterDungeonLevel(dungeonLevel, size, level)) {
+                SoulboundMod.LOGGER.info("Cannot Register Dungeon Level {} Of Size {} And Level {}, Extension {} Forbids It", dungeonLevel.getName(), size, level, extension.getExtensionName());
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Internal method that calls {@link ISoulboundExtension#canRegisterDungeonFileLocation}
+     * @param size size of this location
+     * @param level the level of this location
+     * @param location the location of the file to register
+     * @return whether the dungeon file location will be registered
+     */
+    @ApiStatus.Internal
+    public static boolean canRegisterDungeonFileLocation(int size, int level, ResourceLocation location) {
+        for (ISoulboundExtension extension : EXTENSIONS) {
+            if (!extension.canRegisterDungeonFileLocation(size, level, location)) {
+                SoulboundMod.LOGGER.info("Cannot Register Dungeon File Location {} Of Size {} And Level {}, Extension {} Forbids It", location, size, level, extension.getExtensionName());
                 return false;
             }
         }
@@ -238,6 +438,45 @@ public class SoulboundApi {
             Stopwatch stopwatch = Stopwatch.createStarted();
             extension.onRegisterSeal(seal);
             SoulboundMod.LOGGER.info("Finished On Register Tasks For Seal {} in extension {}, \033[0;31mTook {}\033[0;0m", seal.getId(), extension.getExtensionName(), stopwatch);
+        }
+    }
+
+    /**
+     * called after a dungeon level has been registered
+     * calls {@link ISoulboundExtension#onRegisterDungeonLevel onRegisterDungeonLevel}
+     */
+    public static void onRegisterDungeonLevel(DungeonLevel dungeonLevel, int size, int level) {
+        for (ISoulboundExtension extension: EXTENSIONS) {
+            SoulboundMod.LOGGER.info("Starting On Register Tasks For Dungeon Level {} (Size {}, Level {}) in extension {}", dungeonLevel.getName(), size, level, extension.getExtensionName());
+            Stopwatch stopwatch = Stopwatch.createStarted();
+            extension.onRegisterDungeonLevel(dungeonLevel, size, level);
+            SoulboundMod.LOGGER.info("Finished On Register Tasks For Dungeon Level {} (Size {}, Level {}) in extension {}, \033[0;31mTook {}\033[0;0m", dungeonLevel.getName(), size, level, extension.getExtensionName(), stopwatch);
+        }
+    }
+
+    /**
+     * called after a dungeon file location has been registered
+     * calls {@link ISoulboundExtension#onRegisterDungeonFileLocation onRegisterDungeonFileLocation}
+     */
+    public static void onRegisterDungeonFileLocation(int size, int level, ResourceLocation location) {
+        for (ISoulboundExtension extension: EXTENSIONS) {
+            SoulboundMod.LOGGER.info("Starting On Register Tasks For Dungeon File Location {} (Size {}, Level {}) in extension {}", location, size, level, extension.getExtensionName());
+            Stopwatch stopwatch = Stopwatch.createStarted();
+            extension.onRegisterDungeonFileLocation(size, level, location);
+            SoulboundMod.LOGGER.info("Finished On Register Tasks For Dungeon File Location {} (Size {}, Level {}) in extension {}, \033[0;31mTook {}\033[0;0m", location, size, level, extension.getExtensionName(), stopwatch);
+        }
+    }
+
+    /**
+     * called after a dungeon type has been registered
+     * calls {@link ISoulboundExtension#onRegisterDungeonType onRegisterDungeonType}
+     */
+    public static void onRegisterDungeonType(DungeonType type) {
+        for (ISoulboundExtension extension: EXTENSIONS) {
+            SoulboundMod.LOGGER.info("Starting On Register Tasks For Dungeon Type {} in extension {}", type.id(), extension.getExtensionName());
+            Stopwatch stopwatch = Stopwatch.createStarted();
+            extension.onRegisterDungeonType(type);
+            SoulboundMod.LOGGER.info("Starting On Register Tasks For Dungeon Type {} in extension {}, \033[0;31mTook {}\033[0;0m", type.id(), extension.getExtensionName(), stopwatch);
         }
     }
 
@@ -338,10 +577,10 @@ public class SoulboundApi {
             Stopwatch stopwatch2 = Stopwatch.createStarted();
             registerExtension(extension);
             SoulboundMod.LOGGER.info("Finished Registering Extension {}, \033[0;31mTook {}\033[0;0m", extension.getExtensionName(), stopwatch2);
-            SoulboundMod.LOGGER.info("Executing After Register Tasks For Extension {}", extension.getExtensionName());
+            SoulboundMod.LOGGER.info("Executing On Register Tasks For Extension {}", extension.getExtensionName());
             Stopwatch stopwatch3 = Stopwatch.createStarted();
             extension.onRegistered();
-            SoulboundMod.LOGGER.info("Finished After Register Tasks Extension {}, \033[0;31mTook {}\033[0;0m", extension.getExtensionName(), stopwatch3);
+            SoulboundMod.LOGGER.info("Finished On Register Tasks Extension {}, \033[0;31mTook {}\033[0;0m", extension.getExtensionName(), stopwatch3);
         });
         SoulboundMod.LOGGER.info("Finished Registering Found Extensions, \033[0;31mTook {}\033[0;0m", registerStopwatch);
         SoulboundMod.LOGGER.info("Finished Automatically Registering Extensions, \033[0;31mTotal Time Taken: {}\033[0;0m", stopwatch);

@@ -1,20 +1,18 @@
 package net.vakror.soulbound.mod.seal.function.amplify;
 
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.item.ItemStack;
 import net.vakror.soulbound.mod.seal.ISeal;
-import net.vakror.soulbound.mod.seal.SealRegistry;
-import net.vakror.soulbound.mod.seal.function.amplify.damage.DamageAmplifyFunction;
-import net.vakror.soulbound.mod.seal.function.amplify.damage.aoe.AoeAmplifyFunction;
+import net.vakror.soulbound.mod.seal.function.use.UseFunction;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Objects;
 
 public abstract class AmplifyFunction {
     protected List<ISeal> affectedSeals;
-
-    public AmplifyFunction(@Nullable List<ISeal> affectedSeals) {
-        this.affectedSeals = Objects.requireNonNullElseGet(affectedSeals, () -> (List<ISeal>) SealRegistry.allSeals.values());
-    }
 
     public List<ISeal> getAffectedSeals() {
         return affectedSeals;
@@ -24,11 +22,16 @@ public abstract class AmplifyFunction {
         this.affectedSeals = affectedSeals;
     }
 
-    public boolean isDamage() {
-        return this instanceof DamageAmplifyFunction && !isAoe();
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers() {
+        return ImmutableMultimap.of();
     }
 
-    public boolean isAoe() {
-        return this instanceof AoeAmplifyFunction;
+    public void executeOther(ItemStack stack) {
+
+    }
+
+    @Nullable
+    public UseFunction getUseFunction() {
+        return null;
     }
 }

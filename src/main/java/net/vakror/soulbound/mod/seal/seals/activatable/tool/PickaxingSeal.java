@@ -3,9 +3,6 @@ package net.vakror.soulbound.mod.seal.seals.activatable.tool;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.context.UseOnContext;
-import net.vakror.soulbound.mod.seal.SealProperty;
-
-import java.util.List;
 
 public class PickaxingSeal extends ToolSeal {
     public PickaxingSeal() {
@@ -20,11 +17,5 @@ public class PickaxingSeal extends ToolSeal {
     @Override
     public float getDamage() {
         return 4.5f;
-    }
-
-    @Override
-    public List<SealProperty> properties() {
-        properties.add(new SealProperty("passive"));
-        return super.properties();
     }
 }

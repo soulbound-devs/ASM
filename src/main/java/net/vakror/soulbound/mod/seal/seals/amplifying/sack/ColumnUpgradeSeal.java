@@ -1,19 +1,10 @@
 package net.vakror.soulbound.mod.seal.seals.amplifying.sack;
 
-import net.vakror.soulbound.mod.seal.SealProperty;
-import net.vakror.soulbound.mod.seal.type.amplifying.IntegerSackAmplifyingSeal;
-import net.vakror.soulbound.mod.util.ArithmeticActionType;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.vakror.soulbound.mod.seal.type.amplifying.SackAmplifyingSealWithAmount;
 
-import java.util.List;
-
-public class ColumnUpgradeSeal extends IntegerSackAmplifyingSeal {
-    public ColumnUpgradeSeal(int tier, int amount, ArithmeticActionType actionType) {
+public class ColumnUpgradeSeal extends SackAmplifyingSealWithAmount {
+    public ColumnUpgradeSeal(int tier, int amount, AttributeModifier.Operation actionType) {
         super("column_tier", tier, amount, actionType);
-    }
-
-    @Override
-    public List<SealProperty> properties() {
-        properties.add(new SealProperty("column"));
-        return super.properties();
     }
 }

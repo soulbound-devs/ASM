@@ -27,10 +27,9 @@ public class ActivatableSealableItem extends SealableItem {
         if (!pLevel.isClientSide) {
             if (pPlayer.isShiftKeyDown()) {
                 switchSeal(pPlayer, pPlayer.getItemInHand(pUsedHand));
-            }
-            else {
+            } else {
                 activateSeal(pPlayer.getItemInHand(pUsedHand));
-            };
+            }
         }
         return super.use(pLevel, pPlayer, pUsedHand);
     }

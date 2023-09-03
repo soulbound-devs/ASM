@@ -7,21 +7,21 @@ import java.util.Arrays;
 
 public class MultiRoomDungeonLevel extends DungeonLevel {
     private int rooms;
-    private int[] mobs = new int[0];
+    private int[] mobs;
     /**
      * Value from 1 - {@link #rooms}
      */
     private int currentRoom;
 
-    public MultiRoomDungeonLevel(int rooms, int level, int size, int currentRoom) {
-        super(size, level);
+    public MultiRoomDungeonLevel(String name, int rooms, int level, int size, int currentRoom) {
+        super(size, level, name);
         this.rooms = rooms;
         this.mobs = new int[rooms];
         this.currentRoom = currentRoom;
     }
 
-    public MultiRoomDungeonLevel(int rooms, int[] mobs, int level, int size, int currentRoom) {
-        super(size, level);
+    public MultiRoomDungeonLevel(String name, int rooms, int[] mobs, int level, int size, int currentRoom) {
+        super(size, level, name);
         this.rooms = rooms;
         this.mobs = mobs;
         this.currentRoom = currentRoom;

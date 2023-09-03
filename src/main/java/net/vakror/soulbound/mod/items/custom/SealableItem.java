@@ -18,14 +18,14 @@ import net.vakror.soulbound.mod.capability.wand.ItemSeal;
 import net.vakror.soulbound.mod.capability.wand.ItemSealProvider;
 import net.vakror.soulbound.mod.items.ModTiers;
 import net.vakror.soulbound.mod.items.custom.seals.SealItem;
-import net.vakror.soulbound.mod.seal.*;
-import net.vakror.soulbound.mod.seal.function.amplify.damage.DamageAmplifyFunction;
+import net.vakror.soulbound.mod.seal.ISeal;
+import net.vakror.soulbound.mod.seal.SealRegistry;
+import net.vakror.soulbound.mod.seal.SealType;
+import net.vakror.soulbound.mod.seal.Tooltip;
 import net.vakror.soulbound.mod.seal.tier.sealable.ISealableTier;
 import net.vakror.soulbound.mod.seal.type.ActivatableSeal;
-import net.vakror.soulbound.mod.seal.type.amplifying.ItemAmplifyingSeal;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -47,30 +47,6 @@ public class SealableItem extends DiggerItem {
             }
         });
         return toReturn.get();
-    }
-
-    public boolean hasSealWithProperty(String propertyId) {
-        AtomicBoolean toReturn = new AtomicBoolean(false);
-        stack.getCapability(ItemSealProvider.SEAL).ifPresent(wand -> {
-            wand.getAllActivatableSeals().forEach((seal -> {
-                if (seal.properties().contains(new SealProperty(propertyId))) {
-                    toReturn.set(true);
-                }
-            }));
-        });
-        return toReturn.get();
-    }
-
-    public List<ISeal> getAllSealsWithProperty(String propertyId) {
-        List<ISeal> seals = new ArrayList<>();
-        stack.getCapability(ItemSealProvider.SEAL).ifPresent(wand -> {
-            wand.getAllSeals().forEach((seal -> {
-                if (seal.properties().contains(new SealProperty(propertyId))) {
-                    seals.add(seal);
-                }
-            }));
-        });
-        return seals;
     }
 
     @Override
@@ -366,22 +342,6 @@ public class SealableItem extends DiggerItem {
         if (wand.getActiveSeal() != null) {
             damage[0] = ((ActivatableSeal) wand.getActiveSeal()).getDamage();
         }
-        wand.getAmplifyingSeals().forEach((seal -> {
-            if (seal instanceof ItemAmplifyingSeal amplificationSeal) {
-                amplificationSeal.getAmplifyFunctions().forEach((amplifyFunction -> {
-                    if (amplifyFunction.isDamage()) {
-                        DamageAmplifyFunction function = (DamageAmplifyFunction) amplifyFunction;
-                        switch (function.getIncreaseType()) {
-                            case ADD -> damage[0] += function.getAmount();
-                            case SUBTRACT -> damage[0] -= function.getAmount();
-                            case MULTIPLY -> damage[0] *= function.getAmount();
-                            case DIVIDE -> damage[0] /= function.getAmount();
-                            case POW -> damage[0] = (float) Math.pow(damage[0], function.getAmount());
-                        }
-                    }
-                }));
-            }
-        }));
         return damage[0] + attackDamageBaseline;
     }
 }

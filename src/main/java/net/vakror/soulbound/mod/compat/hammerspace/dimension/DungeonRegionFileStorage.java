@@ -8,10 +8,8 @@ import javax.annotation.Nullable;
 import java.io.IOException;
 import java.nio.file.Path;
 
-// ensure the hyperbox dimensions only serialize the one chunk they have to reduce hard drive space per hyperbox 
+// ensure the dungeon dimensions only serialize the 16 chunks they have to reduce hard drive space per dungeon
 public class DungeonRegionFileStorage extends RegionFileStorage {
-	public static final ChunkPos CHUNKPOS = new ChunkPos(0,0);
-
 	public DungeonRegionFileStorage(Path path, boolean sync) {
 		super(path, sync);
 	}

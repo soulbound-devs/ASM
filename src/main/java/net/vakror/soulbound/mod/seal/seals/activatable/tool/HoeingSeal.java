@@ -3,9 +3,6 @@ package net.vakror.soulbound.mod.seal.seals.activatable.tool;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.context.UseOnContext;
-import net.vakror.soulbound.mod.seal.SealProperty;
-
-import java.util.List;
 
 public class HoeingSeal extends ToolSeal {
     public HoeingSeal() {
@@ -20,12 +17,5 @@ public class HoeingSeal extends ToolSeal {
     @Override
     public float getDamage() {
         return 1f;
-    }
-
-    @Override
-    public List<SealProperty> properties() {
-        properties.add(new SealProperty("tool"));
-        properties.add(new SealProperty("passive"));
-        return super.properties();
     }
 }

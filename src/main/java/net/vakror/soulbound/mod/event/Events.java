@@ -38,11 +38,9 @@ import net.vakror.soulbound.mod.capability.wand.ItemSealProvider;
 import net.vakror.soulbound.mod.entity.ModEntities;
 import net.vakror.soulbound.mod.entity.client.BroomModel;
 import net.vakror.soulbound.mod.entity.client.BroomRenderer;
-import net.vakror.soulbound.mod.items.custom.ActivatableSealableItem;
 import net.vakror.soulbound.mod.items.custom.SealableItem;
 import net.vakror.soulbound.mod.packets.ModPackets;
 import net.vakror.soulbound.mod.packets.SyncSoulS2CPacket;
-import net.vakror.soulbound.mod.seal.tier.seal.IntegerTiered;
 import net.vakror.soulbound.mod.soul.PlayerSoul;
 import net.vakror.soulbound.mod.soul.PlayerSoulProvider;
 
@@ -122,23 +120,6 @@ public class Events {
             }
         }
 
-        @SubscribeEvent
-        public static void adjustBreakSpeed(PlayerEvent.BreakSpeed event) {
-            float[] miningSpeed = new float[]{event.getOriginalSpeed()};
-            ItemStack item = event.getEntity().getItemInHand(InteractionHand.MAIN_HAND);
-            if (item.getItem() instanceof ActivatableSealableItem activatable) {
-                if (item.isCorrectToolForDrops(event.getState())) {
-                    activatable.getAllSealsWithProperty("haste").forEach((seal -> {
-                        if (seal instanceof IntegerTiered tiered) {
-                            miningSpeed[0] += (tiered.getAmount());
-                            int a = tiered.getAmount();
-                        }
-                    }));
-                    event.setNewSpeed(miningSpeed[0]);
-                }
-            }
-        }
-
         public static <T extends Entity> List<T> getNearbyEntities(final LevelAccessor world, final Vec3i pos, final float radius, final Class<T> entityClass) {
             final AABB selectBox = new AABB(0.0, 0.0, 0.0, 1.0, 1.0, 1.0).move(pos.getX(), pos.getY(), pos.getZ()).inflate(radius);
             return world.getEntitiesOfClass(entityClass, selectBox, entity -> entity.isAlive() && !entity.isSpectator());
@@ -202,11 +183,15 @@ public class Events {
             @SubscribeEvent
             public static void registerExtension(RegisterEvent event) {
                 if (Objects.equals(event.getForgeRegistry(), ForgeRegistries.ITEMS)) {
+                    SoulboundMod.LOGGER.info("Started Registration For Soulbound API");
                     Stopwatch apiStopwatch = Stopwatch.createStarted();
                     SoulboundApi.addDefaultContexts();
                     SoulboundApi.registerAnnotatedExtensions();
                     SoulboundApi.onSealsRegister();
                     SoulboundApi.onModelsRegister();
+//                    if (ModList.get().isLoaded("hammerspace")) {
+                        SoulboundApi.onDungeonRegister();
+//                    }
                     apiStopwatch.stop();
                     SoulboundMod.LOGGER.info("Finished All Registration, \033[0;31mTook {}\033[0;0m", apiStopwatch);
                 }

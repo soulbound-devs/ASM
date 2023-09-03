@@ -3,6 +3,7 @@ package net.vakror.soulbound.mod.seal.tier.seal;
 import net.vakror.soulbound.mod.seal.ISeal;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public interface Tiered {
 
@@ -21,4 +22,6 @@ public interface Tiered {
      * @return the max tier for this seal
      */
     public String getTierId();
+
+    public List<ISeal> getAllSeals();
 }

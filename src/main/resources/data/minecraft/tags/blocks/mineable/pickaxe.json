@@ -1,7 +1,6 @@
 {
   "replace": false,
   "values": [
-    "soulbound:dungeon_key_block",
     "soulbound:tungsten_ore",
     "soulbound:soul_solidifier"
   ]

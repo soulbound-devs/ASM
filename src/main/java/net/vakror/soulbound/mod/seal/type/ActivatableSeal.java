@@ -7,9 +7,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.context.UseOnContext;
 import net.vakror.soulbound.mod.seal.AttributeModifiying;
-import net.vakror.soulbound.mod.seal.SealProperty;
-
-import java.util.List;
 
 public abstract class ActivatableSeal extends BaseSeal implements AttributeModifiying {
 
@@ -35,11 +32,5 @@ public abstract class ActivatableSeal extends BaseSeal implements AttributeModif
     @Override
     public boolean canBeActivated() {
         return true;
-    }
-
-    @Override
-    public List<SealProperty> properties() {
-        properties.add(new SealProperty("activatable"));
-        return super.properties();
     }
 }

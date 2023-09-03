@@ -72,7 +72,7 @@ public class Dungeon {
         nbt.putInt("maxLevels", maxLevels);
         nbt.putInt("levelsGenerated", levelsGenerated);
         if (type != null) {
-            nbt.putInt("type", type.getIndex());
+            nbt.putString("type", type.id());
         } if (pos != null) {
             nbt.put("pos", BlockPos.CODEC.encodeStart(NbtOps.INSTANCE, pos).resultOrPartial((error) -> {throw new IllegalStateException(error);}).get());
         }
@@ -83,12 +83,12 @@ public class Dungeon {
         canEnter = nbt.getBoolean("canEnter");
         levelsBeaten = nbt.getInt("levelsBeaten");
         if (nbt.contains("currentLevel")) {
-            currentLevel = new DungeonLevel(0, 0).deserializeNbt(nbt.getCompound("currentLevel"));
+            currentLevel = new DungeonLevel(0, 0, "").deserializeNbt(nbt.getCompound("currentLevel"));
         }
         maxLevels = nbt.getInt("maxLevels");
         levelsGenerated = nbt.getInt("levelsGenerated");
         if (nbt.contains("type")) {
-            type = DungeonType.getTypeFromIndex(nbt.getInt("type"));
+            type = DungeonType.getTypeFromId(nbt.getString("type"));
         } if (nbt.contains("pos")) {
             pos = BlockPos.CODEC.parse(NbtOps.INSTANCE, nbt.getCompound("pos")).resultOrPartial((error) -> {throw new IllegalStateException(error);}).get();
         }

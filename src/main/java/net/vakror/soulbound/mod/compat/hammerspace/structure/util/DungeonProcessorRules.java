@@ -7,7 +7,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.AlwaysTrueTes
 import net.minecraft.world.level.levelgen.structure.templatesystem.ProcessorRule;
 import net.minecraft.world.level.levelgen.structure.templatesystem.RandomBlockMatchTest;
 import net.vakror.soulbound.mod.compat.hammerspace.blocks.ModDungeonBlocks;
-import net.vakror.soulbound.mod.compat.hammerspace.structure.type.DungeonType;
+import net.vakror.soulbound.mod.compat.hammerspace.structure.type.DefaultDungeonTypes;
 
 import java.util.List;
 
@@ -89,11 +89,11 @@ public class DungeonProcessorRules {
                 .add(new ProcessorRule(new RandomBlockMatchTest(ModDungeonBlocks.DUNGEON_BORDER.get(), 1f), AlwaysTrueTest.INSTANCE, Blocks.END_STONE.defaultBlockState())).build();
 
 
-        DungeonType.DARK_CREEPY.setRules(CREEPY_DEEPSLATE);
-        DungeonType.DEEP_BLOOD.setRules(DEEP_BLOOD);
-        DungeonType.OLD_RUINS.setRules(OLD_RUINS);
-        DungeonType.AMETHYST_VOID.setRules(AMETHYST_VOID);
-        DungeonType.GILDED_HOARD.setRules(GILDED_HOARD);
-        DungeonType.ANCIENT_ENDER.setRules(ANCIENT_ENDER);
+        DefaultDungeonTypes.DARK_CREEPY.setRules(CREEPY_DEEPSLATE);
+        DefaultDungeonTypes.DEEP_BLOOD.setRules(DEEP_BLOOD);
+        DefaultDungeonTypes.OLD_RUINS.setRules(OLD_RUINS);
+        DefaultDungeonTypes.AMETHYST_VOID.setRules(AMETHYST_VOID);
+        DefaultDungeonTypes.GILDED_HOARD.setRules(GILDED_HOARD);
+        DefaultDungeonTypes.ANCIENT_ENDER.setRules(ANCIENT_ENDER);
     }
 }

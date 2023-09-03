@@ -1,94 +1,46 @@
 package net.vakror.soulbound.mod.seal.seals.amplifying.wand.haste;
 
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.vakror.soulbound.mod.seal.ISeal;
-import net.vakror.soulbound.mod.seal.SealProperty;
 import net.vakror.soulbound.mod.seal.SealRegistry;
-import net.vakror.soulbound.mod.seal.tier.seal.IntegerTiered;
-import net.vakror.soulbound.mod.seal.type.amplifying.AmplifyingSeal;
+import net.vakror.soulbound.mod.seal.function.amplify.HasteAmplifyFunction;
+import net.vakror.soulbound.mod.seal.tier.seal.TieredWithAmount;
+import net.vakror.soulbound.mod.seal.type.amplifying.ItemAmplifyingSeal;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public abstract class HasteSeal extends AmplifyingSeal implements IntegerTiered {
+public class HasteSeal extends ItemAmplifyingSeal implements TieredWithAmount {
+    private final int tier;
     public HasteSeal(int tier) {
         super("mining_speed_tier_" + tier);
+        this.tier = tier;
+        addAmplifyFunction(new HasteAmplifyFunction(getAmount(tier), AttributeModifier.Operation.ADDITION));
     }
 
     @Override
-    public List<SealProperty> properties() {
-        properties.add(new SealProperty("haste"));
-        properties.add(new SealProperty("tier_one"));
-        properties.add(new SealProperty("amplifying"));
-        return super.properties();
+    public float getAmount(int tier) {
+        return (float) tier / 2;
+    }
+
+    @Nullable
+    @Override
+    public ISeal getNextSeal() {
+        return SealRegistry.allSeals.getOrDefault("mining_speed_tier_" + (tier + 1), null);
+    }
+
+    @Override
+    public int getTier() {
+        return tier;
     }
 
     @Override
     public String getTierId() {
-        return "haste";
+        return "soulbound:haste";
     }
 
-    public static class HasteSealTierOne extends HasteSeal{
-
-        public HasteSealTierOne() {
-            super(1);
-        }
-
-        @Override
-        public int getAmount() {
-            return 8;
-        }
-
-        @Override
-        public ISeal getNextSeal() {
-            return SealRegistry.amplifyingSeals.get("mining_speed_tier_2");
-        }
-
-        @Override
-        public int getTier() {
-            return 1;
-        }
-    }
-
-    public static class HasteSealTierTwo extends HasteSeal{
-
-        public HasteSealTierTwo() {
-            super(2);
-        }
-
-        @Override
-        public int getAmount() {
-            return 24;
-        }
-
-        @Override
-        public ISeal getNextSeal() {
-            return SealRegistry.amplifyingSeals.get("mining_speed_tier_3");
-        }
-
-        @Override
-        public int getTier() {
-            return 2;
-        }
-    }
-
-    public static class HasteSealTierThree extends HasteSeal{
-
-        public HasteSealTierThree() {
-            super(3);
-        }
-
-        @Override
-        public int getAmount() {
-            return 36;
-        }
-
-        @Override
-        public ISeal getNextSeal() {
-            return null;
-        }
-
-        @Override
-        public int getTier() {
-            return 3;
-        }
+    @Override
+    public List<ISeal> getAllSeals() {
+        return List.of(new HasteSeal(1), new HasteSeal(2), new HasteSeal(3));
     }
 }

@@ -12,7 +12,6 @@ import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.event.server.ServerStoppedEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -31,8 +30,6 @@ import net.vakror.soulbound.mod.compat.hammerspace.entity.ModDungeonEntities;
 import net.vakror.soulbound.mod.compat.hammerspace.items.ModDungeonItems;
 import net.vakror.soulbound.mod.compat.hammerspace.structure.ModStructures;
 import net.vakror.soulbound.mod.compat.hammerspace.structure.piece.ModDungeonPieces;
-import net.vakror.soulbound.mod.compat.hammerspace.structure.util.DungeonFileLocations;
-import net.vakror.soulbound.mod.compat.hammerspace.structure.util.DungeonSpawnPointUtils;
 import net.vakror.soulbound.mod.entity.ModEntities;
 import net.vakror.soulbound.mod.items.ModItems;
 import net.vakror.soulbound.mod.model.wand.WandModelLoader;
@@ -56,11 +53,10 @@ public class SoulboundMod {
     public static SoulboundMod instance;
     public MinecraftServer server;
 
+    //TODO: allow for non-square dungeon shapes and non-default heights
     public SoulboundMod() {
         instance = this;
 
-        DungeonFileLocations.init();
-        DungeonSpawnPointUtils.init();
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
 
@@ -75,13 +71,13 @@ public class SoulboundMod {
         ModDungeonPieces.register(modEventBus);
 
 
-        if (ModList.get().isLoaded("hammerspace")) {
+//        if (ModList.get().isLoaded("hammerspace")) {
             ModDungeonItems.register(modEventBus);
             ModDungeonBlocks.register(modEventBus);
             ModDungeonBlockEntities.register(modEventBus);
             ModDungeonEntities.register(modEventBus);
             Dimensions.register();
-        }
+//        }
 
         ModSoul.register(modEventBus);
         ModSoulTypes.register(modEventBus);
@@ -129,9 +125,9 @@ public class SoulboundMod {
         }
         @SubscribeEvent
         public static void entityAttributeEvent(EntityAttributeCreationEvent event) {
-            if (ModList.get().isLoaded("hammerspace")) {
+//            if (ModList.get().isLoaded("hammerspace")) {
                 event.put(ModDungeonEntities.GOBLAGGER.get(), GoblaggerEntity.setAttributes());
-            }
+//            }
         }
 
 
