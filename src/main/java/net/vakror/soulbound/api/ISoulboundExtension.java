@@ -85,6 +85,11 @@ public interface ISoulboundExtension {
     default void onModelRegistrationDone() {}
 
     /**
+     * Used to modify registries
+     */
+    default void onModify() {}
+
+    /**
      * This is called when dungeon level registration is done but before the dungeon level map is made unmodifiable.
      * Use this to do other stuff that has to run after all dungeon levels have been registered but before the registration step is done
      */

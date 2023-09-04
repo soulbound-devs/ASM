@@ -190,6 +190,8 @@ public class Events {
                     SoulboundApi.registerAnnotatedExtensions();
                     SoulboundApi.onSealsRegister();
                     SoulboundApi.onModelsRegister();
+                    SoulboundApi.onModify();
+                    SoulboundApi.makeRegistriesImmutable();
                     if (ModList.get().isLoaded("hammerspace")) {
                         SoulboundApi.onDungeonRegister();
                     }

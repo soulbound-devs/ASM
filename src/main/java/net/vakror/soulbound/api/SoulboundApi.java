@@ -142,10 +142,6 @@ public class SoulboundApi {
             SoulboundMod.LOGGER.info("Finished Seal Registration using Context {}, \033[0;31mTook {}\033[0;0m", sealRegistrationContext.getContextName(), stopwatch1);
         }));
         onSealRegistrationDone();
-        SoulboundMod.LOGGER.info("Making Seal Registries Immutable");
-        Stopwatch stopwatch1 = Stopwatch.createStarted();
-        SealRegistry.doneRegistering();
-        SoulboundMod.LOGGER.info("Finished Making Seal Registries Immutable, \033[0;31mTook {}\033[0;0m", stopwatch1);
         SoulboundMod.LOGGER.info("Finished Registering Seals, \033[0;31mTook {}\033[0;0m", stopwatch);
     }
 
@@ -171,6 +167,35 @@ public class SoulboundApi {
         }));
         onModelRegistrationDone();
 
+        SoulboundMod.LOGGER.info("Finished Registering Models, \033[0;31mTook {}\033[0;0m", stopwatch);
+    }
+
+    /**
+     * <b><h2><i>INTERNAL USE ONLY! DO NOT CALL</i></h2></b>
+     */
+    @ApiStatus.Internal
+    public static void onModify() {
+        SoulboundMod.LOGGER.info("Starting On Modify Actions");
+        Stopwatch stopwatch = Stopwatch.createStarted();
+            EXTENSIONS.forEach((soulboundExtension -> {
+                SoulboundMod.LOGGER.info("Starting On Modify Actions using Extension {}", soulboundExtension.getExtensionName());
+                Stopwatch stopwatch2 = Stopwatch.createStarted();
+                soulboundExtension.onModify();
+                SoulboundMod.LOGGER.info("Finished On Modify Actions using Extension {}, \033[0;31mTook {}\033[0;0m", soulboundExtension.getExtensionName(), stopwatch2);
+        }));
+        SoulboundMod.LOGGER.info("Finished On Modify Actions, \033[0;31mTook {}\033[0;0m", stopwatch);
+    }
+
+    /**
+     * Makes all registries immutable
+     */
+    @ApiStatus.Internal
+    public static void makeRegistriesImmutable() {
+        SoulboundMod.LOGGER.info("Making Seal Registries Immutable");
+        Stopwatch stopwatch = Stopwatch.createStarted();
+        SealRegistry.doneRegistering();
+        SoulboundMod.LOGGER.info("Finished Making Seal Registries Immutable, \033[0;31mTook {}\033[0;0m", stopwatch);
+
         SoulboundMod.LOGGER.info("Making Spell Models Registry Immutable");
         Stopwatch stopwatch1 = Stopwatch.createStarted();
         ActiveSealModels.MODELS = ImmutableMap.copyOf(ActiveSealModels.getModels());
@@ -181,7 +206,20 @@ public class SoulboundApi {
         WandModels.MODELS = ImmutableMap.copyOf(WandModels.getModels());
         SoulboundMod.LOGGER.info("Finished Making Wand Models Registry Immutable, \033[0;31mTook {}\033[0;0m", stopwatch2);
 
-        SoulboundMod.LOGGER.info("Finished Registering Models, \033[0;31mTook {}\033[0;0m", stopwatch);
+        SoulboundMod.LOGGER.info("Making Dungeon Levels Registry Immutable");
+        Stopwatch stopwatch3 = Stopwatch.createStarted();
+        DungeonLevel.ALL_LEVELS = ImmutableMultimap.copyOf(DungeonLevel.ALL_LEVELS);
+        SoulboundMod.LOGGER.info("Finished Making Dungeon Levels Registry Immutable, \033[0;31mTook {}\033[0;0m", stopwatch3);
+
+        SoulboundMod.LOGGER.info("Making Dungeon File Locations Registry Immutable");
+        Stopwatch stopwatch4 = Stopwatch.createStarted();
+        DungeonFileLocations.FILES = ImmutableMultimap.copyOf(DungeonFileLocations.FILES);
+        SoulboundMod.LOGGER.info("Finished Making Dungeon File Locations Registry Immutable, \033[0;31mTook {}\033[0;0m", stopwatch4);
+
+        SoulboundMod.LOGGER.info("Making Dungeon Types Registry Immutable");
+        Stopwatch stopwatch5 = Stopwatch.createStarted();
+        DefaultDungeonTypes.ALL_DUNGEON_TYPES = ImmutableList.copyOf(DefaultDungeonTypes.ALL_DUNGEON_TYPES);
+        SoulboundMod.LOGGER.info("Finished Making Dungeon Types Registry Immutable, \033[0;31mTook {}\033[0;0m", stopwatch5);
     }
 
     /**
@@ -204,20 +242,6 @@ public class SoulboundApi {
         onDungeonLevelRegistrationDone();
         onDungeonFileLocationRegistrationDone();
         onDungeonTypeRegistrationDone();
-        SoulboundMod.LOGGER.info("Making Dungeon Levels Registry Immutable");
-        Stopwatch stopwatch1 = Stopwatch.createStarted();
-        DungeonLevel.ALL_LEVELS = ImmutableMultimap.copyOf(DungeonLevel.ALL_LEVELS);
-        SoulboundMod.LOGGER.info("Finished Making Dungeon Levels Registry Immutable, \033[0;31mTook {}\033[0;0m", stopwatch1);
-
-        SoulboundMod.LOGGER.info("Making Dungeon File Locations Registry Immutable");
-        Stopwatch stopwatch2 = Stopwatch.createStarted();
-        DungeonFileLocations.FILES = ImmutableMultimap.copyOf(DungeonFileLocations.FILES);
-        SoulboundMod.LOGGER.info("Finished Making Dungeon File Locations Registry Immutable, \033[0;31mTook {}\033[0;0m", stopwatch2);
-
-        SoulboundMod.LOGGER.info("Making Dungeon Types Registry Immutable");
-        Stopwatch stopwatch4 = Stopwatch.createStarted();
-        DefaultDungeonTypes.ALL_DUNGEON_TYPES = ImmutableList.copyOf(DefaultDungeonTypes.ALL_DUNGEON_TYPES);
-        SoulboundMod.LOGGER.info("Finished Making Dungeon Types Registry Immutable, \033[0;31mTook {}\033[0;0m", stopwatch4);
         SoulboundMod.LOGGER.info("Finished Registering Dungeons, \033[0;31mTook {}\033[0;0m", stopwatch);
     }
 

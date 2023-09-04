@@ -176,6 +176,7 @@ public class SealRegistrationContext implements IRegistrationContext {
      * @param name the name of the seal to unregister
      * @param type the type of the seal to unregister
      */
+    @Deprecated
     public void unregisterSeal(String name, SealType type) {
         if (!SealRegistry.allSeals.containsKey(name)) {
             throw new IllegalStateException("Attempted To Unregister Non Existent Seal " + name);
@@ -198,6 +199,7 @@ public class SealRegistrationContext implements IRegistrationContext {
      * @param type the type of the seal that will be modified
      * @param newSeal the seal to replace the old one with
      */
+    @Deprecated
     public void modifySeal(String name, SealType type, ISeal newSeal) {
         if (!SealRegistry.allSeals.containsKey(name)) {
             throw new IllegalArgumentException("Attempted To Modify Non Existent Seal " + name);

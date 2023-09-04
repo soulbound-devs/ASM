@@ -44,6 +44,7 @@ public class ModelRegistrationContext implements IRegistrationContext {
      * Used to unregister a wand model from the registry
      * @param name the name of the wand model to unregister
      */
+    @Deprecated
     public void unregisterWandModel(String name) {
         if (!WandModels.MODELS.containsKey(name)) {
             throw new IllegalStateException("Attempted To Unregister Non Existent Wand Model " + name);
@@ -59,6 +60,7 @@ public class ModelRegistrationContext implements IRegistrationContext {
      * Used to unregister a spell model from the registry
      * @param name the name of the spell model to unregister
      */
+    @Deprecated
     public void unregisterSpellModel(String name) {
         if (!ActiveSealModels.MODELS.containsKey(name)) {
             throw new IllegalStateException("Attempted To Unregister Non Existent Spell Model " + name);
@@ -75,6 +77,7 @@ public class ModelRegistrationContext implements IRegistrationContext {
      * @param name the name of the model to modify
      * @param newModel the spell model to replace the old one with
      */
+    @Deprecated
     public void modifySpellModel(String name, ResourceLocation newModel) {
         if (!ActiveSealModels.MODELS.containsKey(name)) {
             throw new IllegalArgumentException("Attempted To Modify Non Existent Spell Model " + name);
@@ -91,6 +94,7 @@ public class ModelRegistrationContext implements IRegistrationContext {
      * @param name the name of the model to modify
      * @param newModel the wand model to replace the old one with
      */
+    @Deprecated
     public void modifyWandModel(String name, ResourceLocation newModel) {
         if (!WandModels.MODELS.containsKey(name)) {
             throw new IllegalArgumentException("Attempted To Modify Non Existent Wand Model " + name);
