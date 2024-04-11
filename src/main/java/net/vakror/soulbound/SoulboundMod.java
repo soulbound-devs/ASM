@@ -12,6 +12,7 @@ import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.vakror.registry.jamesregistryapi.api.event.RegistryEvents;
 import net.vakror.soulbound.block.ModBlocks;
@@ -76,11 +77,6 @@ public class SoulboundMod {
     }
 
     public void clientSetup(final FMLCommonSetupEvent event) {
-        MenuScreens.register(ModMenuTypes.WAND_IMBUING_MENU.get(), WandImbuingScreen::new);
-        MenuScreens.register(ModMenuTypes.SOUL_SOLIDIFIER_MENU.get(), SoulSolidifierScreen::new);
-        MenuScreens.register(ModMenuTypes.SACK_MENU.get(), SackScreen::new);
-        MenuScreens.register(ModMenuTypes.SOUL_EXTRACTOR_MENU.get(), SoulExtractorScreen::new);
-
         ItemBlockRenderTypes.setRenderLayer(ModSoul.SOURCE_SOUL.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(ModSoul.FLOWING_SOUL.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(ModSoul.SOURCE_DARK_SOUL.get(), RenderType.translucent());
@@ -99,6 +95,14 @@ public class SoulboundMod {
             if (event.getTab().equals(ModCreativeModeTabs.SOULBOUND_TAB.get())) {
                 //todo: add all items
             }
+        }
+
+        @SubscribeEvent
+        public static void creativeTab(RegisterMenuScreensEvent event) {
+            event.register(ModMenuTypes.WAND_IMBUING_MENU.get(), WandImbuingScreen::new);
+            event.register(ModMenuTypes.SOUL_SOLIDIFIER_MENU.get(), SoulSolidifierScreen::new);
+            event.register(ModMenuTypes.SACK_MENU.get(), SackScreen::new);
+            event.register(ModMenuTypes.SOUL_EXTRACTOR_MENU.get(), SoulExtractorScreen::new);
         }
     }
 }
