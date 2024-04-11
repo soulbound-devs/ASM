@@ -1,0 +1,33 @@
+{
+  "required": true,
+  "package": "net.vakror.soulbound.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "mixins.soulbound.refmap.json",
+  "mixins": [
+    "AddQuadsInvoker",
+    "BucketItemMixin",
+    "CapabilityProviderInvoker",
+    "DiggerItemAccessor",
+    "FixSealTooltipMixin",
+    "IMinecraftServerAccessor",
+    "IOWorkerMixin",
+    "LinearPaletteMixin",
+    "LivingEntityMixin",
+    "LocateCommandMixin",
+    "MappedRegistryMixin",
+    "ModelMeshMixin",
+    "ObjModelMixin",
+    "PlayerInventoryMixin",
+    "SerializationFixin",
+    "SimpleIModelBuilderMixin",
+    "StructureMixin"
+  ],
+  "client": [
+    "LocalPlayerMixin",
+    "MinecraftClientAccessor",
+    "RenderItemCountFixin",
+    "SimpleBakedModelMixin",
+    "SimpleModelBuilderMixin"
+  ],
+  "minVersion": "0.8"
+}

@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "soulbound:block/return_to_overworld"
+    }
+  }
+}

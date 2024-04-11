@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PPP",
+    "XIP",
+    "PPP"
+  ],
+  "key": {
+    "I": {
+      "item": "soulbound:blank_attack_seal"
+    },
+    "P": {
+      "item": "soulbound:dark_soul"
+    },
+    "X": {
+      "item": "minecraft:diamond_sword"
+    }
+  },
+  "result": {
+    "item": "soulbound:swording_seal",
+    "count": 1
+  }
+}

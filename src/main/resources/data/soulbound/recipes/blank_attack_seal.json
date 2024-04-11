@@ -1,0 +1,21 @@
+
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "IXI",
+    "XIX",
+    "IXI"
+  ],
+  "key": {
+    "I": {
+      "item": "soulbound:dark_soul"
+    },
+    "X": {
+      "item": "minecraft:honeycomb"
+    }
+  },
+  "result": {
+    "item": "soulbound:blank_attack_seal",
+    "count": 1
+  }
+}

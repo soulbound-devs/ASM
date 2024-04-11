@@ -1,0 +1,103 @@
+package net.vakror.soulbound.compat.dungeon;
+
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.neoforged.neoforge.common.util.INBTSerializable;
+import org.jetbrains.annotations.Nullable;
+
+public class Dungeon implements INBTSerializable<CompoundTag> {
+    boolean enterable;
+    boolean hasFirstTickElapsed = false;
+    boolean hasGenerated = false;
+    boolean canEnterAgainAfterExiting = true;
+
+    @Nullable String cannotExitMessage;
+
+    ResourceLocation type;
+
+    @Override
+    public CompoundTag serializeNBT() {
+        CompoundTag tag = new CompoundTag();
+        tag.putBoolean("enterable", enterable);
+        tag.putString("type", type.toString());
+        tag.putBoolean("firstTick", hasFirstTickElapsed);
+        tag.putBoolean("canEnterAgainAfterExiting", canEnterAgainAfterExiting);
+        tag.putBoolean("hasGenerated", hasGenerated);
+        if (cannotExitMessage != null) {
+            tag.putString("cannotExitMessage", cannotExitMessage);
+        }
+        return null;
+    }
+
+    @Override
+    public void deserializeNBT(CompoundTag tag) {
+        Dungeon.deserialize(tag);
+    }
+
+    public static Dungeon deserialize(CompoundTag tag) {
+        Dungeon dungeon = new Dungeon();
+        dungeon.enterable = tag.getBoolean("enterable");
+        dungeon.type = new ResourceLocation(tag.getString("type"));
+        dungeon.hasFirstTickElapsed = tag.getBoolean("firstTick");
+        dungeon.hasGenerated = tag.getBoolean("hasGenerated");
+        dungeon.canEnterAgainAfterExiting = tag.getBoolean("canEnterAgainAfterExiting");
+        if (tag.get("cannotExitMessage") != null) {
+            dungeon.cannotExitMessage = tag.getString("cannotExitMessage");
+        }
+        return dungeon;
+    }
+
+    public boolean isEnterable() {
+        return enterable;
+    }
+
+    public void setEnterable(boolean canEnter) {
+        this.enterable = canEnter;
+    }
+
+    public String getJoinMessage(ServerPlayer player, ServerLevel level) {
+        return "§8" + player.getDisplayName() + "§F Has Joined a Dungeon";
+    }
+
+    public ResourceLocation getType() {
+        return type;
+    }
+
+    public void setType(ResourceLocation type) {
+        this.type = type;
+    }
+
+    public boolean hasFirstTickElapsed() {
+        return hasFirstTickElapsed;
+    }
+
+    public void setHasFirstTickElapsed(boolean hasFirstTickElapsed) {
+        this.hasFirstTickElapsed = hasFirstTickElapsed;
+    }
+
+    public boolean canEnterAgainAfterExiting() {
+        return canEnterAgainAfterExiting;
+    }
+
+    public void setCanEnterAgainAfterExiting(boolean canEnterAgainAfterExiting) {
+        this.canEnterAgainAfterExiting = canEnterAgainAfterExiting;
+    }
+
+    public @Nullable String getCannotExitMessage() {
+        return cannotExitMessage;
+    }
+
+    public void setCannotExitMessage(@Nullable String cannotExitMessage) {
+        this.cannotExitMessage = cannotExitMessage;
+    }
+
+    public boolean hasGenerated() {
+        return hasGenerated;
+    }
+
+    public void setHasGenerated(boolean hasGenerated) {
+        this.hasGenerated = hasGenerated;
+    }
+}

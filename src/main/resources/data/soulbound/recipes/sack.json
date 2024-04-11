@@ -1,0 +1,24 @@
+
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PXP",
+    "XIX",
+    "PXP"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:bundle"
+    },
+    "X": {
+      "item": "soulbound:soul"
+    },
+    "P": {
+      "item": "soulbound:dark_soul"
+    }
+  },
+  "result": {
+    "item": "soulbound:sack",
+    "count": 1
+  }
+}

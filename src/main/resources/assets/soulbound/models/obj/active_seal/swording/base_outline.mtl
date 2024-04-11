@@ -1,0 +1,6 @@
+# Made in Blockbench 4.8.1
+newmtl outline
+map_Kd soulbound:item/white_outline
+Ka 1.0 1.0 1.0
+d 0.5
+newmtl none

@@ -1,0 +1,24 @@
+
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "III",
+    "XPX",
+    "III"
+  ],
+  "key": {
+    "I": {
+      "item": "soulbound:soul"
+    },
+    "P": {
+      "item": "soulbound:blank_passive_seal"
+    },
+    "X": {
+      "item": "soulbound:dark_soul"
+    }
+  },
+  "result": {
+    "item": "soulbound:blank_amplifying_seal",
+    "count": 1
+  }
+}

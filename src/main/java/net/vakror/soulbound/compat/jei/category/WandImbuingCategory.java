@@ -1,0 +1,81 @@
+package net.vakror.soulbound.compat.jei.category;
+
+import net.minecraft.client.gui.GuiGraphics;
+import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.drawable.IDrawableAnimated;
+import mezz.jei.api.gui.drawable.IDrawableStatic;
+import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
+import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.RecipeIngredientRole;
+import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.vakror.soulbound.SoulboundMod;
+import net.vakror.soulbound.compat.jei.recipe.ModJEIRecipes;
+import net.vakror.soulbound.compat.jei.recipe.imbuing.IWandImbuingRecipe;
+import net.vakror.soulbound.items.ModItems;
+import net.vakror.soulbound.util.RegistryUtil;
+import org.jetbrains.annotations.NotNull;
+
+public class WandImbuingCategory implements IRecipeCategory<IWandImbuingRecipe> {
+    private final IGuiHelper helper;
+    private final IDrawable background;
+
+    private final IDrawableAnimated arrow;
+    private final IDrawableAnimated soul;
+
+    public static final ResourceLocation IMBUER_TEXTURE = new ResourceLocation(SoulboundMod.MOD_ID, "textures/gui/imbuer_gui.png");
+
+    public WandImbuingCategory(IGuiHelper helper) {
+        this.helper = helper;
+        this.background = helper.drawableBuilder(IMBUER_TEXTURE, 17, 32, 146, 37)
+                .addPadding(0, 0, 0, 0)
+                .build();
+
+
+        IDrawableStatic staticArrow = helper.createDrawable(IMBUER_TEXTURE, 177, 38, 18, 8);
+        arrow = helper.createAnimatedDrawable(staticArrow, 108, IDrawableAnimated.StartDirection.LEFT, false);
+
+        IDrawableStatic staticSoul = helper.createDrawable(IMBUER_TEXTURE, 177, 0, 13, 16);
+        soul = helper.createAnimatedDrawable(staticSoul, 200, IDrawableAnimated.StartDirection.TOP, true);
+    }
+    @Override
+    public RecipeType<IWandImbuingRecipe> getRecipeType() {
+        return ModJEIRecipes.WAND_IMBUING;
+    }
+
+    @Override
+    public void draw(IWandImbuingRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics graphics, double mouseX, double mouseY) {
+        arrow.draw(graphics, 101, 5);
+        soul.draw(graphics, 2, 0);
+        IRecipeCategory.super.draw(recipe, recipeSlotsView, graphics, mouseX, mouseY);
+    }
+
+    @Override
+    public Component getTitle() {
+        return Component.translatable("soulbound.compat.jei.wand_imbuing");
+    }
+
+    @Override
+    public IDrawable getBackground() {
+        return background;
+    }
+
+    @Override
+    public @NotNull IDrawable getIcon() {
+        return helper.createDrawableItemStack(new ItemStack(RegistryUtil.getRegistryObjectByName(Registries.BLOCK, new ResourceLocation(SoulboundMod.MOD_ID, "wand_imbuing_table"))));
+    }
+
+    @Override
+    public void setRecipe(@NotNull IRecipeLayoutBuilder builder, @NotNull IWandImbuingRecipe recipe, @NotNull IFocusGroup focuses) {
+        builder.addSlot(RecipeIngredientRole.INPUT, 1, 20).setSlotName("Soul").addItemStack(new ItemStack(ModItems.SOUL.get()));
+        builder.addSlot(RecipeIngredientRole.INPUT, 39, 1).setSlotName("Wand").addItemStack(recipe.getWand());
+        builder.addSlot(RecipeIngredientRole.INPUT, 74, 1).setSlotName("Seal").addItemStack(new ItemStack(recipe.getSeal()));
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 129, 1).setSlotName("Result").addItemStack(recipe.getOutput());
+    }
+}

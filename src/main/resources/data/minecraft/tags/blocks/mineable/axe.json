@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "soulbound:wand_imbuing_table",
+    "soulbound:ancient_oak_log",
+    "soulbound:ancient_oak_planks",
+    "soulbound:corrupted_log",
+    "soulbound:corrupted_planks"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "soulbound:dungeon",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 426535465,
+    "spacing": 4096,
+    "separation": 4095
+  }
+}

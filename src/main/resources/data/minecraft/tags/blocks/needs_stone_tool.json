@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "soulbound:dungeon_key_block",
+    "soulbound:wand_imbuing_table",
+    "soulbound:soul_solidifier"
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "soulbound:block/corrupted_log_top",
+    "side": "soulbound:block/corrupted_log"
+  }
+}
