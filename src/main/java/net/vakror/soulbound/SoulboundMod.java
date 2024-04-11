@@ -98,7 +98,7 @@ public class SoulboundMod {
         }
 
         @SubscribeEvent
-        public static void creativeTab(RegisterMenuScreensEvent event) {
+        public static void registerMenus(RegisterMenuScreensEvent event) {
             event.register(ModMenuTypes.WAND_IMBUING_MENU.get(), WandImbuingScreen::new);
             event.register(ModMenuTypes.SOUL_SOLIDIFIER_MENU.get(), SoulSolidifierScreen::new);
             event.register(ModMenuTypes.SACK_MENU.get(), SackScreen::new);
