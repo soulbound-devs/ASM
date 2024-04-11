@@ -30,8 +30,8 @@ public class SoulExtractorScreen extends AbstractContainerScreen<SoulExtractorMe
     }
 
     private void assignFluidRenderer() {
-        soulRenderer = new FluidTankRenderer(((FluidTank) menu.blockEntity.SOUL_HANDLER.orElse(new FluidTank(0))).getCapacity(), true, 16, 46);
-        darkSoulRenderer = new FluidTankRenderer(((FluidTank) menu.blockEntity.DARK_SOUL_HANDLER.orElse(new FluidTank(0))).getCapacity(), true, 16, 46);
+        soulRenderer = new FluidTankRenderer(menu.blockEntity.SOUL_TANK.getCapacity(), true, 16, 46);
+        darkSoulRenderer = new FluidTankRenderer(menu.blockEntity.SOUL_TANK.getCapacity(), true, 16, 46);
     }
 
     @Override

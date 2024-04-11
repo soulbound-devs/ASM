@@ -1,5 +1,6 @@
 package net.vakror.soulbound.screen;
 
+import net.minecraft.core.Direction;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -7,7 +8,8 @@ import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.neoforge.common.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 import net.vakror.soulbound.SoulboundMod;
 import net.vakror.soulbound.block.ModBlocks;
@@ -41,12 +43,11 @@ public class WandImbuingMenu extends AbstractContainerMenu {
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
 
-        this.blockEntity.getCapability(Capabilities.ITEM_HANDLER).ifPresent(handler -> {
-            this.addSlot(new SlotItemHandler(handler, 0, 18, 52), true);
-            this.addSlot(new ModWandSlot(handler, 1, 56, 33), true);
-            this.addSlot(new ModSealSlot(handler, 2, 91, 33), true);
-            this.addSlot(new ModResultSlot(handler, 3, 146, 33), true);
-        });
+        IItemHandler handler = this.blockEntity.getLevel().getCapability(Capabilities.ItemHandler.BLOCK, entity.getBlockPos(), Direction.DOWN);
+        this.addSlot(new SlotItemHandler(handler, 0, 18, 52), true);
+        this.addSlot(new ModWandSlot(handler, 1, 56, 33), true);
+        this.addSlot(new ModSealSlot(handler, 2, 91, 33), true);
+        this.addSlot(new ModResultSlot(handler, 3, 146, 33), true);
 
         addDataSlots(data);
     }

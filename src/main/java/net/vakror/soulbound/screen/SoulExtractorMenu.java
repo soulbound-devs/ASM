@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import net.vakror.soulbound.SoulboundMod;
+import net.vakror.soulbound.block.ModBlocks;
 import net.vakror.soulbound.block.entity.custom.SoulExtractorBlockEntity;
 import net.vakror.soulbound.soul.ModSoul;
 
@@ -34,8 +35,8 @@ public class SoulExtractorMenu extends AbstractContainerMenu {
         checkContainerSize(inv, 4);
         this.blockEntity = ((SoulExtractorBlockEntity) entity);
         this.level = inv.player.level();
-        this.soulStack = ((FluidTank) blockEntity.SOUL_HANDLER.orElse(new FluidTank(0))).getFluid();
-        this.darkSoulStack = ((FluidTank) blockEntity.DARK_SOUL_HANDLER.orElse(new FluidTank(0))).getFluid();
+        this.soulStack = blockEntity.SOUL_TANK.getFluid();
+        this.darkSoulStack = blockEntity.DARK_SOUL_TANK.getFluid();
 
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
