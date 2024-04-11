@@ -20,7 +20,7 @@ import net.vakror.soulbound.block.entity.ModBlockEntities;
 import net.vakror.soulbound.cap.ModAttachments;
 import net.vakror.soulbound.cap.PlayerSoulAttachment;
 import net.vakror.soulbound.packets.ModPackets;
-import net.vakror.soulbound.packet.SoulFluidSyncS2CPacket;
+import net.vakror.soulbound.packets.SoulFluidSyncS2CPacket;
 import net.vakror.soulbound.packets.SyncSoulS2CPacket;
 import net.vakror.soulbound.screen.SoulExtractorMenu;
 import net.vakror.soulbound.soul.ModSoul;

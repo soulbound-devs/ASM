@@ -25,7 +25,7 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import net.vakror.soulbound.block.entity.ModBlockEntities;
 import net.vakror.soulbound.items.ModItems;
 import net.vakror.soulbound.packets.ModPackets;
-import net.vakror.soulbound.packet.SoulFluidSyncS2CPacket;
+import net.vakror.soulbound.packets.SoulFluidSyncS2CPacket;
 import net.vakror.soulbound.screen.SoulSolidifierMenu;
 import net.vakror.soulbound.soul.ModSoul;
 import org.jetbrains.annotations.NotNull;

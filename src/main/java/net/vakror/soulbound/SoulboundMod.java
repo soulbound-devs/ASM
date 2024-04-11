@@ -5,18 +5,26 @@ import dev.architectury.event.EventResult;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
+import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
 import net.vakror.registry.jamesregistryapi.api.event.RegistryEvents;
 import net.vakror.soulbound.block.ModBlocks;
+import net.vakror.soulbound.block.block.SoulExtractorBlock;
 import net.vakror.soulbound.block.entity.ModBlockEntities;
+import net.vakror.soulbound.block.entity.custom.SoulSolidifierBlockEntity;
+import net.vakror.soulbound.block.entity.custom.WandImbuingTableBlockEntity;
 import net.vakror.soulbound.cap.ModAttachments;
 import net.vakror.soulbound.compat.dungeon.attachment.DungeonAttachments;
 import net.vakror.soulbound.compat.dungeon.blocks.ModDungeonBlocks;
@@ -28,6 +36,9 @@ import net.vakror.soulbound.extension.dungeon.structure.ModStructures;
 import net.vakror.soulbound.items.ModItems;
 import net.vakror.soulbound.model.wand.WandModelLoader;
 import net.vakror.soulbound.packets.ModPackets;
+import net.vakror.soulbound.packets.SoulFluidSyncS2CPacket;
+import net.vakror.soulbound.packets.SyncPickupModeC2SPacket;
+import net.vakror.soulbound.packets.SyncSoulS2CPacket;
 import net.vakror.soulbound.screen.*;
 import net.vakror.soulbound.soul.ModSoul;
 import net.vakror.soulbound.soul.ModSoulTypes;
@@ -72,7 +83,6 @@ public class SoulboundMod {
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
-        ModPackets.register();
         Regions.register(new SoulboundRegion(new ResourceLocation(MOD_ID, "soulbound_region"), 1));
     }
 
@@ -103,6 +113,36 @@ public class SoulboundMod {
             event.register(ModMenuTypes.SOUL_SOLIDIFIER_MENU.get(), SoulSolidifierScreen::new);
             event.register(ModMenuTypes.SACK_MENU.get(), SackScreen::new);
             event.register(ModMenuTypes.SOUL_EXTRACTOR_MENU.get(), SoulExtractorScreen::new);
+        }
+
+        @SubscribeEvent
+        public static void register(final RegisterPayloadHandlerEvent event) {
+            final IPayloadRegistrar registrar = event.registrar("mymod");
+
+            registrar.play(SoulFluidSyncS2CPacket.ID, SoulFluidSyncS2CPacket::new, SoulFluidSyncS2CPacket::handle);
+            registrar.play(SyncSoulS2CPacket.ID, SyncSoulS2CPacket::new, SyncSoulS2CPacket::handle);
+
+            registrar.play(SyncPickupModeC2SPacket.ID, SyncPickupModeC2SPacket::new, SyncPickupModeC2SPacket::handle);
+        }
+
+        @SubscribeEvent
+        public static void registerBlockCaps(RegisterCapabilitiesEvent event) {
+            event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.SOUL_EXTRACTOR_BLOCK_ENTITY.get(), (entity, direction) -> {
+                Direction localDir = entity.getBlockState().getValue(SoulExtractorBlock.FACING);
+                if (direction != null) {
+                    return switch (localDir) {
+                        default -> direction.getOpposite() == Direction.EAST ? entity.SOUL_TANK : direction.getOpposite() == Direction.WEST ? entity.DARK_SOUL_TANK : null;
+                        case EAST -> direction.getClockWise() == Direction.EAST ? entity.SOUL_TANK : direction.getClockWise() == Direction.WEST ? entity.DARK_SOUL_TANK : null;
+                        case SOUTH -> direction == Direction.EAST ? entity.SOUL_TANK : direction == Direction.WEST ? entity.DARK_SOUL_TANK: null;
+                        case WEST -> direction.getCounterClockWise() == Direction.EAST ? entity.SOUL_TANK : direction.getCounterClockWise() == Direction.WEST ? entity.DARK_SOUL_TANK : null;
+                    };
+                }
+                return null;
+            });
+
+            event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.SOUL_SOLIDIFIER_BLOCK_ENTITY.get(), SoulSolidifierBlockEntity::getFluidTank);
+            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.SOUL_SOLIDIFIER_BLOCK_ENTITY.get(), SoulSolidifierBlockEntity::getItemHandler);
+            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.WAND_IMBUING_TABLE_BLOCK_ENTITY.get(), WandImbuingTableBlockEntity::getItemHandler);
         }
     }
 }

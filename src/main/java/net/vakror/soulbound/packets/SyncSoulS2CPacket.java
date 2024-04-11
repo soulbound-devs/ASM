@@ -1,12 +1,14 @@
 package net.vakror.soulbound.packets;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.neoforged.neoforge.network.NetworkEvent;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.vakror.soulbound.SoulboundMod;
 import net.vakror.soulbound.client.ClientSoulData;
 
-import java.util.function.Supplier;
 
-public class SyncSoulS2CPacket {
+public class SyncSoulS2CPacket implements CustomPacketPayload {
     int currentSoulAmount;
     long currentMaxSoulAmount;
     int currentDarkSoulAmount;
@@ -33,10 +35,20 @@ public class SyncSoulS2CPacket {
         buffer.writeLong(currentDarkMaxSoulAmount);
     }
 
-    public boolean handle(Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> {
-            ClientSoulData.set(currentSoulAmount, currentDarkSoulAmount, (int) currentMaxSoulAmount, (int) currentDarkMaxSoulAmount);
-        });
+    public boolean handle(PlayPayloadContext ctx) {
+        ctx.workHandler().submitAsync(() -> ClientSoulData.set(currentSoulAmount, currentDarkSoulAmount, (int) currentMaxSoulAmount, (int) currentDarkMaxSoulAmount));
         return true;
+    }
+
+    @Override
+    public void write(FriendlyByteBuf buf) {
+        encode(buf);
+    }
+
+    public static final ResourceLocation ID = new ResourceLocation(SoulboundMod.MOD_ID, "sync_soul");
+
+    @Override
+    public ResourceLocation id() {
+        return ID;
     }
 }

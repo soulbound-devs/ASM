@@ -28,6 +28,10 @@ import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingHurtEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
+import net.neoforged.neoforge.network.handlers.ClientPayloadHandler;
+import net.neoforged.neoforge.network.handlers.ServerPayloadHandler;
+import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
 import net.vakror.soulbound.SoulboundMod;
 import net.vakror.soulbound.block.block.SoulCatalystBlock;
 import net.vakror.soulbound.block.block.SoulExtractorBlock;
@@ -43,6 +47,8 @@ import net.vakror.soulbound.entity.client.BroomModel;
 import net.vakror.soulbound.entity.client.BroomRenderer;
 import net.vakror.soulbound.items.custom.SealableItem;
 import net.vakror.soulbound.packets.ModPackets;
+import net.vakror.soulbound.packets.SoulFluidSyncS2CPacket;
+import net.vakror.soulbound.packets.SyncPickupModeC2SPacket;
 import net.vakror.soulbound.packets.SyncSoulS2CPacket;
 
 import java.util.List;
@@ -77,26 +83,6 @@ public class Events {
                     });
                 }
             }
-        }
-
-        @SubscribeEvent
-        public static void registerBlockCaps(RegisterCapabilitiesEvent event) {
-            event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.SOUL_EXTRACTOR_BLOCK_ENTITY.get(), (entity, direction) -> {
-                    Direction localDir = entity.getBlockState().getValue(SoulExtractorBlock.FACING);
-                    if (direction != null) {
-                        return switch (localDir) {
-                            default -> direction.getOpposite() == Direction.EAST ? entity.SOUL_TANK : direction.getOpposite() == Direction.WEST ? entity.DARK_SOUL_TANK : null;
-                            case EAST -> direction.getClockWise() == Direction.EAST ? entity.SOUL_TANK : direction.getClockWise() == Direction.WEST ? entity.DARK_SOUL_TANK : null;
-                            case SOUTH -> direction == Direction.EAST ? entity.SOUL_TANK : direction == Direction.WEST ? entity.DARK_SOUL_TANK: null;
-                            case WEST -> direction.getCounterClockWise() == Direction.EAST ? entity.SOUL_TANK : direction.getCounterClockWise() == Direction.WEST ? entity.DARK_SOUL_TANK : null;
-                        };
-                    }
-                    return null;
-            });
-
-            event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.SOUL_SOLIDIFIER_BLOCK_ENTITY.get(), SoulSolidifierBlockEntity::getFluidTank);
-            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.SOUL_SOLIDIFIER_BLOCK_ENTITY.get(), SoulSolidifierBlockEntity::getItemHandler);
-            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.WAND_IMBUING_TABLE_BLOCK_ENTITY.get(), WandImbuingTableBlockEntity::getItemHandler);
         }
 
         @SubscribeEvent
