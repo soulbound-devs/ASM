@@ -126,7 +126,7 @@ public class BakedItemModel implements BakedModel {
         }
 
         @Override
-        public BakedModel applyTransform(ItemDisplayContext type, GuiGraphics graphics, boolean doLeftHandTransformation) {
+        public BakedModel applyTransform(ItemDisplayContext type, PoseStack poseStack, boolean doLeftHandTransformation) {
             if (type == ItemDisplayContext.GUI) {
                 return handlePerspective(this, originalModel.transforms, type, poseStack, doLeftHandTransformation);
             }

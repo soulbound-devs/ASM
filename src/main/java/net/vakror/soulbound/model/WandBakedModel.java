@@ -2,7 +2,7 @@ package net.vakror.soulbound.model;
 
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormatElement;
-import org.joml.Transformation;
+import com.mojang.math.Transformation;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.SimpleBakedModel;
 import net.neoforged.neoforge.client.RenderTypeGroup;

@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.vakror.soulbound.items.custom.WandItem;
 
@@ -36,14 +37,14 @@ public class WandBewlr extends BlockEntityWithoutLevelRenderer {
                 builder1.putBulkData(pPoseStack.last(), outline, 1, 1, 1, LightTexture.pack(15, 15), OverlayTexture.NO_OVERLAY);
             }));
 
-            builder1.setQuadSortOrigin((float)0, (float)0, (float)0);
+            builder1.setQuadSorting(VertexSorting.ORTHOGRAPHIC_Z);
             render(builder1.end(), true);
 
             wandBakedModel.WAND.forEach((wand -> {
                 builder.putBulkData(pPoseStack.last(), wand, 1, 1, 1, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
             }));
             builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.NEW_ENTITY);
-            builder.setQuadSortOrigin((float)0, (float)0, (float)0);
+            builder1.setQuadSorting(VertexSorting.ORTHOGRAPHIC_Z);
             render(builder.end(), true);
 
             BufferBuilder builder2 = (BufferBuilder) pBuffer.getBuffer(RenderType.itemEntityTranslucentCull(InventoryMenu.BLOCK_ATLAS));
@@ -52,7 +53,7 @@ public class WandBewlr extends BlockEntityWithoutLevelRenderer {
             }));
 
             builder2.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.NEW_ENTITY);
-            builder2.setQuadSortOrigin((float)0, (float)0, (float)0);
+            builder1.setQuadSorting(VertexSorting.ORTHOGRAPHIC_Z);
             render(builder2.end(), true);
 
             pPoseStack.popPose();

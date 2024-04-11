@@ -17,7 +17,7 @@ import net.neoforged.neoforge.client.model.IModelBuilder;
 import net.neoforged.neoforge.client.model.geometry.IGeometryBakingContext;
 import net.neoforged.neoforge.client.model.obj.ObjModel;
 import net.neoforged.neoforge.client.model.obj.ObjTokenizer;
-import net.vakror.soulbound.capability.wand.ItemSealProvider;
+import net.vakror.soulbound.cap.ModAttachments;
 import net.vakror.soulbound.items.custom.WandItem;
 import net.vakror.soulbound.mixin.AddQuadsInvoker;
 import net.vakror.soulbound.mixin.SimpleBakedModelMixin;
@@ -39,14 +39,14 @@ import static net.minecraft.world.inventory.InventoryMenu.BLOCK_ATLAS;
 public class WandItemOverrideList extends ItemOverrides {
 	private final Function<Material, TextureAtlasSprite> spriteGetter;
 	private final IGeometryBakingContext owner;
-	private final ModelBakery bakery;
+	private final ModelBaker bakery;
 	private final ModelState modelTransform;
 	private final TextureAtlasSprite particle;
 	private IModelBuilder.Simple builder;
 	private final ResourceLocation modelLocation;
 	private final ResourceLocation baseWand;
 
-	public WandItemOverrideList(Function<Material, TextureAtlasSprite> spriteGetter, IGeometryBakingContext owner, ModelBakery bakery, ModelState modelTransform, TextureAtlasSprite particle, ResourceLocation modelLocation, ResourceLocation baseWand) {
+	public WandItemOverrideList(Function<Material, TextureAtlasSprite> spriteGetter, IGeometryBakingContext owner, ModelBaker bakery, ModelState modelTransform, TextureAtlasSprite particle, ResourceLocation modelLocation, ResourceLocation baseWand) {
 		this.spriteGetter = spriteGetter;
 		this.owner = owner;
 		this.bakery = bakery;

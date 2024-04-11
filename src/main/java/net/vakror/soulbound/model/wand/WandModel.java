@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.neoforged.neoforge.client.RenderTypeGroup;
 import net.neoforged.neoforge.client.model.IModelBuilder;
 import net.neoforged.neoforge.client.model.SimpleModelState;
@@ -36,7 +37,7 @@ public class WandModel implements IUnbakedGeometry<WandModel> {
 	}
 
 	@Override
-	public BakedModel bake(IGeometryBakingContext owner, ModelBakery bakery
+	public BakedModel bake(IGeometryBakingContext owner, ModelBaker bakery
 			, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelTransform
 			, ItemOverrides overrides, ResourceLocation modelLocation) {
 
@@ -62,12 +63,6 @@ public class WandModel implements IUnbakedGeometry<WandModel> {
 		/* Vanillad BakedItemModel but with custom MealItemOverrideList, used in store data, it'll display nothing */
 		return new WandBakedModel((SimpleBakedModel) builder.build(), renderTypes, owner.getRootTransform());
 	}
-
-	@Override
-	public Collection<Material> getMaterials(IGeometryBakingContext context, Function<ResourceLocation, UnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors) {
-		return new ArrayList<>();
-	}
-
 
 	public static ImmutableMap<ItemDisplayContext, ItemTransform> getTransforms(IGeometryBakingContext owner, ModelState state) {
 		EnumMap<ItemDisplayContext, ItemTransform> map = new EnumMap<>(ItemDisplayContext.class);
