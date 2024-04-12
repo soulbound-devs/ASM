@@ -110,7 +110,7 @@ dependencies {
 
     implementation "com.github.soulbound-devs.registryapi:JamesRegistryAPI-neoforge:${registry_api_version}"
     implementation "dev.architectury:architectury-neoforge:${architectury_version}"
-    implementation "com.github.glitchfiend:TerraBlender-forge:${minecraft_version}-${terrablender_version}"
+    implementation "com.github.glitchfiend:TerraBlender-neoforge:${minecraft_version}-${terrablender_version}"
 
     // compile against the JEI API but do not include it at runtime
     compileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")

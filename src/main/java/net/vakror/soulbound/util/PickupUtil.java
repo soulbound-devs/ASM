@@ -89,7 +89,7 @@ public class PickupUtil {
     }
 
     private static boolean areItemStacksCompatible(ItemStack stack, ItemStack stack1) {
-        return ItemStack.isSameItemSameTags(stack, stack1) && ItemStack.isSame(stack, stack1);
+        return ItemStack.isSameItemSameTags(stack, stack1) && ItemStack.isSameItem(stack, stack1);
     }
 
     public enum PickupMode {

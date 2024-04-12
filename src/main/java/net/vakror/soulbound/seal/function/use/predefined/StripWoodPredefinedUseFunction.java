@@ -12,6 +12,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.neoforged.neoforge.common.ToolActions;
 import net.vakror.soulbound.seal.function.use.UseFunction;
 
 import java.nio.file.Path;
@@ -33,7 +34,7 @@ public class StripWoodPredefinedUseFunction extends UseFunction {
         BlockPos blockpos = context.getClickedPos();
         Player player = context.getPlayer();
         BlockState blockstate = level.getBlockState(blockpos);
-        Optional<BlockState> optional = Optional.ofNullable(blockstate.getToolModifiedState(context, net.minecraftforge.common.ToolActions.AXE_STRIP, false));
+        Optional<BlockState> optional = Optional.ofNullable(blockstate.getToolModifiedState(context, ToolActions.AXE_STRIP, false));
         ItemStack itemstack = context.getItemInHand();
         Optional<BlockState> optional3 = Optional.empty();
         if (optional.isPresent()) {

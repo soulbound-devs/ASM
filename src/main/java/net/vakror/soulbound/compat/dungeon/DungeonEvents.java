@@ -27,7 +27,7 @@ public class DungeonEvents {
     public static class ForgeEvents {
         @SubscribeEvent
         public static void onPlayerEnterDungeon(EntityJoinLevelEvent event) {
-            if (!event.getLevel().isClientSide && event.getEntity() instanceof ServerPlayer serverPlayer) {
+            if (!event.getLevel().isClientSide && event.getEntity() instanceof ServerPlayer serverPlayer && event.getLevel().dimensionTypeId().equals(Dimensions.DUNGEON_TYPE)) {
                 ServerLevel world = (ServerLevel) event.getLevel();
                 DungeonAttachment dungeonCapability = world.getData(DungeonAttachments.DUNGEON_ATTACHMENT);
                 ResourceLocation type = DungeonRegistry.randomDungeonType();
@@ -77,7 +77,7 @@ public class DungeonEvents {
         }
 
         @SubscribeEvent
-        public void fillBucket(FillBucketEvent event) {
+        public static void fillBucket(FillBucketEvent event) {
             if (event.getLevel().isClientSide) {
                 return;
             }
@@ -109,7 +109,7 @@ public class DungeonEvents {
         }
 
         @SubscribeEvent
-        public void explosionModify(ExplosionEvent.Detonate event) {
+        public static void explosionModify(ExplosionEvent.Detonate event) {
             // I only care about explosions in the Dungeon Dimension
             if (!event.getLevel().dimensionTypeId().equals(Dimensions.DUNGEON_TYPE)) {
                 return;

@@ -17,9 +17,11 @@ public class DungeonAttachment implements INBTSerializable<CompoundTag> {
         @Override
         public @NotNull CompoundTag serializeNBT() {
             CompoundTag nbt = new CompoundTag();
-            nbt.putDouble("returnPosX", returnPos.x);
-            nbt.putDouble("returnPosY", returnPos.y);
-            nbt.putDouble("returnPosZ", returnPos.y);
+            if (returnPos != null) {
+                nbt.putDouble("returnPosX", returnPos.x);
+                nbt.putDouble("returnPosY", returnPos.y);
+                nbt.putDouble("returnPosZ", returnPos.y);
+            }
 
             if (extraData != null) {
                 nbt.put("extraData", extraData);
@@ -33,7 +35,9 @@ public class DungeonAttachment implements INBTSerializable<CompoundTag> {
 
         @Override
         public void deserializeNBT(CompoundTag nbt) {
-            returnPos = new Vec3(nbt.getDouble("returnPosX"), nbt.getDouble("returnPosY"), nbt.getDouble("returnPosZ"));
+            if (nbt.contains("returnPosX")) {
+                returnPos = new Vec3(nbt.getDouble("returnPosX"), nbt.getDouble("returnPosY"), nbt.getDouble("returnPosZ"));
+            }
             if (nbt.get("extraData") != null) {
                 extraData = nbt.getCompound("extraData");
             }

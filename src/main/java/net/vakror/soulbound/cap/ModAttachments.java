@@ -15,7 +15,7 @@ public class ModAttachments {
             = ATTACHMENT_TYPES.register("seals", () -> AttachmentType.serializable(WandSealAttachment::new).comparator(WandSealAttachment::areCompatible).build());
 
     public static final Supplier<AttachmentType<PlayerSoulAttachment>> SOUL_ATTACHMENT
-            = ATTACHMENT_TYPES.register("seals", () -> AttachmentType.serializable(PlayerSoulAttachment::new).build());
+            = ATTACHMENT_TYPES.register("soul", () -> AttachmentType.serializable(PlayerSoulAttachment::new).build());
 
     public static void register(IEventBus eventBus) {
         ATTACHMENT_TYPES.register(eventBus);

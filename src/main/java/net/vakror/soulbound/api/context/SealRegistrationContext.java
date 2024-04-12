@@ -65,7 +65,7 @@ public class SealRegistrationContext implements IRegistrationContext {
         SoulboundMod.LOGGER.info("Registered Seal {} of type {} for mod {}, \033[0;31mTook {}\033[0;0m", seal.getId(), seal.getType().name().toLowerCase(), modId, stopwatch);
     }
 
-    public void registerSealWithCustomItem(@NotNull ISeal seal, @NotNull DeferredHolder<Item, ? extends Item> item) {
+    public void registerSealWithCustomItem(@NotNull ISeal seal, @NotNull DeferredHolder<Item, SealItem> item) {
         Stopwatch stopwatch = Stopwatch.createStarted();
         SoulboundMod.LOGGER.info("Checking If Seal {} Can Be Registered", seal.getId());
         Stopwatch stopwatch2 = Stopwatch.createStarted();
@@ -126,7 +126,7 @@ public class SealRegistrationContext implements IRegistrationContext {
      * @param tiered the tiered object to register. The tier of this should always be zero
      * @param items the item for your seal
      */
-    public <T extends Tiered> void registerTieredSealWithCustomItem(@NotNull T tiered, @NotNull List<DeferredHolder<Item, ? extends Item>> items) {
+    public <T extends Tiered> void registerTieredSealWithCustomItem(@NotNull T tiered, @NotNull List<DeferredHolder<Item, SealItem>> items) {
         if ((tiered instanceof ISeal tieredSeal)) {
             SoulboundMod.LOGGER.info("Registering All Tiers For Seal {} of type {}", tieredSeal.getId().split("_tier_0")[0], tieredSeal.getType().name().toLowerCase());
             Stopwatch stopwatch1 = Stopwatch.createStarted();

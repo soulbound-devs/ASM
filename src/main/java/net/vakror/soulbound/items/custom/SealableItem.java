@@ -18,7 +18,6 @@ import net.vakror.soulbound.cap.ModAttachments;
 import net.vakror.soulbound.cap.WandSealAttachment;
 import net.vakror.soulbound.items.ModTiers;
 import net.vakror.soulbound.items.custom.seals.SealItem;
-import net.vakror.soulbound.mixin.DiggerItemAccessor;
 import net.vakror.soulbound.seal.ISeal;
 import net.vakror.soulbound.seal.SealRegistry;
 import net.vakror.soulbound.seal.SealType;
@@ -343,6 +342,6 @@ public class SealableItem extends DiggerItem {
         if (wand.getActiveSeal() != null) {
             damage[0] = ((ActivatableSeal) wand.getActiveSeal()).getDamage();
         }
-        return damage[0] + ((DiggerItemAccessor) this).getAttackDamageBaseline();
+        return damage[0] + getAttackDamage();
     }
 }

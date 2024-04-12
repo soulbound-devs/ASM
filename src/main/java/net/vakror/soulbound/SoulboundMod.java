@@ -31,6 +31,7 @@ import net.vakror.soulbound.compat.dungeon.blocks.ModDungeonBlocks;
 import net.vakror.soulbound.compat.dungeon.blocks.entity.ModDungeonBlockEntities;
 import net.vakror.soulbound.compat.dungeon.dimension.Dimensions;
 import net.vakror.soulbound.compat.dungeon.items.ModDungeonItems;
+import net.vakror.soulbound.entity.ModEntities;
 import net.vakror.soulbound.extension.DefaultSoulboundExtension;
 import net.vakror.soulbound.extension.dungeon.structure.ModStructures;
 import net.vakror.soulbound.items.ModItems;
@@ -47,6 +48,7 @@ import net.vakror.soulbound.world.biome.SoulboundRegion;
 import org.slf4j.Logger;
 import terrablender.api.Regions;
 
+@Mod(SoulboundMod.MOD_ID)
 public class SoulboundMod {
     public static final Logger LOGGER = LogUtils.getLogger();
     public static final String MOD_ID = "soulbound";
@@ -60,18 +62,20 @@ public class SoulboundMod {
         modEventBus.addListener(this::clientSetup);
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
+        ModEntities.register(modEventBus);
         ModAttachments.register(modEventBus);
         ModStructures.REGISTER.register(modEventBus);
+        ModCreativeModeTabs.register(modEventBus);
         ModMenuTypes.register(modEventBus);
         ModBlockEntities.register(modEventBus);
 
-        if (ModList.get().isLoaded("hammerspace")) {
+//        if (ModList.get().isLoaded("hammerspace")) {
             ModDungeonItems.register();
             ModDungeonBlocks.register();
             ModDungeonBlockEntities.register();
             Dimensions.register();
             DungeonAttachments.register();
-        }
+//        }
 
         ModSoul.register(modEventBus);
         ModSoulTypes.register(modEventBus);
@@ -117,7 +121,7 @@ public class SoulboundMod {
 
         @SubscribeEvent
         public static void register(final RegisterPayloadHandlerEvent event) {
-            final IPayloadRegistrar registrar = event.registrar("mymod");
+            final IPayloadRegistrar registrar = event.registrar(SoulboundMod.MOD_ID);
 
             registrar.play(SoulFluidSyncS2CPacket.ID, SoulFluidSyncS2CPacket::new, SoulFluidSyncS2CPacket::handle);
             registrar.play(SyncSoulS2CPacket.ID, SyncSoulS2CPacket::new, SyncSoulS2CPacket::handle);
