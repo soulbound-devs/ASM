@@ -6,17 +6,19 @@
   "mixins": [
     "AddQuadsInvoker",
     "BucketItemMixin",
-    "DiggerItemAccessor",
     "FixSealTooltipMixin",
     "IMinecraftServerAccessor",
     "IOWorkerMixin",
     "LinearPaletteMixin",
+    "ListPoolElementAccessor",
     "LivingEntityMixin",
     "MappedRegistryMixin",
     "ObjModelMixin",
     "PlayerInventoryMixin",
     "SerializationFixin",
-    "SimpleIModelBuilderMixin"
+    "SimpleIModelBuilderMixin",
+    "SinglePoolElementAccessor",
+    "StructurePiecesBuilderAccessor"
   ],
   "client": [
     "LocalPlayerMixin",
