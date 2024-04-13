@@ -13,9 +13,21 @@ public class Dungeon implements INBTSerializable<CompoundTag> {
     boolean hasGenerated = false;
     boolean canEnterAgainAfterExiting = true;
 
-    @Nullable String cannotExitMessage;
+    @Nullable String cannotExitMessage = "Cannot Exit Dungeon!";
 
     ResourceLocation type;
+
+    public Dungeon(boolean enterable, boolean hasFirstTickElapsed, boolean hasGenerated, boolean canEnterAgainAfterExiting, @Nullable String cannotExitMessage, ResourceLocation type) {
+        this.enterable = enterable;
+        this.hasFirstTickElapsed = hasFirstTickElapsed;
+        this.hasGenerated = hasGenerated;
+        this.canEnterAgainAfterExiting = canEnterAgainAfterExiting;
+        this.cannotExitMessage = cannotExitMessage;
+        this.type = type;
+    }
+
+    public Dungeon() {
+    }
 
     @Override
     public CompoundTag serializeNBT() {
@@ -28,7 +40,7 @@ public class Dungeon implements INBTSerializable<CompoundTag> {
         if (cannotExitMessage != null) {
             tag.putString("cannotExitMessage", cannotExitMessage);
         }
-        return null;
+        return tag;
     }
 
     @Override
@@ -99,5 +111,13 @@ public class Dungeon implements INBTSerializable<CompoundTag> {
 
     public void setHasGenerated(boolean hasGenerated) {
         this.hasGenerated = hasGenerated;
+    }
+
+    /**
+     * Override if you are making an implementation
+     * @return a copy of this dungeon
+     */
+    public Dungeon copy() {
+        return new Dungeon(enterable, hasFirstTickElapsed, hasGenerated, canEnterAgainAfterExiting, cannotExitMessage, type);
     }
 }

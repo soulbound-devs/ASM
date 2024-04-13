@@ -31,16 +31,17 @@ public class DungeonEvents {
                 ServerLevel world = (ServerLevel) event.getLevel();
                 DungeonAttachment dungeonCapability = world.getData(DungeonAttachments.DUNGEON_ATTACHMENT);
                 ResourceLocation type = DungeonRegistry.randomDungeonType();
-                Dungeon dungeon = DungeonRegistry.dungeons.get(type).dungeon();
+                Dungeon dungeon = DungeonRegistry.dungeons.get(type).dungeon().copy();
                 dungeon.setType(type);
                 dungeonCapability.setDungeon(dungeon);
-                world.getServer().getPlayerList().broadcastSystemMessage(Component.literal(String.format(dungeonCapability.getDungeon().getJoinMessage(serverPlayer, (ServerLevel) event.getLevel()), serverPlayer.getDisplayName())), true);
+                world.getServer().sendSystemMessage(Component.literal(String.format(dungeonCapability.getDungeon().getJoinMessage(serverPlayer, (ServerLevel) event.getLevel()), serverPlayer.getDisplayName().getString())));
             }
         }
 
         @SubscribeEvent
         public static void onDungeonTick(TickEvent.LevelTickEvent event) {
             if (event.phase.equals(TickEvent.Phase.START) && !event.level.isClientSide && event.level.dimensionTypeId().equals(Dimensions.DUNGEON_TYPE) && !event.level.players().isEmpty()) {
+                int i = 1;
                 DungeonAttachment dungeonCapability = event.level.getData(DungeonAttachments.DUNGEON_ATTACHMENT);
                 ServerPlayer player = (ServerPlayer) event.level.players().get(0);
                 if (!dungeonCapability.getDungeon().hasGenerated() && DungeonUtils.generateDungeon(event, dungeonCapability)) {

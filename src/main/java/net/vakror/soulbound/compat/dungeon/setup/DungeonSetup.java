@@ -8,6 +8,7 @@ import net.vakror.soulbound.compat.dungeon.registry.DungeonRegistryEntry;
 
 public abstract class DungeonSetup {
     DungeonRegistryEntry dungeonRegistryEntry;
+
     public abstract State place(ServerLevel level, RegistryAccess access);
 
     /**

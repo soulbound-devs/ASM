@@ -1,6 +1,5 @@
 package net.vakror.soulbound.compat.dungeon.setup;
 
-import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
@@ -10,16 +9,41 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.phys.Vec3;
+import net.vakror.soulbound.compat.dungeon.theme.DungeonTheme;
+import net.vakror.soulbound.compat.dungeon.theme.ThemeList;
+import net.vakror.soulbound.extension.dungeon.structure.*;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+import java.util.Random;
 
 public abstract class StructureDungeonSetup extends DungeonSetup {
+
+    public @NotNull List<ThemeList> getThemes(ServerLevel level) {
+        return List.of();
+    }
+
+    public static Random random = new Random();
+
     @Override
     public State place(ServerLevel level, RegistryAccess access) {
         try {
-            Structure structure = access.registryOrThrow(Registries.STRUCTURE).get(getStructure());
+            DungeonStructure structure = getStructure(level);
+            if (structure == null) {
+                throw new IllegalStateException("Error while placing dungeon structure!");
+            }
+            List<ThemeList> themeLists = getThemes(level);
+            if (!themeLists.isEmpty()) {
+                ThemeList themeList = themeLists.get(random.nextInt(themeLists.size()));
+                structure.processors.clear();
+                for (DungeonTheme theme : themeList.themeList()) {
+                    structure.addProcessor(theme.getProcessor());
+                }
+            }
             ChunkGenerator chunkgenerator = level.getChunkSource().getGenerator();
+            assert structure != null;
             StructureStart structureStart = structure.generate(access, chunkgenerator, chunkgenerator.getBiomeSource(), level.getChunkSource().randomState(), level.getStructureManager(), level.getSeed(), getDungeonPos(), 0, level, (biome) -> true);
             if (!structureStart.isValid()) {
                 throw new IllegalStateException("Invalid Structure Start for Dungeon");
@@ -49,10 +73,18 @@ public abstract class StructureDungeonSetup extends DungeonSetup {
         return new ChunkPos(0, 0);
     }
 
-    public abstract ResourceLocation getStructure();
+    public abstract DungeonStructure getStructure(ServerLevel level);
 
     @Override
     public Vec3 getPlayerSpawnPoint(Level level) {
         return null;
+    }
+
+    public DungeonStructure getStructureFromResourceLocation(ResourceLocation location, ServerLevel level) {
+        return getStructureFromResourceLocation(location, level.registryAccess());
+    }
+
+    public DungeonStructure getStructureFromResourceLocation(ResourceLocation resourceLocation, RegistryAccess registryAccess) {
+        return (DungeonStructure) registryAccess.registryOrThrow(Registries.STRUCTURE).get(resourceLocation);
     }
 }

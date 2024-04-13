@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.data.registries.VanillaRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
@@ -106,7 +107,7 @@ public class DungeonAccessBlock extends BaseEntityBlock {
                         serverLevel.registryAccess()
                                 .registryOrThrow(Registries.DIMENSION_TYPE)
                                 .getHolderOrThrow(Dimensions.DUNGEON_TYPE),
-                        new FlatLevelSource(new FlatLevelGeneratorSettings(Optional.empty(), RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY).registryOrThrow(Registries.BIOME).getHolder(Biomes.PLAINS).get(), List.of()))));
+                        new FlatLevelSource(new FlatLevelGeneratorSettings(Optional.empty(), serverLevel.registryAccess().registryOrThrow(Registries.BIOME).getHolderOrThrow(Biomes.PLAINS), List.of()))));
     }
 
     private boolean canUnlock(Player player, Level level, BlockState state, InteractionHand hand) {

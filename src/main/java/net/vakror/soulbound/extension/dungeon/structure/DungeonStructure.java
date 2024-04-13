@@ -9,12 +9,17 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldGenerationContext;
 import net.minecraft.world.level.levelgen.heightproviders.HeightProvider;
-import net.minecraft.world.level.levelgen.structure.Structure;
-import net.minecraft.world.level.levelgen.structure.StructureType;
-import net.minecraft.world.level.levelgen.structure.pools.JigsawPlacement;
-import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
+import net.minecraft.world.level.levelgen.structure.*;
+import net.minecraft.world.level.levelgen.structure.pools.*;
 import net.minecraft.world.level.levelgen.structure.pools.alias.PoolAliasLookup;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
+import net.vakror.soulbound.mixin.ListPoolElementAccessor;
+import net.vakror.soulbound.mixin.SinglePoolElementAccessor;
+import net.vakror.soulbound.mixin.StructurePiecesBuilderAccessor;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class DungeonStructure extends Structure {
@@ -37,6 +42,8 @@ public class DungeonStructure extends Structure {
     private final HeightProvider startHeight;
     private final Optional<Heightmap.Types> projectStartToHeightmap;
     private final int maxDistanceFromCenter;
+
+    public final List<StructureProcessor> processors = new ArrayList<>();
 
     public DungeonStructure(Structure.StructureSettings config,
                             Holder<StructureTemplatePool> startPool,
@@ -134,6 +141,23 @@ public class DungeonStructure extends Structure {
          * Such as for example, forcing 3 pieces to always spawn every time, limiting how often a piece spawns, or remove the intersection limitation of pieces.
          */
 
+        structurePiecesGenerator.ifPresent(structurePieces -> {
+            for (StructurePiece piece : ((StructurePiecesBuilderAccessor)structurePieces.getPiecesBuilder()).getPieces()) {
+                if (piece instanceof PoolElementStructurePiece structurePiece) {
+                    if (structurePiece.getElement() instanceof SinglePoolElement element) {
+                        ((SinglePoolElementAccessor) element).setProcessors(Holder.direct(new StructureProcessorList(processors)));
+                    }
+                    if (structurePiece.getElement() instanceof ListPoolElement element) {
+                        for (StructurePoolElement structurePoolElement : ((ListPoolElementAccessor) element).getElements()) {
+                            if (structurePoolElement instanceof SinglePoolElement element2) {
+                                ((SinglePoolElementAccessor) element2).setProcessors(Holder.direct(new StructureProcessorList(processors)));
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
         // Return the pieces generator that is now set up so that the game runs it when it needs to create the layout of structure pieces.
         return structurePiecesGenerator;
     }
@@ -141,5 +165,9 @@ public class DungeonStructure extends Structure {
     @Override
     public StructureType<?> type() {
         return ModStructures.DUNGEON.get(); // Helps the game know how to turn this structure back to json to save to chunks
+    }
+
+    public void addProcessor(StructureProcessor processor) {
+        this.processors.add(processor);
     }
 }
