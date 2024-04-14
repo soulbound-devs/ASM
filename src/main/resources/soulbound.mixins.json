@@ -4,7 +4,6 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "mixins.soulbound.refmap.json",
   "mixins": [
-    "AddQuadsInvoker",
     "BucketItemMixin",
     "FixSealTooltipMixin",
     "IMinecraftServerAccessor",
@@ -13,7 +12,6 @@
     "ListPoolElementAccessor",
     "LivingEntityMixin",
     "MappedRegistryMixin",
-    "ObjModelMixin",
     "PlayerInventoryMixin",
     "SerializationFixin",
     "SimpleIModelBuilderMixin",
