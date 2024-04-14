@@ -69,13 +69,11 @@ public class SoulboundMod {
         ModMenuTypes.register(modEventBus);
         ModBlockEntities.register(modEventBus);
 
-//        if (ModList.get().isLoaded("hammerspace")) {
-            ModDungeonItems.register();
-            ModDungeonBlocks.register();
-            ModDungeonBlockEntities.register();
-            Dimensions.register();
-            DungeonAttachments.register();
-//        }
+        ModDungeonItems.register();
+        ModDungeonBlocks.register();
+        ModDungeonBlockEntities.register();
+        Dimensions.register();
+        DungeonAttachments.register();
 
         ModSoul.register(modEventBus);
         ModSoulTypes.register(modEventBus);
