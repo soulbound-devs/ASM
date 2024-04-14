@@ -16,6 +16,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.vakror.soulbound.SoulboundMod;
+import net.vakror.soulbound.block.ModBlocks;
 import net.vakror.soulbound.compat.jei.recipe.ModJEIRecipes;
 import net.vakror.soulbound.compat.jei.recipe.solidifying.ISoulSolidifyingRecipe;
 import net.vakror.soulbound.soul.ModSoul;
@@ -67,7 +68,7 @@ public class SoulSolidifyingCategory implements IRecipeCategory<ISoulSolidifying
 
     @Override
     public @NotNull IDrawable getIcon() {
-        return helper.createDrawableItemStack(new ItemStack(RegistryUtil.getRegistryObjectByName(Registries.BLOCK,  new ResourceLocation("soul_solidifier"))));
+        return helper.createDrawableItemStack(new ItemStack(ModBlocks.SOUL_SOLIDIFIER.get()));
     }
 
     @Override

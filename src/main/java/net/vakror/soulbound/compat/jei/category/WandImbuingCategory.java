@@ -16,6 +16,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.vakror.soulbound.SoulboundMod;
+import net.vakror.soulbound.block.ModBlocks;
 import net.vakror.soulbound.compat.jei.recipe.ModJEIRecipes;
 import net.vakror.soulbound.compat.jei.recipe.imbuing.IWandImbuingRecipe;
 import net.vakror.soulbound.items.ModItems;
@@ -68,7 +69,7 @@ public class WandImbuingCategory implements IRecipeCategory<IWandImbuingRecipe> 
 
     @Override
     public @NotNull IDrawable getIcon() {
-        return helper.createDrawableItemStack(new ItemStack(RegistryUtil.getRegistryObjectByName(Registries.BLOCK, new ResourceLocation(SoulboundMod.MOD_ID, "wand_imbuing_table"))));
+        return helper.createDrawableItemStack(new ItemStack(ModBlocks.WAND_IMBUING_TABLE.get()));
     }
 
     @Override

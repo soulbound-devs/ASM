@@ -15,6 +15,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.vakror.soulbound.SoulboundMod;
+import net.vakror.soulbound.block.ModBlocks;
 import net.vakror.soulbound.compat.jei.recipe.ModJEIRecipes;
 import net.vakror.soulbound.compat.jei.recipe.extracting.ISoulExtractingRecipe;
 import net.vakror.soulbound.util.RegistryUtil;
@@ -85,7 +86,7 @@ public class SoulExtractingCategory implements IRecipeCategory<ISoulExtractingRe
 
     @Override
     public @NotNull IDrawable getIcon() {
-        return helper.createDrawableItemStack(new ItemStack(RegistryUtil.getRegistryObjectByName(Registries.BLOCK, new ResourceLocation(SoulboundMod.MOD_ID, "soul_extractor"))));
+        return helper.createDrawableItemStack(new ItemStack(ModBlocks.SOUL_EXTRACTOR.get()));
     }
 
     @Override
