@@ -97,9 +97,8 @@ public class WandBakedModel extends BakedItemModel {
 
 	/* Find the last sprite not transparent in sprites with given position */
 	@Nullable
-    public static TextureAtlasSprite findLastNotTransparent(int x, int y, List<TextureAtlasSprite> sprites){
-		for(int spriteIndex = sprites.size() - 1; spriteIndex >= 0; spriteIndex--){
-			TextureAtlasSprite sprite = sprites.get(spriteIndex);
+    public static TextureAtlasSprite findLastNotTransparent(int x, int y, List<TextureAtlasSprite> sprites) {
+		for (TextureAtlasSprite sprite : sprites) {
 			if (sprite != null) {
 				if (!sprite.contents().isTransparent(0, x, y)) {
 					return sprite;
