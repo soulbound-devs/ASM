@@ -35,7 +35,7 @@ public class WandModel implements IUnbakedGeometry<WandModel> {
 			, @NotNull ItemOverrides overrides, ResourceLocation modelLocation){
 
 		ResourceLocation item = new ResourceLocation(modelLocation.toString().split("#")[0]);
-		IWandModelReader reader = WandModelReaders.READERS.get(item);
+		IWandModelReader reader = WandModelReaders.READERS.get(WandModelReaders.ITEMS.get(item));
 		List<AbstractWandLayer> layers = reader.getLayers(object);
 
 		TextureAtlasSprite particle = spriteGetter.apply(owner.getMaterial("particle"));
