@@ -9,18 +9,6 @@ import net.vakror.soulbound.model.models.WandModels;
 
 public class ModelRegistrationContext implements IRegistrationContext {
     /**
-     * Registers a CUSTOM model for a wand. Base models are registered in your model JSON
-     *
-     * @param name the name of your wand model
-     * @param location the location for the OBJ file for your wand, must include the .obj file extension. Example: "soulbound:models/obj/wand/ancient_oak/base.obj"
-     */
-    public void registerWandModel(String name, ResourceLocation location) {
-        Stopwatch stopwatch = Stopwatch.createStarted();
-        WandModels.registerModel(name, location);
-        SoulboundMod.LOGGER.info("Registered Wand Model {}, \033[0;31mTook {}\033[0;0m", name, stopwatch);
-    }
-
-    /**
      * Registers a model for an active seal (spell)
      *
      * @param name the name of your active seal model (if for a seal and not custom model, must match seal registry name <b>EXACTLY</b>
