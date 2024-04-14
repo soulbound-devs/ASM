@@ -23,15 +23,13 @@ import java.util.List;
 import java.util.function.Function;
 
 public class ModelUtils {
-    public static WandModel readModel(JsonObject model) {
-        ResourceLocation wandLocation = new ResourceLocation("");
 
-        if (model.has("wand")) {
-            wandLocation = new ResourceLocation(model.get("wand").getAsString());
-        }
+    public static float NORTH_Z = 7.496f / 16f;
+    public static float SOUTH_Z = 8.504f / 16f;
 
-        return new WandModel(wandLocation);
-    }
+    public static float COLOR_R = 1.0f;
+    public static float COLOR_G = 1.0f;
+    public static float COLOR_B = 1.0f;
 
     @Nullable
     public static TextureAtlasSprite getSprite(Function<Material, TextureAtlasSprite> spriteGetter, @NotNull ResourceLocation location) {
@@ -55,7 +53,7 @@ public class ModelUtils {
         for (int ix = 0; ix <= 15; ix++) {
             for (int iy = 0; iy <= 15; iy++) {
                 /* Find the last pixel not transparent in sprites, use that to build North/South quads */
-                TextureAtlasSprite sprite = WandBakedModel.findLastNotTransparent(ix, iy, sprites);
+                TextureAtlasSprite sprite = findLastNotTransparent(ix, iy, sprites);
                 if (sprite == null) continue;
 
                 float xStart = ix / 16.0f;
@@ -65,18 +63,18 @@ public class ModelUtils {
                 float yEnd = (16 - iy) / 16.0f;
 
                 BakedQuad a = createQuad(
-                        new Vec3(xStart, yStart, WandBakedModel.NORTH_Z)
-                        , new Vec3(xStart, yEnd, WandBakedModel.NORTH_Z)
-                        , new Vec3(xEnd, yEnd, WandBakedModel.NORTH_Z)
-                        , new Vec3(xEnd, yStart, WandBakedModel.NORTH_Z)
+                        new Vec3(xStart, yStart, NORTH_Z)
+                        , new Vec3(xStart, yEnd, NORTH_Z)
+                        , new Vec3(xEnd, yEnd, NORTH_Z)
+                        , new Vec3(xEnd, yStart, NORTH_Z)
                         , ix, ix + 1, iy, iy + 1
                         , sprite, Direction.NORTH, transform);
 
                 BakedQuad b = createQuad(
-                        new Vec3(xStart, yStart, WandBakedModel.SOUTH_Z)
-                        , new Vec3(xEnd, yStart, WandBakedModel.SOUTH_Z)
-                        , new Vec3(xEnd, yEnd, WandBakedModel.SOUTH_Z)
-                        , new Vec3(xStart, yEnd, WandBakedModel.SOUTH_Z)
+                        new Vec3(xStart, yStart, SOUTH_Z)
+                        , new Vec3(xEnd, yStart, SOUTH_Z)
+                        , new Vec3(xEnd, yEnd, SOUTH_Z)
+                        , new Vec3(xStart, yEnd, SOUTH_Z)
                         , ix, ix + 1, iy, iy + 1
                         , sprite, Direction.SOUTH, transform);
 
@@ -97,16 +95,16 @@ public class ModelUtils {
 
             /* Scan from Up to Bottom, find the pixel not transparent, use that to build Top quads */
             for (int iy = 0; iy <= 15; iy++) {
-                TextureAtlasSprite sprite = WandBakedModel.findLastNotTransparent(ix, iy, sprites);
+                TextureAtlasSprite sprite = findLastNotTransparent(ix, iy, sprites);
                 if (sprite == null) {
                     continue;
                 }
 
                     quads.add(createQuad(
-                            new Vec3(xStart, (16 - iy) / 16.0f, WandBakedModel.NORTH_Z)
-                            , new Vec3(xStart, (16 - iy) / 16.0f, WandBakedModel.SOUTH_Z)
-                            , new Vec3(xEnd, (16 - iy) / 16.0f, WandBakedModel.SOUTH_Z)
-                            , new Vec3(xEnd, (16 - iy) / 16.0f, WandBakedModel.NORTH_Z)
+                            new Vec3(xStart, (16 - iy) / 16.0f, NORTH_Z)
+                            , new Vec3(xStart, (16 - iy) / 16.0f, SOUTH_Z)
+                            , new Vec3(xEnd, (16 - iy) / 16.0f, SOUTH_Z)
+                            , new Vec3(xEnd, (16 - iy) / 16.0f, NORTH_Z)
                             , ix, ix + 1, iy, iy + 1
                             , sprite, Direction.UP, transform));
 
@@ -114,16 +112,16 @@ public class ModelUtils {
 
             /* Scan from Bottom to Up, find the pixel not transparent, use that to build Down quads */
             for (int iy = 15; iy >= 0; iy--) {
-                TextureAtlasSprite sprite = WandBakedModel.findLastNotTransparent(ix, iy, sprites);
+                TextureAtlasSprite sprite = findLastNotTransparent(ix, iy, sprites);
                 if (sprite == null) {
                     continue;
                 }
 
                     quads.add(createQuad(
-                            new Vec3(xStart, (16 - (iy + 1)) / 16.0f, WandBakedModel.NORTH_Z)
-                            , new Vec3(xEnd, (16 - (iy + 1)) / 16.0f, WandBakedModel.NORTH_Z)
-                            , new Vec3(xEnd, (16 - (iy + 1)) / 16.0f, WandBakedModel.SOUTH_Z)
-                            , new Vec3(xStart, (16 - (iy + 1)) / 16.0f, WandBakedModel.SOUTH_Z)
+                            new Vec3(xStart, (16 - (iy + 1)) / 16.0f, NORTH_Z)
+                            , new Vec3(xEnd, (16 - (iy + 1)) / 16.0f, NORTH_Z)
+                            , new Vec3(xEnd, (16 - (iy + 1)) / 16.0f, SOUTH_Z)
+                            , new Vec3(xStart, (16 - (iy + 1)) / 16.0f, SOUTH_Z)
                             , ix, ix + 1, iy, iy + 1
                             , sprite, Direction.DOWN, transform));
 
@@ -132,37 +130,36 @@ public class ModelUtils {
     }
 
     private static void genLeftRightQuads(List<TextureAtlasSprite> sprites, ImmutableList.Builder<BakedQuad> quads, Transformation transform) {
-        boolean isTransparent;
         for (int iy = 0; iy <= 15; iy++) {
             float yStart = (16 - (iy + 1)) / 16.0f;
             float yEnd = (16 - iy) / 16.0f;
 
             /* Scan from Left to Right, find the pixel not transparent, use that to build West quads */
             for (int ix = 0; ix <= 15; ix++) {
-                TextureAtlasSprite sprite = WandBakedModel.findLastNotTransparent(ix, iy, sprites);
+                TextureAtlasSprite sprite = findLastNotTransparent(ix, iy, sprites);
                 if (sprite == null) {
                     continue;
                 }
                 quads.add(createQuad(
-                        new Vec3(ix / 16.0f, yStart, WandBakedModel.NORTH_Z)
-                        , new Vec3(ix / 16.0f, yStart, WandBakedModel.SOUTH_Z)
-                        , new Vec3(ix / 16.0f, yEnd, WandBakedModel.SOUTH_Z)
-                        , new Vec3(ix / 16.0f, yEnd, WandBakedModel.NORTH_Z)
+                        new Vec3(ix / 16.0f, yStart, NORTH_Z)
+                        , new Vec3(ix / 16.0f, yStart, SOUTH_Z)
+                        , new Vec3(ix / 16.0f, yEnd, SOUTH_Z)
+                        , new Vec3(ix / 16.0f, yEnd, NORTH_Z)
                         , ix, ix + 1, iy, iy + 1
                         , sprite, Direction.WEST, transform));
 
             }
             /* Scan from Right to Left, find the pixel not transparent, use that to build East quads */
             for (int ix = 15; ix >= 0; ix--) {
-                TextureAtlasSprite sprite = WandBakedModel.findLastNotTransparent(ix, iy, sprites);
+                TextureAtlasSprite sprite = findLastNotTransparent(ix, iy, sprites);
                 if (sprite == null) {
                     continue;
                 }
                 quads.add(createQuad(
-                        new Vec3((ix + 1) / 16.0f, yStart, WandBakedModel.NORTH_Z)
-                        , new Vec3((ix + 1) / 16.0f, yEnd, WandBakedModel.NORTH_Z)
-                        , new Vec3((ix + 1) / 16.0f, yEnd, WandBakedModel.SOUTH_Z)
-                        , new Vec3((ix + 1) / 16.0f, yStart, WandBakedModel.SOUTH_Z)
+                        new Vec3((ix + 1) / 16.0f, yStart, NORTH_Z)
+                        , new Vec3((ix + 1) / 16.0f, yEnd, NORTH_Z)
+                        , new Vec3((ix + 1) / 16.0f, yEnd, SOUTH_Z)
+                        , new Vec3((ix + 1) / 16.0f, yStart, SOUTH_Z)
                         , ix, ix + 1, iy, iy + 1
                         , sprite, Direction.EAST, transform));
 
@@ -196,10 +193,22 @@ public class ModelUtils {
         float fv = sprite.getV0() + (sprite.getV1() - sprite.getV0()) * (float)v / 16.0F;
 
         consumer.vertex((float) vec.x, (float) vec.y, (float) vec.z)
-                .color(WandBakedModel.COLOR_R, WandBakedModel.COLOR_G, WandBakedModel.COLOR_B, 1)
+                .color(COLOR_R, COLOR_G, COLOR_B, 1)
                 .normal((float) orientation.getStepX(), (float) orientation.getStepY(), (float) orientation.getStepZ())
                 .uv(fu, fv)
                 .uv2(0, 0)
                 .endVertex();
+    }
+
+    @Nullable
+    public static TextureAtlasSprite findLastNotTransparent(int x, int y, List<TextureAtlasSprite> sprites) {
+        for (TextureAtlasSprite sprite : sprites) {
+            if (sprite != null) {
+                if (!sprite.contents().isTransparent(0, x, y)) {
+                    return sprite;
+                }
+            }
+        }
+        return null;
     }
 }

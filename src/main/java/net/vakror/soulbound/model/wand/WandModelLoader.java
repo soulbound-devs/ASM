@@ -18,6 +18,6 @@ public enum WandModelLoader implements IGeometryLoader<WandModel> {
 
 	@Override
 	public @NotNull WandModel read(@NotNull JsonObject modelContents, @NotNull JsonDeserializationContext deserializationContext) {
-		return ModelUtils.readModel(modelContents);
+		return new WandModel(modelContents);
 	}
 }
