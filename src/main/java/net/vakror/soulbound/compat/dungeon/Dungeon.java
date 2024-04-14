@@ -12,17 +12,17 @@ public class Dungeon implements INBTSerializable<CompoundTag> {
     boolean enterable = true;
     boolean hasFirstTickElapsed = false;
     boolean hasGenerated = false;
-    boolean canEnterAgainAfterExiting = true;
+    boolean deleteAfterExiting = true;
 
     @Nullable String cannotExitMessage = "Cannot Exit Dungeon!";
 
     ResourceLocation type;
 
-    public Dungeon(boolean enterable, boolean hasFirstTickElapsed, boolean hasGenerated, boolean canEnterAgainAfterExiting, @Nullable String cannotExitMessage, ResourceLocation type) {
+    public Dungeon(boolean enterable, boolean hasFirstTickElapsed, boolean hasGenerated, boolean deleteAfterExiting, @Nullable String cannotExitMessage, ResourceLocation type) {
         this.enterable = enterable;
         this.hasFirstTickElapsed = hasFirstTickElapsed;
         this.hasGenerated = hasGenerated;
-        this.canEnterAgainAfterExiting = canEnterAgainAfterExiting;
+        this.deleteAfterExiting = deleteAfterExiting;
         this.cannotExitMessage = cannotExitMessage;
         this.type = type;
     }
@@ -36,7 +36,7 @@ public class Dungeon implements INBTSerializable<CompoundTag> {
         tag.putBoolean("enterable", enterable);
         tag.putString("type", type.toString());
         tag.putBoolean("firstTick", hasFirstTickElapsed);
-        tag.putBoolean("canEnterAgainAfterExiting", canEnterAgainAfterExiting);
+        tag.putBoolean("deleteAfterExiting", deleteAfterExiting);
         tag.putBoolean("hasGenerated", hasGenerated);
         if (cannotExitMessage != null) {
             tag.putString("cannotExitMessage", cannotExitMessage);
@@ -55,7 +55,7 @@ public class Dungeon implements INBTSerializable<CompoundTag> {
         dungeon.type = new ResourceLocation(tag.getString("type"));
         dungeon.hasFirstTickElapsed = tag.getBoolean("firstTick");
         dungeon.hasGenerated = tag.getBoolean("hasGenerated");
-        dungeon.canEnterAgainAfterExiting = tag.getBoolean("canEnterAgainAfterExiting");
+        dungeon.deleteAfterExiting = tag.getBoolean("deleteAfterExiting");
         if (tag.get("cannotExitMessage") != null) {
             dungeon.cannotExitMessage = tag.getString("cannotExitMessage");
         }
@@ -90,12 +90,12 @@ public class Dungeon implements INBTSerializable<CompoundTag> {
         this.hasFirstTickElapsed = hasFirstTickElapsed;
     }
 
-    public boolean canEnterAgainAfterExiting() {
-        return canEnterAgainAfterExiting;
+    public boolean shouldDeleteAfterExiting() {
+        return deleteAfterExiting;
     }
 
-    public void setCanEnterAgainAfterExiting(boolean canEnterAgainAfterExiting) {
-        this.canEnterAgainAfterExiting = canEnterAgainAfterExiting;
+    public void setDeleteAfterExiting(boolean deleteAfterExiting) {
+        this.deleteAfterExiting = deleteAfterExiting;
     }
 
     public @Nullable String getCannotExitMessage() {
@@ -119,6 +119,6 @@ public class Dungeon implements INBTSerializable<CompoundTag> {
      * @return a copy of this dungeon
      */
     public Dungeon copy() {
-        return new Dungeon(enterable, hasFirstTickElapsed, hasGenerated, canEnterAgainAfterExiting, cannotExitMessage, type);
+        return new Dungeon(enterable, hasFirstTickElapsed, hasGenerated, deleteAfterExiting, cannotExitMessage, type);
     }
 }

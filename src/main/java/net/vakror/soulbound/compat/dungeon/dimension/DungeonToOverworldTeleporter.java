@@ -21,9 +21,6 @@ public record DungeonToOverworldTeleporter(ServerLevel currentLevel) implements 
             AtomicReference<Vec3> pos = new AtomicReference<>(new Vec3(destWorld.getLevelData().getXSpawn(), destWorld.getLevelData().getYSpawn(), destWorld.getLevelData().getZSpawn()));
             if (this.currentLevel != null) {
                 this.currentLevel.getExistingData(DungeonAttachments.DUNGEON_ATTACHMENT).ifPresent((dungeonLevel -> {
-                    if (!dungeonLevel.getDungeon().canEnterAgainAfterExiting()) {
-                        dungeonLevel.getDungeon().setEnterable(false);
-                    }
                     pos.set(dungeonLevel.getReturnPos());
                 }));
             }

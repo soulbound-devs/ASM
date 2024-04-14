@@ -1,5 +1,6 @@
 package net.vakror.soulbound.compat.dungeon;
 
+import net.commoble.infiniverse.internal.DimensionManager;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -8,6 +9,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
+import net.neoforged.neoforge.event.entity.EntityLeaveLevelEvent;
 import net.neoforged.neoforge.event.entity.player.FillBucketEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.level.ExplosionEvent;
@@ -16,6 +18,8 @@ import net.vakror.soulbound.compat.dungeon.attachment.DungeonAttachment;
 import net.vakror.soulbound.compat.dungeon.attachment.DungeonAttachments;
 import net.vakror.soulbound.compat.dungeon.registry.DungeonRegistry;
 import net.vakror.soulbound.compat.dungeon.dimension.Dimensions;
+
+import java.util.Objects;
 
 public class DungeonEvents {
     @Mod.EventBusSubscriber(modid = SoulboundMod.MOD_ID)
@@ -33,7 +37,23 @@ public class DungeonEvents {
                         dungeon.setType(type);
                         dungeonCapability.setDungeon(dungeon);
                     }
+                    DungeonSaveData.DungeonLevelsListSaveData.INSTANCE.loadedDungeonLevels.add(world.dimension().location());
                     world.getServer().sendSystemMessage(Component.literal(String.format(dungeonCapability.getDungeon().getJoinMessage(serverPlayer, (ServerLevel) event.getLevel()), serverPlayer.getDisplayName().getString())));
+                }
+            }
+        }
+
+        @SubscribeEvent
+        public static void onPlayerLeaveDungeon(EntityLeaveLevelEvent event) {
+            if (!event.getLevel().isClientSide() && event.getLevel().dimensionTypeId().equals(Dimensions.DUNGEON_TYPE)) {
+                for (ServerLevel allLevel : Objects.requireNonNull(event.getLevel().getServer()).getAllLevels()) {
+                    if (allLevel.hasAttachments())
+                        allLevel.getExistingData(DungeonAttachments.DUNGEON_ATTACHMENT).ifPresent(dungeonAttachment -> {
+                            if (dungeonAttachment.getDungeon().shouldDeleteAfterExiting()) {
+                                DungeonUtils.dungeonsToDelete.add(allLevel.dimension());
+                                DungeonUtils.deleteWorld(event.getLevel().getServer());
+                            }
+                        });
                 }
             }
         }

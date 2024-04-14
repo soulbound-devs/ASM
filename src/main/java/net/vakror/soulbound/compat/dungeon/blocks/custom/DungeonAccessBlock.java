@@ -6,7 +6,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -84,7 +83,6 @@ public class DungeonAccessBlock extends BaseEntityBlock {
             ServerLevel serverLevel = (ServerLevel) level;
             ResourceLocation dimensionId = new ResourceLocation(SoulboundMod.MOD_ID, "dungeon_" + blockEntity.getDimensionUUID().toString());
             ServerLevel dimension = createDimension(dimensionId, serverLevel);
-            DungeonSaveData.DungeonLevelsListSaveData.INSTANCE.loadedDungeonLevels.add(dimensionId);
             DungeonSaveData.DungeonLevelsListSaveData.INSTANCE.setDirty();
             DungeonAttachment dungeonLevel = dimension.getData(DungeonAttachments.DUNGEON_ATTACHMENT);
             dungeonLevel.setReturnPos(player.position());
