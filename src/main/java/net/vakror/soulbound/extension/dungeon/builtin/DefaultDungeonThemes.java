@@ -1,9 +1,8 @@
-package net.vakror.soulbound.extension.dungeon;
+package net.vakror.soulbound.extension.dungeon.builtin;
 
 import net.minecraft.world.level.levelgen.structure.templatesystem.AlwaysTrueTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.ProcessorRule;
 import net.minecraft.world.level.levelgen.structure.templatesystem.RandomBlockMatchTest;
-import net.minecraft.world.level.levelgen.structure.templatesystem.RuleProcessor;
 import net.vakror.soulbound.block.ModBlocks;
 import net.vakror.soulbound.compat.dungeon.blocks.ModDungeonBlocks;
 import net.vakror.soulbound.compat.dungeon.theme.RuleDungeonTheme;
