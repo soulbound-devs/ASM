@@ -26,7 +26,7 @@ public class DungeonUtils {
 
     private static void placeReturnBlockUnderneathEachPlayer(TickEvent.LevelTickEvent event) {
         for (Player player : event.level.players()) {
-            event.level.setBlock(player.getOnPos(), ModDungeonBlocks.RETURN_TO_OVERWORLD_BLOCK.get().defaultBlockState(), 3);
+            event.level.setBlock(player.blockPosition().below(), ModDungeonBlocks.RETURN_TO_OVERWORLD_BLOCK.get().defaultBlockState(), 3);
         }
     }
 }
