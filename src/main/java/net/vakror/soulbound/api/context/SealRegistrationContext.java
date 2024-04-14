@@ -42,8 +42,6 @@ public class SealRegistrationContext implements IRegistrationContext {
     public void registerSeal(@NotNull String modId, @NotNull ISeal seal, @NotNull Item.Properties properties, @Nullable ToIntFunction<ISealableTier> maxStack, @Nullable Tooltip tooltip) {
         Stopwatch stopwatch = Stopwatch.createStarted();
         SoulboundMod.LOGGER.info("Checking If Seal {} Can Be Registered", seal.getId());
-        Stopwatch stopwatch2 = Stopwatch.createStarted();
-        SoulboundMod.LOGGER.info("Seal {} CAN Be Registered, \033[0;31mChecks Took {}\033[0;0m", seal.getId(), stopwatch2);
         SealRegistry.addSeal(seal, seal.getType());
         DeferredRegister<Item> register;
         if (!REGISTRIES.containsKey(modId)) {
@@ -68,8 +66,6 @@ public class SealRegistrationContext implements IRegistrationContext {
     public void registerSealWithCustomItem(@NotNull ISeal seal, @NotNull DeferredHolder<Item, SealItem> item) {
         Stopwatch stopwatch = Stopwatch.createStarted();
         SoulboundMod.LOGGER.info("Checking If Seal {} Can Be Registered", seal.getId());
-        Stopwatch stopwatch2 = Stopwatch.createStarted();
-        SoulboundMod.LOGGER.info("Seal {} CAN Be Registered, \033[0;31mChecks Took {}\033[0;0m", seal.getId(), stopwatch2);
         SealRegistry.addSeal(seal, seal.getType());
         SealRegistry.sealItems.put(seal.getId(), item);
         SoulboundMod.LOGGER.info("Registered Seal {} of type {}, \033[0;31mTook {}\033[0;0m", seal.getId(), seal.getType(), stopwatch);
@@ -92,27 +88,25 @@ public class SealRegistrationContext implements IRegistrationContext {
                 SoulboundMod.LOGGER.info("Registering Tier {} For Seal {}", ((Tiered) seal).getTier(), seal.getId());
                 Stopwatch stopwatch = Stopwatch.createStarted();
                 SoulboundMod.LOGGER.info("Checking If Seal {} Of Tier {} Can Be Registered", seal.getId(), ((Tiered) seal).getTierId());
-                Stopwatch stopwatch2 = Stopwatch.createStarted();
-                    SoulboundMod.LOGGER.info("Seal {} Of Tier {} CAN Be Registered, \033[0;31mChecks Took {}\033[0;0m", seal.getId(), ((Tiered) seal).getTierId(), stopwatch2);
-                    SealRegistry.addSeal(seal, seal.getType());
-                    DeferredRegister<Item> register;
-                    if (!REGISTRIES.containsKey(modId)) {
-                        register = DeferredRegister.create(Registries.ITEM, modId);
-                    } else {
-                        register = REGISTRIES.get(modId);
-                    }
+                SealRegistry.addSeal(seal, seal.getType());
+                DeferredRegister<Item> register;
+                if (!REGISTRIES.containsKey(modId)) {
+                    register = DeferredRegister.create(Registries.ITEM, modId);
+                } else {
+                    register = REGISTRIES.get(modId);
+                }
 
-                    DeferredHolder<Item, SealItem> sealItem = register.register(seal.getId(), () -> new SealItem(
-                            properties,
-                            seal.getId(),
-                            seal.getType(),
-                            maxStack == null ? (tier) -> 1 : maxStack,
-                            tooltip == null ? Tooltip.empty() : tooltip
-                    ));
-                    REGISTRIES.put(modId, register);
+                DeferredHolder<Item, SealItem> sealItem = register.register(seal.getId(), () -> new SealItem(
+                        properties,
+                        seal.getId(),
+                        seal.getType(),
+                        maxStack == null ? (tier) -> 1 : maxStack,
+                        tooltip == null ? Tooltip.empty() : tooltip
+                ));
+                REGISTRIES.put(modId, register);
 
-                    SealRegistry.sealItems.put(seal.getId(), sealItem);
-                    SoulboundMod.LOGGER.info("Finished Registering Tier {} For Seal {}, \033[0;31mTook {}\033[0;0m", ((Tiered) seal).getTier(), seal.getId(), stopwatch);
+                SealRegistry.sealItems.put(seal.getId(), sealItem);
+                SoulboundMod.LOGGER.info("Finished Registering Tier {} For Seal {}, \033[0;31mTook {}\033[0;0m", ((Tiered) seal).getTier(), seal.getId(), stopwatch);
             }
             SoulboundMod.LOGGER.info("Finished Registering All Tiers For Seal {} of type {} for mod {}, \033[0;31mTook {}\033[0;0m", tieredSeal.getId(), tieredSeal.getType().name().toLowerCase(), modId, stopwatch1);
         } else {

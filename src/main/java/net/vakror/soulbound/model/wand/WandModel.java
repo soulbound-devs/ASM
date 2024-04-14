@@ -16,7 +16,6 @@ import net.vakror.soulbound.model.model.CompositeModelState;
 import java.util.EnumMap;
 import java.util.function.Function;
 
-@SuppressWarnings("deprecation")
 public class WandModel implements IUnbakedGeometry<WandModel> {
 	private ResourceLocation baseMaterial;
 

@@ -15,7 +15,6 @@ import net.minecraft.world.level.Level;
 import net.vakror.soulbound.cap.ModAttachments;
 import net.vakror.soulbound.util.SackInventory;
 import net.vakror.soulbound.screen.SackMenu;
-import net.vakror.soulbound.seal.SealRegistry;
 import net.vakror.soulbound.seal.seals.amplifying.sack.ColumnUpgradeSeal;
 import net.vakror.soulbound.seal.seals.amplifying.sack.RowUpgradeSeal;
 import net.vakror.soulbound.seal.seals.amplifying.sack.StackSizeUpgradeSeal;
@@ -25,12 +24,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class SackItem extends SealableItem {
-    private int width = 9;
-    private int height = 3;
-    private int stackLimit = 64;
+    private final int defaultWidth = 9;
+    private final int defaultHeight = 3;
+    private final int defaultStackLimit = 64;
 
     private PickupUtil.PickupMode pickupMode = PickupUtil.PickupMode.NONE;
 
@@ -43,8 +41,7 @@ public class SackItem extends SealableItem {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-//        SackHelper.openSackGui(player, player.getItemInHand(hand));
+    public @NotNull InteractionResultHolder<ItemStack> use(Level level, @NotNull Player player, @NotNull InteractionHand hand) {
         if (!level.isClientSide) {
             openScreen((ServerPlayer) player, hand);
         }
@@ -53,7 +50,6 @@ public class SackItem extends SealableItem {
 
     public static void openScreen(ServerPlayer user, InteractionHand hand) {
         final var stack = user.getItemInHand(hand);
-        // Getting existing UUID or generated new one
         var uuid = getOrBindUUID(stack);
 
         var width = getSackWidth(stack);
@@ -67,7 +63,7 @@ public class SackItem extends SealableItem {
             }
 
             @Override
-            public AbstractContainerMenu createMenu(int syncId, Inventory inv, Player player) {
+            public AbstractContainerMenu createMenu(int syncId, @NotNull Inventory inv, @NotNull Player player) {
                 return new SackMenu(syncId, inv, width, height, stackLimit, uuid, stack);
             }
         };
@@ -95,36 +91,11 @@ public class SackItem extends SealableItem {
         super.inventoryTick(pStack, pLevel, pEntity, p_41407_, p_41408_);
     }
 
-    private static int getStackLimitFromSealList(ItemStack stack) {
-        return 64;
-    }
-
-    private static int getHeightFromSealList(ItemStack stack) {
-        return 3;
-    }
-
-    private static int getWidthFromSealList(ItemStack stack) {
-        return 9;
-    }
-
     public static UUID bindUid(ItemStack stack) {
         var uuid = UUID.randomUUID();
         stack.getOrCreateTag().putUUID("SackUUID", uuid);
 
         return uuid;
-    }
-
-    public static PickupUtil.PickupMode getPickupMode(ItemStack stack) {
-        AtomicReference<PickupUtil.PickupMode> mode = new AtomicReference<>(PickupUtil.PickupMode.NONE);
-        stack.getExistingData(ModAttachments.SEAL_ATTACHMENT).ifPresent((itemSeal -> {
-            boolean hasPickup = itemSeal.getAmplifyingSeals().contains(SealRegistry.amplifyingSeals.get("pickup"));
-            if (hasPickup) {
-                mode.set(((SackItem) stack.getItem()).pickupMode);
-            } else {
-                mode.set(PickupUtil.PickupMode.NONE);
-            }
-        }));
-        return mode.get();
     }
 
     public static UUID getOrBindUUID(ItemStack stack) {
@@ -139,9 +110,7 @@ public class SackItem extends SealableItem {
 
     public static UUID getUUID(ItemStack stack) {
         try {
-            var uuid = stack.getOrCreateTag().getUUID("SackUUID");
-
-            return uuid;
+            return stack.getOrCreateTag().getUUID("SackUUID");
         } catch (Exception e) {
             return null;
         }
@@ -153,7 +122,7 @@ public class SackItem extends SealableItem {
     }
 
     public static int getSackWidth(ItemStack stack){
-        final int[] width = new int[]{((SackItem) stack.getItem()).width};
+        final int[] width = new int[]{((SackItem) stack.getItem()).defaultWidth};
         stack.getExistingData(ModAttachments.SEAL_ATTACHMENT).ifPresent((itemSeal -> {
             itemSeal.getAmplifyingSeals().forEach((seal -> {
                 if (seal instanceof ColumnUpgradeSeal upgradeSeal) {
@@ -169,7 +138,7 @@ public class SackItem extends SealableItem {
     }
 
     public static int getSackHeight(ItemStack stack){
-        final int[] height = new int[]{((SackItem) stack.getItem()).height};
+        final int[] height = new int[]{((SackItem) stack.getItem()).defaultHeight};
         stack.getExistingData(ModAttachments.SEAL_ATTACHMENT).ifPresent((itemSeal -> {
             itemSeal.getAmplifyingSeals().forEach((seal -> {
                 if (seal instanceof RowUpgradeSeal upgradeSeal) {
@@ -185,7 +154,7 @@ public class SackItem extends SealableItem {
     }
 
     public static int getSackStackSize(ItemStack stack){
-        final int[] stackSize = new int[]{((SackItem) stack.getItem()).stackLimit};
+        final int[] stackSize = new int[]{((SackItem) stack.getItem()).defaultStackLimit};
         stack.getExistingData(ModAttachments.SEAL_ATTACHMENT).ifPresent((itemSeal -> {
             itemSeal.getAmplifyingSeals().forEach((seal -> {
                 if (seal instanceof StackSizeUpgradeSeal upgradeSeal) {

@@ -10,11 +10,9 @@ import java.util.UUID;
 
 public class HasteAmplifyFunction extends AmplifyFunction{
     private final double miningSpeedIncrease;
-    private final AttributeModifier.Operation operation;
 
-    public HasteAmplifyFunction(double miningSpeedIncrease, AttributeModifier.Operation operation) {
+    public HasteAmplifyFunction(double miningSpeedIncrease) {
         this.miningSpeedIncrease = miningSpeedIncrease;
-        this.operation = operation;
     }
 
     @Override

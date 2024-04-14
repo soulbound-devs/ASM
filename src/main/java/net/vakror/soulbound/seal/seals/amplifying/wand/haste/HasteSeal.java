@@ -15,7 +15,7 @@ public class HasteSeal extends ItemAmplifyingSeal implements TieredWithAmount {
     public HasteSeal(int tier) {
         super("mining_speed_tier_" + tier);
         this.tier = tier;
-        addAmplifyFunction(new HasteAmplifyFunction(getAmount(tier), AttributeModifier.Operation.ADDITION));
+        addAmplifyFunction(new HasteAmplifyFunction(getAmount(tier)));
     }
 
     @Override

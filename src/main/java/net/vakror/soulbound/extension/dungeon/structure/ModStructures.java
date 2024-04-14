@@ -15,7 +15,7 @@ public class ModStructures {
 
     /**
      * We are using the Deferred Registry system to register our structure as this is the preferred way on Forge.
-     * This will handle registering the base structure for us at the correct time so we don't have to handle it ourselves.
+     * This will handle registering the base structure for us at the correct time so that we don't have to handle it ourselves.
      */
     public static final DeferredRegister<StructureType<?>> REGISTER = DeferredRegister.create(Registries.STRUCTURE_TYPE, SoulboundMod.MOD_ID);
 

@@ -114,14 +114,10 @@ public class SoulboundJEIPlugin implements IModPlugin {
                 if (seal.getActiveSeal() != null) {
                     nbtRepresentation.append("active-").append(seal.getActiveSeal().getId());
                 } else if (seal.getAmplifyingSeals() != null && !seal.getAmplifyingSeals().isEmpty()) {
-                    try {
-                        Stream<ISeal> stream = seal.getAmplifyingSeals().stream();
-                        if (stream != null) {
-                            Optional<ISeal> optional = stream.findFirst();
-                            optional.ifPresent(iSeal -> nbtRepresentation.append("amplifying-").append(iSeal.getId()));
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    Stream<ISeal> stream = seal.getAmplifyingSeals().stream();
+                    if (stream != null) {
+                        Optional<ISeal> optional = stream.findFirst();
+                        optional.ifPresent(iSeal -> nbtRepresentation.append("amplifying-").append(iSeal.getId()));
                     }
                 }
             });

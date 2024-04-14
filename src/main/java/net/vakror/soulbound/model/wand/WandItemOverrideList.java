@@ -1,7 +1,5 @@
 package net.vakror.soulbound.model.wand;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -14,11 +12,6 @@ import net.vakror.soulbound.cap.ModAttachments;
 import net.vakror.soulbound.items.custom.WandItem;
 import net.vakror.soulbound.model.ModelUtils;
 import net.vakror.soulbound.model.models.ActiveSealModels;
-import net.vakror.soulbound.seal.SealRegistry;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 public class WandItemOverrideList extends ItemOverrides {

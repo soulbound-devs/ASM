@@ -37,10 +37,12 @@ import net.vakror.soulbound.compat.dungeon.blocks.entity.DungeonAccessBlockEntit
 import net.vakror.soulbound.compat.dungeon.dimension.Dimensions;
 import net.vakror.soulbound.compat.dungeon.dimension.OverworldToDungeonTeleporter;
 import net.vakror.soulbound.compat.dungeon.items.ModDungeonItems;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
+@SuppressWarnings("deprecation")
 public class DungeonAccessBlock extends BaseEntityBlock {
     public static final BooleanProperty LOCKED = BooleanProperty.create("locked");
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -50,17 +52,17 @@ public class DungeonAccessBlock extends BaseEntityBlock {
     }
 
     @Override
-    public RenderShape getRenderShape(BlockState pState) {
+    public @NotNull RenderShape getRenderShape(@NotNull BlockState pState) {
         return RenderShape.MODEL;
     }
 
     @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
+    protected @NotNull MapCodec<? extends BaseEntityBlock> codec() {
         return simpleCodec(DungeonAccessBlock::new);
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+    public @NotNull InteractionResult use(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
         if (!level.isClientSide) {
             if (canUnlock(player, level, state, hand)) {
                 return unlock(level, pos, state);
@@ -80,8 +82,6 @@ public class DungeonAccessBlock extends BaseEntityBlock {
                 blockEntity.setChanged();
             }
             ServerLevel serverLevel = (ServerLevel) level;
-            boolean levelExists = doesLevelExist(level.getServer(), blockEntity.getDimensionUUID());
-            final boolean[] canEnter = new boolean[]{true};
             ResourceLocation dimensionId = new ResourceLocation(SoulboundMod.MOD_ID, "dungeon_" + blockEntity.getDimensionUUID().toString());
             ServerLevel dimension = createDimension(dimensionId, serverLevel);
             DungeonSaveData.DungeonLevelsListSaveData.INSTANCE.loadedDungeonLevels.add(dimensionId);
@@ -108,7 +108,9 @@ public class DungeonAccessBlock extends BaseEntityBlock {
     }
 
     private boolean canUnlock(Player player, Level level, BlockState state, InteractionHand hand) {
-        return !level.isClientSide && player.getItemInHand(hand).getItem().equals(ModDungeonItems.KEY.get()) && state.getValue(LOCKED);
+        if (level.isClientSide) return false;
+        assert ModDungeonItems.KEY != null;
+        return player.getItemInHand(hand).getItem().equals(ModDungeonItems.KEY.get()) && state.getValue(LOCKED);
     }
 
     private boolean canTeleport(Level level, BlockState state) {
@@ -119,21 +121,14 @@ public class DungeonAccessBlock extends BaseEntityBlock {
         level.setBlock(pos, state.setValue(LOCKED, false), 35);
         return InteractionResult.CONSUME;
     }
-
-    public static boolean doesLevelExist(MinecraftServer server, UUID uuid) {
-        ResourceLocation id = new ResourceLocation(SoulboundMod.MOD_ID, "dungeon_" + uuid.toString());
-        ResourceKey<Level> levelKey = ResourceKey.create(Registries.DIMENSION, id);
-
-        @SuppressWarnings("deprecation") // forgeGetWorldMap is deprecated because it's a forge-internal-use-only method
-        final Map<ResourceKey<Level>, ServerLevel> map = server.forgeGetWorldMap();
-        // if the level already exists, return true
-        final ServerLevel existingLevel = map.get(levelKey);
-        return existingLevel != null;
-    }
-
     private boolean canTeleport(Level level, Player player, ServerLevel dimension, UUID dimensionUUID) {
         if (!dimension.players().isEmpty()) {
             SoulboundMod.LOGGER.info(player.getDisplayName() + "Cannot Enter" + "Dungeon, as " + dimension.players().get(0) + "Is already in it");
+        }
+        Optional<DungeonAttachment> attachment = level.getExistingData(DungeonAttachments.DUNGEON_ATTACHMENT);
+
+        if (attachment.isPresent()) {
+            return attachment.get().getDungeon().isEnterable();
         }
         return dimension.players().isEmpty();
     }

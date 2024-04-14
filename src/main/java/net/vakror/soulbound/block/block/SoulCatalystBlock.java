@@ -14,6 +14,7 @@ import net.vakror.soulbound.block.entity.custom.SoulCatalystBlockEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+@SuppressWarnings("deprecation")
 public class SoulCatalystBlock extends BaseEntityBlock {
     public SoulCatalystBlock(Properties pProperties) {
         super(pProperties);

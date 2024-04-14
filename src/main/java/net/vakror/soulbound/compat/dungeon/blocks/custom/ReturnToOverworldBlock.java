@@ -25,6 +25,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+@SuppressWarnings("deprecation")
 public class ReturnToOverworldBlock extends BaseEntityBlock {
     public ReturnToOverworldBlock(Properties properties) {
         super(properties);

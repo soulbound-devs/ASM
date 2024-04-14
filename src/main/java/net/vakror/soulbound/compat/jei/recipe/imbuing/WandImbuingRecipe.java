@@ -3,8 +3,10 @@ package net.vakror.soulbound.compat.jei.recipe.imbuing;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.vakror.soulbound.cap.ModAttachments;
 import net.vakror.soulbound.items.ModItems;
 import net.vakror.soulbound.items.custom.seals.SealItem;
+import net.vakror.soulbound.seal.SealRegistry;
 import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.ArrayList;
@@ -25,19 +27,19 @@ public class WandImbuingRecipe implements IWandImbuingRecipe {
 		}
 
 		ItemStack outputWand = new ItemStack(ModItems.WAND.get());
-//		outputWand.getExistingData(ModAttachments.SEAL_ATTACHMENT).ifPresent((itemSeal -> {
-//			switch (seal.getType()) {
-//				case PASSIVE -> {
-//					itemSeal.addPassiveSeal(seal.getId());
-//					itemSeal.setActiveSeal(SealRegistry.passiveSeals.get(seal.getId()), outputWand);
-//				}
-//				case OFFENSIVE -> {
-//					itemSeal.addAttackSeal(seal.getId());
-//					itemSeal.setActiveSeal(SealRegistry.attackSeals.get(seal.getId()), outputWand);
-//				}
-//				case AMPLIFYING -> itemSeal.addAmplifyingSeal(seal.getId());
-//			}
-//		}));
+		outputWand.getExistingData(ModAttachments.SEAL_ATTACHMENT).ifPresent((itemSeal -> {
+			switch (seal.getType()) {
+				case PASSIVE -> {
+					itemSeal.addPassiveSeal(seal.getId());
+					itemSeal.setActiveSeal(SealRegistry.passiveSeals.get(seal.getId()), outputWand);
+				}
+				case OFFENSIVE -> {
+					itemSeal.addAttackSeal(seal.getId());
+					itemSeal.setActiveSeal(SealRegistry.attackSeals.get(seal.getId()), outputWand);
+				}
+				case AMPLIFYING -> itemSeal.addAmplifyingSeal(seal.getId());
+			}
+		}));
 
 		WandImbuingRecipe recipe = new WandImbuingRecipe(new ItemStack(ModItems.WAND.get()), seal, outputWand);
 

@@ -6,7 +6,12 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Direction;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
@@ -47,6 +52,8 @@ import net.vakror.soulbound.tab.ModCreativeModeTabs;
 import net.vakror.soulbound.world.biome.SoulboundRegion;
 import org.slf4j.Logger;
 import terrablender.api.Regions;
+
+import java.util.Map;
 
 @Mod(SoulboundMod.MOD_ID)
 public class SoulboundMod {

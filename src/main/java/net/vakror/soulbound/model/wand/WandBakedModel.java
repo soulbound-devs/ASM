@@ -24,13 +24,12 @@ import java.util.Map;
 import java.util.function.Function;
 
 /* Do not use this baked model directly, it'll display nothing, use WandBakedModel#getNewBakedItemModel */
-@SuppressWarnings("deprecation")
 public class WandBakedModel extends BakedItemModel {
 	private TextureAtlasSprite baseSprite = null;
 	private TextureAtlasSprite barkSprite = null;
 	private TextureAtlasSprite wandSprite = null;
 
-	private Transformation transform;
+	private final Transformation transform;
 	/* Cache the result of quads, using a location combination */
 	private static Map<String, ImmutableList<BakedQuad>> cache = new HashMap<String, ImmutableList<BakedQuad>>();
 

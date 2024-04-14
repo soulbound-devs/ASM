@@ -6,6 +6,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.function.Supplier;
 
+@SuppressWarnings("deprecation")
 public enum ModTiers implements Tier {
     DIAMOND_LIKE(3, 2375, 8.0F, 0.0F, 0, () -> Ingredient.EMPTY);
 
