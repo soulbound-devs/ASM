@@ -50,7 +50,7 @@ public class WandImbuingTableBlock extends BaseEntityBlock {
         if (!pLevel.isClientSide()) {
             BlockEntity entity = pLevel.getBlockEntity(pPos);
             if (entity instanceof WandImbuingTableBlockEntity wandImbuingTableBlockEntity) {
-                MenuRegistry.openMenu(((ServerPlayer) pPlayer), wandImbuingTableBlockEntity);
+                MenuRegistry.openExtendedMenu(((ServerPlayer) pPlayer), wandImbuingTableBlockEntity);
             } else {
                 throw new IllegalStateException("Wand Imbuing Table Container Provider Missing!");
             }

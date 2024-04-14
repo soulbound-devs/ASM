@@ -1,8 +1,10 @@
 package net.vakror.soulbound.block.entity.custom;
 
+import dev.architectury.registry.menu.ExtendedMenuProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
@@ -28,7 +30,7 @@ import net.vakror.soulbound.seal.SealRegistry;
 import net.vakror.soulbound.seal.SealType;
 import org.jetbrains.annotations.Nullable;
 
-public class WandImbuingTableBlockEntity extends BlockEntity implements MenuProvider {
+public class WandImbuingTableBlockEntity extends BlockEntity implements ExtendedMenuProvider {
     private final ItemStackHandler itemHandler = new ItemStackHandler(4) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -191,5 +193,10 @@ public class WandImbuingTableBlockEntity extends BlockEntity implements MenuProv
 
     public ItemStackHandler getItemHandler(Direction pDirection) {
         return itemHandler;
+    }
+
+    @Override
+    public void saveExtraData(FriendlyByteBuf buf) {
+        buf.writeBlockPos(worldPosition);
     }
 }

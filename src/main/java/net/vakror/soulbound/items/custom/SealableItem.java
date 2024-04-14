@@ -32,7 +32,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class SealableItem extends DiggerItem {
 
     public final ISealableTier tier;
-    protected ItemStack stack;
 
     public SealableItem(Properties properties, ISealableTier tier) {
         super(0, 0, ModTiers.DIAMOND_LIKE, BlockTags.create(new ResourceLocation(SoulboundMod.MOD_ID, "none")), properties);
@@ -57,12 +56,6 @@ public class SealableItem extends DiggerItem {
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
         return false;
-    }
-
-    @Override
-    public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int p_41407_, boolean p_41408_) {
-        this.stack = pStack;
-        super.inventoryTick(pStack, pLevel, pEntity, p_41407_, p_41408_);
     }
 
     public boolean canAddSeal(ItemStack sealable, SealType type, ItemStack sealItem) {
@@ -315,6 +308,11 @@ public class SealableItem extends DiggerItem {
                 null, // insertion
                 new ResourceLocation(SoulboundMod.MOD_ID, "wand") // font
         );
+    }
+
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+        return false;
     }
 
     public static String activeCharacter() {
