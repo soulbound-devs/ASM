@@ -19,7 +19,7 @@ import net.vakror.soulbound.compat.dungeon.attachment.DungeonAttachment;
 import net.vakror.soulbound.compat.dungeon.attachment.DungeonAttachments;
 import net.vakror.soulbound.compat.dungeon.blocks.entity.ModDungeonBlockEntities;
 import net.vakror.soulbound.compat.dungeon.blocks.entity.ReturnToOverWorldBlockEntity;
-import net.vakror.soulbound.compat.dungeon.dimension.DungeonTeleporter;
+import net.vakror.soulbound.compat.dungeon.dimension.DungeonToOverworldTeleporter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -60,7 +60,7 @@ public class ReturnToOverworldBlock extends BaseEntityBlock {
                 }
                 result.set(InteractionResult.FAIL);
             } else {
-                player.changeDimension(dimension, new DungeonTeleporter(pos, this, (ServerLevel) player.level()));
+                player.changeDimension(dimension, new DungeonToOverworldTeleporter((ServerLevel) player.level()));
                 result.set(InteractionResult.SUCCESS);
             }
         }

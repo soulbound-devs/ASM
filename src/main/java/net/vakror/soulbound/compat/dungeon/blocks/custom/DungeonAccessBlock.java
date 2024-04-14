@@ -3,10 +3,7 @@ package net.vakror.soulbound.compat.dungeon.blocks.custom;
 import com.mojang.serialization.MapCodec;
 import net.commoble.infiniverse.api.InfiniverseAPI;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.registries.VanillaRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
@@ -38,7 +35,7 @@ import net.vakror.soulbound.compat.dungeon.attachment.DungeonAttachment;
 import net.vakror.soulbound.compat.dungeon.attachment.DungeonAttachments;
 import net.vakror.soulbound.compat.dungeon.blocks.entity.DungeonAccessBlockEntity;
 import net.vakror.soulbound.compat.dungeon.dimension.Dimensions;
-import net.vakror.soulbound.compat.dungeon.dimension.DungeonTeleporter;
+import net.vakror.soulbound.compat.dungeon.dimension.OverworldToDungeonTeleporter;
 import net.vakror.soulbound.compat.dungeon.items.ModDungeonItems;
 import org.jetbrains.annotations.Nullable;
 
@@ -93,7 +90,7 @@ public class DungeonAccessBlock extends BaseEntityBlock {
             dungeonLevel.setReturnPos(player.position());
             if (canTeleport(level, player, dimension, blockEntity.getDimensionUUID())) {
                 player.setPortalCooldown();
-                Objects.requireNonNull(player.changeDimension(dimension, new DungeonTeleporter(pos, this)));
+                Objects.requireNonNull(player.changeDimension(dimension, new OverworldToDungeonTeleporter()));
             }
             return InteractionResult.SUCCESS;
         }
