@@ -1,0 +1,14 @@
+{
+  "sources": [
+    {
+      "type": "directory",
+      "source": "item/wands",
+      "prefix": "item/wands/"
+    },
+    {
+      "type": "directory",
+      "source": "item/wands/activated",
+      "prefix": "item/wands/activated/"
+    }
+  ]
+}
