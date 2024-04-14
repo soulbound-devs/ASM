@@ -22,15 +22,19 @@ public class DungeonEvents {
     public static class ForgeEvents {
         @SubscribeEvent
         public static void onPlayerEnterDungeon(EntityJoinLevelEvent event) {
-            if (!event.getLevel().isClientSide && event.getEntity() instanceof ServerPlayer serverPlayer && event.getLevel().dimensionTypeId().equals(Dimensions.DUNGEON_TYPE)) {
-                ServerLevel world = (ServerLevel) event.getLevel();
-                DungeonAttachment dungeonCapability = world.getData(DungeonAttachments.DUNGEON_ATTACHMENT);
-                dungeonCapability.playerJustJoined = true;
-                ResourceLocation type = DungeonRegistry.randomDungeonType();
-                Dungeon dungeon = DungeonRegistry.dungeons.get(type).dungeon().copy();
-                dungeon.setType(type);
-                dungeonCapability.setDungeon(dungeon);
-                world.getServer().sendSystemMessage(Component.literal(String.format(dungeonCapability.getDungeon().getJoinMessage(serverPlayer, (ServerLevel) event.getLevel()), serverPlayer.getDisplayName().getString())));
+            if (event.getEntity() instanceof ServerPlayer serverPlayer && event.getLevel().dimensionTypeId().equals(Dimensions.DUNGEON_TYPE)) {
+                if (!event.getLevel().isClientSide()) {
+                    ServerLevel world = (ServerLevel) event.getLevel();
+                    DungeonAttachment dungeonCapability = world.getData(DungeonAttachments.DUNGEON_ATTACHMENT);
+                    dungeonCapability.playerJustJoined = true;
+                    if (dungeonCapability.getDungeon() == null) {
+                        ResourceLocation type = DungeonRegistry.randomDungeonType();
+                        Dungeon dungeon = DungeonRegistry.dungeons.get(type).dungeon().copy();
+                        dungeon.setType(type);
+                        dungeonCapability.setDungeon(dungeon);
+                    }
+                    world.getServer().sendSystemMessage(Component.literal(String.format(dungeonCapability.getDungeon().getJoinMessage(serverPlayer, (ServerLevel) event.getLevel()), serverPlayer.getDisplayName().getString())));
+                }
             }
         }
 
@@ -42,7 +46,8 @@ public class DungeonEvents {
                     dungeonCapability.getDungeon().setHasGenerated(true);
                 }
                 if (dungeonCapability.playerJustJoined) {
-                    event.level.players().forEach(player1 -> player1.setPos(dungeonCapability.getSetup().getPlayerSpawnPoint(event.level))) ;
+                    event.level.players().forEach(player1 -> player1.setPos(dungeonCapability.getSetup().getPlayerSpawnPoint(event.level)));
+                    dungeonCapability.playerJustJoined = false;
                 }
                 if (!dungeonCapability.getDungeon().hasFirstTickElapsed) {
                     DungeonUtils.setupDungeon(event, dungeonCapability);
