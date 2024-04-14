@@ -1,5 +1,0 @@
-# Made in Blockbench 4.8.1
-newmtl active
-map_Kd soulbound:item/offensive_activated
-Ka 1.0 1.0 1.0
-newmtl none
