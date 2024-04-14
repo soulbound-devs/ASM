@@ -105,7 +105,11 @@ public class SoulboundMod {
         @SubscribeEvent
         public static void creativeTab(BuildCreativeModeTabContentsEvent event) {
             if (event.getTab().equals(ModCreativeModeTabs.SOULBOUND_TAB.get())) {
-                //todo: add all items
+                RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY).registryOrThrow(Registries.ITEM).entrySet().forEach((entry) -> {
+                    if (entry.getKey().location().getNamespace().equals(SoulboundMod.MOD_ID)) {
+                        event.accept(entry.getValue());
+                    }
+                });
             }
         }
 
