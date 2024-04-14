@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class Dungeon implements INBTSerializable<CompoundTag> {
-    boolean enterable;
+    boolean enterable = true;
     boolean hasFirstTickElapsed = false;
     boolean hasGenerated = false;
     boolean canEnterAgainAfterExiting = true;
