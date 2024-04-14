@@ -1,13 +1,9 @@
 package net.vakror.soulbound.compat.dungeon;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.event.TickEvent;
@@ -16,7 +12,6 @@ import net.neoforged.neoforge.event.entity.player.FillBucketEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.level.ExplosionEvent;
 import net.vakror.soulbound.SoulboundMod;
-import net.vakror.soulbound.cap.ModAttachments;
 import net.vakror.soulbound.compat.dungeon.attachment.DungeonAttachment;
 import net.vakror.soulbound.compat.dungeon.attachment.DungeonAttachments;
 import net.vakror.soulbound.compat.dungeon.registry.DungeonRegistry;
@@ -30,6 +25,7 @@ public class DungeonEvents {
             if (!event.getLevel().isClientSide && event.getEntity() instanceof ServerPlayer serverPlayer && event.getLevel().dimensionTypeId().equals(Dimensions.DUNGEON_TYPE)) {
                 ServerLevel world = (ServerLevel) event.getLevel();
                 DungeonAttachment dungeonCapability = world.getData(DungeonAttachments.DUNGEON_ATTACHMENT);
+                dungeonCapability.playerJustJoined = true;
                 ResourceLocation type = DungeonRegistry.randomDungeonType();
                 Dungeon dungeon = DungeonRegistry.dungeons.get(type).dungeon().copy();
                 dungeon.setType(type);
@@ -41,17 +37,14 @@ public class DungeonEvents {
         @SubscribeEvent
         public static void onDungeonTick(TickEvent.LevelTickEvent event) {
             if (event.phase.equals(TickEvent.Phase.START) && !event.level.isClientSide && event.level.dimensionTypeId().equals(Dimensions.DUNGEON_TYPE) && !event.level.players().isEmpty()) {
-                int i = 1;
                 DungeonAttachment dungeonCapability = event.level.getData(DungeonAttachments.DUNGEON_ATTACHMENT);
-                ServerPlayer player = (ServerPlayer) event.level.players().get(0);
                 if (!dungeonCapability.getDungeon().hasGenerated() && DungeonUtils.generateDungeon(event, dungeonCapability)) {
                     dungeonCapability.getDungeon().setHasGenerated(true);
                 }
+                if (dungeonCapability.playerJustJoined) {
+                    event.level.players().forEach(player1 -> player1.setPos(dungeonCapability.getSetup().getPlayerSpawnPoint(event.level))) ;
+                }
                 if (!dungeonCapability.getDungeon().hasFirstTickElapsed) {
-                    Vec3 spawn = dungeonCapability.getSetup().getPlayerSpawnPoint(event.level);
-                    if (spawn != null) {
-                        player.setPos(spawn);
-                    }
                     DungeonUtils.setupDungeon(event, dungeonCapability);
                     dungeonCapability.getDungeon().setHasFirstTickElapsed(true);
                 } else {

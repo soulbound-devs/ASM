@@ -10,7 +10,8 @@ import net.vakror.soulbound.compat.dungeon.setup.DungeonSetup;
 import org.jetbrains.annotations.NotNull;
 
 public class DungeonAttachment implements INBTSerializable<CompoundTag> {
-        Vec3 returnPos;
+    public boolean playerJustJoined;
+    Vec3 returnPos;
         CompoundTag extraData;
         Dungeon dungeon;
 
