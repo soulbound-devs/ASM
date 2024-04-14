@@ -2,7 +2,6 @@ package net.vakror.soulbound.compat.dungeon.dimension;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraft.world.level.portal.PortalInfo;
 import net.minecraft.world.phys.Vec3;
@@ -14,13 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
-public class DungeonToOverworldTeleporter implements ITeleporter {
-
-    public final ServerLevel currentLevel;
-
-    public DungeonToOverworldTeleporter(ServerLevel currentLevel) {
-        this.currentLevel = currentLevel;
-    }
+public record DungeonToOverworldTeleporter(ServerLevel currentLevel) implements ITeleporter {
 
     @Override
     public @Nullable PortalInfo getPortalInfo(@NotNull Entity entity, ServerLevel destWorld, @NotNull Function<ServerLevel, PortalInfo> defaultPortalInfo) {
