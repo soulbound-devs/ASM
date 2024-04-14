@@ -9,14 +9,13 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
+import net.minecraft.server.MinecraftServer;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
@@ -61,12 +60,14 @@ public class SoulboundMod {
     public static final String MOD_ID = "soulbound";
 
     public static SoulboundMod instance;
+    public MinecraftServer server;
 
     public SoulboundMod(IEventBus modEventBus) {
         instance = this;
 
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::clientSetup);
+        modEventBus.addListener(this::serverSetup);
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
         ModEntities.register(modEventBus);
@@ -93,6 +94,10 @@ public class SoulboundMod {
 
     private void commonSetup(FMLCommonSetupEvent event) {
         Regions.register(new SoulboundRegion(new ResourceLocation(MOD_ID, "soulbound_region"), 1));
+    }
+
+    private void serverSetup(FMLDedicatedServerSetupEvent event) {
+        instance.server = server;
     }
 
     public void clientSetup(final FMLCommonSetupEvent event) {
