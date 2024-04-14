@@ -2,15 +2,11 @@ package net.vakror.soulbound.api.context;
 
 import com.google.common.base.Stopwatch;
 import net.minecraft.resources.ResourceLocation;
-import net.vakror.soulbound.api.SoulboundApi;
-import net.vakror.soulbound.mod.SoulboundMod;
-import net.vakror.soulbound.mod.model.models.ActiveSealModels;
-import net.vakror.soulbound.mod.model.models.WandModels;
+import net.vakror.registry.jamesregistryapi.api.context.IRegistrationContext;
+import net.vakror.soulbound.SoulboundMod;
+import net.vakror.soulbound.model.models.ActiveSealModels;
+import net.vakror.soulbound.model.models.WandModels;
 
-/**
- * The Context Which Is Passed Into {@link net.vakror.soulbound.api.ISoulboundExtension#registerModels registerModels}
- * Used to register/unregister/modify wand/spell models
- */
 public class ModelRegistrationContext implements IRegistrationContext {
     /**
      * Registers a CUSTOM model for a wand. Base models are registered in your model JSON
@@ -20,10 +16,8 @@ public class ModelRegistrationContext implements IRegistrationContext {
      */
     public void registerWandModel(String name, ResourceLocation location) {
         Stopwatch stopwatch = Stopwatch.createStarted();
-        if (SoulboundApi.canRegisterWandModel(name, location)) {
-            WandModels.registerModel(name, location);
-            SoulboundMod.LOGGER.info("Registered Wand Model {}, \033[0;31mTook {}\033[0;0m", name, stopwatch);
-        }
+        WandModels.registerModel(name, location);
+        SoulboundMod.LOGGER.info("Registered Wand Model {}, \033[0;31mTook {}\033[0;0m", name, stopwatch);
     }
 
     /**
@@ -34,10 +28,8 @@ public class ModelRegistrationContext implements IRegistrationContext {
      */
     public void registerSpellModel(String name, ResourceLocation location) {
         Stopwatch stopwatch = Stopwatch.createStarted();
-        if (SoulboundApi.canRegisterSpellModel(name, location)) {
-            ActiveSealModels.registerModel(name, location);
-            SoulboundMod.LOGGER.info("Registered Spell Model {}, \033[0;31mTook {}\033[0;0m", name, stopwatch);
-        }
+        ActiveSealModels.registerModel(name, location);
+        SoulboundMod.LOGGER.info("Registered Spell Model {}, \033[0;31mTook {}\033[0;0m", name, stopwatch);
     }
 
     /**
@@ -110,7 +102,7 @@ public class ModelRegistrationContext implements IRegistrationContext {
      * @return the name of all default soulbound contexts will always be "default"
      */
     @Override
-    public String getContextName() {
-        return "default";
+    public ResourceLocation getName() {
+        return new ResourceLocation(SoulboundMod.MOD_ID, "default");
     }
 }
