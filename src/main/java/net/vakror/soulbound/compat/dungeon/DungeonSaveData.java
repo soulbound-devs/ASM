@@ -8,6 +8,7 @@ import net.minecraft.world.level.storage.DimensionDataStorage;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.event.level.LevelEvent;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import net.vakror.soulbound.SoulboundMod;
 import net.vakror.soulbound.compat.dungeon.blocks.custom.DungeonAccessBlock;
 import org.jetbrains.annotations.NotNull;
@@ -22,11 +23,15 @@ public class DungeonSaveData {
 
         @Override
         public @NotNull CompoundTag save(@NotNull CompoundTag compoundTag) {
-            ListTag levels = new ListTag();
-            for (ResourceLocation loadedDungeonLevel : loadedDungeonLevels) {
-                levels.add(StringTag.valueOf(loadedDungeonLevel.toString()));
+            for (ServerLevel level : ServerLifecycleHooks.getCurrentServer().getAllLevels()) {
+                if (loadedDungeonLevels.contains(level.dimension().location())) {
+                    if (!level.players().isEmpty()) {
+                        ListTag levels = new ListTag();
+                        levels.addAll(loadedDungeonLevels.stream().map(location -> StringTag.valueOf(location.toString())).toList());
+                        compoundTag.put("dungeonLevels", levels);
+                    }
+                }
             }
-            compoundTag.put("dungeonLevels", levels);
             return compoundTag;
         }
 
