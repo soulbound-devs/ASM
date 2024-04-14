@@ -9,18 +9,6 @@ import net.vakror.soulbound.model.models.WandModels;
 
 public class ModelRegistrationContext implements IRegistrationContext {
     /**
-     * Registers a model for an active seal (spell)
-     *
-     * @param name the name of your active seal model (if for a seal and not custom model, must match seal registry name <b>EXACTLY</b>
-     * @param location the location for the OBJ file for your seal, must include the .obj file extension and have another file named the same, with "_outline" at the end in the same directory. Example: "soulbound:models/obj/seal/pickaxing/base.obj"
-     */
-    public void registerSpellModel(String name, ResourceLocation location) {
-        Stopwatch stopwatch = Stopwatch.createStarted();
-        ActiveSealModels.registerModel(name, location);
-        SoulboundMod.LOGGER.info("Registered Spell Model {}, \033[0;31mTook {}\033[0;0m", name, stopwatch);
-    }
-
-    /**
      * Used to unregister a wand model from the registry
      * @param name the name of the wand model to unregister
      */
