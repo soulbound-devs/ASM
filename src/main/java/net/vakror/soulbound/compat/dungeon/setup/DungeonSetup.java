@@ -5,6 +5,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.vakror.soulbound.compat.dungeon.registry.DungeonRegistryEntry;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class DungeonSetup {
     DungeonRegistryEntry dungeonRegistryEntry;
@@ -17,6 +18,7 @@ public abstract class DungeonSetup {
      * However, the one the player spawns on will always be replaced with a return block.
      * @return the player's spawn position
      */
+    @NotNull
     public abstract Vec3 getPlayerSpawnPoint(Level level);
 
     public DungeonRegistryEntry getDungeonRegistryEntry() {

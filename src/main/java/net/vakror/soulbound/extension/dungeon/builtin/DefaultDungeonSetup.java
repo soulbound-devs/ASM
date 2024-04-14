@@ -3,6 +3,7 @@ package net.vakror.soulbound.extension.dungeon.builtin;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.vakror.soulbound.SoulboundMod;
 import net.vakror.soulbound.compat.dungeon.setup.StructureDungeonSetup;
 import net.vakror.soulbound.compat.dungeon.theme.ThemeList;
@@ -18,8 +19,13 @@ public class DefaultDungeonSetup extends StructureDungeonSetup {
     }
 
     @Override
+    public @NotNull Vec3 getPlayerSpawnPoint(Level level) {
+        return new Vec3(0, 64, 0);
+    }
+
+    @Override
     public boolean canExit(Level level) {
-        return false;
+        return true;
     }
 
     @Override

@@ -75,11 +75,6 @@ public abstract class StructureDungeonSetup extends DungeonSetup {
 
     public abstract DungeonStructure getStructure(ServerLevel level);
 
-    @Override
-    public Vec3 getPlayerSpawnPoint(Level level) {
-        return null;
-    }
-
     public DungeonStructure getStructureFromResourceLocation(ResourceLocation location, ServerLevel level) {
         return getStructureFromResourceLocation(location, level.registryAccess());
     }
