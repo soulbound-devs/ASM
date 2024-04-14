@@ -91,21 +91,17 @@ public class ModelUtils {
     }
 
     private static void genUpDownQuads(List<TextureAtlasSprite> sprites, ImmutableList.Builder<BakedQuad> quads, Transformation transform) {
-        boolean isTransparent;
         for (int ix = 0; ix <= 15; ix++) {
             float xStart = ix / 16.0f;
             float xEnd = (ix + 1) / 16.0f;
 
             /* Scan from Up to Bottom, find the pixel not transparent, use that to build Top quads */
-            isTransparent = true;
             for (int iy = 0; iy <= 15; iy++) {
                 TextureAtlasSprite sprite = WandBakedModel.findLastNotTransparent(ix, iy, sprites);
                 if (sprite == null) {
-                    isTransparent = true;
                     continue;
                 }
 
-                if (isTransparent) {
                     quads.add(createQuad(
                             new Vec3(xStart, (16 - iy) / 16.0f, WandBakedModel.NORTH_Z)
                             , new Vec3(xStart, (16 - iy) / 16.0f, WandBakedModel.SOUTH_Z)
@@ -114,20 +110,15 @@ public class ModelUtils {
                             , ix, ix + 1, iy, iy + 1
                             , sprite, Direction.UP, transform));
 
-                    isTransparent = false;
-                }
             }
 
             /* Scan from Bottom to Up, find the pixel not transparent, use that to build Down quads */
-            isTransparent = true;
             for (int iy = 15; iy >= 0; iy--) {
                 TextureAtlasSprite sprite = WandBakedModel.findLastNotTransparent(ix, iy, sprites);
                 if (sprite == null) {
-                    isTransparent = true;
                     continue;
                 }
 
-                if (isTransparent) {
                     quads.add(createQuad(
                             new Vec3(xStart, (16 - (iy + 1)) / 16.0f, WandBakedModel.NORTH_Z)
                             , new Vec3(xEnd, (16 - (iy + 1)) / 16.0f, WandBakedModel.NORTH_Z)
@@ -136,8 +127,6 @@ public class ModelUtils {
                             , ix, ix + 1, iy, iy + 1
                             , sprite, Direction.DOWN, transform));
 
-                    isTransparent = false;
-                }
             }
         }
     }
@@ -149,44 +138,34 @@ public class ModelUtils {
             float yEnd = (16 - iy) / 16.0f;
 
             /* Scan from Left to Right, find the pixel not transparent, use that to build West quads */
-            isTransparent = true;
             for (int ix = 0; ix <= 15; ix++) {
                 TextureAtlasSprite sprite = WandBakedModel.findLastNotTransparent(ix, iy, sprites);
                 if (sprite == null) {
-                    isTransparent = true;
                     continue;
                 }
-                if (isTransparent) {
-                    quads.add(createQuad(
-                            new Vec3(ix / 16.0f, yStart, WandBakedModel.NORTH_Z)
-                            , new Vec3(ix / 16.0f, yStart, WandBakedModel.SOUTH_Z)
-                            , new Vec3(ix / 16.0f, yEnd, WandBakedModel.SOUTH_Z)
-                            , new Vec3(ix / 16.0f, yEnd, WandBakedModel.NORTH_Z)
-                            , ix, ix + 1, iy, iy + 1
-                            , sprite, Direction.WEST, transform));
+                quads.add(createQuad(
+                        new Vec3(ix / 16.0f, yStart, WandBakedModel.NORTH_Z)
+                        , new Vec3(ix / 16.0f, yStart, WandBakedModel.SOUTH_Z)
+                        , new Vec3(ix / 16.0f, yEnd, WandBakedModel.SOUTH_Z)
+                        , new Vec3(ix / 16.0f, yEnd, WandBakedModel.NORTH_Z)
+                        , ix, ix + 1, iy, iy + 1
+                        , sprite, Direction.WEST, transform));
 
-                    isTransparent = false;
-                }
             }
             /* Scan from Right to Left, find the pixel not transparent, use that to build East quads */
-            isTransparent = true;
             for (int ix = 15; ix >= 0; ix--) {
                 TextureAtlasSprite sprite = WandBakedModel.findLastNotTransparent(ix, iy, sprites);
                 if (sprite == null) {
-                    isTransparent = true;
                     continue;
                 }
-                if (isTransparent) {
-                    quads.add(createQuad(
-                            new Vec3((ix + 1) / 16.0f, yStart, WandBakedModel.NORTH_Z)
-                            , new Vec3((ix + 1) / 16.0f, yEnd, WandBakedModel.NORTH_Z)
-                            , new Vec3((ix + 1) / 16.0f, yEnd, WandBakedModel.SOUTH_Z)
-                            , new Vec3((ix + 1) / 16.0f, yStart, WandBakedModel.SOUTH_Z)
-                            , ix, ix + 1, iy, iy + 1
-                            , sprite, Direction.EAST, transform));
+                quads.add(createQuad(
+                        new Vec3((ix + 1) / 16.0f, yStart, WandBakedModel.NORTH_Z)
+                        , new Vec3((ix + 1) / 16.0f, yEnd, WandBakedModel.NORTH_Z)
+                        , new Vec3((ix + 1) / 16.0f, yEnd, WandBakedModel.SOUTH_Z)
+                        , new Vec3((ix + 1) / 16.0f, yStart, WandBakedModel.SOUTH_Z)
+                        , ix, ix + 1, iy, iy + 1
+                        , sprite, Direction.EAST, transform));
 
-                    isTransparent = false;
-                }
             }
         }
     }
