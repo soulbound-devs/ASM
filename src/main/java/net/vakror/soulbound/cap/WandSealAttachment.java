@@ -7,7 +7,6 @@ import net.vakror.soulbound.seal.ISeal;
 import net.vakror.soulbound.seal.SealRegistry;
 import net.vakror.soulbound.seal.SealType;
 import net.vakror.soulbound.seal.tier.seal.Tiered;
-import net.vakror.soulbound.util.BetterArrayList;
 
 import java.util.*;
 
@@ -125,7 +124,7 @@ public class WandSealAttachment implements INBTSerializable<CompoundTag> {
 
     public void addPassiveSeal(String id) {
         createIfNull();;
-        List<ISeal> toRemove = new BetterArrayList<>();
+        Set<ISeal> toRemove = new HashSet<>();
         passiveSeals.forEach((passive -> {
             if (passive instanceof Tiered tiered && SealRegistry.passiveSeals.get(id) instanceof Tiered tiered1 && !tiered.getTierId().equals(tiered1.getTierId())) {
                 toRemove.add(passive);
@@ -137,7 +136,7 @@ public class WandSealAttachment implements INBTSerializable<CompoundTag> {
 
     public void addAttackSeal(String id) {
         createIfNull();
-        List<ISeal> toRemove = new BetterArrayList<>();
+        Set<ISeal> toRemove = new HashSet<>();
         attackSeals.forEach((attack -> {
             if (attack instanceof Tiered tiered && SealRegistry.attackSeals.get(id) instanceof Tiered tiered1 && !tiered.getTierId().equals(tiered1.getTierId())) {
                 toRemove.add(attack);
@@ -149,7 +148,7 @@ public class WandSealAttachment implements INBTSerializable<CompoundTag> {
 
     public void addAmplifyingSeal(String id) {
         createIfNull();
-        List<ISeal> toRemove = new BetterArrayList<>();
+        Set<ISeal> toRemove = new HashSet<>();
         amplifyingSeals.forEach((amplifying -> {
             if (amplifying instanceof Tiered tiered && SealRegistry.amplifyingSeals.get(id) instanceof Tiered tiered1 && !tiered.getTierId().equals(tiered1.getTierId())) {
                 toRemove.add(amplifying);
