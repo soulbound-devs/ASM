@@ -17,9 +17,7 @@ public class DefaultWandTextureRenderLayer extends TextureRenderLayer {
 
     @Override
     public void getAdditionalTextures(List<TextureAtlasSprite> sprites, LayerRenderData data) {
-        for (ResourceLocation texture : getTextures()) {
-            sprites.add(data.spriteGetter().apply(new Material(InventoryMenu.BLOCK_ATLAS, texture)));
-        }
+        super.getAdditionalTextures(sprites, data);
         data.stack().getExistingData(ModAttachments.SEAL_ATTACHMENT).ifPresent(wand -> {
             if (wand.getActiveSeal() != null) {
                 ResourceLocation sealModel = ActiveSealModels.getModels().get(wand.getActiveSeal().getId());
