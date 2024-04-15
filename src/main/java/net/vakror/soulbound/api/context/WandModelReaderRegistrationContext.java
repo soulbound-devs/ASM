@@ -20,7 +20,7 @@ public class WandModelReaderRegistrationContext implements IRegistrationContext 
         SoulboundMod.LOGGER.info("Registered Wand Model Reader {}, \033[0;31mTook {}\033[0;0m", name, stopwatch);
     }
 
-    public void addItemForReader(ResourceLocation reader, ResourceLocation item) {
+    public void addItemForReader(ResourceLocation item, ResourceLocation reader) {
         Stopwatch stopwatch = Stopwatch.createStarted();
         WandModelReaders.addItem(item, reader);
         SoulboundMod.LOGGER.info("Registered Item {} for Wand Model Reader {}, \033[0;31mTook {}\033[0;0m", item, reader, stopwatch);

@@ -16,6 +16,6 @@ public class WandModelReaders {
     }
 
     public static void addItem(ResourceLocation item, ResourceLocation reader) {
-        ITEMS.put(reader, item);
+        ITEMS.put(item, reader);
     }
 }
