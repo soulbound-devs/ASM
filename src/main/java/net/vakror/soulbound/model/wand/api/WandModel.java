@@ -34,7 +34,7 @@ public class WandModel implements IUnbakedGeometry<WandModel> {
 
 		ResourceLocation item = new ResourceLocation(modelLocation.toString().split("#")[0]);
 		IWandModelReader reader = WandModelReaders.READERS.get(WandModelReaders.ITEMS.get(item));
-		List<AbstractWandLayer> layers = reader.getLayers(object);
+		List<AbstractWandLayer> layers = reader.getLayers(object, owner, bakery, spriteGetter, modelTransform, modelLocation);
 
 		TextureAtlasSprite particle = spriteGetter.apply(owner.getMaterial("particle"));
 
@@ -46,7 +46,7 @@ public class WandModel implements IUnbakedGeometry<WandModel> {
 		Transformation transform = modelTransform.getRotation();
 
 		/* Vanilla'd BakedItemModel but with custom Override List, used in store data, it'll display nothing */
-		return new WandBakedModel(layers, spriteGetter, particle, transformMap, transform, owner.useBlockLight());
+		return new WandBakedModel(layers, reader, object, spriteGetter, particle, transformMap, transform, owner.useBlockLight());
 	}
 
 	public static ImmutableMap<ItemDisplayContext, ItemTransform> getTransforms(IGeometryBakingContext owner)

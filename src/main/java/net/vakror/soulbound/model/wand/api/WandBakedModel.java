@@ -2,6 +2,7 @@ package net.vakror.soulbound.model.wand.api;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.gson.JsonObject;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Transformation;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -22,18 +23,25 @@ import java.util.function.Function;
 public class WandBakedModel extends BakedItemModel {
 	protected final List<AbstractWandLayer> layers;
 
+	private final IWandModelReader reader;
+	private final JsonObject object;
+
 	private final Transformation transform;
 	/* Cache the result of quads, using a location combination */
 	private static final Map<String, ImmutableList<BakedQuad>> cache = new HashMap<>();
 
 	public WandBakedModel(
-			List<AbstractWandLayer> layers
+			List<AbstractWandLayer> layers,
+			IWandModelReader reader,
+			JsonObject object
 			, Function<Material, TextureAtlasSprite> spriteGetter, TextureAtlasSprite particle
 			, ImmutableMap<ItemDisplayContext, ItemTransform> transformMap
 			, Transformation transformIn, boolean isSideLit) {
 		super(ImmutableList.of(), particle, transformMap, new WandItemOverrideList(spriteGetter), transformIn.isIdentity(), isSideLit);
 
 		this.layers = layers;
+		this.reader = reader;
+		this.object = object;
 
 		this.transform = transformIn;
 
@@ -60,6 +68,12 @@ public class WandBakedModel extends BakedItemModel {
 		}
 
         ImmutableList<BakedQuad> returnQuads = quads.build();
+		List<BakedQuad> bakedQuads = new ArrayList<>(quads.build());
+		if (!layers.isEmpty() && layers.get(0).data != null) {
+			for (AbstractQuadsProcessor quadsProcessor : reader.getQuadsProcessors(object, layers.get(0).data)) {
+				quadsProcessor.processQuads(bakedQuads, layers, layers.get(0).data);
+			}
+		}
 		WandBakedModel.cache.put(cacheKey, returnQuads);
 
 		return returnQuads;
