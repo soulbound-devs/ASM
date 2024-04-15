@@ -28,7 +28,7 @@ import net.vakror.soulbound.block.block.SoulExtractorBlock;
 import net.vakror.soulbound.block.entity.ModBlockEntities;
 import net.vakror.soulbound.block.entity.custom.SoulSolidifierBlockEntity;
 import net.vakror.soulbound.block.entity.custom.WandImbuingTableBlockEntity;
-import net.vakror.soulbound.cap.ModAttachments;
+import net.vakror.soulbound.attachment.ModAttachments;
 import net.vakror.soulbound.compat.dungeon.attachment.DungeonAttachments;
 import net.vakror.soulbound.compat.dungeon.blocks.ModDungeonBlocks;
 import net.vakror.soulbound.compat.dungeon.blocks.entity.ModDungeonBlockEntities;

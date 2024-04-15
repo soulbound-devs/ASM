@@ -3,7 +3,7 @@ package net.vakror.soulbound.compat.jei.recipe.imbuing;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.vakror.soulbound.cap.ModAttachments;
+import net.vakror.soulbound.attachment.ModAttachments;
 import net.vakror.soulbound.items.ModItems;
 import net.vakror.soulbound.items.custom.seals.SealItem;
 import net.vakror.soulbound.seal.SealRegistry;

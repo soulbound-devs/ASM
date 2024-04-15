@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.vakror.soulbound.SoulboundMod;
-import net.vakror.soulbound.cap.ModAttachments;
+import net.vakror.soulbound.attachment.ModAttachments;
 import net.vakror.soulbound.entity.BroomEntity;
 import org.jetbrains.annotations.NotNull;
 

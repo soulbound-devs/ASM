@@ -1,4 +1,4 @@
-package net.vakror.soulbound.cap;
+package net.vakror.soulbound.attachment;
 
 import net.minecraft.nbt.CompoundTag;
 import net.neoforged.neoforge.common.util.INBTSerializable;

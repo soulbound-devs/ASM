@@ -1,6 +1,5 @@
 package net.vakror.soulbound.compat.jei;
 
-import dev.architectury.platform.Platform;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaTypes;
@@ -14,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.vakror.soulbound.SoulboundMod;
 import net.vakror.soulbound.block.ModBlocks;
-import net.vakror.soulbound.cap.ModAttachments;
+import net.vakror.soulbound.attachment.ModAttachments;
 import net.vakror.soulbound.compat.dungeon.blocks.ModDungeonBlocks;
 import net.vakror.soulbound.compat.dungeon.items.ModDungeonItems;
 import net.vakror.soulbound.compat.jei.category.SoulExtractingCategory;

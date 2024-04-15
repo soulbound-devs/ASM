@@ -12,7 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.vakror.soulbound.cap.ModAttachments;
+import net.vakror.soulbound.attachment.ModAttachments;
 import net.vakror.soulbound.util.SackInventory;
 import net.vakror.soulbound.screen.SackMenu;
 import net.vakror.soulbound.seal.seals.amplifying.sack.ColumnUpgradeSeal;

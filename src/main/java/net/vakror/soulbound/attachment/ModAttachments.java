@@ -1,4 +1,4 @@
-package net.vakror.soulbound.cap;
+package net.vakror.soulbound.attachment;
 
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.attachment.AttachmentType;
