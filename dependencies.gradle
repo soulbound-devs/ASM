@@ -3,7 +3,7 @@ ext {
     forgeVersion = "1.19.2-43.2.21"
     mixinVersion = "0.8.5"
     reflectVersion = "0.10.2"
-    terrablenderVersion = "1.19.2-2.0.1.128"
+    terrablenderVersion = "1.20.4-3.3.0.12"
     geckolibVersion = "3.1.40"
     jeiVersion = "11.6.0.1016"
 
