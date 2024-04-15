@@ -44,11 +44,6 @@ public class DefaultSoulboundExtension {
         public ModelRegistrationContext getDefaultContext() {
             return new ModelRegistrationContext();
         }
-
-        @Override
-        public Optional<List<ResourceLocation>> getAllowedContexts() {
-            return Optional.empty();
-        }
     }
 
     public static class SealExtension extends AbstractExtension<SealRegistrationContext> {
@@ -75,10 +70,6 @@ public class DefaultSoulboundExtension {
             return new SealRegistrationContext();
         }
 
-        @Override
-        public Optional<List<ResourceLocation>> getAllowedContexts() {
-            return Optional.empty();
-        }
     }
 
     public static void registerAllExtensions() {

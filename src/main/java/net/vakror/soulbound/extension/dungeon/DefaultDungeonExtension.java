@@ -27,10 +27,4 @@ public class DefaultDungeonExtension extends AbstractExtension<DungeonRegistrati
     public DungeonRegistrationContext getDefaultContext() {
         return new DungeonRegistrationContext();
     }
-
-    //todo: remove this in the api
-    @Override
-    public Optional<List<ResourceLocation>> getAllowedContexts() {
-        return Optional.empty();
-    }
 }
