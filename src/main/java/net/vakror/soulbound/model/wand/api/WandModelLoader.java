@@ -1,10 +1,9 @@
-package net.vakror.soulbound.model.wand;
+package net.vakror.soulbound.model.wand.api;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.client.model.geometry.IGeometryLoader;
-import net.vakror.soulbound.model.ModelUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

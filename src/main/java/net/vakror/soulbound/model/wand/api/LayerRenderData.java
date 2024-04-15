@@ -9,5 +9,5 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.function.Function;
 
-public record LayerData(BakedModel model, ItemStack stack, ClientLevel worldIn, LivingEntity entityIn, int seed, Function<Material, TextureAtlasSprite> spriteGetter) {
+public record LayerRenderData(BakedModel model, ItemStack stack, ClientLevel worldIn, LivingEntity entityIn, int seed, Function<Material, TextureAtlasSprite> spriteGetter) {
 }

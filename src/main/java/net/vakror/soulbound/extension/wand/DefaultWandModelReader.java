@@ -2,7 +2,6 @@ package net.vakror.soulbound.extension.wand;
 
 import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
-import net.vakror.soulbound.extension.wand.layer.TextureRenderLayer;
 import net.vakror.soulbound.model.wand.api.AbstractWandLayer;
 import net.vakror.soulbound.model.wand.api.IWandModelReader;
 
@@ -18,7 +17,7 @@ public class DefaultWandModelReader implements IWandModelReader {
         if (model.has("wand")) {
             wandLocation = new ResourceLocation(model.get("wand").getAsString());
         }
-        layers.add(new TextureRenderLayer(wandLocation));
+        layers.add(new DefaultWandTextureRenderLayer(wandLocation));
 
         return layers;
     }

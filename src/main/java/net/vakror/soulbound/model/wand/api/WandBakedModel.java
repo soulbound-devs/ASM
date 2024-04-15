@@ -1,4 +1,4 @@
-package net.vakror.soulbound.model.wand;
+package net.vakror.soulbound.model.wand.api;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -11,7 +11,6 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.vakror.soulbound.model.model.BakedItemModel;
-import net.vakror.soulbound.model.wand.api.AbstractWandLayer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,7 +56,7 @@ public class WandBakedModel extends BakedItemModel {
 		ImmutableList.Builder<BakedQuad> quads = ImmutableList.builder();
 
 		for (AbstractWandLayer layer : layers) {
-			layer.render(quads, this.transform);
+			layer.render(quads, this.transform, layer.data);
 		}
 
         ImmutableList<BakedQuad> returnQuads = quads.build();

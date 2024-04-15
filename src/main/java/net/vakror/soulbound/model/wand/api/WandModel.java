@@ -1,4 +1,4 @@
-package net.vakror.soulbound.model.wand;
+package net.vakror.soulbound.model.wand.api;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonObject;
@@ -14,8 +14,6 @@ import net.neoforged.neoforge.client.model.geometry.IGeometryBakingContext;
 import net.neoforged.neoforge.client.model.geometry.IUnbakedGeometry;
 import net.vakror.soulbound.model.model.CompositeModelState;
 import net.vakror.soulbound.model.models.WandModelReaders;
-import net.vakror.soulbound.model.wand.api.AbstractWandLayer;
-import net.vakror.soulbound.model.wand.api.IWandModelReader;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.EnumMap;

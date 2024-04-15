@@ -1,7 +1,6 @@
 package net.vakror.soulbound.model;
 
 import com.google.common.collect.ImmutableList;
-import com.google.gson.JsonObject;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Transformation;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -14,8 +13,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.model.pipeline.QuadBakingVertexConsumer;
 import net.neoforged.neoforge.client.model.pipeline.TransformingVertexPipeline;
-import net.vakror.soulbound.model.wand.WandBakedModel;
-import net.vakror.soulbound.model.wand.WandModel;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;

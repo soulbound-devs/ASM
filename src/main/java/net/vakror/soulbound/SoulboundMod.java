@@ -2,7 +2,6 @@ package net.vakror.soulbound;
 
 import com.mojang.logging.LogUtils;
 import dev.architectury.event.EventResult;
-import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Direction;
@@ -39,8 +38,7 @@ import net.vakror.soulbound.entity.ModEntities;
 import net.vakror.soulbound.extension.DefaultSoulboundExtension;
 import net.vakror.soulbound.extension.dungeon.structure.ModStructures;
 import net.vakror.soulbound.items.ModItems;
-import net.vakror.soulbound.model.wand.WandModelLoader;
-import net.vakror.soulbound.packets.ModPackets;
+import net.vakror.soulbound.model.wand.api.WandModelLoader;
 import net.vakror.soulbound.packets.SoulFluidSyncS2CPacket;
 import net.vakror.soulbound.packets.SyncPickupModeC2SPacket;
 import net.vakror.soulbound.packets.SyncSoulS2CPacket;
@@ -51,8 +49,6 @@ import net.vakror.soulbound.tab.ModCreativeModeTabs;
 import net.vakror.soulbound.world.biome.SoulboundRegion;
 import org.slf4j.Logger;
 import terrablender.api.Regions;
-
-import java.util.Map;
 
 @Mod(SoulboundMod.MOD_ID)
 public class SoulboundMod {
