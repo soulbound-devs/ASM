@@ -7,7 +7,9 @@ import net.vakror.registry.jamesregistryapi.api.RegistryAPI;
 import net.vakror.soulbound.api.context.ModelRegistrationContext;
 import net.vakror.soulbound.api.context.SealRegistrationContext;
 import net.vakror.soulbound.SoulboundMod;
+import net.vakror.soulbound.api.context.WandModelReaderRegistrationContext;
 import net.vakror.soulbound.extension.dungeon.DefaultDungeonExtension;
+import net.vakror.soulbound.extension.wand.DefaultWandModelReader;
 import net.vakror.soulbound.items.ModItems;
 import net.vakror.soulbound.seal.seals.activatable.SwordSeal;
 import net.vakror.soulbound.seal.seals.activatable.tool.AxingSeal;
@@ -72,9 +74,28 @@ public class DefaultSoulboundExtension {
 
     }
 
+    public static class ModelReaderExtension extends AbstractExtension<WandModelReaderRegistrationContext> {
+        @Override
+        public ResourceLocation getExtensionName() {
+            return new ResourceLocation(SoulboundMod.MOD_ID, "default_model_reader");
+        }
+
+        @Override
+        public void register() {
+            context.registerWandModelReader(new ResourceLocation(SoulboundMod.MOD_ID, "default_reader"), new DefaultWandModelReader());
+            context.addItemForReader(new ResourceLocation(SoulboundMod.MOD_ID, "wand"), new ResourceLocation(SoulboundMod.MOD_ID, "default_reader"));
+        }
+
+        @Override
+        public WandModelReaderRegistrationContext getDefaultContext() {
+            return new WandModelReaderRegistrationContext();
+        }
+    }
+
     public static void registerAllExtensions() {
         RegistryAPI.registerExtension(new DefaultDungeonExtension());
         RegistryAPI.registerExtension(new ModelExtension());
         RegistryAPI.registerExtension(new SealExtension());
+        RegistryAPI.registerExtension(new ModelReaderExtension());
     }
 }
