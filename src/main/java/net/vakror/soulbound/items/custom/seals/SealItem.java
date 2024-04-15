@@ -2,6 +2,7 @@ package net.vakror.soulbound.items.custom.seals;
 
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.function.ToIntFunction;
 
 public class SealItem extends Item {
-    private final String id;
+    private final ResourceLocation id;
     private final SealType type;
     private final ToIntFunction<ISealableTier> maxSealStack;
     private final Tooltip tooltip;
@@ -25,23 +26,23 @@ public class SealItem extends Item {
         return type;
     }
 
-    public String getId() {
+    public ResourceLocation getId() {
         return id;
     }
 
-    public SealItem(Properties pProperties, String id, SealType type) {
+    public SealItem(Properties pProperties, ResourceLocation id, SealType type) {
         this(pProperties, id, type, Tooltip.empty());
     }
 
-    public SealItem(Properties pProperties, String id, SealType type, Tooltip tooltip) {
+    public SealItem(Properties pProperties, ResourceLocation id, SealType type, Tooltip tooltip) {
         this(pProperties, id, type, false, 1, tooltip);
     }
 
-    public SealItem(Properties pProperties, String id, SealType type, boolean canAddMultiple, int maxSealStack, Tooltip tooltip) {
+    public SealItem(Properties pProperties, ResourceLocation id, SealType type, boolean canAddMultiple, int maxSealStack, Tooltip tooltip) {
         this(pProperties, id, type, (tier -> canAddMultiple ? maxSealStack: 1),tooltip);
     }
 
-    public SealItem(Properties pProperties, String id, SealType type, ToIntFunction<ISealableTier> sealableFunction, Tooltip tooltip) {
+    public SealItem(Properties pProperties, ResourceLocation id, SealType type, ToIntFunction<ISealableTier> sealableFunction, Tooltip tooltip) {
         super(pProperties);
         this.id = id;
         this.type = type;

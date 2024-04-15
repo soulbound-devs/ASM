@@ -1,6 +1,7 @@
 package net.vakror.soulbound.seal.type;
 
 import com.google.common.collect.Multimap;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -12,7 +13,7 @@ public abstract class ActivatableSeal extends BaseSeal implements AttributeModif
 
     public final float swingSpeed;
 
-    public ActivatableSeal(String id, float swingSpeed) {
+    public ActivatableSeal(ResourceLocation id, float swingSpeed) {
         super(id, true);
         this.swingSpeed = swingSpeed;
     }

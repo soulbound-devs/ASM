@@ -1,5 +1,6 @@
 package net.vakror.soulbound.seal.type.amplifying;
 
+import net.minecraft.resources.ResourceLocation;
 import net.vakror.soulbound.seal.ISeal;
 import net.vakror.soulbound.seal.SealType;
 import net.vakror.soulbound.seal.type.BaseSeal;
@@ -10,7 +11,7 @@ import java.util.List;
 public abstract class AmplifyingSeal extends BaseSeal {
     public List<ISeal> requirements = new ArrayList<>();
 
-    public AmplifyingSeal(String id) {
+    public AmplifyingSeal(ResourceLocation id) {
         super(id, false);
     }
 

@@ -158,9 +158,6 @@ public class WandImbuingTableBlockEntity extends BlockEntity implements Extended
         }
         if (SealRegistry.amplifyingSeals.containsKey(((SealItem) entity.itemHandler.getStackInSlot(2).getItem()).getId())) {
             wand.addAmplifyingSeal(((SealItem) entity.itemHandler.getStackInSlot(2).getItem()).getId());
-        } else {
-            System.err.println("SEAL ID NOT FOUND: " + ((SealItem) entity.itemHandler.getStackInSlot(2).getItem()).getId());
-            System.err.println("Known Ids: " + String.join(", ", SealRegistry.allSeals.keySet()));
         }
         entity.itemHandler.extractItem(1, 1, false);
         entity.itemHandler.extractItem(2, 1, false);

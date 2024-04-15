@@ -1,5 +1,6 @@
 package net.vakror.soulbound.seal.type.amplifying;
 
+import net.minecraft.resources.ResourceLocation;
 import net.vakror.soulbound.seal.function.amplify.AmplifyFunction;
 
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.List;
 public abstract class ItemAmplifyingSeal extends AmplifyingSeal {
     private final List<AmplifyFunction> amplifyFunctions;
 
-    public ItemAmplifyingSeal(String id) {
+    public ItemAmplifyingSeal(ResourceLocation id) {
         super(id);
         this.amplifyFunctions = new ArrayList<>();
     }

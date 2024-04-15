@@ -1,6 +1,8 @@
 package net.vakror.soulbound.attachment;
 
+import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 import net.vakror.soulbound.seal.ISeal;
@@ -16,8 +18,8 @@ public class WandSealAttachment implements INBTSerializable<CompoundTag> {
     private List<ISeal> amplifyingSeals = null;
     private int selectedSealSlot = 1;
     private boolean selectedIsAttack = false;
-    String customWandModel = "";
-    private Map<String, String> activeSealModels = new HashMap<>();
+    ResourceLocation customWandModel = MissingTextureAtlasSprite.getLocation();
+    private Map<ResourceLocation, ResourceLocation> activeSealModels = new HashMap<>();
 
     public boolean isSelectedIsAttack() {
         return selectedIsAttack;
@@ -55,7 +57,7 @@ public class WandSealAttachment implements INBTSerializable<CompoundTag> {
     public void setActiveSeal(ISeal seal, ItemStack stack) {
         activeSeal = seal;
         CompoundTag tag = stack.getTag().copy();
-        tag.putString("activeSeal", activeSeal == null ? "": activeSeal.getId());
+        tag.putString("activeSeal", activeSeal == null ? "": activeSeal.getId().toString());
         stack.setTag(tag);
     }
 
@@ -83,8 +85,8 @@ public class WandSealAttachment implements INBTSerializable<CompoundTag> {
         return seals;
     }
 
-    public List<String> getAllSealsIdsThatAreNotActivated() {
-        List<String> seals = new ArrayList<String>();
+    public List<ResourceLocation> getAllSealsIdsThatAreNotActivated() {
+        List<ResourceLocation> seals = new ArrayList<>();
         createIfNull();
         passiveSeals.forEach((passiveSeal -> {
             seals.add(passiveSeal.getId());
@@ -96,7 +98,6 @@ public class WandSealAttachment implements INBTSerializable<CompoundTag> {
             seals.add(amplifyingSeal.getId());
         }));
         if (activeSeal != null) {
-
             seals.remove(activeSeal.getId());
         }
         return seals;
@@ -122,8 +123,8 @@ public class WandSealAttachment implements INBTSerializable<CompoundTag> {
         return Set.copyOf(amplifyingSeals);
     }
 
-    public void addPassiveSeal(String id) {
-        createIfNull();;
+    public void addPassiveSeal(ResourceLocation id) {
+        createIfNull();
         Set<ISeal> toRemove = new HashSet<>();
         passiveSeals.forEach((passive -> {
             if (passive instanceof Tiered tiered && SealRegistry.passiveSeals.get(id) instanceof Tiered tiered1 && !tiered.getTierId().equals(tiered1.getTierId())) {
@@ -134,7 +135,7 @@ public class WandSealAttachment implements INBTSerializable<CompoundTag> {
         passiveSeals.add(SealRegistry.passiveSeals.get(id));
     }
 
-    public void addAttackSeal(String id) {
+    public void addAttackSeal(ResourceLocation id) {
         createIfNull();
         Set<ISeal> toRemove = new HashSet<>();
         attackSeals.forEach((attack -> {
@@ -146,7 +147,7 @@ public class WandSealAttachment implements INBTSerializable<CompoundTag> {
         attackSeals.add(SealRegistry.attackSeals.get(id));
     }
 
-    public void addAmplifyingSeal(String id) {
+    public void addAmplifyingSeal(ResourceLocation id) {
         createIfNull();
         Set<ISeal> toRemove = new HashSet<>();
         amplifyingSeals.forEach((amplifying -> {
@@ -190,7 +191,7 @@ public class WandSealAttachment implements INBTSerializable<CompoundTag> {
         };
     }
 
-    public int getAmountOfTimesThatSealIsPresent(SealType type, String sealId) {
+    public int getAmountOfTimesThatSealIsPresent(SealType type, ResourceLocation sealId) {
         createIfNull();
         return switch (type) {
             case PASSIVE -> Collections.frequency(passiveSeals, SealRegistry.passiveSeals.get(sealId));
@@ -211,19 +212,19 @@ public class WandSealAttachment implements INBTSerializable<CompoundTag> {
     public CompoundTag serializeNBT() {
         CompoundTag nbt = new CompoundTag();
         if (this.passiveSeals != null && this.attackSeals != null && this.amplifyingSeals != null) {
-            for (String sealId : SealRegistry.passiveSeals.keySet()) {
-                nbt.putInt(sealId, Collections.frequency(passiveSeals, SealRegistry.passiveSeals.get(sealId)));
+            for (ResourceLocation sealId : SealRegistry.passiveSeals.keySet()) {
+                nbt.putInt(sealId.toString(), Collections.frequency(passiveSeals, SealRegistry.passiveSeals.get(sealId)));
             }
-            for (String sealId : SealRegistry.attackSeals.keySet()) {
-                nbt.putInt(sealId, Collections.frequency(attackSeals, SealRegistry.attackSeals.get(sealId)));
+            for (ResourceLocation sealId : SealRegistry.attackSeals.keySet()) {
+                nbt.putInt(sealId.toString(), Collections.frequency(attackSeals, SealRegistry.attackSeals.get(sealId)));
             }
-            for (String sealId : SealRegistry.amplifyingSeals.keySet()) {
-                nbt.putInt(sealId, Collections.frequency(amplifyingSeals, SealRegistry.amplifyingSeals.get(sealId)));
+            for (ResourceLocation sealId : SealRegistry.amplifyingSeals.keySet()) {
+                nbt.putInt(sealId.toString(), Collections.frequency(amplifyingSeals, SealRegistry.amplifyingSeals.get(sealId)));
             }
             if (activeSeal != null) {
-                nbt.putString("active_seal", activeSeal.getId());
+                nbt.putString("active_seal", activeSeal.getId().toString());
             }
-            nbt.putString("customModel", customWandModel == null ? "": customWandModel);
+            nbt.putString("customModel", customWandModel == null ? "": customWandModel.toString());
             nbt.putInt("active_slot", selectedSealSlot);
             nbt.putBoolean("active_slot_attack", selectedIsAttack);
             saveCustomActiveSealModels(nbt, activeSealModels == null? new HashMap<>(): activeSealModels);
@@ -231,22 +232,22 @@ public class WandSealAttachment implements INBTSerializable<CompoundTag> {
         return nbt;
     }
 
-    public void saveCustomActiveSealModels(CompoundTag nbt, Map<String, String> activeSealModels) {
+    public void saveCustomActiveSealModels(CompoundTag nbt, Map<ResourceLocation, ResourceLocation> activeSealModels) {
         CompoundTag modelsTag = new CompoundTag();
         activeSealModels.forEach((seal, name) -> {
-            if (!modelsTag.contains(seal)) {
-                modelsTag.putString(seal, name);
+            if (!modelsTag.contains(seal.toString())) {
+                modelsTag.putString(seal.toString(), name.toString());
             }
         });
         nbt.put("activeModels", modelsTag);
     }
 
-    public Map<String, String> deserializeCustomActiveSealModels(CompoundTag nbt) {
-        Map<String, String> models = new HashMap<>();
+    public Map<ResourceLocation, ResourceLocation> deserializeCustomActiveSealModels(CompoundTag nbt) {
+        Map<ResourceLocation, ResourceLocation> models = new HashMap<>();
         if (nbt.contains("activeModels")) {
             CompoundTag modelsTag = nbt.getCompound("activeModels");
             for (String key : modelsTag.getAllKeys()) {
-               models.put(key, modelsTag.getString(key));
+               models.put(new ResourceLocation(key), new ResourceLocation(modelsTag.getString(key)));
             }
         }
         return models;
@@ -254,23 +255,23 @@ public class WandSealAttachment implements INBTSerializable<CompoundTag> {
 
     public void deserializeNBT(CompoundTag nbt) {
         createIfNull();
-        for (String sealId : SealRegistry.passiveSeals.keySet()) {
-            if (nbt.getInt(sealId) > 0) {
-                for (int i = 1; i <= nbt.getInt(sealId); ++i) {
+        for (ResourceLocation sealId : SealRegistry.passiveSeals.keySet()) {
+            if (nbt.getInt(sealId.toString()) > 0) {
+                for (int i = 1; i <= nbt.getInt(sealId.toString()); ++i) {
                     passiveSeals.add(SealRegistry.passiveSeals.get(sealId));
                 }
             }
         }
-        for (String sealId : SealRegistry.attackSeals.keySet()) {
-            if (nbt.getInt(sealId) > 0) {
-                for (int i = 1; i <= nbt.getInt(sealId); ++i) {
+        for (ResourceLocation sealId : SealRegistry.attackSeals.keySet()) {
+            if (nbt.getInt(sealId.toString()) > 0) {
+                for (int i = 1; i <= nbt.getInt(sealId.toString()); ++i) {
                     attackSeals.add(SealRegistry.attackSeals.get(sealId));
                 }
             }
         }
-        for (String sealId : SealRegistry.amplifyingSeals.keySet()) {
-            if (nbt.getInt(sealId) > 0) {
-                for (int i = 1; i <= nbt.getInt(sealId); ++i) {
+        for (ResourceLocation sealId : SealRegistry.amplifyingSeals.keySet()) {
+            if (nbt.getInt(sealId.toString()) > 0) {
+                for (int i = 1; i <= nbt.getInt(sealId.toString()); ++i) {
                     amplifyingSeals.add(SealRegistry.amplifyingSeals.get(sealId));
                 }
             }
@@ -278,7 +279,7 @@ public class WandSealAttachment implements INBTSerializable<CompoundTag> {
         activeSeal = SealRegistry.allSeals.get(nbt.getString("active_seal"));
         selectedSealSlot = nbt.getInt("active_slot");
         selectedIsAttack = nbt.getBoolean("active_slot_attack");
-        customWandModel = nbt.getString("customModel");
+        customWandModel = new ResourceLocation(nbt.getString("customModel"));
         activeSealModels = deserializeCustomActiveSealModels(nbt);
     }
 
@@ -287,37 +288,37 @@ public class WandSealAttachment implements INBTSerializable<CompoundTag> {
         return !passiveSeals.isEmpty() || !attackSeals.isEmpty() || !amplifyingSeals.isEmpty();
     }
 
-    public String getCustomWandModel() {
+    public ResourceLocation getCustomWandModel() {
         return customWandModel;
     }
 
-    public void setCustomWandModel(String customWandModel, ItemStack stack) {
+    public void setCustomWandModel(ResourceLocation customWandModel, ItemStack stack) {
         this.customWandModel = customWandModel;
         CompoundTag tag = stack.getTag().copy();
-        tag.putString("customModel", hasCustomWandModel() ? customWandModel: "");
+        tag.putString("customModel", hasCustomWandModel() ? customWandModel.toString(): "");
         stack.setTag(tag);
     }
 
     public boolean hasCustomWandModel() {
-        return customWandModel != null && !customWandModel.isBlank();
+        return customWandModel != null && customWandModel != MissingTextureAtlasSprite.getLocation();
     }
 
-    public boolean hasCustomActiveSealModel(String activeSeal) {
+    public boolean hasCustomActiveSealModel(ResourceLocation activeSeal) {
         return activeSealModels != null && activeSealModels.containsKey(activeSeal);
     }
 
-    public Map<String, String> getActiveSealModels() {
+    public Map<ResourceLocation, ResourceLocation> getActiveSealModels() {
         return activeSealModels;
     }
 
-    public void setActiveSealModels(Map<String, String> activeSealModels, ItemStack stack) {
+    public void setActiveSealModels(Map<ResourceLocation, ResourceLocation> activeSealModels, ItemStack stack) {
         this.activeSealModels = activeSealModels;
         CompoundTag tag = stack.getTag().copy();
         saveCustomActiveSealModels(tag, activeSealModels == null ? new HashMap<>(): activeSealModels);
         stack.setTag(tag);
     }
 
-    public void addActiveSealModel(String seal, String model, ItemStack stack) {
+    public void addActiveSealModel(ResourceLocation seal, ResourceLocation model, ItemStack stack) {
         if (activeSealModels == null) {
             activeSealModels = new HashMap<>();
         }

@@ -1,6 +1,7 @@
 package net.vakror.soulbound.items;
 
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -24,40 +25,40 @@ public class ModItems {
             DeferredRegister.create(Registries.ITEM, SoulboundMod.MOD_ID);
 
     public static final DeferredHolder<Item, SealItem> AXING_SEAL = ITEMS_REGISTRY.register("axing_seal",
-           () -> new SealItem(new Item.Properties(), "axing", SealType.OFFENSIVE, AXING));
+           () -> new SealItem(new Item.Properties(), new ResourceLocation(SoulboundMod.MOD_ID, "axing"), SealType.OFFENSIVE, AXING));
 
     public static final DeferredHolder<Item, SealItem> SACK_ROW_UPGRADE_SEAL_TIER_1 = ITEMS_REGISTRY.register("sack_row_upgrade_seal_tier_1",
-           () -> new SealItem(new Item.Properties(), "row_tier_1", SealType.AMPLIFYING, ((tier -> tier.getTier() > 0 ? ((Math.min(tier.getTier() * 2, 1))): 1)),HEIGHT));
+           () -> new SealItem(new Item.Properties(), new ResourceLocation(SoulboundMod.MOD_ID, "row_tier_1"), SealType.AMPLIFYING, ((tier -> tier.getTier() > 0 ? ((Math.min(tier.getTier() * 2, 1))): 1)),HEIGHT));
 
     public static final DeferredHolder<Item, SealItem> SACK_COLUMN_UPGRADE_SEAL_TIER_1 = ITEMS_REGISTRY.register("sack_column_upgrade_seal_tier_1",
-           () -> new SealItem(new Item.Properties(), "column_tier_1", SealType.AMPLIFYING, ((tier -> tier.getTier() > 0 ? ((Math.min(tier.getTier() * 2, 1))): 1)), WIDTH));
+           () -> new SealItem(new Item.Properties(), new ResourceLocation(SoulboundMod.MOD_ID, "column_tier_1"), SealType.AMPLIFYING, ((tier -> tier.getTier() > 0 ? ((Math.min(tier.getTier() * 2, 1))): 1)), WIDTH));
 
     public static final DeferredHolder<Item, SealItem> SACK_STACK_SIZE_UPGRADE_SEAL_TIER_1 = ITEMS_REGISTRY.register("sack_stack_size_upgrade_seal_tier_1",
-           () -> new SealItem(new Item.Properties(), "stack_size_tier_1", SealType.AMPLIFYING, ((tier -> tier.getTier() > 0 ? ((Math.min(tier.getTier() * 2, 2))): 1)), STACK_SIZE));
+           () -> new SealItem(new Item.Properties(), new ResourceLocation(SoulboundMod.MOD_ID, "stack_size_tier_1"), SealType.AMPLIFYING, ((tier -> tier.getTier() > 0 ? ((Math.min(tier.getTier() * 2, 2))): 1)), STACK_SIZE));
 
     public static final DeferredHolder<Item, SealItem> SACK_PICKUP_SEAL = ITEMS_REGISTRY.register("sack_pickup_seal",
-           () -> new SealItem(new Item.Properties(), "pickup", SealType.AMPLIFYING, PICKUP));
+           () -> new SealItem(new Item.Properties(), new ResourceLocation(SoulboundMod.MOD_ID, "pickup"), SealType.AMPLIFYING, PICKUP));
 
     public static final DeferredHolder<Item, WandItem> WAND = ITEMS_REGISTRY.register("wand",
            () -> new WandItem(new Item.Properties(), ModWandTiers.ANCIENT_OAK));
 
     public static final DeferredHolder<Item, SealItem> PICKAXING_SEAL = ITEMS_REGISTRY.register("pickaxing_seal",
-           () -> new SealItem(new Item.Properties(), "pickaxing", SealType.PASSIVE, PICKING));
+           () -> new SealItem(new Item.Properties(), new ResourceLocation(SoulboundMod.MOD_ID, "pickaxing"), SealType.PASSIVE, PICKING));
 
     public static final DeferredHolder<Item, SealItem> HOEING_SEAL = ITEMS_REGISTRY.register("hoeing_seal",
-           () -> new SealItem(new Item.Properties(), "hoeing", SealType.PASSIVE, HOEING));
+           () -> new SealItem(new Item.Properties(), new ResourceLocation(SoulboundMod.MOD_ID, "hoeing"), SealType.PASSIVE, HOEING));
 
     public static final DeferredHolder<Item, SealItem> MINING_SPEED_SEAL_TIER_1 = ITEMS_REGISTRY.register("mining_speed_seal",
-           () -> new SealItem(new Item.Properties(), "mining_speed_tier_1", SealType.AMPLIFYING, HASTE));
+           () -> new SealItem(new Item.Properties(), new ResourceLocation(SoulboundMod.MOD_ID, "mining_speed_tier_1"), SealType.AMPLIFYING, HASTE));
 
     public static final DeferredHolder<Item, SealItem> MINING_SPEED_SEAL_TIER_2 = ITEMS_REGISTRY.register("mining_speed_seal_tier_2",
-           () -> new SealItem(new Item.Properties(), "mining_speed_tier_2", SealType.AMPLIFYING, HASTE_TIER_2));
+           () -> new SealItem(new Item.Properties(), new ResourceLocation(SoulboundMod.MOD_ID, "mining_speed_tier_2"), SealType.AMPLIFYING, HASTE_TIER_2));
 
     public static final DeferredHolder<Item, SealItem> MINING_SPEED_SEAL_TIER_3 = ITEMS_REGISTRY.register("mining_speed_seal_tier_3",
-           () -> new SealItem(new Item.Properties(), "mining_speed_tier_3", SealType.AMPLIFYING, HASTE_TIER_3));
+           () -> new SealItem(new Item.Properties(), new ResourceLocation(SoulboundMod.MOD_ID, "mining_speed_tier_3"), SealType.AMPLIFYING, HASTE_TIER_3));
 
     public static final DeferredHolder<Item, SealItem> SWORDING_SEAL = ITEMS_REGISTRY.register("swording_seal",
-           () -> new SealItem(new Item.Properties(),"swording", SealType.OFFENSIVE, SWORDING));
+           () -> new SealItem(new Item.Properties(),new ResourceLocation(SoulboundMod.MOD_ID, "swording"), SealType.OFFENSIVE, SWORDING));
 
     public static final DeferredHolder<Item, Item> SOUL = ITEMS_REGISTRY.register("soul",
            () -> new Item(new Item.Properties()));

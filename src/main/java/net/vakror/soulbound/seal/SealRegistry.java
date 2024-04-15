@@ -2,6 +2,7 @@ package net.vakror.soulbound.seal;
 
 
 import com.google.common.collect.ImmutableMap;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.vakror.soulbound.items.custom.seals.SealItem;
@@ -10,11 +11,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SealRegistry {
-    public static Map<String, ISeal> allSeals = new HashMap<>();
-    public static Map<String, ISeal> passiveSeals = new HashMap<>();
-    public static Map<String, ISeal> attackSeals = new HashMap<>();
-    public static Map<String, ISeal> amplifyingSeals = new HashMap<>();
-    public static Map<String, DeferredHolder<Item, SealItem>> sealItems = new HashMap<>();
+    public static Map<ResourceLocation, ISeal> allSeals = new HashMap<>();
+    public static Map<ResourceLocation, ISeal> passiveSeals = new HashMap<>();
+    public static Map<ResourceLocation, ISeal> attackSeals = new HashMap<>();
+    public static Map<ResourceLocation, ISeal> amplifyingSeals = new HashMap<>();
+    public static Map<ResourceLocation, DeferredHolder<Item, SealItem>> sealItems = new HashMap<>();
 
     public static void addSeal(ISeal seal, SealType type) {
         switch (type) {

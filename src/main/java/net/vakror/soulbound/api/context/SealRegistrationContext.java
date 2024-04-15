@@ -50,7 +50,7 @@ public class SealRegistrationContext implements IRegistrationContext {
             register = REGISTRIES.get(modId);
         }
 
-        DeferredHolder<Item, SealItem> sealItem = register.register(seal.getId(), () -> new SealItem(
+        DeferredHolder<Item, SealItem> sealItem = register.register(seal.getId().getPath(), () -> new SealItem(
                 properties,
                 seal.getId(),
                 seal.getType(),
@@ -100,7 +100,7 @@ public class SealRegistrationContext implements IRegistrationContext {
      * @param newSeal the seal to replace the old one with
      */
     @Deprecated
-    public void modifySeal(String name, SealType type, ISeal newSeal) {
+    public void modifySeal(ResourceLocation name, SealType type, ISeal newSeal) {
         if (!SealRegistry.allSeals.containsKey(name)) {
             throw new IllegalArgumentException("Attempted To Modify Non Existent Seal " + name);
         } else {

@@ -2,6 +2,7 @@ package net.vakror.soulbound.items.custom;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundSetActionBarTextPacket;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -35,7 +36,7 @@ public class ActivatableSealableItem extends SealableItem {
         return super.use(pLevel, pPlayer, pUsedHand);
     }
 
-    public boolean isSealActive(String sealID, ItemStack stack) {
+    public boolean isSealActive(ResourceLocation sealID, ItemStack stack) {
         AtomicBoolean toReturn = new AtomicBoolean(false);
         stack.getExistingData(ModAttachments.SEAL_ATTACHMENT).ifPresent(wand -> {
             if (wand.getAttackSeals().contains(SealRegistry.allSeals.get(sealID)) || wand.getPassiveSeals().contains(SealRegistry.allSeals.get(sealID)) || wand.getAmplifyingSeals().contains(SealRegistry.allSeals.get(sealID))) {
@@ -93,7 +94,7 @@ public class ActivatableSealableItem extends SealableItem {
                 int readableSlot = itemWand.isSelectedIsAttack() ? itemWand.getSelectedSealSlot() - tier.getPassiveSlots() : itemWand.getSelectedSealSlot();
                 String selectedSealName;
                 if (itemWand.getAllActivatableSeals().size() > itemWand.getSelectedSealSlot() - 1) {
-                    selectedSealName = capitalizeString(itemWand.getAllActivatableSeals().get(itemWand.getSelectedSealSlot() - 1).getId());
+                    selectedSealName = capitalizeString(itemWand.getAllActivatableSeals().get(itemWand.getSelectedSealSlot() - 1).getId().toString().replace("_", " "));
                     ((ServerPlayer) player).connection.send(new ClientboundSetActionBarTextPacket(Component.literal("Selected " + mode + " Slot: " + readableSlot + " (" + selectedSealName + ")")));
                 }
             }

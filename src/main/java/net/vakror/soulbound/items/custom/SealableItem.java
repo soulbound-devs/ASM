@@ -69,7 +69,7 @@ public class SealableItem extends DiggerItem {
         AtomicBoolean toReturn = new AtomicBoolean();
         int passiveSlots = tier.getPassiveSlots();
         sealable.getExistingData(ModAttachments.SEAL_ATTACHMENT).ifPresent(wand -> {
-                String id = ((SealItem) sealItem.getItem()).getId();
+                ResourceLocation id = ((SealItem) sealItem.getItem()).getId();
                 if (!((SealItem) sealItem.getItem()).canAddMultiple(tier)) {
                     if (!wand.getPassiveSeals().contains(SealRegistry.passiveSeals.get(id))) {
                         toReturn.set(wand.getPassiveSeals().size() < passiveSlots);
@@ -87,7 +87,7 @@ public class SealableItem extends DiggerItem {
         AtomicBoolean toReturn = new AtomicBoolean();
         int offensiveSlots = tier.getAttackSlots();
         sealable.getExistingData(ModAttachments.SEAL_ATTACHMENT).ifPresent(wand -> {
-            String id = ((SealItem) sealItem.getItem()).getId();
+            ResourceLocation id = ((SealItem) sealItem.getItem()).getId();
             if (!((SealItem) sealItem.getItem()).canAddMultiple(tier)) {
                 if (!wand.getAttackSeals().contains(SealRegistry.attackSeals.get(id))) {
                     toReturn.set(wand.getAttackSeals().size() < offensiveSlots);
@@ -105,7 +105,7 @@ public class SealableItem extends DiggerItem {
         AtomicBoolean toReturn = new AtomicBoolean();
         int amplifyingSealSlots = tier.getAmplificationSlots();
         sealable.getExistingData(ModAttachments.SEAL_ATTACHMENT).ifPresent(wand -> {
-            String id = ((SealItem) sealItem.getItem()).getId();
+            ResourceLocation id = ((SealItem) sealItem.getItem()).getId();
             if (!((SealItem) sealItem.getItem()).canAddMultiple(tier)) {
                 if (!wand.getAmplifyingSeals().contains(SealRegistry.amplifyingSeals.get(id))) {
                     toReturn.set(wand.getAmplifyingSeals().size() < amplifyingSealSlots);
@@ -177,9 +177,9 @@ public class SealableItem extends DiggerItem {
         int count = 0;
         for (ISeal seal : itemSeal.getAmplifyingSeals()) {
             if (activeSeal != null && seal.getId().equals(activeSeal.getId())) {
-                tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("    " + activeCharacter() + capitalizeString(seal.getId()), Tooltip.TooltipComponentBuilder.ColorCode.GOLD).setStyle(toActiveFont()).build().getTooltip());
+                tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("    " + activeCharacter() + capitalizeString(seal.getId().toString().replace("_", "")), Tooltip.TooltipComponentBuilder.ColorCode.GOLD).setStyle(toActiveFont()).build().getTooltip());
             } else {
-                tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("    " + capitalizeString(seal.getId()), Tooltip.TooltipComponentBuilder.ColorCode.GOLD).build().getTooltip());
+                tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("    " + capitalizeString(seal.getId().toString().replace("_", " ")), Tooltip.TooltipComponentBuilder.ColorCode.GOLD).build().getTooltip());
             }
             count++;
         }
@@ -193,9 +193,9 @@ public class SealableItem extends DiggerItem {
         int count = 0;
         for (ISeal seal : itemSeal.getAttackSeals()) {
             if (activeSeal != null && seal.getId().equals(activeSeal.getId())) {
-                tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("    " + activeCharacter() + capitalizeString(seal.getId()), Tooltip.TooltipComponentBuilder.ColorCode.RED).setStyle(toActiveFont()).build().getTooltip());
+                tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("    " + activeCharacter() + capitalizeString(seal.getId().toString().replace("_", " ")), Tooltip.TooltipComponentBuilder.ColorCode.RED).setStyle(toActiveFont()).build().getTooltip());
             } else {
-                tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("    " + capitalizeString(seal.getId()), Tooltip.TooltipComponentBuilder.ColorCode.RED).build().getTooltip());
+                tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("    " + capitalizeString(seal.getId().toString().replace("_", " ")), Tooltip.TooltipComponentBuilder.ColorCode.RED).build().getTooltip());
             }
             count++;
         }
@@ -209,9 +209,9 @@ public class SealableItem extends DiggerItem {
         int count = 0;
         for (ISeal seal : itemSeal.getPassiveSeals()) {
             if (activeSeal != null && seal.getId().equals(activeSeal.getId())) {
-                tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("    " + activeCharacter() + capitalizeString(seal.getId()), Tooltip.TooltipComponentBuilder.ColorCode.LIGHT_BLUE).setStyle(toActiveFont()).build().getTooltip());
+                tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("    " + activeCharacter() + capitalizeString(seal.getId().toString().replace("_", " ")), Tooltip.TooltipComponentBuilder.ColorCode.LIGHT_BLUE).setStyle(toActiveFont()).build().getTooltip());
             } else {
-                tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("    " + capitalizeString(seal.getId()), Tooltip.TooltipComponentBuilder.ColorCode.LIGHT_BLUE).build().getTooltip());
+                tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("    " + capitalizeString(seal.getId().toString().replace("_", " ")), Tooltip.TooltipComponentBuilder.ColorCode.LIGHT_BLUE).build().getTooltip());
             }
             count++;
         }
@@ -277,7 +277,7 @@ public class SealableItem extends DiggerItem {
         stringBuilder.append("  ");
         stringBuilder.append(active);
         stringBuilder.append(" ");
-        stringBuilder.append(capitalizeString(seal.getId()));
+        stringBuilder.append(capitalizeString(seal.getId().toString().replace("_", " ")));
         return stringBuilder.toString();
     }
 

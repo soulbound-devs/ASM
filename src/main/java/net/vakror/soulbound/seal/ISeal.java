@@ -1,10 +1,11 @@
 package net.vakror.soulbound.seal;
 
+import net.minecraft.resources.ResourceLocation;
 import net.vakror.soulbound.seal.type.AttackSeal;
 
 public interface ISeal {
-    default String getId() {
-        return "error";
+    default ResourceLocation getId() {
+        return new ResourceLocation("soulbound", "error");
     }
 
     default boolean canBeActivated() {

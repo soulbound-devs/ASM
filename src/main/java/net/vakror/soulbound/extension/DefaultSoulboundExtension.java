@@ -64,7 +64,7 @@ public class DefaultSoulboundExtension {
             context.registerSealWithCustomItem(new ColumnUpgradeSeal(0, 2, AttributeModifier.Operation.ADDITION), ModItems.SACK_COLUMN_UPGRADE_SEAL_TIER_1);
             context.registerSealWithCustomItem(new RowUpgradeSeal(0, 2, AttributeModifier.Operation.ADDITION), ModItems.SACK_ROW_UPGRADE_SEAL_TIER_1);
             context.registerSealWithCustomItem(new SwordSeal(), ModItems.SWORDING_SEAL);
-            context.registerTieredSealWithCustomItem(new HasteSeal(0), List.of(ModItems.MINING_SPEED_SEAL_TIER_1, ModItems.MINING_SPEED_SEAL_TIER_2, ModItems.MINING_SPEED_SEAL_TIER_3));
+//            context.registerTieredSealWithCustomItem(new HasteSeal(0), List.of(ModItems.MINING_SPEED_SEAL_TIER_1, ModItems.MINING_SPEED_SEAL_TIER_2, ModItems.MINING_SPEED_SEAL_TIER_3));
         }
 
         @Override

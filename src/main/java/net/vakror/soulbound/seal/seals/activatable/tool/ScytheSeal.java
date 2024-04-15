@@ -11,7 +11,7 @@ import net.vakror.soulbound.SoulboundMod;
 
 public class ScytheSeal extends OffensiveToolSeal {
     public ScytheSeal() {
-        super("scythe", TagKey.create(Registries.BLOCK, new ResourceLocation(SoulboundMod.MOD_ID, "mineable/scythe")), 3.5f);
+        super(new ResourceLocation(SoulboundMod.MOD_ID, "scythe"), TagKey.create(Registries.BLOCK, new ResourceLocation(SoulboundMod.MOD_ID, "mineable/scythe")), 3.5f);
     }
 
     @Override
