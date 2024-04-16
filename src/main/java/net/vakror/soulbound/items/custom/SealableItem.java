@@ -37,7 +37,7 @@ public class SealableItem extends DiggerItem {
         this.tier = tier;
     }
 
-    public boolean hasSeal(String sealID, ItemStack stack) {
+    public boolean hasSeal(ResourceLocation sealID, ItemStack stack) {
         AtomicBoolean toReturn = new AtomicBoolean(false);
         stack.getExistingData(ModAttachments.SEAL_ATTACHMENT).ifPresent(wand -> {
             if (wand.getAttackSeals().contains(SealRegistry.allSeals.get(sealID)) || wand.getPassiveSeals().contains(SealRegistry.allSeals.get(sealID)) || wand.getAmplifyingSeals().contains(SealRegistry.allSeals.get(sealID))) {
