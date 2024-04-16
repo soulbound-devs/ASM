@@ -276,7 +276,7 @@ public class WandSealAttachment implements INBTSerializable<CompoundTag> {
                 }
             }
         }
-        activeSeal = SealRegistry.allSeals.get(nbt.getString("active_seal"));
+        activeSeal = SealRegistry.allSeals.get(new ResourceLocation(nbt.getString("active_seal")));
         selectedSealSlot = nbt.getInt("active_slot");
         selectedIsAttack = nbt.getBoolean("active_slot_attack");
         customWandModel = new ResourceLocation(nbt.getString("customModel"));
