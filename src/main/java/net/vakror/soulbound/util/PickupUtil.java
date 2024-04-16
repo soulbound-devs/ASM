@@ -1,11 +1,13 @@
 package net.vakror.soulbound.util;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
+import net.vakror.soulbound.SoulboundMod;
 import net.vakror.soulbound.items.custom.SackItem;
 import net.vakror.soulbound.items.custom.SealableItem;
 
@@ -35,7 +37,7 @@ public class PickupUtil {
 
     public static boolean onItemPickup(Player player, ItemStack pickStack, ItemStack sack) {
 
-        boolean canPickup = ((SealableItem) sack.getItem()).hasSeal("pickup", sack);
+        boolean canPickup = ((SealableItem) sack.getItem()).hasSeal(new ResourceLocation(SoulboundMod.MOD_ID, "pickup"), sack);
         if (!canPickup) {
             return false;
         }
