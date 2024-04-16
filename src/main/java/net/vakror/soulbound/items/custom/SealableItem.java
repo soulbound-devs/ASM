@@ -177,9 +177,9 @@ public class SealableItem extends DiggerItem {
         int count = 0;
         for (ISeal seal : itemSeal.getAmplifyingSeals()) {
             if (activeSeal != null && seal.getId().equals(activeSeal.getId())) {
-                tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("    " + activeCharacter() + capitalizeString(seal.getId().toString().replace("_", "")), Tooltip.TooltipComponentBuilder.ColorCode.GOLD).setStyle(toActiveFont()).build().getTooltip());
+                tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("    " + activeCharacter() + capitalizeString(seal.getId().toString().split(":")[1].replace("_", " ")), Tooltip.TooltipComponentBuilder.ColorCode.GOLD).setStyle(toActiveFont()).build().getTooltip());
             } else {
-                tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("    " + capitalizeString(seal.getId().toString().replace("_", " ")), Tooltip.TooltipComponentBuilder.ColorCode.GOLD).build().getTooltip());
+                tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("    " + capitalizeString(seal.getId().toString().split(":")[1].replace("_", " ")), Tooltip.TooltipComponentBuilder.ColorCode.GOLD).build().getTooltip());
             }
             count++;
         }
@@ -193,9 +193,9 @@ public class SealableItem extends DiggerItem {
         int count = 0;
         for (ISeal seal : itemSeal.getAttackSeals()) {
             if (activeSeal != null && seal.getId().equals(activeSeal.getId())) {
-                tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("    " + activeCharacter() + capitalizeString(seal.getId().toString().replace("_", " ")), Tooltip.TooltipComponentBuilder.ColorCode.RED).setStyle(toActiveFont()).build().getTooltip());
+                tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("    " + activeCharacter() + capitalizeString(seal.getId().toString().split(":")[1].replace("_", " ")), Tooltip.TooltipComponentBuilder.ColorCode.RED).setStyle(toActiveFont()).build().getTooltip());
             } else {
-                tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("    " + capitalizeString(seal.getId().toString().replace("_", " ")), Tooltip.TooltipComponentBuilder.ColorCode.RED).build().getTooltip());
+                tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("    " + capitalizeString(seal.getId().toString().split(":")[1].replace("_", " ")), Tooltip.TooltipComponentBuilder.ColorCode.RED).build().getTooltip());
             }
             count++;
         }
@@ -209,9 +209,9 @@ public class SealableItem extends DiggerItem {
         int count = 0;
         for (ISeal seal : itemSeal.getPassiveSeals()) {
             if (activeSeal != null && seal.getId().equals(activeSeal.getId())) {
-                tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("    " + activeCharacter() + capitalizeString(seal.getId().toString().replace("_", " ")), Tooltip.TooltipComponentBuilder.ColorCode.LIGHT_BLUE).setStyle(toActiveFont()).build().getTooltip());
+                tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("    " + activeCharacter() + capitalizeString(seal.getId().toString().split(":")[1].replace("_", " ")), Tooltip.TooltipComponentBuilder.ColorCode.LIGHT_BLUE).setStyle(toActiveFont()).build().getTooltip());
             } else {
-                tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("    " + capitalizeString(seal.getId().toString().replace("_", " ")), Tooltip.TooltipComponentBuilder.ColorCode.LIGHT_BLUE).build().getTooltip());
+                tooltip.add(new Tooltip.TooltipComponentBuilder().addPart("    " + capitalizeString(seal.getId().toString().split(":")[1].replace("_", " ")), Tooltip.TooltipComponentBuilder.ColorCode.LIGHT_BLUE).build().getTooltip());
             }
             count++;
         }
@@ -277,7 +277,7 @@ public class SealableItem extends DiggerItem {
         stringBuilder.append("  ");
         stringBuilder.append(active);
         stringBuilder.append(" ");
-        stringBuilder.append(capitalizeString(seal.getId().toString().replace("_", " ")));
+        stringBuilder.append(capitalizeString(seal.getId().toString().split(":")[1].replace("_", " ")));
         return stringBuilder.toString();
     }
 
