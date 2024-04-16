@@ -77,7 +77,7 @@ public class SealRegistrationContext implements IRegistrationContext {
      * @param type the type of the seal to unregister
      */
     @Deprecated
-    public void unregisterSeal(String name, SealType type) {
+    public void unregisterSeal(ResourceLocation name, SealType type) {
         if (!SealRegistry.allSeals.containsKey(name)) {
             throw new IllegalStateException("Attempted To Unregister Non Existent Seal " + name);
         } else {
