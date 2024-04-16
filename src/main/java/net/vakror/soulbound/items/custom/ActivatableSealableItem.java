@@ -94,8 +94,8 @@ public class ActivatableSealableItem extends SealableItem {
                 int readableSlot = itemWand.isSelectedIsAttack() ? itemWand.getSelectedSealSlot() - tier.getPassiveSlots() : itemWand.getSelectedSealSlot();
                 String selectedSealName;
                 if (itemWand.getAllActivatableSeals().size() > itemWand.getSelectedSealSlot() - 1) {
-                    selectedSealName = capitalizeString(itemWand.getAllActivatableSeals().get(itemWand.getSelectedSealSlot() - 1).getId().toString().replace("_", " "));
-                    ((ServerPlayer) player).connection.send(new ClientboundSetActionBarTextPacket(Component.literal("Selected " + mode + " Slot: " + readableSlot + " (" + selectedSealName + ")")));
+                    selectedSealName = capitalizeString(itemWand.getAllActivatableSeals().get(itemWand.getSelectedSealSlot() - 1).getId().toString().split(":")[1].replace("_", " "));
+                    ((ServerPlayer) player).connection.send(new ClientboundSetActionBarTextPacket(Component.literal("Selected " + mode + " Slot: " + readableSlot + " (" + SealableItem.capitalizeString(selectedSealName) + ")")));
                 }
             }
         });
