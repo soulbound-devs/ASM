@@ -6,13 +6,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ActiveSealModels {
-    public static Map<String, ResourceLocation> MODELS = new HashMap<>();
+    public static Map<ResourceLocation, ResourceLocation> MODELS = new HashMap<>();
 
-    public static void registerModel(String name, ResourceLocation location) {
+    public static void registerModel(ResourceLocation name, ResourceLocation location) {
         MODELS.put(name, location);
     }
 
-    public static Map<String, ResourceLocation> getModels() {
+    public static Map<ResourceLocation, ResourceLocation> getModels() {
         return MODELS;
     }
 }

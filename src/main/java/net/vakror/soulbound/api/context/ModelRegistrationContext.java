@@ -14,7 +14,7 @@ public class ModelRegistrationContext implements IRegistrationContext {
      * @param name the name of your active seal model (if for a seal and not custom model, must match seal registry name <b>EXACTLY</b>
      * @param location the location for the texture
      */
-    public void registerSpellModel(String name, ResourceLocation location) {
+    public void registerSpellModel(ResourceLocation name, ResourceLocation location) {
         Stopwatch stopwatch = Stopwatch.createStarted();
         ActiveSealModels.registerModel(name, location);
         SoulboundMod.LOGGER.info("Registered Spell Model {}, \033[0;31mTook {}\033[0;0m", name, stopwatch);
@@ -25,7 +25,7 @@ public class ModelRegistrationContext implements IRegistrationContext {
      * @param name the name of the wand model to unregister
      */
     @Deprecated
-    public void unregisterWandModel(String name) {
+    public void unregisterWandModel(ResourceLocation name) {
         if (!WandModels.MODELS.containsKey(name)) {
             throw new IllegalStateException("Attempted To Unregister Non Existent Wand Model " + name);
         } else {
@@ -41,7 +41,7 @@ public class ModelRegistrationContext implements IRegistrationContext {
      * @param name the name of the spell model to unregister
      */
     @Deprecated
-    public void unregisterSpellModel(String name) {
+    public void unregisterSpellModel(ResourceLocation name) {
         if (!ActiveSealModels.MODELS.containsKey(name)) {
             throw new IllegalStateException("Attempted To Unregister Non Existent Spell Model " + name);
         } else {
@@ -58,7 +58,7 @@ public class ModelRegistrationContext implements IRegistrationContext {
      * @param newModel the spell model to replace the old one with
      */
     @Deprecated
-    public void modifySpellModel(String name, ResourceLocation newModel) {
+    public void modifySpellModel(ResourceLocation name, ResourceLocation newModel) {
         if (!ActiveSealModels.MODELS.containsKey(name)) {
             throw new IllegalArgumentException("Attempted To Modify Non Existent Spell Model " + name);
         } else {
@@ -75,7 +75,7 @@ public class ModelRegistrationContext implements IRegistrationContext {
      * @param newModel the wand model to replace the old one with
      */
     @Deprecated
-    public void modifyWandModel(String name, ResourceLocation newModel) {
+    public void modifyWandModel(ResourceLocation name, ResourceLocation newModel) {
         if (!WandModels.MODELS.containsKey(name)) {
             throw new IllegalArgumentException("Attempted To Modify Non Existent Wand Model " + name);
         } else {

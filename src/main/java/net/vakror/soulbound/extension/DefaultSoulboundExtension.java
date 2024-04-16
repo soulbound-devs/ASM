@@ -34,12 +34,12 @@ public class DefaultSoulboundExtension {
 
         @Override
         public void register() {
-            context.registerSpellModel("pickaxing", new ResourceLocation(SoulboundMod.MOD_ID, "item/wand/activated/pickaxing"));
-            context.registerSpellModel("hoeing", new ResourceLocation(SoulboundMod.MOD_ID, "item/wand/activated/hoeing"));
-            context.registerSpellModel("shoveling", new ResourceLocation(SoulboundMod.MOD_ID, "item/wand/activated/shovelling"));
-            context.registerSpellModel("swording", new ResourceLocation(SoulboundMod.MOD_ID, "item/wand/activated/swording"));
-            context.registerSpellModel("axing", new ResourceLocation(SoulboundMod.MOD_ID, "item/wand/activated/axing"));
-            context.registerSpellModel("scythe", new ResourceLocation(SoulboundMod.MOD_ID, "item/wand/activated/scythe"));
+            context.registerSpellModel(new ResourceLocation(SoulboundMod.MOD_ID, "pickaxing"), new ResourceLocation(SoulboundMod.MOD_ID, "item/wand/activated/pickaxing"));
+            context.registerSpellModel(new ResourceLocation(SoulboundMod.MOD_ID, "hoeing"), new ResourceLocation(SoulboundMod.MOD_ID, "item/wand/activated/hoeing"));
+            context.registerSpellModel(new ResourceLocation(SoulboundMod.MOD_ID, "shoveling"), new ResourceLocation(SoulboundMod.MOD_ID, "item/wand/activated/shovelling"));
+            context.registerSpellModel(new ResourceLocation(SoulboundMod.MOD_ID, "swording"), new ResourceLocation(SoulboundMod.MOD_ID, "item/wand/activated/swording"));
+            context.registerSpellModel(new ResourceLocation(SoulboundMod.MOD_ID, "axing"), new ResourceLocation(SoulboundMod.MOD_ID, "item/wand/activated/axing"));
+            context.registerSpellModel(new ResourceLocation(SoulboundMod.MOD_ID, "scythe"), new ResourceLocation(SoulboundMod.MOD_ID, "item/wand/activated/scythe"));
         }
 
         @Override
